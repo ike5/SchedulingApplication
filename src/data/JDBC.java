@@ -1,4 +1,4 @@
-package model;
+package data;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -36,5 +36,9 @@ public class JDBC {
         {
             System.out.println("Error:" + e.getMessage());
         }
+    }
+
+    public static Connection getConnection() {
+        return connection;
     }
 }

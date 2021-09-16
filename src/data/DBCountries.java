@@ -1,7 +1,5 @@
 package data;
 
-import static data.DBConnection.*;
-
 import model.Country;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -17,7 +15,7 @@ public class DBCountries {
         try {
             String sql = "SELECT * FROM countries";
 
-            PreparedStatement ps = getConnection().prepareStatement(sql);
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
 
             ResultSet rs = ps.executeQuery();
 
@@ -47,7 +45,7 @@ public class DBCountries {
             String sql = "SELECT countries.Country FROM countries INNER JOIN first_level_divisions\n" +
                     "on countries.Country_ID = first_level_divisions.COUNTRY_ID;";
 
-            PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
 
             ResultSet rs = ps.executeQuery();
 

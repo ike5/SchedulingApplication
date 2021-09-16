@@ -15,7 +15,7 @@ public class DBCustomers {
         try {
             String sql = "SELECT * FROM customers";
 
-            PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
 
             ResultSet rs = ps.executeQuery();
 
