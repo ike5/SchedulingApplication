@@ -7,6 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import data.JDBC;
+import model.DatabaseState;
 
 public class Main extends Application {
     @Override
@@ -18,9 +19,13 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
+        // Use remote connection by setting flag to false for development purposes
+        DatabaseState.setIsUsingLocalDatabase(false);
+
         JDBC.openConnection();
         launch(args);
         JDBC.closeConnection();
+
     }
 }
 //Test

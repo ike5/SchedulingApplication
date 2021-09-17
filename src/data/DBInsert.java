@@ -24,7 +24,7 @@ public class DBInsert {
         String name = keyboard.nextLine();
 
         try{
-            PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ps.setString(1, name);
 
             ps.execute();
