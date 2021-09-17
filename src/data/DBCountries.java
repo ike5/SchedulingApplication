@@ -101,7 +101,7 @@ public class DBCountries {
         System.out.println("CREATE DATE TEST");
         String sql = "SELECT Create_Date from countries";
         try {
-            PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Timestamp ts = rs.getTimestamp("Create_Date");
