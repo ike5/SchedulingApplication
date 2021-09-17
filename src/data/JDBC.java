@@ -28,34 +28,33 @@ public class JDBC {
 
     public static Connection openConnection() {
         if (DatabaseState.isUsingLocalDatabase) {
-            // Using local database
+            // Use local database where condition is true
             try {
                 Class.forName(driver); // Locate Driver
-                connection = DriverManager.getConnection(localJdbcUrl, localUserName, localPassword); // Reference Connection object
+                connection = DriverManager.getConnection(localJdbcUrl, localUserName, localPassword);
                 System.out.println("Connection successful using local database...");
             } catch (Exception e) {
-                System.out.println("Error:" + e.getMessage());
-            }
-            return connection;
-        } else {
-            // Using remote database
-            try {
-                Class.forName(driver);
-                connection = DriverManager.getConnection(jdbcURL, remoteUsername, remotePassword);
-                System.out.println("Connection successful using remote database...");
-            } catch (SQLException e) {
-                e.printStackTrace(); // better for SQL
-            } catch (ClassNotFoundException e) {
+                // Printing the stack trace is better for seeing errors in SQL
                 e.printStackTrace();
             }
-            return connection;
+        } else {
+            // Use remote database where condition is false
+            try {
+                Class.forName(driver); // Locate Driver
+                connection = DriverManager.getConnection(jdbcURL, remoteUsername, remotePassword);
+                System.out.println("Connection successful using remote database...");
+            } catch (SQLException | ClassNotFoundException e) {
+                // Printing the stack trace is better for seeing errors in SQL
+                e.printStackTrace();
+            }
         }
+        return connection;
     }
 
     public static void closeConnection() {
         try {
             connection.close();
-            System.out.println("Connection closed!");
+            System.out.println("Connection closed...");
         } catch (Exception e) {
             System.out.println("Error:" + e.getMessage());
         }
