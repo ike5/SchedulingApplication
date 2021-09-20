@@ -52,8 +52,11 @@ public class LoginScreen implements Initializable {
         if(user.usernameExists()){
             // Set welcome message
             // Set short delay to allow for reading the welcome message
+            the_label.setText("Username Good");
         } else {
             // Set alert
+            // Highlight username field
+            // Highlight password field
             the_label.setText("Username does not exist");
         }
 
