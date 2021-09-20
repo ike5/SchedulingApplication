@@ -50,8 +50,10 @@ public class LoginScreen implements Initializable {
         DBUsers user = new DBUsers(username_field_id.getText(), password_field_id.getText());
 
         if(user.usernameExists()){
-            the_label.setText("Username exists");
+            // Set welcome message
+            // Set short delay to allow for reading the welcome message
         } else {
+            // Set alert
             the_label.setText("Username does not exist");
         }
 
