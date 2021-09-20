@@ -75,27 +75,7 @@ public class DBCountries {
         return countryName;
     }
 
-//    public static String getCountryFromDivisionId(int divisionId) {
-//        QueryInterface queryInterface = ((sql, id) -> {
-//            String countryName = null;
-//            try {
-//                PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
-//                ResultSet rs = ps.executeQuery();
-//                while (rs.next()) {
-//                    if (divisionId == rs.getInt(divisionId)) {
-//                        countryName = rs.getString("Country");
-//                        break;
-//                    }
-//                }
-//            } catch (SQLException throwables) {
-//                throwables.printStackTrace();
-//            }
-//
-//            return countryName;
-//        });
-//
-//        return queryInterface;
-//    }
+// test
 
     public static void checkDateConversion() {
         System.out.println("CREATE DATE TEST");
