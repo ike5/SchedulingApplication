@@ -1,6 +1,7 @@
 package controller;
 
 import data.DBCountries;
+import data.DBUsers;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
@@ -28,18 +29,35 @@ public class LoginScreen implements Initializable {
     }
 
     public void usernameOnAction(ActionEvent actionEvent) {
+        // Validates format of username upon typing
     }
 
     public void passwordOnAction(ActionEvent actionEvent) {
+        // Validates format of password upon typing
     }
 
+    /**
+     * This is the Login button
+     *
+     * @param actionEvent
+     */
     public void onLoginAction(ActionEvent actionEvent) {
         System.out.println("You clicked");
-        the_label.setText("You clicked Login!");
 
-        ObservableList<Country> countrieslist = DBCountries.getAllCountries();
-        for(Country C : countrieslist){
-            System.out.println("Country ID: " + C.getId() + "\tCountry Name: " + C.getName());
+        // Calls usernameOnAction to see if field is correctly filled out
+        // Calls passwordOnAction to see if field is correctly filled out
+
+        DBUsers user = new DBUsers(username_field_id.getText(), password_field_id.getText());
+
+        if(user.usernameExists()){
+            the_label.setText("Username exists");
+        } else {
+            the_label.setText("Username does not exist");
         }
+
+        // If above is okay, makes a call to database upon clicking Login
+        // Check to see if username exists
+        // Check to see if password matches username
+        // Switch to new screen
     }
 }

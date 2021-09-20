@@ -12,7 +12,7 @@ import model.DatabaseState;
 public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/view/Customers.fxml")); // slash represents the src folder
+        Parent root = FXMLLoader.load(getClass().getResource("/view/LoginScreen.fxml")); // slash represents the src folder
         stage.setTitle("Customers Screen");
         stage.setScene(new Scene(root, 1200, 500)); // (width, height)
         stage.show();
