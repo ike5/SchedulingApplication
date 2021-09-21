@@ -4,17 +4,25 @@ import data.DBCountries;
 import data.DBUsers;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import model.Country;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 // controllers need to implement the Initializable interface
 public class LoginScreen implements Initializable {
+    private Stage stage;
+    private Parent scene;
     public Label the_label;
     public Label username_id;
     public Label password_id;
@@ -28,41 +36,41 @@ public class LoginScreen implements Initializable {
         the_label.setText("Hello");
     }
 
-    public void usernameOnAction(ActionEvent actionEvent) {
-        // Validates format of username upon typing
+    @FXML
+    public void usernameOnAction(ActionEvent actionEvent) throws IOException {
+        onLoginAction(actionEvent);
     }
 
-    public void passwordOnAction(ActionEvent actionEvent) {
-        // Validates format of password upon typing
+    @FXML
+    public void passwordOnAction(ActionEvent actionEvent) throws IOException {
+        onLoginAction(actionEvent);
     }
 
-    /**
-     * This is the Login button
-     *
-     * @param actionEvent
-     */
-    public void onLoginAction(ActionEvent actionEvent) {
+
+    @FXML
+    public void onLoginAction(ActionEvent actionEvent) throws IOException {
         System.out.println("You clicked");
 
         // Calls usernameOnAction to see if field is correctly filled out
         // Calls passwordOnAction to see if field is correctly filled out
 
-        DBUsers user = new DBUsers(username_field_id.getText(), password_field_id.getText());
+        DBUsers userLogin = new DBUsers(username_field_id.getText(), password_field_id.getText());
 
-        if(user.usernameExists()){
-            // Set welcome message
-            // Set short delay to allow for reading the welcome message
-            the_label.setText("Username Good");
+        if (userLogin.userExists()) {
+            System.out.println("User Exists"); // TEST
+            if (userLogin.passwordMatches()) {
+                System.out.println("Password matches"); // TEST
+                // Switch screens
+                // Get event source from button
+                stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
+                // Load resources from view directory
+                scene = (Parent) FXMLLoader.load(getClass().getResource("/view/Customers.fxml"));
+                stage.setScene(new Scene(scene));
+                stage.show();
+            }
         } else {
-            // Set alert
-            // Highlight username field
-            // Highlight password field
-            the_label.setText("Username does not exist");
+            // Alert user
+            System.out.println("No user by that name");
         }
-
-        // If above is okay, makes a call to database upon clicking Login
-        // Check to see if username exists
-        // Check to see if password matches username
-        // Switch to new screen
     }
 }
