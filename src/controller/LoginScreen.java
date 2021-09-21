@@ -34,6 +34,8 @@ public class LoginScreen implements Initializable {
         //FIXME
         // - Add welcome message
         // - Add logo
+        // - Determine user location (ZoneID) and display it in a label
+        // - Display login form in English or French based on computer language settings, translate text, labels, buttons, errors
     }
 
     @FXML
