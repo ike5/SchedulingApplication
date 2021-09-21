@@ -1,8 +1,6 @@
 package controller;
 
-import data.DBCountries;
 import data.DBUsers;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,13 +11,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import model.Country;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-// controllers need to implement the Initializable interface
 public class LoginScreen implements Initializable {
     private Stage stage;
     private Parent scene;
@@ -34,43 +30,57 @@ public class LoginScreen implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("Login Screen initialized!"); // called when FXMLLoader called
         the_label.setText("Hello");
+
+        //FIXME
+        // - Add welcome message
+        // - Add logo
     }
 
     @FXML
     public void usernameOnAction(ActionEvent actionEvent) throws IOException {
         onLoginAction(actionEvent);
+        //TODO Fix bug on clicking ENTER
+
+        //FIXME
+        // - Validate username data (no spaces etc)
+        // - Create alert message in red writing below
     }
 
     @FXML
     public void passwordOnAction(ActionEvent actionEvent) throws IOException {
         onLoginAction(actionEvent);
+        //TODO Fix bug on clicking Enter
+
+        //FIXME
+        // - Validate password data (no spaces)
+        // - Create alert message in red writing below
     }
 
 
     @FXML
     public void onLoginAction(ActionEvent actionEvent) throws IOException {
-        System.out.println("You clicked");
-
-        // Calls usernameOnAction to see if field is correctly filled out
-        // Calls passwordOnAction to see if field is correctly filled out
-
         DBUsers userLogin = new DBUsers(username_field_id.getText(), password_field_id.getText());
 
         if (userLogin.userExists()) {
             System.out.println("User Exists"); // TEST
             if (userLogin.passwordMatches()) {
                 System.out.println("Password matches"); // TEST
-                // Switch screens
+
+                //FIXME Make event listeners on ENTER correctly call methods
+
                 // Get event source from button
                 stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
                 // Load resources from view directory
                 scene = (Parent) FXMLLoader.load(getClass().getResource("/view/Customers.fxml"));
                 stage.setScene(new Scene(scene));
                 stage.show();
+            } else {
+                //TODO Add Alert box for incorrect password only
             }
         } else {
-            // Alert user
             System.out.println("No user by that name");
+
+            //TODO Add Alert box for incorrect username and/or password
         }
     }
 }

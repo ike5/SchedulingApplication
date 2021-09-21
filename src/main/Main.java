@@ -13,19 +13,21 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/view/LoginScreen.fxml")); // slash represents the src folder
-        stage.setTitle("Customers Screen");
-        stage.setScene(new Scene(root, 1200, 500)); // (width, height)
+        stage.setTitle("Login Screen");
+        stage.setScene(new Scene(root, 400, 400)); // (width, height)
         stage.show();
+
+        //FIXME
+        // - Set appropriate width and height for LoginScreen.fxml
+        // - Set appropriate title
     }
 
     public static void main(String[] args) {
-        // Use remote connection by setting flag to false for development purposes
-        DatabaseState.setIsUsingLocalDatabase(false);
+        DatabaseState.setDatabaseState(false); // Use remote database by setting flag to false
 
         JDBC.openConnection();
         launch(args);
         JDBC.closeConnection();
-
     }
 }
 //Test
