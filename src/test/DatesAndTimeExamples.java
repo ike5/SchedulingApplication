@@ -8,9 +8,53 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-public class Eclipse {
+public class DatesAndTimeExamples {
     public static void main(String[] args) {
-        adjustDatetime();
+        remindOneMonthBefore();
+    }
+
+    /**
+     * Use Period class
+     */
+    private static void remindOneMonthBefore() {
+        ZonedDateTime totalityAustin = ZonedDateTime.of(
+                2024, 4, 13, 8, 13, 56, 0, ZoneId.of("US/Central")
+        );
+        System.out.println("Next total eclipse in the US, date/time in Austin, TX: " + totalityAustin);
+
+        // Reminder for a month before
+        Period period = Period.ofMonths(1);
+        System.out.println("Period is " + period);
+
+        ZonedDateTime reminder = totalityAustin.minus(period);
+        System.out.println("DateTime of 1 month reminder: " + reminder);
+
+        // Create LocalDateTime from ZonedDateTime
+        // No time zone printed
+        System.out.println("Local DateTime (Austin, TX) of reminder: " + reminder.toLocalDateTime());
+        System.out.println("Zoned DateTime (Madras, OR) of reminder: " +
+                reminder.withZoneSameInstant(ZoneId.of("US/Pacific")));
+
+        /*
+        Next total eclipse in the US, date/time in Austin, TX: 2024-04-13T08:13:56-05:00[US/Central]
+        Period is P1M
+        DateTime of 1 month reminder: 2024-03-13T08:13:56-05:00[US/Central]
+        Local DateTime (Austin, TX) of reminder: 2024-03-13T08:13:56
+        Zoned DateTime (Madras, OR) of reminder: 2024-03-13T06:13:56-07:00[US/Pacific] // 11 hours earlier than above
+         */
+    }
+
+    private static void computeOneMonthBefore() {
+        // Totality begins in Austin, TX in 2024 at 1:35pm and 56 seconds;
+        // Specify year, month, dayOfMonth, hour, minute, second, nano, zone
+        ZonedDateTime totalityAustin = ZonedDateTime.of(
+                2024, 4, 13, 8, 13, 56, 0, ZoneId.of("US/Central")
+        );
+        System.out.println("Next total eclipse in the US, date/time in Autin, TX: " + totalityAustin);
+
+        /*
+        Next total eclipse in the US, date/time in Autin, TX: 2024-04-13T08:13:56-05:00[US/Central]
+         */
     }
 
     /**
@@ -103,6 +147,14 @@ public class Eclipse {
         /*
         Date and time totality begins with time zone: 2017-08-21T10:19-07:00[US/Pacific]
         Date and time totality begins with time zone: 2017-08-21T10:19-07:00[GMT-07:00]
+         */
+
+        /*
+        ZonedDateTimes are subject to ZoneRules when you adjust them.
+
+        If you want to create a datetime with a zone offset from GMT that does not use the ZoneRules,
+        then you can use an OffsetDateTime. An OffsetDateTime is a fixed datetime and offset that doesn’t
+        change even if the ZoneRules change.
          */
     }
 
