@@ -2,6 +2,7 @@ package test;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,7 +11,89 @@ import java.util.Set;
 
 public class DatesAndTimeExamples {
     public static void main(String[] args) {
-        remindOneMonthBefore();
+        usingInstants();
+    }
+
+    private static void usingInstants() {
+        /*
+        Classes:
+            Instant
+            ISO_INSTANT (format for displaying a datetime)
+        Methods:
+            toInstant()
+            Instant.now()
+        */
+
+        // Convert ZonedDateTime to Instant
+        ZonedDateTime totalityAustin = ZonedDateTime.of(2024, 4, 8, 13, 35, 56, 0, ZoneId.of("US/Central"));
+        Instant totalityInstant1 = totalityAustin.toInstant();
+        System.out.println("Austin's eclipse instant is: " + totalityInstant1);
+
+        // Compute difference using an Instant
+        Instant nowInstant = Instant.now();
+        Instant totalityInstant = totalityAustin.toInstant();
+        long minsBetween = ChronoUnit.MINUTES.between(nowInstant, totalityInstant);
+        Duration durationBetweenInstants = Duration.ofMinutes(minsBetween);
+        System.out.println("Minutes between " + minsBetween + ", is duration " + durationBetweenInstants);
+
+
+        // You can always get the number of seconds as a long value from the Instant
+        // In order to call toInstant() must supply ZoneOffset argument
+        // The 'Z' below means displayed for GMT zone rather than U.S. Central (This is ISO_INSTANT format)
+
+        /*
+        Output:
+
+        Austin's eclipse instant is: 2024-04-08T18:35:56Z
+        Minutes between 1337459, is duration PT22290H59M
+         */
+    }
+
+    /**
+     * Durations using ChronoUnit and Duration.ChronoUnit
+     */
+    private static void usingDurations() {
+        /*
+        Classes:
+            ChronoUnit
+            java.time.temporal
+        Methods:
+            between(LocalTime, LocalTime) : long
+            Duration.Durations
+            Duration.ofMinutes()
+        Enums:
+            ChronoUnit.MINUTES.between()
+            Duration.ChronoUnit
+         */
+
+        // Create two LocalTime objects representing start and time of totality
+        // ECLIPSE BEGINS IN AUSTIN, TX
+        LocalTime begins = LocalTime.of(12, 17, 32);    // 12:17:32
+        // TOTALITY IN AUSTIN, TX
+        LocalTime totality = LocalTime.of(13, 35, 56);   // 13:35:56
+        System.out.println("Eclipse begins at " + begins + " and totality is at " + totality);
+
+        // How many minutes between when the eclipse begins and totality?
+        long betweenMinutes = ChronoUnit.MINUTES.between(begins, totality);
+        System.out.println("Minutes between begin and totality: " + betweenMinutes);
+
+        // Turn minutes into a Duration
+        Duration betweenDuration = Duration.ofMinutes(betweenMinutes);
+        System.out.println("Duration: " + betweenDuration);
+
+        // Add minutes back to the LocalTime by adding a Duration object
+        LocalTime totalityBegins = begins.plus(betweenDuration);
+        System.out.println("Totality begins, computed: " + totalityBegins);
+
+
+        /*
+        Output:
+
+        Eclipse begins at 12:17:32 and totality is at 13:35:56
+        Minutes between begin and totality: 78
+        Duration: PT1H18M
+        Totality begins, computed: 13:35:32
+         */
     }
 
     /**
@@ -40,7 +123,7 @@ public class DatesAndTimeExamples {
         Period is P1M
         DateTime of 1 month reminder: 2024-03-13T08:13:56-05:00[US/Central]
         Local DateTime (Austin, TX) of reminder: 2024-03-13T08:13:56
-        Zoned DateTime (Madras, OR) of reminder: 2024-03-13T06:13:56-07:00[US/Pacific] // 11 hours earlier than above
+        Zoned DateTime (Madras, OR) of reminder: 2024-03-13T06:13:56-07:00[US/Pacific] // 2 hours earlier than above
          */
     }
 
