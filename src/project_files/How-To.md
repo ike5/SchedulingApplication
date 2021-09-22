@@ -208,3 +208,12 @@ public class Test {
     }
 }
 ```
+
+## Correct Macos issues
+
+// Use the below code if having font issues
+// root.setStyle("-fx-font-family: 'Times New Roman';");
+
+// Use the below code if having font issues with alerts
+// Alert alert = new Alert(Alert.AlertType.WARNING);
+// alert.getDialogPane().getScene().getRoot().setStyle("-fx-font-family: 'Times New Roman';");
