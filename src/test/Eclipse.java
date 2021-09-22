@@ -1,13 +1,109 @@
 package test;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 public class Eclipse {
     public static void main(String[] args) {
-        getDayOfWeek();
+        adjustDatetime();
+    }
+
+    /**
+     * Use TemporalAdjusters (plural). Make new one from old.
+     */
+    private static void adjustDatetime() {
+        String eclipseDateTime = "2017-08-31 10:19";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        LocalDateTime eclipseDay = LocalDateTime.parse(eclipseDateTime, formatter); // use formatter
+        ZonedDateTime zTotalityDateTime = ZonedDateTime.of(eclipseDay, ZoneId.of("US/Pacific")); // immutable
+
+        ZonedDateTime followingThursdayDateTime = zTotalityDateTime.with(TemporalAdjusters.next(
+                DayOfWeek.THURSDAY
+        )); // adjust date time to next Thursday
+        ZonedDateTime followingYearDateTime = zTotalityDateTime.with(TemporalAdjusters.firstDayOfYear());
+        ZonedDateTime lastDayOfMonthDateTime = zTotalityDateTime.with(TemporalAdjusters.lastDayOfMonth());
+        System.out.println("Thursday following the totality date is: " + followingThursdayDateTime);
+        System.out.println("First day of year following the totality is: " + followingYearDateTime);
+        System.out.println("Last day of month following the totality is: " + lastDayOfMonthDateTime);
+
+        /*
+        Thursday following the totality date is: 2017-09-07T10:19-07:00[US/Pacific]
+        First day of year following the totality is: 2017-01-01T10:19-08:00[US/Pacific]
+        Last day of month following the totality is: 2017-08-31T10:19-07:00[US/Pacific]
+         */
+    }
+
+    /**
+     * Use ZoneRules.
+     */
+    private static void findIfDaylightSavings() {
+        String eclipseDateTime = "2017-08-21 10:19";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        LocalDateTime eclipseDay = LocalDateTime.parse(eclipseDateTime, formatter); // use formatter
+        ZonedDateTime zTotalityDateTime = ZonedDateTime.of(eclipseDay, ZoneId.of("US/Pacific")); // immutable
+
+        //US Pacific is either GMT-7 (winter) or GMT-8 (summer daylight savings time)
+        ZoneId pacific = ZoneId.of("US/Pacific");
+        System.out.println("Is Daylight Savings in effect at time of totality: " +
+                pacific.getRules().isDaylightSavings(zTotalityDateTime.toInstant()));
+
+        /*
+        Is Daylight Savings in effect at time of totality: true
+
+        A ZoneRules object has a method isDaylightSavings(), which takes an Instant and
+        determines whether that Instant is currently in daylight savings. Allows using the
+        toInstant() method.
+
+         */
+    }
+
+    private static void findNameIdsOfZones() {
+        Set<String> zoneIds = ZoneId.getAvailableZoneIds();
+        List<String> zoneList = new ArrayList<>(zoneIds);
+        Collections.sort(zoneList);
+        for (String zoneId : zoneList) {
+            if (zoneId.contains("US") || zoneId.contains("GB")) {
+                System.out.println(zoneId);
+            }
+        }
+
+        /*
+        GB-Eire
+        US/Alaska
+        US/Aleutian
+        US/Arizona
+        US/Central
+        US/East-Indiana
+        US/Eastern
+        US/Hawaii
+        US/Indiana-Starke
+        US/Michigan
+        US/Mountain
+        US/Pacific
+        US/Samoa
+
+        Notice: some zone ids are country, city, and other names
+         */
+    }
+
+    private static void zonedDateTime() {
+        String eclipseDateTime = "2017-08-21 10:19";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        LocalDateTime eclipseDay = LocalDateTime.parse(eclipseDateTime, formatter); // use formatter
+
+        ZonedDateTime zTotalityDateTime = ZonedDateTime.of(eclipseDay, ZoneId.of("US/Pacific"));
+        ZonedDateTime zTotalityDateTime2 = ZonedDateTime.of(eclipseDay, ZoneId.of("GMT-7")); //Same as above
+        System.out.println("Date and time totality begins with time zone: " + zTotalityDateTime2);
+
+        /*
+        Date and time totality begins with time zone: 2017-08-21T10:19-07:00[US/Pacific]
+        Date and time totality begins with time zone: 2017-08-21T10:19-07:00[GMT-07:00]
+         */
     }
 
     private static void getDayOfWeek() {
@@ -95,10 +191,10 @@ public class Eclipse {
          */
     }
 
-    private static void time1() {
+    private static void time() {
         LocalDate nowDate = LocalDate.now();    //No time zone
         LocalTime nowTime = LocalTime.now();
-        LocalDateTime nowDateTime = LocalDateTime.of(nowDate, nowTime);
+        LocalDateTime nowDateTime = LocalDateTime.of(nowDate, nowTime); // immutable
 //        LocalDateTime nowDateTime = LocalDateTime.now(); //Does the same as above
 
         System.out.println(nowDate);
