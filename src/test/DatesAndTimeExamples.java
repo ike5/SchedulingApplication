@@ -40,12 +40,12 @@ public class DatesAndTimeExamples {
         System.out.println("The date and time: " +
                 aDateTime.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)));
         ZonedDateTime zonedDateTime = ZonedDateTime.of(aDateTime, ZoneId.of("US/Pacific"));
-        Locale locIT = new Locale("it", "IT");      // Italy
         Locale locPT = new Locale("pt");                    // Portugal
-        Locale locBR = new Locale("pt", "BR");      // Brazil
         Locale locIN = new Locale("hi", "IN");      // India
         Locale locJA = new Locale("ja");                    // Japan
-        Locale locDK = new Locale("da", "DK");      // Denmark
+
+        Locale locDK = new Locale("da", "DK"); // Denmark
+        Locale locIT = new Locale("it", "IT"); // Italy
 
         System.out.println("Italy (Long) " + zonedDateTime.format(
                 DateTimeFormatter.ofLocalizedDateTime(FormatStyle.LONG)
@@ -56,7 +56,7 @@ public class DatesAndTimeExamples {
                         .withLocale(locIT)
         ));
         System.out.println("Japan (Long) " + zonedDateTime.format(
-                DateTimeFormatter.ofLocalizedDateTime(FormatStyle.LONG)
+                DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL)
                         .withLocale(Locale.JAPAN)
         ));
         System.out.println("Portugal (Long) " + zonedDateTime.format(
@@ -71,6 +71,27 @@ public class DatesAndTimeExamples {
                 DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)
                         .withLocale(locDK)
         ));
+        System.out.println("China (Long) " + zonedDateTime.format(
+                DateTimeFormatter.ofLocalizedDateTime(FormatStyle.LONG)
+                        .withLocale(Locale.CHINA)
+        ));
+        Locale locBR = new Locale("pt", "BR"); // Brazil
+
+        System.out.println("Denmark, country: " + locDK.getDisplayCountry());
+        System.out.println("Denmark, country, local: " +
+                locDK.getDisplayCountry(locDK));
+        System.out.println("Denmark, language: " + locDK.getDisplayLanguage());
+        System.out.println("Denmark, language, local: " +
+                locDK.getDisplayLanguage(locDK));
+
+        System.out.println("Brazil, country: " + locBR.getDisplayCountry());
+        System.out.println("Brazil, country, local: " +
+                locBR.getDisplayCountry(locBR));
+        System.out.println("Brazil, language: " + locBR.getDisplayLanguage());
+        System.out.println("Brazil, language, local: " +
+                locBR.getDisplayLanguage(locBR));
+        System.out.println("Italy, Danish language is: " +
+                locDK.getDisplayLanguage(locIT));
 
         /*
         Output:
