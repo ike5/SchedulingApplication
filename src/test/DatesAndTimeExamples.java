@@ -2,16 +2,146 @@ package test;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAdjusters;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class DatesAndTimeExamples {
     public static void main(String[] args) {
-        usingInstants();
+        usingLocales();
+    }
+
+    private static void usingLocales() {
+        /*
+        Classes:
+            Locale
+            Locale Constructors:
+                Locale(String language) // Language in ISO 639 Language code
+                Locale(String language, String country)
+        Methods:
+            getDisplayCountry()
+            getDisplayLanguage()
+            ofLocalizedDateTime()
+            withLocale()
+         */
+
+        /*
+        If you want to represent basic Italian in your application, all you need is the Language code.
+        If, on the other hand, you want to represent the Italian used in Switzerland, you’d want to
+        indicate that the country is Switzerland (yes, the Country code for Switzerland is "CH"),
+        but that the language is Italian:
+        */
+
+
+        Locale myLocale = Locale.getDefault();
+        System.out.println("My locale: " + myLocale);
+        LocalDateTime aDateTime = LocalDateTime.of(2024, 4, 8, 13, 35, 56);
+        System.out.println("The date and time: " +
+                aDateTime.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)));
+        ZonedDateTime zonedDateTime = ZonedDateTime.of(aDateTime, ZoneId.of("US/Pacific"));
+        Locale locIT = new Locale("it", "IT");      // Italy
+        Locale locPT = new Locale("pt");                    // Portugal
+        Locale locBR = new Locale("pt", "BR");      // Brazil
+        Locale locIN = new Locale("hi", "IN");      // India
+        Locale locJA = new Locale("ja");                    // Japan
+        Locale locDK = new Locale("da", "DK");      // Denmark
+
+        System.out.println("Italy (Long) " + zonedDateTime.format(
+                DateTimeFormatter.ofLocalizedDateTime(FormatStyle.LONG)
+                        .withLocale(Locale.ITALY)
+        ));
+        System.out.println("Italy (Short) " + aDateTime.format(
+                DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)
+                        .withLocale(locIT)
+        ));
+        System.out.println("Japan (Long) " + zonedDateTime.format(
+                DateTimeFormatter.ofLocalizedDateTime(FormatStyle.LONG)
+                        .withLocale(Locale.JAPAN)
+        ));
+        System.out.println("Portugal (Long) " + zonedDateTime.format(
+                DateTimeFormatter.ofLocalizedDateTime(FormatStyle.LONG)
+                        .withLocale(locPT)
+        ));
+        System.out.println("India (Long) " + zonedDateTime.format(
+                DateTimeFormatter.ofLocalizedDateTime(FormatStyle.LONG)
+                        .withLocale(locIN)
+        ));
+        System.out.println("Denmark (Medium) " + zonedDateTime.format(
+                DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)
+                        .withLocale(locDK)
+        ));
+
+        /*
+        Output:
+
+        My locale: en_US
+        The date and time: Apr 8, 2024, 1:35:56 PM
+        Italy (Long) 8 aprile 2024 13:35:56 PDT
+        Italy (Short) 08/04/24, 13:35
+        Japan (Long) 2024年4月8日 13:35:56 PDT
+        Portugal (Long) 8 de abril de 2024 13:35:56 PDT
+        India (Long) 8 अप्रैल 2024 को 1:35:56 अपराह्न PDT
+        Denmark (Medium) 8. apr. 2024 13.35.56
+         */
+    }
+
+    private static void formatWithDateTimeFormatter() {
+        /*
+        Classes:
+            DateTimeFormatter
+            ZonedDateTime
+        Methods:
+            ofPattern()
+            format()
+         */
+
+
+        ZonedDateTime totalityAustin = ZonedDateTime.of(2024, 4, 8, 13, 35, 56, 0, ZoneId.of("US/Central"));
+        System.out.println("Totality date/time written for sister in Europe: ");
+        System.out.println(totalityAustin.format(DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm")));
+
+        // Alternately specify format style and locale
+        System.out.println("Totality date/time in UK Locale: ");
+        System.out.println(
+                totalityAustin.format(
+                        DateTimeFormatter
+                                .ofLocalizedDateTime(FormatStyle.SHORT)
+                                .withLocale(Locale.UK)
+                )
+        );
+
+        /*
+        Output:
+
+        Totality date/time written for sister in Europe:
+        08/04/2024 01:35
+        Totality date/time in UK Locale:
+        08/04/2024, 13:35
+         */
+    }
+
+    private static void findDayOfWeek() {
+        ZonedDateTime totalityAustin = ZonedDateTime.of(2024, 4, 8, 13, 35, 56, 0, ZoneId.of("US/Central"));
+
+        // Another reminder 3 days before
+        System.out.println("DateTime of 3 day reminder: " + totalityAustin.minus(Period.ofDays(3)));
+        // What day of the week is that?
+        System.out.println("Day of week for 3 day reminder: " + totalityAustin.minus(Period.ofDays(3)).getDayOfWeek());
+
+        // Call sister in paris 2 hours later
+        ZonedDateTime localParis = totalityAustin.withZoneSameInstant(ZoneId.of("Europe/Paris"));
+        System.out.println("Eclipse happens at " + localParis + " Paris time");
+        System.out.println("Phone sister at 2 hours after totality: " + totalityAustin.plusHours(2) + ", " +
+                localParis.plusHours(2) + " Paris time");
+
+        // Compare two ZonedDateTimes (must be same type)
+        System.out.println("Is the 2024 eclipse still in the future? " +
+                ZonedDateTime.now().isBefore(totalityAustin));
+        // See if leap year
+        System.out.println("Is 2024 a leap year? " +
+                totalityAustin.toLocalDate().isLeapYear());
+
     }
 
     private static void usingInstants() {
@@ -49,9 +179,6 @@ public class DatesAndTimeExamples {
          */
     }
 
-    /**
-     * Durations using ChronoUnit and Duration.ChronoUnit
-     */
     private static void usingDurations() {
         /*
         Classes:
