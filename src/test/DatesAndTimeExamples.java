@@ -11,7 +11,33 @@ public class DatesAndTimeExamples {
     public static void main(String[] args) {
     }
 
-    private static void allMethods(){
+    private static void adjustmentOptionsForJavaTimeClasses(){
+        /*
+        Class
+            Key Adjustment Options and Examples (all methods create a new datetime object)
+
+        LocalDate
+            aDate.minusDays(3);
+            aDate.plusWeeks(1);
+            aDate.withYear(2018);
+
+        LocalTime
+            aTime.minus(3, ChronoUnit.MINUTES);
+            aTime.plusMinutes(3);
+            aTime.withHour(12);
+
+        LocalDateTime
+            aDateTime.minusDays(3);
+            aDateTime.plusMinutes(10);
+            aDateTime.plus(Duration.ofMinutes(5));
+            aDateTime.withMonth(2);
+
+        ZonedDateTime
+            zonedDateTime.withZoneSameInstant(ZoneId.of("US/Pacific"));
+         */
+    }
+
+    private static void instanceCreationForJavaTimeClasses(){
         /*
         java.time Class
             Key Instance Creation Options
