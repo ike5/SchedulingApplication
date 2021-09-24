@@ -17,9 +17,11 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class LoginScreen implements Initializable {
+    public Label zone_id;
+    public Label language_zone_id;
+    public Label welcome_message;
     private Stage stage;
     private Parent scene;
-    public Label the_label;
     public Label username_id;
     public Label password_id;
     public TextField username_field_id;
@@ -29,7 +31,6 @@ public class LoginScreen implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("Login Screen initialized!"); // called when FXMLLoader called
-        the_label.setText("Hello");
 
         //FIXME
         // - Add welcome message

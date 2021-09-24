@@ -10,11 +10,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="300.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginScreen">
+<AnchorPane prefHeight="300.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginScreen">
     <children>
         <VBox alignment="CENTER" prefHeight="300.0" prefWidth="400.0">
             <children>
-                <Label fx:id="the_label" text="ErrorMessages" textFill="#fc0303">
+                <Label fx:id="welcome_message" text="Welcome Message" textFill="#050efa">
                     <font>
                         <Font size="18.0" />
                     </font>
@@ -37,7 +37,12 @@
                         <Insets top="5.0" />
                     </VBox.margin>
                 </HBox>
-            <Label fx:id="zone_id" text="Zone ID" />
+            <HBox alignment="TOP_CENTER" prefHeight="43.0" prefWidth="400.0" spacing="20.0">
+               <children>
+                  <Label fx:id="zone_id" text="Zone ID" />
+                  <Label fx:id="language_zone_id" text="Language" />
+               </children>
+            </HBox>
                 <Button fx:id="login_id" mnemonicParsing="false" onAction="#onLoginAction" text="Login">
                     <font>
                         <Font size="18.0" />
