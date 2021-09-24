@@ -9,7 +9,62 @@ import java.util.*;
 
 public class DatesAndTimeExamples {
     public static void main(String[] args) {
-        usingLocales();
+    }
+
+    private static void allMethods(){
+        /*
+        java.time Class
+            Key Instance Creation Options
+
+        LocalDate
+            LocalDate.now();
+            LocalDate.of(2017, 8, 21);
+            LocalDate.parse("2017-08-21");
+
+        LocalTime
+            LocalTime.now();
+            LocalTime.of(10, 19, 36);
+            LocalTime.parse("10:19:36");
+
+        LocalDateTime
+            LocalDateTime.now();
+            LocalDateTime.of(aDate, aTime);
+            LocalDateTime.parse("2017-04-08T10:19:36");
+            LocalDateTime.parse(aDateTime, aFormatter);
+            LocalDateTime.parse("2017-08-21T10:19", aformatter);
+
+        ZonedDateTime
+            ZonedDateTime.now();
+            ZonedDateTime.of(aDateTime, ZoneId.of(aZoneString));
+            ZonedDateTime.parse("2017-04-08T10:19:36-05:00");
+
+        OffsetDateTime
+            OffsetDateTime.now();
+            OffsetDateTime.of(aDateTime, ZoneOffset.of("-05:00"));
+            OffsetDateTime.parse("2017-04-08T10:19:36-05:00");
+
+        format.DateTimeFormatter
+            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).withLocale(aLocale);
+
+        Instant
+            Instant.now();
+            zonedDateTime.toInstant();
+            aDateTime.toInstant(ZoneOffset.of("+5"));
+
+        Duration
+            Duration.between(aTime1, aTime2);
+            Duration.ofMinutes(5);
+
+        Period
+            Period.between(aDate1, aDate2);
+            Period.ofDays(3);
+
+        util.Locale
+            Locale.getDefault();
+            new Locale(String language);
+            new Locale(String language, String country);
+         */
     }
 
     private static void usingLocales() {
@@ -47,6 +102,7 @@ public class DatesAndTimeExamples {
         Locale locDK = new Locale("da", "DK"); // Denmark
         Locale locIT = new Locale("it", "IT"); // Italy
 
+
         System.out.println("Italy (Long) " + zonedDateTime.format(
                 DateTimeFormatter.ofLocalizedDateTime(FormatStyle.LONG)
                         .withLocale(Locale.ITALY)
@@ -76,22 +132,16 @@ public class DatesAndTimeExamples {
                         .withLocale(Locale.CHINA)
         ));
         Locale locBR = new Locale("pt", "BR"); // Brazil
+        Locale locRA = new Locale("ru", "RU"); // Russia
 
         System.out.println("Denmark, country: " + locDK.getDisplayCountry());
-        System.out.println("Denmark, country, local: " +
-                locDK.getDisplayCountry(locDK));
+        System.out.println("Denmark, country, local: " + locDK.getDisplayCountry(locDK));
         System.out.println("Denmark, language: " + locDK.getDisplayLanguage());
-        System.out.println("Denmark, language, local: " +
-                locDK.getDisplayLanguage(locDK));
-
-        System.out.println("Brazil, country: " + locBR.getDisplayCountry());
-        System.out.println("Brazil, country, local: " +
-                locBR.getDisplayCountry(locBR));
-        System.out.println("Brazil, language: " + locBR.getDisplayLanguage());
-        System.out.println("Brazil, language, local: " +
-                locBR.getDisplayLanguage(locBR));
-        System.out.println("Italy, Danish language is: " +
-                locDK.getDisplayLanguage(locIT));
+        System.out.println("Denmark, language, local: " + locDK.getDisplayLanguage(locDK));
+        System.out.println("Japan, country, local: " + locJA.getDisplayCountry(locJA));
+        System.out.println("Japan, language, local: " + locJA.getDisplayLanguage(locJA));
+        System.out.println("Russia, country, local: " + locRA.getDisplayCountry(locPT));
+        System.out.println("Russia, language, local: " + locRA.getDisplayLanguage(locPT));
 
         /*
         Output:
@@ -100,10 +150,20 @@ public class DatesAndTimeExamples {
         The date and time: Apr 8, 2024, 1:35:56 PM
         Italy (Long) 8 aprile 2024 13:35:56 PDT
         Italy (Short) 08/04/24, 13:35
-        Japan (Long) 2024年4月8日 13:35:56 PDT
+        Japan (Long) 2024年4月8日月曜日 13時35分56秒 アメリカ太平洋夏時間
         Portugal (Long) 8 de abril de 2024 13:35:56 PDT
         India (Long) 8 अप्रैल 2024 को 1:35:56 अपराह्न PDT
         Denmark (Medium) 8. apr. 2024 13.35.56
+        China (Long) 2024年4月8日 PDT 下午1:35:56
+        Denmark, country: Denmark
+        Denmark, country, local: Danmark
+        Denmark, language: Danish
+        Denmark, language, local: dansk
+        Brazil, country: Brazil
+        Brazil, country, local: Brasil
+        Brazil, language: Portuguese
+        Brazil, language, local: português
+        Italy, Danish language is: danese
          */
     }
 
@@ -139,6 +199,11 @@ public class DatesAndTimeExamples {
         08/04/2024 01:35
         Totality date/time in UK Locale:
         08/04/2024, 13:35
+         */
+
+        /*
+        if you want to do date formatting for a specific locale, you need to create your Locale object before your
+        DateTimeFormatter object because you’ll need your Locale object as an argument to your DateTimeFormatter method;
          */
     }
 
@@ -386,6 +451,8 @@ public class DatesAndTimeExamples {
         If you want to create a datetime with a zone offset from GMT that does not use the ZoneRules,
         then you can use an OffsetDateTime. An OffsetDateTime is a fixed datetime and offset that doesn’t
         change even if the ZoneRules change.
+
+        ZonedDateTime from an existing LocalDate and LocalTime, you need a ZoneId too
          */
     }
 
