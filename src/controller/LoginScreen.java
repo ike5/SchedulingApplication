@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class LoginScreen implements Initializable {
@@ -31,6 +32,10 @@ public class LoginScreen implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("Login Screen initialized!"); // called when FXMLLoader called
+
+
+        welcome_message.setText("Hello and Welcome!");
+
 
         //FIXME
         // - Add welcome message
