@@ -1,7 +1,6 @@
 package model;
 
-import data.DBCountries;
-import javafx.collections.ObservableList;
+import utils.DBCountries;
 
 public class Customer {
     private int id;

@@ -1,7 +1,7 @@
 package controller;
 
-import data.DBCountries;
-import data.DBCustomers;
+import utils.DBCountries;
+import utils.DBCustomers;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;

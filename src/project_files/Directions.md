@@ -6,7 +6,7 @@ The graduate produces database and file server applications using advanced Java 
 The graduate incorporates lambda expressions in application development to meet business requirements more efficiently.
 
 4025.01.07 : Collections
-The graduate incorporates streams and filters in application development to manipulate data more efficiently.
+The graduate incorporates streams and filters in application development to manipulate utils more efficiently.
 
 4025.01.08 : Localization API and Date/Time API
 The graduate applies the localization API and date/time API in application development to support end-users in various geographical regions.
@@ -29,11 +29,11 @@ In NetBeans, zip your file by going to File>Export Project>To ZIP and click Expo
 
 Note: You may receive an error message upon submitting your files because the automated plagiarism detectors at WGU will not be able to access a zipped file, but the evaluation team will run their checks manually when evaluating your submission.
 SCENARIO
-You are working for a software company that has been contracted to develop a GUI-based scheduling desktop application. The contract is with a global consulting organization that conducts business in multiple languages and has main offices in Phoenix, Arizona; White Plains, New York; Montreal, Canada; and London, England. The consulting organization has provided a MySQL database that the application must pull data from. The database is used for other systems, so its structure cannot be modified.
+You are working for a software company that has been contracted to develop a GUI-based scheduling desktop application. The contract is with a global consulting organization that conducts business in multiple languages and has main offices in Phoenix, Arizona; White Plains, New York; Montreal, Canada; and London, England. The consulting organization has provided a MySQL database that the application must pull utils from. The database is used for other systems, so its structure cannot be modified.
 
 The organization outlined specific business requirements that must be met as part of the application. From these requirements, a system analyst at your company created solution statements for you to implement in developing the application. These statements are listed in the requirements section.
 
-Your company acquires Country and First-Level-Division data from a third party that is updated once per year. These tables are prepopulated with read-only data. Please use the attachment “Locale Codes for Region and Language” to review division data. Your company also supplies a list of contacts, which are prepopulated in the Contacts table; however, administrative functions such as adding users are beyond the scope of the application and done by your company’s IT support staff. Your application should be organized logically using one or more design patterns and generously commented using Javadoc so your code can be read and maintained by other programmers.
+Your company acquires Country and First-Level-Division utils from a third party that is updated once per year. These tables are prepopulated with read-only utils. Please use the attachment “Locale Codes for Region and Language” to review division utils. Your company also supplies a list of contacts, which are prepopulated in the Contacts table; however, administrative functions such as adding users are beyond the scope of the application and done by your company’s IT support staff. Your application should be organized logically using one or more design patterns and generously commented using Javadoc so your code can be read and maintained by other programmers.
 REQUIREMENTS
 Your submission must be your original work. No more than a combined total of 30% of the submission and no more than a 10% match to any one individual source can be directly quoted or closely paraphrased from sources, even if cited correctly. The originality report that is provided when you submit your task can be used as a guide.
 
@@ -58,21 +58,21 @@ Note: Some operating systems require a reboot when changing the language setting
 2.  Write code that provides the following customer record functionalities:
 •  Customer records and appointments can be added, updated, and deleted.
 -  When deleting a customer record, all of the customer’s appointments must be deleted first, due to foreign key constraints.
-•  When adding and updating a customer, text fields are used to collect the following data: customer name, address, postal code, and phone number.
--  Customer IDs are auto-generated, and first-level division (i.e., states, provinces) and country data are collected using separate combo boxes.
+•  When adding and updating a customer, text fields are used to collect the following utils: customer name, address, postal code, and phone number.
+-  Customer IDs are auto-generated, and first-level division (i.e., states, provinces) and country utils are collected using separate combo boxes.
 
-Note: The address text field should not include first-level division and country data. Please use the following examples to format addresses:
+Note: The address text field should not include first-level division and country utils. Please use the following examples to format addresses:
 •  U.S. address: 123 ABC Street, White Plains
 •  Canadian address: 123 ABC Street, Newmarket
 •  UK address: 123 ABC Street, Greenwich, London
 
--  When updating a customer, the customer data autopopulates in the form.
+-  When updating a customer, the customer utils autopopulates in the form.
 
-•  Country and first-level division data is prepopulated in separate combo boxes or lists in the user interface for the user to choose. The first-level list should be filtered by the user’s selection of a country (e.g., when choosing U.S., filter so it only shows states).
+•  Country and first-level division utils is prepopulated in separate combo boxes or lists in the user interface for the user to choose. The first-level list should be filtered by the user’s selection of a country (e.g., when choosing U.S., filter so it only shows states).
 •  All of the original customer information is displayed on the update form.
 -  Customer_ID must be disabled.
 •  All of the fields can be updated except for Customer_ID.
-•  Customer data is displayed using a TableView, including first-level division data. A list of all the customers and their information may be viewed in a TableView, and updates of the data can be performed in text fields on the form.
+•  Customer utils is displayed using a TableView, including first-level division utils. A list of all the customers and their information may be viewed in a TableView, and updates of the utils can be performed in text fields on the form.
 •  When a customer record is deleted, a custom message should display in the user interface.
 
 3.  Add scheduling functionalities to the GUI-based application by doing the following:
@@ -80,7 +80,7 @@ a.  Write code that enables the user to add, update, and delete appointments. Th
 •  A contact name is assigned to an appointment using a drop-down menu or combo box.
 •  A custom message is displayed in the user interface with the Appointment_ID and type of appointment canceled.
 •  The Appointment_ID is auto-generated and disabled throughout the application.
-•  When adding and updating an appointment, text fields are used to record the following data: Appointment_ID, title, description, location, contact, type, start date and time, end date and time, Customer_ID, and User_ID.
+•  When adding and updating an appointment, text fields are used to record the following utils: Appointment_ID, title, description, location, contact, type, start date and time, end date and time, Customer_ID, and User_ID.
 •  All of the original appointment information is displayed on the update form in local time zone.
 •  All of the appointment fields can be updated except Appointment_ID, which must be disabled.
 

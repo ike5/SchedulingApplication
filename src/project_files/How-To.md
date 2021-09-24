@@ -51,7 +51,7 @@ public class Test {
 
 ```
 
-## Set up of columns with data
+## Set up of columns with utils
 
 ```java
 public class Test {
@@ -182,7 +182,7 @@ import java.awt.event.ActionEvent;
 
 public class Test {
     public void onCombo1(ActionEvent actionEvent) {
-        onPull(null); // resets data after make a choice
+        onPull(null); // resets utils after make a choice
     }
 }
 ```

@@ -1,6 +1,6 @@
 package model;
 
-import data.JDBC;
+import utils.JDBC;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

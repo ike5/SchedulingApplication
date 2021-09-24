@@ -1,6 +1,6 @@
 package controller;
 
-import data.DBUsers;
+import utils.DBUsers;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -44,7 +44,7 @@ public class LoginScreen implements Initializable {
         //TODO Fix bug on clicking ENTER
 
         //FIXME
-        // - Validate username data (no spaces etc)
+        // - Validate username utils (no spaces etc)
         // - Create alert message in red writing below
     }
 
@@ -54,7 +54,7 @@ public class LoginScreen implements Initializable {
         //TODO Fix bug on clicking Enter
 
         //FIXME
-        // - Validate password data (no spaces)
+        // - Validate password utils (no spaces)
         // - Create alert message in red writing below
     }
 

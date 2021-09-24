@@ -6,7 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import data.JDBC;
+import utils.JDBC;
 import model.DatabaseState;
 
 public class Main extends Application {

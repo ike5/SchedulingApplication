@@ -1,6 +1,6 @@
 package model;
 
-import data.DBCountries;
+import utils.DBCountries;
 
 public class DivisionId {
     private int divisionId;
