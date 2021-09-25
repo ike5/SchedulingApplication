@@ -20,4 +20,10 @@ public class WhichLanguage {
         Bonjour Java!
          */
     }
+
+    public static void mainDoesntWork(String[] args) {
+        Locale locale = new Locale("en");
+        ResourceBundle rb = ResourceBundle.getBundle("Labels", locale);
+        System.out.println("hello");
+    }
 }
