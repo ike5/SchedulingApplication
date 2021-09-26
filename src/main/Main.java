@@ -9,6 +9,8 @@ import javafx.stage.Stage;
 import utils.JDBC;
 import model.DatabaseState;
 
+import java.util.Locale;
+
 public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
@@ -24,6 +26,7 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         DatabaseState.setDatabaseState(true); // Use remote database by setting flag to false
+//        Locale.setDefault(new Locale("fr")); // Test to set default to French
 
         JDBC.openConnection();
         launch(args);
