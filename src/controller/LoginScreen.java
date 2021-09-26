@@ -33,11 +33,13 @@ public class LoginScreen implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("Login Screen initialized!"); // called when FXMLLoader called
 
-//        Locale locCA = new Locale("fr", "CA");
-//        ResourceBundle rb = ResourceBundle.getBundle("RBundle", locCA);
-//        System.out.println(rb);
-
-        welcome_message.setText("Hello and Welcome!");
+        ResourceBundle rb = ResourceBundle.getBundle("RBundle", Locale.getDefault());
+        language_zone_id.setText(rb.getString("zoneid"));
+        welcome_message.setText(rb.getString("welcomemessage"));
+        username_id.setText(rb.getString("usernameid"));
+        password_id.setText(rb.getString("passwordid"));
+        login_id.setText(rb.getString("loginbutton"));
+        username_field_id.setText(rb.getString("usernamefieldid"));
 
 
         //FIXME

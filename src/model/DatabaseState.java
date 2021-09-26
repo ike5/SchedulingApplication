@@ -17,7 +17,7 @@ public class DatabaseState {
      *
      * @param isUsingLocalDatabase
      */
-    public static void setDatabaseState(boolean isUsingLocalDatabase) {
+    public static void useLocalDatabase(boolean isUsingLocalDatabase) {
         DatabaseState.isUsingLocalDatabase = isUsingLocalDatabase;
     }
 }
