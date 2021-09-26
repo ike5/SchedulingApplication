@@ -27,7 +27,7 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         DatabaseState.useLocalDatabase(true); // Use remote database by setting flag to false
-//        Locale.setDefault(new Locale("fr", "CA")); // Test to set default to French
+        Locale.setDefault(new Locale("fr", "CA")); // Test to set default to French
 
         JDBC.openConnection();
         launch(args);

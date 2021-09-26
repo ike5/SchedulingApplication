@@ -1,5 +1,6 @@
 package controller;
 
+import javafx.scene.control.Alert;
 import utils.DBUsers;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -31,7 +32,7 @@ public class LoginScreen implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        System.out.println("Login Screen initialized!"); // called when FXMLLoader called
+        new Test("Login screen initialized!");
 
         ResourceBundle rb = ResourceBundle.getBundle("RBundle", Locale.getDefault());
         language_zone_id.setText(rb.getString("zoneid"));
@@ -40,13 +41,6 @@ public class LoginScreen implements Initializable {
         password_id.setText(rb.getString("passwordid"));
         login_id.setText(rb.getString("loginbutton"));
         username_field_id.setText(rb.getString("usernamefieldid"));
-
-
-        //FIXME
-        // - Add welcome message
-        // - Add logo
-        // - Determine user location (ZoneID) and display it in a label
-        // - Display login form in English or French based on computer language settings, translate text, labels, buttons, errors
     }
 
     @FXML
@@ -72,12 +66,13 @@ public class LoginScreen implements Initializable {
 
     @FXML
     public void onLoginAction(ActionEvent actionEvent) throws IOException {
+        ResourceBundle rb = ResourceBundle.getBundle("RBundle", Locale.getDefault());
         DBUsers userLogin = new DBUsers(username_field_id.getText(), password_field_id.getText());
 
         if (userLogin.userExists()) {
-            System.out.println("User Exists"); // TEST
+            new Test("User exists");
             if (userLogin.passwordMatches()) {
-                System.out.println("Password matches"); // TEST
+                new Test();
 
                 //FIXME Make event listeners on ENTER correctly call methods
 
@@ -88,12 +83,14 @@ public class LoginScreen implements Initializable {
                 stage.setScene(new Scene(scene));
                 stage.show();
             } else {
-                //TODO Add Alert box for incorrect password only
+                Alert alert = new Alert(Alert.AlertType.ERROR, rb.getString("incorrectpassword"));
+                alert.setTitle(rb.getString("passwordalerttitle"));
+                alert.showAndWait();
             }
         } else {
-            System.out.println("No user by that name");
-
-            //TODO Add Alert box for incorrect username and/or password
+            Alert alert = new Alert(Alert.AlertType.ERROR, rb.getString("incorrectusername"));
+            alert.setTitle(rb.getString("usernamealerttitle"));
+            alert.showAndWait();
         }
     }
 }
