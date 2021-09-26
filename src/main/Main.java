@@ -23,7 +23,7 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
-        DatabaseState.setDatabaseState(false); // Use remote database by setting flag to false
+        DatabaseState.setDatabaseState(true); // Use remote database by setting flag to false
 
         JDBC.openConnection();
         launch(args);
