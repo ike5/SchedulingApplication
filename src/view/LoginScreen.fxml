@@ -22,7 +22,7 @@
                 <HBox alignment="BOTTOM_CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                     <children>
                         <Label fx:id="username_id" text="Username" />
-                        <TextField fx:id="username_field_id" onAction="#usernameOnAction" />
+                        <TextField fx:id="username_field_id" onAction="#usernameOnAction" onKeyTyped="#onUsernameKeyTyped" />
                     </children>
                     <VBox.margin>
                         <Insets bottom="5.0" />
@@ -31,7 +31,7 @@
                 <HBox alignment="TOP_CENTER" prefHeight="51.0" prefWidth="400.0" spacing="10.0">
                     <children>
                         <Label fx:id="password_id" text="Password" />
-                        <PasswordField fx:id="password_field_id" onAction="#passwordOnAction" />
+                        <PasswordField fx:id="password_field_id" onAction="#passwordOnAction" onKeyTyped="#onPasswordKeyTyped" />
                     </children>
                     <VBox.margin>
                         <Insets top="5.0" />
