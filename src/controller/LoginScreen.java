@@ -121,7 +121,7 @@ public class LoginScreen implements Initializable {
     }
 
     private boolean validatePasswordString() {
-        String regexPassword = "[^\\S]";
+        String regexPassword = "[\\S]+";
         return password_field_id.getText().matches(regexPassword);
     }
 
