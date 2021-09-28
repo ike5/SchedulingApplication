@@ -1,6 +1,7 @@
 package controller;
 
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.scene.control.Alert;
 import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.KeyCode;
@@ -40,43 +41,36 @@ public class LoginScreen implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         new Test("Login screen initialized!");
 
-        language_zone_id.setText(rb.getString("zoneid"));
-        welcome_message.setText(rb.getString("welcomemessage"));
-        username_id.setText(rb.getString("usernameid"));
-        password_id.setText(rb.getString("passwordid"));
-        login_id.setText(rb.getString("loginbutton"));
-        username_field_id.setText(rb.getString("usernamefieldid"));
+        language_zone_id.setText(rb.getString("zone_id"));
+        welcome_message.setText(rb.getString("welcome_message"));
+        username_id.setText(rb.getString("username"));
+        password_id.setText(rb.getString("password"));
+        login_id.setText(rb.getString("login_button"));
+        username_field_id.setText(rb.getString("username_field"));
 
     }
 
     @FXML
     public void usernameOnAction(ActionEvent actionEvent) throws IOException {
-
-        //FIXME
-        // - Fix the below typed to turn writing red
-        // - Allow button firing from here
-
-
+        // This actionEvent happens on ENTER
+        onLoginAction(actionEvent);
     }
 
     @FXML
     public void passwordOnAction(ActionEvent actionEvent) throws IOException {
         //TODO Fix bug on clicking Enter
 
-        //FIXME
-        // - Validate password utils (no spaces)
-        // - Create alert message in red writing below
-        // - Allow button firing from here
-
     }
 
 
+    /**
+     * This is the Event from Button click.
+     *
+     * @param actionEvent
+     * @throws IOException
+     */
     @FXML
     public void onLoginAction(ActionEvent actionEvent) throws IOException {
-        //TODO
-        // - validate username should be done on the onAction methods above
-        // - validate password should be done on the onAction methods above
-
         DBUsers userLogin = new DBUsers(username_field_id.getText(), password_field_id.getText());
 
         if (userLogin.userExists()) {
@@ -93,55 +87,62 @@ public class LoginScreen implements Initializable {
                 stage.setScene(new Scene(scene));
                 stage.show();
             } else {
-                Alert alert = new Alert(Alert.AlertType.ERROR, rb.getString("incorrectpassword"));
-                alert.setTitle(rb.getString("passwordalerttitle"));
+                Alert alert = new Alert(Alert.AlertType.ERROR, rb.getString("incorrect_password"));
+                alert.setTitle(rb.getString("password_alert_title"));
                 alert.showAndWait();
             }
         } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR, rb.getString("incorrectusername"));
-            alert.setTitle(rb.getString("usernamealerttitle"));
+            Alert alert = new Alert(Alert.AlertType.ERROR, rb.getString("incorrect_username"));
+            alert.setTitle(rb.getString("username_alert_title"));
             alert.showAndWait();
         }
     }
 
-    //Todo
-    // - fix the logic as it may be subject to cheating since I copied it
-    private void loginButtonClick(KeyEvent e) {
-        if (e.getCode().equals(KeyCode.ENTER)) {
-            //FIXME
-            // I'm not sure why this doesn't want to click the login button
-            // It should work whenever the password field or the username field is clicked
-            // with ENTER
-        }
-    }
 
+    /**
+     * Validates a username by matching string values that begin with a number or letter, and contains
+     * only numbers and letters.
+     *
+     * @return
+     */
     private boolean validateUsernameString() {
+        //FIXME
+        // - Allow underscores
+
         String regexUsername = "^[0-z]+";
         return username_field_id.getText().matches(regexUsername);
     }
 
+    /**
+     * Validates password by matching all string values except whitespaces
+     *
+     * @return Returns true if password field complies with regex
+     */
     private boolean validatePasswordString() {
         String regexPassword = "[\\S]+";
         return password_field_id.getText().matches(regexPassword);
     }
 
     public void onUsernameKeyTyped(KeyEvent keyEvent) {
+        //TODO
+        // - Create Error messages here in red and hide when done
+
         if (validateUsernameString()) {
             new Test("Username is Regex compliant? [OK]");
         } else {
-            new Test("Username is Regex compliant? [No]");
+            new Test("Username is [not] Regex compliant");
         }
-
-        loginButtonClick(keyEvent);
     }
 
     public void onPasswordKeyTyped(KeyEvent keyEvent) {
+        //TODO
+        // - Create Error messages here in red and hide when done
+
         if (validatePasswordString()) {
             new Test("Password is Regex compliant? [OK]");
         } else {
-            new Test("Password is Regex compliant? [No]");
+            new Test("Password is [not] Regex compliant");
         }
 
-        loginButtonClick(keyEvent);
     }
 }
