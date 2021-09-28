@@ -1,18 +1,20 @@
 package controller;
 
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.stage.Stage;
 import utils.DBCountries;
 import utils.DBCustomers;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.Country;
 import model.Customer;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -88,5 +90,14 @@ public class Customers implements Initializable {
     }
 
     public void newCustomerButtonOnAction(ActionEvent actionEvent) {
+    }
+
+    public void logoutButtonOnAction(ActionEvent actionEvent) throws IOException {
+        //TODO
+        // - Alert to save or discard
+        Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
+        Parent scene = FXMLLoader.load(getClass().getResource("/view/LoginScreen.fxml"));
+        stage.setScene(new Scene(scene));
+        stage.show();
     }
 }

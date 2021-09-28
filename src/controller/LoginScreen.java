@@ -71,6 +71,7 @@ public class LoginScreen implements Initializable {
                 // Get event source from TextField
                 stage = (Stage) ((TextField) actionEvent.getSource()).getScene().getWindow();
                 scene = FXMLLoader.load(getClass().getResource("/view/Customers.fxml"));
+                stage.setTitle("Welcome " + userLogin.getUser().getUsername() + "!");
                 stage.setScene(new Scene(scene));
                 stage.show();
             } else {

@@ -16,14 +16,14 @@
 
 <AnchorPane prefHeight="500.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Customers">
     <children>
-        <VBox prefHeight="500.0">
+        <VBox alignment="CENTER" prefHeight="500.0">
             <children>
                 <HBox prefHeight="400.0" prefWidth="1200.0" spacing="20.0">
                     <children>
                         <GridPane hgap="10.0" prefHeight="400.0" prefWidth="300.0">
                             <columnConstraints>
-                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="10.0" prefWidth="109.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="182.0" minWidth="10.0" prefWidth="161.0" />
                             </columnConstraints>
                             <rowConstraints>
                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -40,13 +40,15 @@
                                 <Label text="Customer Name" GridPane.rowIndex="1" />
                                 <TextField fx:id="customer_name_id" onAction="#customerNameOnAction" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                 <ComboBox fx:id="country_combo_id" onAction="#countryOnAction" prefWidth="150.0" promptText="Country" GridPane.rowIndex="2" />
-                                <ComboBox fx:id="state_province_combo_id" onAction="#stateProvinceOnAction" prefWidth="150.0" promptText="State/Province" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                <ComboBox fx:id="state_province_combo_id" onAction="#stateProvinceOnAction" prefHeight="26.0" prefWidth="129.0" promptText="State/Province" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                 <Label text="Address" GridPane.rowIndex="3" />
                                 <TextField fx:id="address_id" onAction="#addressOnAction" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                 <Label text="Postal Code" GridPane.rowIndex="4" />
                                 <TextField fx:id="postal_code_id" onAction="#postalCodeOnAction" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                                 <Label text="Phone Number" GridPane.rowIndex="5" />
                                 <TextField fx:id="phone_number_id" onAction="#phoneNumberOnAction" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                              <Button mnemonicParsing="false" onAction="#saveButtonOnAction" prefHeight="26.0" prefWidth="67.0" text="Save" GridPane.rowIndex="6" />
+                              <Button mnemonicParsing="false" onAction="#clearFormButtonOnAction" text="Clear Form" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                             </children>
                             <padding>
                                 <Insets left="20.0" top="20.0" />
@@ -70,10 +72,9 @@
                 </HBox>
                 <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                     <children>
-                        <Button mnemonicParsing="false" onAction="#clearFormButtonOnAction" text="Clear Form" />
-                        <Button mnemonicParsing="false" onAction="#saveButtonOnAction" text="Save" />
-                        <Button mnemonicParsing="false" onAction="#deleteCustomerButtonOnAction" text="Delete Customer" />
                         <Button mnemonicParsing="false" onAction="#newCustomerButtonOnAction" text="New Customer" />
+                        <Button mnemonicParsing="false" onAction="#deleteCustomerButtonOnAction" text="Delete Customer" />
+                  <Button mnemonicParsing="false" onAction="#logoutButtonOnAction" text="Logout" />
                     </children>
                     <opaqueInsets>
                         <Insets />
@@ -86,6 +87,9 @@
             <opaqueInsets>
                 <Insets />
             </opaqueInsets>
+         <padding>
+            <Insets top="20.0" />
+         </padding>
         </VBox>
     </children>
 </AnchorPane>
