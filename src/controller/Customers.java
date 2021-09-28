@@ -97,6 +97,7 @@ public class Customers implements Initializable {
         // - Alert to save or discard
         Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
         Parent scene = FXMLLoader.load(getClass().getResource("/view/LoginScreen.fxml"));
+        stage.setTitle(null);
         stage.setScene(new Scene(scene));
         stage.show();
     }
