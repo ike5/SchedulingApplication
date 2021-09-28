@@ -23,6 +23,8 @@ public class LoginScreen implements Initializable {
     public Label zone_id;
     public Label language_zone_id;
     public Label welcome_message;
+    public Label username_label_id;
+    public Label password_label_id;
     private Stage stage;
     private Parent scene;
     public Label username_id;
@@ -138,24 +140,20 @@ public class LoginScreen implements Initializable {
     }
 
     public void onUsernameKeyTyped(KeyEvent keyEvent) {
-        //TODO
-        // - Create Error messages here in red and hide when done
-
         if (validateUsernameString()) {
-            new Test("Username is Regex compliant? [OK]");
+            username_label_id.setVisible(false);
         } else {
-            new Test("Username is [not] Regex compliant");
+            username_label_id.setText(rb.getString("invalid_username_format"));
+            username_label_id.setVisible(true);
         }
     }
 
     public void onPasswordKeyTyped(KeyEvent keyEvent) {
-        //TODO
-        // - Create Error messages here in red and hide when done
-
         if (validatePasswordString()) {
-            new Test("Password is Regex compliant? [OK]");
+            password_label_id.setVisible(false);
         } else {
-            new Test("Password is [not] Regex compliant");
+            password_label_id.setText(rb.getString("invalid_password_format"));
+            password_label_id.setVisible(true);
         }
 
     }

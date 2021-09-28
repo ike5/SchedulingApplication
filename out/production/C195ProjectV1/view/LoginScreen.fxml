@@ -14,12 +14,16 @@
     <children>
         <VBox alignment="CENTER" prefHeight="300.0" prefWidth="400.0">
             <children>
-                <Label fx:id="welcome_message" text="Welcome Message" textFill="#050efa">
-                    <font>
-                        <Font size="18.0" />
-                    </font>
-                </Label>
-                <HBox alignment="BOTTOM_CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+            <HBox alignment="CENTER" prefHeight="13.0" prefWidth="400.0">
+               <children>
+                      <Label fx:id="welcome_message" text="Welcome Message" textFill="#050efa">
+                          <font>
+                              <Font size="18.0" />
+                          </font>
+                      </Label>
+               </children>
+            </HBox>
+                <HBox alignment="CENTER" prefHeight="38.0" prefWidth="400.0" spacing="10.0">
                     <children>
                         <Label fx:id="username_id" text="Username" />
                         <TextField fx:id="username_field_id" onAction="#usernameOnAction" onKeyTyped="#onUsernameKeyTyped" />
@@ -28,16 +32,26 @@
                         <Insets bottom="5.0" />
                     </VBox.margin>
                 </HBox>
-                <HBox alignment="TOP_CENTER" prefHeight="51.0" prefWidth="400.0" spacing="10.0">
+            <HBox alignment="CENTER" prefHeight="12.0" prefWidth="400.0">
+               <children>
+                  <Label fx:id="username_label_id" text="Label" textFill="#f70505" visible="false" />
+               </children>
+            </HBox>
+                <HBox alignment="CENTER" prefHeight="12.0" prefWidth="400.0" spacing="10.0">
                     <children>
-                        <Label fx:id="password_id" text="Password" />
+                        <Label fx:id="password_id" alignment="CENTER" text="Password" />
                         <PasswordField fx:id="password_field_id" onAction="#passwordOnAction" onKeyTyped="#onPasswordKeyTyped" />
                     </children>
                     <VBox.margin>
                         <Insets top="5.0" />
                     </VBox.margin>
                 </HBox>
-            <HBox alignment="TOP_CENTER" prefHeight="43.0" prefWidth="400.0" spacing="20.0">
+            <HBox alignment="CENTER" prefHeight="7.0" prefWidth="400.0">
+               <children>
+                  <Label fx:id="password_label_id" text="Label" textFill="#f00202" visible="false" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="43.0" prefWidth="400.0" spacing="20.0">
                <children>
                   <Label fx:id="zone_id" text="Zone ID" />
                   <Label fx:id="language_zone_id" text="Language" />
