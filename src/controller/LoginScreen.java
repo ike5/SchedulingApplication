@@ -1,10 +1,6 @@
 package controller;
 
-import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.scene.control.Alert;
-import javafx.scene.input.InputMethodEvent;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import utils.DBUsers;
 import javafx.event.ActionEvent;
@@ -34,55 +30,44 @@ public class LoginScreen implements Initializable {
     public TextField username_field_id;
     public TextField password_field_id;
     public Button login_id;
+    private DBUsers userLogin;
 
     ResourceBundle rb = ResourceBundle.getBundle("RBundle", Locale.getDefault());
 
+    //TODO
+    // - Refactor onLoginAction() and textFieldLogin() to eliminate duplicated code
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        new Test("Login screen initialized!");
-
+        // Set Labels to default language
         language_zone_id.setText(rb.getString("zone_id"));
         welcome_message.setText(rb.getString("welcome_message"));
         username_id.setText(rb.getString("username"));
         password_id.setText(rb.getString("password"));
         login_id.setText(rb.getString("login_button"));
         username_field_id.setText(rb.getString("username_field"));
-
     }
 
     @FXML
     public void usernameOnAction(ActionEvent actionEvent) throws IOException {
-        // This actionEvent happens on ENTER
-        onLoginAction(actionEvent);
+        textFieldLogin(actionEvent);
     }
 
     @FXML
     public void passwordOnAction(ActionEvent actionEvent) throws IOException {
-        //TODO Fix bug on clicking Enter
-
+        textFieldLogin(actionEvent);
     }
 
-
-    /**
-     * This is the Event from Button click.
-     *
-     * @param actionEvent
-     * @throws IOException
-     */
-    @FXML
-    public void onLoginAction(ActionEvent actionEvent) throws IOException {
-        DBUsers userLogin = new DBUsers(username_field_id.getText(), password_field_id.getText());
+    private void textFieldLogin(ActionEvent actionEvent) throws IOException {
+        userLogin = new DBUsers(username_field_id.getText(), password_field_id.getText());
 
         if (userLogin.userExists()) {
             new Test("User exists");
             if (userLogin.passwordMatches()) {
                 new Test("Password matches");
 
-                //FIXME Make event listeners on ENTER correctly call methods
-
-                // Get event source from button
-                stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
-                // Load resources from view directory
+                // Get event source from TextField
+                stage = (Stage) ((TextField) actionEvent.getSource()).getScene().getWindow();
                 scene = FXMLLoader.load(getClass().getResource("/view/Customers.fxml"));
                 stage.setScene(new Scene(scene));
                 stage.show();
@@ -98,6 +83,35 @@ public class LoginScreen implements Initializable {
         }
     }
 
+
+    /**
+     * This is the Event from Button click.
+     *
+     * @param actionEvent
+     * @throws IOException
+     */
+    @FXML
+    public void onLoginAction(ActionEvent actionEvent) throws IOException {
+        DBUsers userLogin = new DBUsers(username_field_id.getText(), password_field_id.getText());
+
+        if (userLogin.userExists()) {
+            if (userLogin.passwordMatches()) {
+                // Get event source from Button
+                stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
+                scene = FXMLLoader.load(getClass().getResource("/view/Customers.fxml"));
+                stage.setScene(new Scene(scene));
+                stage.show();
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR, rb.getString("incorrect_password"));
+                alert.setTitle(rb.getString("password_alert_title"));
+                alert.showAndWait();
+            }
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR, rb.getString("incorrect_username"));
+            alert.setTitle(rb.getString("username_alert_title"));
+            alert.showAndWait();
+        }
+    }
 
     /**
      * Validates a username by matching string values that begin with a number or letter, and contains
