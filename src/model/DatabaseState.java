@@ -5,7 +5,7 @@ package model;
  * to use the local database or remote database.
  * <p>
  * When isUsingLocalDatabase is true, the local database should be used. When
- * isUsingLocalDatabase is false, the program should make a connection to a
+ * isUsingLocalDatabase is false, the program should make a CONNECTION to a
  * remote database.
  */
 public class DatabaseState {

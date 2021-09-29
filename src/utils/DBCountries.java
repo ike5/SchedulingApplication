@@ -75,8 +75,6 @@ public class DBCountries {
         return countryName;
     }
 
-// test
-
     public static void checkDateConversion() {
         System.out.println("CREATE DATE TEST");
         String sql = "SELECT Create_Date from countries";
