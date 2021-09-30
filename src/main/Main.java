@@ -32,10 +32,6 @@ public class Main extends Application {
 //        Locale.setDefault(new Locale("fr", "CA")); // Test to set default to French
 
 
-//        Customer customer = new Customer(1, "Daddy Warthog", "1234 Avenue Street", "94114", "415-672-8597", 33);
-//        Customer customer1 = DBCustomers.editCustomer(customer);
-//        System.out.println(customer1);
-
 
         JDBC.openConnection();
         launch(args);
