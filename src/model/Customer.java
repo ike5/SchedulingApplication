@@ -1,14 +1,12 @@
 package model;
 
-import utils.DBCountries;
-
 public class Customer {
     private int id;
     private String name;
     private String address;
     private String postalCode;
     private String phone;
-    private String country;
+    private Country country;
     private int divisionID;
 
     public Customer(int id, String name, String address, String postalCode, String phone, int divisionId) {
@@ -18,7 +16,6 @@ public class Customer {
         this.postalCode = postalCode;
         this.phone = phone;
         this.divisionID = divisionId;
-        this.country = DBCountries.getCountryFromDivisionId(divisionId);
     }
 
     public int getId() {
@@ -41,7 +38,7 @@ public class Customer {
         return phone;
     }
 
-    public String getCountry() {
+    public Country getCountry() {
         return country;
     }
 
@@ -73,7 +70,7 @@ public class Customer {
         this.phone = phone;
     }
 
-    public void setCountry(String country) {
+    public void setCountry(Country country) {
         this.country = country;
     }
 }

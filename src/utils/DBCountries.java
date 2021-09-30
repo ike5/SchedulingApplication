@@ -39,23 +39,25 @@ public class DBCountries {
      * @param divisionId
      * @return
      */
-    public static String getCountryFromDivisionId(int divisionId) {
-        String countryName = null;
+    public static Country getCountryFromDivisionId(int divisionId) {
+        Country country = null;
         try {
-            String sql = "USE client_schedule; SELECT * FROM (SELECT countries.Country, client_schedule.first_level_divisions.Division_ID FROM countries INNER JOIN first_level_divisions ON countries.Country_ID = client_schedule.first_level_divisions.COUNTRY_ID) as CDI WHERE CDI.Division_ID = " + divisionId;
+            String sql = "USE client_schedule; SELECT * FROM (SELECT countries.Country, client_schedule.first_level_divisions.Division_ID " +
+                    "FROM countries INNER JOIN first_level_divisions ON countries.Country_ID = client_schedule.first_level_divisions.COUNTRY_ID) " +
+                    "as CDI WHERE CDI.Division_ID = " + divisionId;
 
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
 
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()){
-                countryName = rs.getString("Country");
+               country = new Country(rs.getString("Country"), rs.getInt("Division_ID"));
             }
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        return countryName;
+        return country;
     }
 
     public static void checkDateConversion() {
