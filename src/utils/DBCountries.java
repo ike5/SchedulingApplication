@@ -42,36 +42,19 @@ public class DBCountries {
     public static String getCountryFromDivisionId(int divisionId) {
         String countryName = null;
         try {
-            String sql = "SELECT countries.Country FROM countries INNER JOIN first_level_divisions " +
-                    "on countries.Country_ID = first_level_divisions.COUNTRY_ID;";
+            String sql = "SELECT * FROM (SELECT countries.Country, client_schedule.first_level_divisions.Division_ID FROM countries INNER JOIN first_level_divisions ON countries.Country_ID = client_schedule.first_level_divisions.COUNTRY_ID) as CDI WHERE Division_ID = " + divisionId + ";";
 
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
 
             ResultSet rs = ps.executeQuery();
 
-            while (rs.next()) {
-                switch (rs.getString(1)){
-                    case "U.S":
-                        System.out.println("U.S");
-                        countryName = rs.getString(1);
-                        break;
-                    case "UK":
-                        System.out.println("UK");
-                        countryName = rs.getString(1);
-                        break;
-                    case "Canada":
-                        System.out.println("Canada");
-                        countryName = rs.getString(1);
-                        break;
-                    default:
-                        System.out.println("Something went wrong");
-                        countryName = null;
-                }
+            while (rs.next()){
+                countryName = rs.getString("Country");
             }
+
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-
         return countryName;
     }
 
