@@ -18,7 +18,7 @@ public class Main extends Application {
         ResourceBundle rb = ResourceBundle.getBundle("RBundle", Locale.getDefault());
         Parent root = FXMLLoader.load(getClass().getResource("/view/LoginScreen.fxml")); // slash represents the src folder
         stage.setTitle(rb.getString("set_title"));
-        stage.setScene(new Scene(root, 400, 400)); // (width, height)
+        stage.setScene(new Scene(root, 400, 300)); // (width, height)
         stage.show();
 
         //FIXME
