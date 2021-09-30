@@ -6,6 +6,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import model.Customer;
+import utils.DBCustomers;
 import utils.JDBC;
 import model.DatabaseState;
 
@@ -28,6 +30,12 @@ public class Main extends Application {
     public static void main(String[] args) {
         DatabaseState.useLocalDatabase(true); // Use remote database by setting flag to false
 //        Locale.setDefault(new Locale("fr", "CA")); // Test to set default to French
+
+
+        Customer customer = new Customer(1, "Daddy Warthog", "1234 Avenue Street", "94114", "415-672-8597", 33);
+        Customer customer1 = DBCustomers.editCustomer(customer);
+        System.out.println(customer1);
+
 
         JDBC.openConnection();
         launch(args);

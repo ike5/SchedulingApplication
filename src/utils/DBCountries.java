@@ -42,7 +42,7 @@ public class DBCountries {
     public static String getCountryFromDivisionId(int divisionId) {
         String countryName = null;
         try {
-            String sql = "SELECT countries.Country FROM countries INNER JOIN first_level_divisions\n" +
+            String sql = "SELECT countries.Country FROM countries INNER JOIN first_level_divisions " +
                     "on countries.Country_ID = first_level_divisions.COUNTRY_ID;";
 
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
