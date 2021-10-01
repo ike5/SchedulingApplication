@@ -2,7 +2,7 @@ package model;
 
 import java.util.Locale;
 
-abstract class Person {
+public abstract class Person {
     Locale create_date = null;
     String created_by = null;
     Locale last_update = null;

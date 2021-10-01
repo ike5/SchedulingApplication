@@ -1,9 +1,9 @@
 package model;
 
 /**
- * A class to save username and password objects for validation.
+ * This class should not be instantiated but should be extended.
  */
-public class User extends Person{
+public abstract class User extends Person{
     private String password;
     private String username;
 
@@ -11,6 +11,10 @@ public class User extends Person{
         this.password = password;
         this.username = username;
     }
+
+    public User(){
+        this(null, null);
+    };
 
     public String getPassword() {
         return password;
