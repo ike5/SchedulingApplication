@@ -1,13 +1,13 @@
 package utils;
 
-import model.Credentials;
+import model.User;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class DBUsers {
-    private Credentials user;
+    private User user;
     private String password;
 
     public DBUsers(String username, String password) {
@@ -18,16 +18,16 @@ public class DBUsers {
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()){
-                user = new Credentials(rs.getString("User_Name").trim(), rs.getString("Password").trim());
+                user = new User(rs.getString("User_Name").trim(), rs.getString("Password").trim());
             } else {
-                user = new Credentials(null, null);
+                user = new User(null, null);
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
     }
 
-    public Credentials getUser() {
+    public User getUser() {
         return user;
     }
 
