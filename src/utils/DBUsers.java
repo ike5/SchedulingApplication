@@ -1,5 +1,6 @@
 package utils;
 
+import model.DatabaseFunctions;
 import model.User;
 
 import java.sql.PreparedStatement;
@@ -37,6 +38,13 @@ public class DBUsers extends User {
             throwables.printStackTrace();
         }
     }
+
+//    private void checkUsername(){
+//        String sql = "SELECT User_Name, Password FROM users WHERE User_Name = '" + this.getUsername() + "'";
+//        DatabaseFunctions df = () -> {
+//
+//        }
+//    }
 
     public Boolean userExists() {
         return this.getUsername() != null;
