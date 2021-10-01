@@ -6,37 +6,35 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class DBUsers {
-    private User user;
-    private String password;
-
+public class DBUsers extends User {
+    private String providedPassword;
     public DBUsers(String username, String password) {
-        this.password = password;
+        super(username, password);
+        this.providedPassword = getPassword();
+
         try {
-            String sql = "SELECT User_Name, Password FROM users WHERE User_Name = '" + username + "'";
+            String sql = "SELECT User_Name, Password FROM users WHERE User_Name = '" + this.getUsername() + "'";
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
 
-            if (rs.next()){
-                user = new User(rs.getString("User_Name").trim(), rs.getString("Password").trim());
+            if (rs.next()) {
+                this.setUsername(rs.getString("User_Name").trim());
+                this.setPassword(rs.getString("Password").trim());
             } else {
-                user = new User(null, null);
+                this.setUsername(null);
+                this.setPassword(null);
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
     }
 
-    public User getUser() {
-        return user;
+    public Boolean userExists() {
+        return this.getUsername() != null;
     }
 
-    public Boolean userExists(){
-        return user.getUsername() != null;
-    }
-
-    public Boolean passwordMatches(){
-        return user.getPassword().equals(this.password);
+    public Boolean passwordMatches() {
+        return this.getPassword().equals(providedPassword);
     }
 }
 
