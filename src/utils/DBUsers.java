@@ -1,6 +1,5 @@
 package utils;
 
-import model.DatabaseFunctions;
 import model.User;
 
 import java.sql.PreparedStatement;
@@ -8,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class DBUsers extends User {
-    private String providedPassword;
+    private final String providedPassword;
 
     public DBUsers(String username, String password) {
         super(username, password);
@@ -20,8 +19,10 @@ public class DBUsers extends User {
      * Make call to database to get actual information. This method does not validate anything
      * but rather completes the call to the database so that userExists() and passwordMatches()
      * can check against the data.
+     *
+     * The ResultStatement does not iterate more than once--so for security it expects an exact match.
      */
-    private void validateUsernamePassword(){
+    private void validateUsernamePassword() {
         try {
             String sql = "SELECT User_Name, Password FROM users WHERE User_Name = '" + this.getUsername() + "'";
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
@@ -39,17 +40,30 @@ public class DBUsers extends User {
         }
     }
 
-//    private void checkUsername(){
+
+//    // have a method in a class that implements an interface in the parameters
+//    private void validateUsernamePassword(){
 //        String sql = "SELECT User_Name, Password FROM users WHERE User_Name = '" + this.getUsername() + "'";
-//        DatabaseFunctions df = () -> {
 //
-//        }
 //    }
 
+
+
+    /**
+     * Checks whether provided username for the DBUsers object exists in database.
+     *
+     * @return returns true if ResultSet isn't null. If ResultSet isn't null, then the database
+     * holds a username that matches the provided username.
+     */
     public Boolean userExists() {
         return this.getUsername() != null;
     }
 
+    /**
+     * Checks whether provided password matches password in database for the username.
+     *
+     * @return returns true if provided password matches database password.
+     */
     public Boolean passwordMatches() {
         return this.getPassword().equals(providedPassword);
     }
