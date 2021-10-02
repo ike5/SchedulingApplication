@@ -1,7 +1,6 @@
 package utils;
 
 import model.Query;
-import model.RandomClassQuery;
 import model.User;
 
 import java.sql.PreparedStatement;
@@ -43,17 +42,7 @@ public class DBUsers extends User {
     }
 
 
-//    // have a method in a class that implements an interface in the parameters
-//    private void validateUsernamePassword(){
-//        String sql = "SELECT User_Name, Password FROM users WHERE User_Name = '" + this.getUsername() + "'";
-//
-//    }
 
-    public static void main(String[] args) {
-        Query queryClass = new Query();
-        QueryMaker queryMaker = new RandomClassQuery("Select * from customers"); // interface says I have these methods
-        ResultSet rs = queryClass.basicQuery(queryMaker);
-    }
 
 
 
