@@ -12,6 +12,12 @@ import java.sql.SQLException;
 
 public class Query implements QueryInterface{
 
+    private String sql;
+
+    public Query(String sql){
+        this.sql = sql;
+    }
+
     @Override
     public ResultSet getResultSet(String sql) {
         try{
@@ -23,3 +29,4 @@ public class Query implements QueryInterface{
         return null;
     }
 }
+
