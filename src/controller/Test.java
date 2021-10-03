@@ -1,6 +1,5 @@
 package controller;
 
-import com.mysql.cj.jdbc.CallableStatement;
 import utils.JDBC;
 
 import java.sql.PreparedStatement;
@@ -39,16 +38,21 @@ class HelloWorldAnonymousClass {
     }
 
     interface MakeAQuery {
-        public void getResultSet(String sql);
+        public void getResultSet();
 
         public <T> T processResultSet(ResultSet resultSet) throws SQLException;
     }
 
     public void makeItHappen() {
         class A implements MakeAQuery {
+            String sql;
+
+            A(String sql){
+                this.sql = sql;
+            }
 
             @Override
-            public void getResultSet(String sql) {
+            public void getResultSet() {
                 try {
                     PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
                     processResultSet(ps.executeQuery());
@@ -65,10 +69,12 @@ class HelloWorldAnonymousClass {
                 return null;
             }
         }
-        MakeAQuery customerQuery = new A();
-        MakeAQuery countryQuery = new MakeAQuery() {
+        MakeAQuery customerQuery = new A("SELECT * FROM customers");
+        MakeAQuery countryQuery = new MakeAQuery (){
+            String sql = "SELECT * FROM countries";
+
             @Override
-            public void getResultSet(String sql) {
+            public void getResultSet() {
                 try {
                     PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
                     processResultSet(ps.executeQuery());
@@ -86,10 +92,11 @@ class HelloWorldAnonymousClass {
                 return (T)str;
             }
         };
-
         MakeAQuery userQuery = new MakeAQuery() {
+            String sql = "SELECT * FROM user";
+
             @Override
-            public void getResultSet(String sql) {
+            public void getResultSet() {
                 try {
                     PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
                     processResultSet(ps.executeQuery());
@@ -110,6 +117,9 @@ class HelloWorldAnonymousClass {
             }
         };
 
+        customerQuery.getResultSet();
+        countryQuery.getResultSet();
+        userQuery.getResultSet();
     }
 
     public void sayHello() {
@@ -165,5 +175,6 @@ class HelloWorldAnonymousClass {
     public static void main(String[] args) {
         HelloWorldAnonymousClass myApp = new HelloWorldAnonymousClass();
         myApp.sayHello();
+        myApp.makeItHappen();
     }
 }
