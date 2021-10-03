@@ -1,11 +1,5 @@
 package controller;
 
-import model.Query;
-import model.QueryTesterClass;
-import utils.QueryInterface;
-
-import java.sql.ResultSet;
-
 public class Test {
     public static int instances;
 
@@ -25,12 +19,4 @@ public class Test {
     private static void incrementInstances() {
         instances++;
     }
-
-    public static void main(String[] args) {
-        String sql = "SELECT * FROM customers";
-        QueryTesterClass q = new QueryTesterClass();
-
-        QueryInterface queryInterface = q.processQuery(c -> {
-        }
-
 }

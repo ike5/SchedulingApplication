@@ -1,6 +1,5 @@
 package utils;
 
-import model.Query;
 import model.User;
 
 import java.sql.PreparedStatement;
