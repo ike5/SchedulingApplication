@@ -6,10 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import model.Customer;
-import utils.DBCustomers;
 import utils.JDBC;
-import model.DatabaseState;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -28,10 +25,7 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
-        DatabaseState.useLocalDatabase(true); // Use remote database by setting flag to false
 //        Locale.setDefault(new Locale("fr", "CA")); // Test to set default to French
-
-
 
         JDBC.openConnection();
         launch(args);
