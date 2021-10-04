@@ -3,7 +3,7 @@ package model;
 /**
  * This class should not be instantiated but should be extended.
  */
-public abstract class User extends Person{
+public abstract class User implements Person{
     private String password;
     private String username;
 
