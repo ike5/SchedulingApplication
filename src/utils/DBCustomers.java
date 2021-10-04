@@ -3,6 +3,7 @@ package utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Customer;
+import test.Test;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,6 +15,8 @@ public class DBCustomers {
 
         try {
             String sql = "SELECT * FROM customers";
+            new Test(sql);
+            new Test(JDBC.getConnection().prepareStatement(sql).executeQuery().toString());
 
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
 
