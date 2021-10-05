@@ -3,7 +3,7 @@ package utils;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
-public class JDBC implements DatabaseConnection {
+public class JDBC {
     private static final String PROTOCOL = "jdbc";
     private static final String VENDOR = ":mysql:";
     private static final String DRIVER = "com.mysql.cj.jdbc.Driver"; // Driver reference
