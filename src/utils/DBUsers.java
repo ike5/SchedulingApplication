@@ -19,30 +19,22 @@ public class DBUsers extends User {
      * Make call to database to get actual information. This method does not validate anything
      * but rather completes the call to the database so that userExists() and passwordMatches()
      * can check against the data.
-     *
+     * <p>
      * The ResultStatement does not iterate more than once--so for security it expects an exact match.
      */
     private void validateUsernamePassword() {
-        try {
-            String sql = "SELECT User_Name, Password FROM users WHERE User_Name = '" + this.getUsername() + "'";
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
-
-            if (rs.next()) {
-                this.setUsername(rs.getString("User_Name").trim());
-                this.setPassword(rs.getString("Password").trim());
-            } else {
-                this.setUsername(null);
-                this.setPassword(null);
-            }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
+        ProcessQuery.processIf(
+                "SELECT User_Name, Password FROM users WHERE User_Name = '" + this.getUsername() + "'",
+                resultSet -> {
+                    if (resultSet.next()) {
+                        this.setUsername(resultSet.getString("User_Name").trim());
+                        this.setPassword(resultSet.getString("Password").trim());
+                    } else {
+                        this.setUsername(null);
+                        this.setPassword(null);
+                    }
+                });
     }
-
-
-
-
 
 
     /**

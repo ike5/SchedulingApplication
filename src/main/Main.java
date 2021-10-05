@@ -11,6 +11,9 @@ import utils.JDBC;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import static utils.JDBC.closeConnection;
+import static utils.JDBC.openConnection;
+
 public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
@@ -27,9 +30,9 @@ public class Main extends Application {
     public static void main(String[] args) {
 //        Locale.setDefault(new Locale("fr", "CA")); // Test to set default to French
 
-        JDBC.openConnection();
+        openConnection();
         launch(args);
-        JDBC.closeConnection();
+        closeConnection();
     }
 
 
