@@ -1,56 +1,32 @@
 package test;
 
-import utils.*;
+import utils.FunctionalResultSetInterface;
+import utils.JDBC;
+import utils.ProcessQuery;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class AnotherTest {
-
     public static void main(String[] args) {
-        new ProcessResultSet(new GetResultSet().getResultSet("SELECT * FROM customers"));
+        String sql = "SELECT * FROM customers";
 
-    }
+        // sql, (send in the logic of the while loop)
+        ProcessQuery.process(sql, x -> {
+            System.out.println(x.getRow());
+            System.out.println(x.getString(2));
+        });
 
-    // need a method that consumes a QueryStatements Object
-}
-
-class GetResultSet implements GetResultSetInterface{
-    @Override
-    public ResultSet getResultSet(String sql) {
-        try {
-            PreparedStatement ps = JDBC.openConnection().prepareStatement(sql);
-            return ps.executeQuery();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        return null;
-    }
-}
-
-class ProcessResultSet {
-    ProcessResultSet(ResultSet resultSet){
-        try {
-            while(resultSet.next()){
-                System.out.println(resultSet.getRow());
+        ProcessQuery.process("SELECT * FROM first_level_divisions", new FunctionalResultSetInterface() {
+            @Override
+            public void whileLogic(ResultSet resultSet) throws SQLException {
+                System.out.println(resultSet.getString(2));
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
+        });
     }
-}
 
-@FunctionalInterface
-interface GetResultSetInterface{
-    // this is the expression contract
-    ResultSet getResultSet(String sql);
-}
 
-@FunctionalInterface
-interface ProcessResultSetInterface{
-    // processes the expression above
-    void processResultSet(GetResultSet getResultSet);
 }
 
 
