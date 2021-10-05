@@ -3,89 +3,50 @@ package utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Customer;
-import test.Test;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class DBCustomers {
     public static ObservableList<Customer> getAllCustomers() {
         ObservableList<Customer> customerList = FXCollections.observableArrayList();
-
-        try {
-            String sql = "SELECT * FROM customers";
-            new Test(sql);
-            new Test(JDBC.getConnection().prepareStatement(sql).executeQuery().toString());
-
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
-
-            ResultSet rs = ps.executeQuery();
-
-            while (rs.next()) {
-                int customerId = rs.getInt("Customer_ID");
-                String customerName = rs.getString("Customer_Name");
-                String customerAddress = rs.getString("Address");
-                String customerPostalCode = rs.getString("Postal_Code");
-                String customerPhone = rs.getString("Phone");
-                int customerDivisionId = rs.getInt("Division_ID");
-
-                Customer C = new Customer(
-                        customerId,
-                        customerName,
-                        customerAddress,
-                        customerPostalCode,
-                        customerPhone,
-                        customerDivisionId
-                );
-
-                customerList.add(C);
-            }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
+        ProcessQuery.process("SELECT * FROM customers", resultSet -> {
+            Customer customer = new Customer(
+                    resultSet.getInt("Customer_ID"),
+                    resultSet.getString("Customer_Name"),
+                    resultSet.getString("Address"),
+                    resultSet.getString("Postal_Code"),
+                    resultSet.getString("Phone"),
+                    resultSet.getInt("Division_ID")
+            );
+            customerList.add(customer);
+        });
         return customerList;
     }
 
     public static Customer editCustomer(Customer customer) {
-        Customer C = null;
 
-        try {
-            String sql = "UPDATE customers SET" +
-                    " Customer_Name = " + customer.getName() +
-                    ", Address = " + customer.getAddress() +
-                    ", Postal_Code = " + customer.getPostal() +
-                    ", Phone = " + customer.getPhone() +
-                    ", Division_ID = " + customer.getDivisionID() +
-                    " WHERE Customer_ID = " + customer.getId();
+        AtomicReference<Customer> C = null;
+        String sql = "UPDATE customers SET" +
+                " Customer_Name = " + customer.getName() +
+                ", Address = " + customer.getAddress() +
+                ", Postal_Code = " + customer.getPostal() +
+                ", Phone = " + customer.getPhone() +
+                ", Division_ID = " + customer.getDivisionID() +
+                " WHERE Customer_ID = " + customer.getId();
 
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+        ProcessQuery.process(sql, resultSet -> {
+            assert false;
+            C.set(new Customer(
+                    resultSet.getInt("Customer_ID"),
+                    resultSet.getString("Customer_Name"),
+                    resultSet.getString("Address"),
+                    resultSet.getString("Postal_Code"),
+                    resultSet.getString("Phone"),
+                    resultSet.getInt("Division_ID")
+            ));
 
-            ResultSet rs = ps.executeQuery();
+        });
+        return C.get();
 
-            while (rs.next()) {
-                int customerId = rs.getInt("Customer_ID");
-                String customerName = rs.getString("Customer_Name");
-                String customerAddress = rs.getString("Address");
-                String customerPostalCode = rs.getString("Postal_Code");
-                String customerPhone = rs.getString("Phone");
-                int customerDivisionId = rs.getInt("Division_ID");
-
-                C = new Customer(
-                        customerId,
-                        customerName,
-                        customerAddress,
-                        customerPostalCode,
-                        customerPhone,
-                        customerDivisionId
-                );
-            }
-
-            return C;
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-
-        return C;
     }
 }
