@@ -3,6 +3,7 @@ package controller;
 import javafx.scene.control.Alert;
 import javafx.scene.input.KeyEvent;
 import test.Test;
+import utils.ChangeScreen;
 import utils.DBUsers;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,6 +15,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import utils.FunctionalChangeScreenInterface;
 
 import java.io.IOException;
 import java.net.URL;
@@ -26,8 +28,6 @@ public class LoginScreen implements Initializable {
     public Label welcome_message;
     public Label username_label_id;
     public Label password_label_id;
-    private Stage stage;
-    private Parent scene;
     public Label username_id;
     public Label password_id;
     public TextField username_field_id;
@@ -63,28 +63,11 @@ public class LoginScreen implements Initializable {
 
     private void textFieldLogin(ActionEvent actionEvent) throws IOException {
         userLogin = new DBUsers(username_field_id.getText(), password_field_id.getText());
-
-        if (userLogin.userExists()) {
-            new Test("User exists");
-            if (userLogin.passwordMatches()) {
-                new Test("Password matches");
-
-                // Get event source from TextField
-                stage = (Stage) ((TextField) actionEvent.getSource()).getScene().getWindow();
-                scene = FXMLLoader.load(getClass().getResource("/view/Customers.fxml"));
-                stage.setTitle("Welcome " + userLogin.getUsername() + "!");
-                stage.setScene(new Scene(scene));
-                stage.show();
-            } else {
-                Alert alert = new Alert(Alert.AlertType.ERROR, rb.getString("incorrect_password"));
-                alert.setTitle(rb.getString("password_alert_title"));
-                alert.showAndWait();
-            }
-        } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR, rb.getString("incorrect_username"));
-            alert.setTitle(rb.getString("username_alert_title"));
-            alert.showAndWait();
-        }
+        ChangeScreen.changeScreen(
+                actionEvent,
+                userLogin,
+                FXMLLoader.load(getClass().getResource("/view/Customers.fxml")),
+                aEvent -> (Stage) ((TextField) aEvent.getSource()).getScene().getWindow());
     }
 
 
@@ -97,25 +80,12 @@ public class LoginScreen implements Initializable {
     @FXML
     public void onLoginAction(ActionEvent actionEvent) throws IOException {
         DBUsers userLogin = new DBUsers(username_field_id.getText(), password_field_id.getText());
-
-        if (userLogin.userExists()) {
-            if (userLogin.passwordMatches()) {
-                // Get event source from Button
-                stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
-                scene = FXMLLoader.load(getClass().getResource("/view/Customers.fxml"));
-                stage.setTitle("Welcome " + userLogin.getUsername() + "!");
-                stage.setScene(new Scene(scene));
-                stage.show();
-            } else {
-                Alert alert = new Alert(Alert.AlertType.ERROR, rb.getString("incorrect_password"));
-                alert.setTitle(rb.getString("password_alert_title"));
-                alert.showAndWait();
-            }
-        } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR, rb.getString("incorrect_username"));
-            alert.setTitle(rb.getString("username_alert_title"));
-            alert.showAndWait();
-        }
+        ChangeScreen.changeScreen(
+                actionEvent,
+                userLogin,
+                FXMLLoader.load(getClass().getResource("/view/Customers.fxml")),
+                aEvent -> (Stage) ((Button) aEvent.getSource()).getScene().getWindow()
+        );
     }
 
     /**
