@@ -1,30 +1,11 @@
 package utils;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import model.Customer;
 
 import java.util.concurrent.atomic.AtomicReference;
 
-public class DBCustomers {
-    public static ObservableList<Customer> getAllCustomers() {
-        ObservableList<Customer> customerList = FXCollections.observableArrayList();
-        ProcessQuery.process("SELECT * FROM customers", resultSet -> {
-            Customer customer = new Customer(
-                    resultSet.getInt("Customer_ID"),
-                    resultSet.getString("Customer_Name"),
-                    resultSet.getString("Address"),
-                    resultSet.getString("Postal_Code"),
-                    resultSet.getString("Phone"),
-                    resultSet.getInt("Division_ID")
-            );
-            customerList.add(customer);
-        });
-        return customerList;
-    }
-
+public abstract class DBUpdate {
     public static Customer updateCustomer(Customer customer) {
-
         AtomicReference<Customer> C = null;
         String sql = "UPDATE customers SET" +
                 " Customer_Name = " + customer.getName() +
@@ -47,6 +28,5 @@ public class DBCustomers {
 
         });
         return C.get();
-
     }
 }
