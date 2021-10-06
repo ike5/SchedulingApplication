@@ -1,21 +1,16 @@
 package controller;
 
-import javafx.scene.control.Alert;
 import javafx.scene.input.KeyEvent;
-import test.Test;
 import utils.ChangeScreen;
 import utils.DBUsers;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import utils.FunctionalChangeScreenInterface;
 
 import java.io.IOException;
 import java.net.URL;
@@ -36,9 +31,6 @@ public class LoginScreen implements Initializable {
     private DBUsers userLogin;
 
     ResourceBundle rb = ResourceBundle.getBundle("RBundle", Locale.getDefault());
-
-    //TODO
-    // - Refactor onLoginAction() and textFieldLogin() to eliminate duplicated code
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -61,6 +53,12 @@ public class LoginScreen implements Initializable {
         textFieldLogin(actionEvent);
     }
 
+
+    //TODO
+    // - refactor changeScreen method to be more concise
+    // - in textFieldLogin()
+    // - in onLoginAction()
+
     private void textFieldLogin(ActionEvent actionEvent) throws IOException {
         userLogin = new DBUsers(username_field_id.getText(), password_field_id.getText());
         ChangeScreen.changeScreen(
@@ -72,14 +70,14 @@ public class LoginScreen implements Initializable {
 
 
     /**
-     * This is the Event from Button click.
+     * This method is triggered when the Login Button is clicked.
      *
      * @param actionEvent
      * @throws IOException
      */
     @FXML
     public void onLoginAction(ActionEvent actionEvent) throws IOException {
-        DBUsers userLogin = new DBUsers(username_field_id.getText(), password_field_id.getText());
+        userLogin = new DBUsers(username_field_id.getText(), password_field_id.getText());
         ChangeScreen.changeScreen(
                 actionEvent,
                 userLogin,
