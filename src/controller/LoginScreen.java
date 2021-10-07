@@ -53,12 +53,6 @@ public class LoginScreen implements Initializable {
         textFieldLogin(actionEvent);
     }
 
-
-    //TODO
-    // - refactor changeScreen method to be more concise
-    // - in textFieldLogin()
-    // - in onLoginAction()
-
     private void textFieldLogin(ActionEvent actionEvent) throws IOException {
         userLogin = new DBUsers(username_field_id.getText(), password_field_id.getText());
         ChangeScreen.changeScreen(
@@ -77,6 +71,9 @@ public class LoginScreen implements Initializable {
      */
     @FXML
     public void onLoginAction(ActionEvent actionEvent) throws IOException {
+
+        //FIXME (med) - pressing ENTER when button is highlighted doesn't work
+
         userLogin = new DBUsers(username_field_id.getText(), password_field_id.getText());
         ChangeScreen.changeScreen(
                 actionEvent,
@@ -93,8 +90,7 @@ public class LoginScreen implements Initializable {
      * @return
      */
     private boolean validateUsernameString() {
-        //FIXME
-        // - Allow underscores
+        //FIXME (low) - Allow underscores
 
         String regexUsername = "^[0-z]+";
         return username_field_id.getText().matches(regexUsername);
