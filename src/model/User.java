@@ -1,9 +1,12 @@
 package model;
 
+import utils.UtilityInterfaces;
+
 /**
  * This class should not be instantiated but should be extended.
  */
-public abstract class User implements Person{
+@UtilityInterfaces
+public abstract class User implements UtilityInterfaces.PersonInterface {
     private String password;
     private String username;
 

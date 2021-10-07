@@ -5,6 +5,8 @@ import model.User;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.ZonedDateTime;
+import java.util.Locale;
 
 public class DBUsers extends User {
     private final String providedPassword;
@@ -54,6 +56,36 @@ public class DBUsers extends User {
      */
     public Boolean passwordMatches() {
         return this.getPassword().equals(providedPassword);
+    }
+
+    @Override
+    public ZonedDateTime startDateTime() {
+        return null;
+    }
+
+    @Override
+    public ZonedDateTime endDateTime() {
+        return null;
+    }
+
+    @Override
+    public Locale createDateTime() {
+        return null;
+    }
+
+    @Override
+    public Locale lastUpdateDateTime() {
+        return null;
+    }
+
+    @Override
+    public String createdBy(String name) {
+        return null;
+    }
+
+    @Override
+    public String lastUpdatedBy(String name) {
+        return null;
     }
 }
 

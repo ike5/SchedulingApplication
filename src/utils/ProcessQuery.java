@@ -7,8 +7,9 @@ import java.sql.SQLException;
 /**
  * Call static method process(), then pass in the while logic as a lambda expression.
  */
+@UtilityInterfaces
 public class ProcessQuery {
-    public static void process(String sql, FunctionalResultSetInterface o) {
+    public static void process(String sql, UtilityInterfaces.FunctionalResultSetInterface o) {
         try {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ResultSet resultSet = ps.executeQuery();
@@ -29,7 +30,7 @@ public class ProcessQuery {
      * @param sql
      * @param o
      */
-    public static void processIf(String sql, FunctionalResultSetInterface o) {
+    public static void processIf(String sql, UtilityInterfaces.FunctionalResultSetInterface o) {
         try {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ResultSet resultSet = ps.executeQuery();

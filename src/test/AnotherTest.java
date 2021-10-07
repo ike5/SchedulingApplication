@@ -1,13 +1,13 @@
 package test;
 
-import utils.FunctionalResultSetInterface;
-import utils.JDBC;
+import utils.UtilityInterfaces.FunctionalResultSetInterface;
 import utils.ProcessQuery;
+import utils.UtilityInterfaces;
 
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+@UtilityInterfaces
 public class AnotherTest {
     public static void main(String[] args) {
         String sql = "SELECT * FROM customers";
