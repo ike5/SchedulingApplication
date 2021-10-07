@@ -63,7 +63,8 @@ public class Customers implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("Customers controller initialized!");
-        ObservableList<Customer> customerObservableList = DBCustomers.getAllCustomers();
+        DBCustomers dbCustomers = new DBCustomers();
+        ObservableList<Customer> customerObservableList = dbCustomers.getAllCustomers();
 
         // Set up table view, let table know which objects will be working with
         table_view_id.setItems(customerObservableList);
@@ -75,7 +76,8 @@ public class Customers implements Initializable {
         phone_number_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<>("phone"));
         country_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<>("country"));
 
-        ObservableList<Country> countryObservableList = DBCountries.getAllCountries();
+        DBCountries dbCountries = new DBCountries();
+        ObservableList<Country> countryObservableList = dbCountries.getAllCountries();
         country_combo_id.setItems(countryObservableList);
 
         // Get value of combobox

@@ -3,14 +3,28 @@ package data;
 import model.Country;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import model.Customer;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
-public class DBCountries {
-    public static ObservableList<Country> getAllCountries() {
+interface CountryDAO{
+    // CREATE, READ, UPDATE, DELETE
+    public Country addCountry(); // create
+    public ObservableList<Country> getAllCountries(); // read
+    public Country getCountry(int countryId); // read
+    public Country editCountry(Country country); // update
+    public boolean deleteCountry(Country country); // delete
+}
+public class DBCountries extends JDBC implements CountryDAO{
+    @Override
+    public Country addCountry() {
+        return null;
+    }
+
+    public  ObservableList<Country> getAllCountries() {
         ObservableList<Country> countrieslist = FXCollections.observableArrayList();
         try {
             String sql = "SELECT * FROM countries";
@@ -31,6 +45,21 @@ public class DBCountries {
         }
 
         return countrieslist;
+    }
+
+    @Override
+    public Country getCountry(int countryId) {
+        return null;
+    }
+
+    @Override
+    public Country editCountry(Country country) {
+        return null;
+    }
+
+    @Override
+    public boolean deleteCountry(Country country) {
+        return false;
     }
 
     /**

@@ -7,8 +7,22 @@ import utils.ProcessQuery;
 
 import java.util.concurrent.atomic.AtomicReference;
 
-public class DBCustomers {
-    public static ObservableList<Customer> getAllCustomers() {
+interface CustomerDAO{
+    // CREATE, READ, UPDATE, DELETE
+    public Customer addCustomer(); // create
+    public ObservableList<Customer> getAllCustomers(); // read
+    public Customer getCustomer(int customerId); // read
+    public Customer editCustomer(Customer customer); // update
+    public boolean deleteCustomer(Customer customer); // delete
+}
+
+public class DBCustomers extends JDBC implements CustomerDAO{
+    @Override
+    public Customer addCustomer() {
+        return null;
+    }
+
+    public ObservableList<Customer> getAllCustomers() {
         ObservableList<Customer> customerList = FXCollections.observableArrayList();
         ProcessQuery.process("SELECT * FROM customers", resultSet -> {
             Customer customer = new Customer(
@@ -24,8 +38,15 @@ public class DBCustomers {
         return customerList;
     }
 
-    public static Customer updateCustomer(Customer customer) {
+    @Override
+    public Customer getCustomer(int customerId) {
+        return null;
+    }
 
+
+
+    @Override
+    public Customer editCustomer(Customer customer) {
         AtomicReference<Customer> C = null;
         String sql = "UPDATE customers SET" +
                 " Customer_Name = " + customer.getName() +
@@ -48,6 +69,12 @@ public class DBCustomers {
 
         });
         return C.get();
-
     }
+
+    @Override
+    public boolean deleteCustomer(Customer customer) {
+        return false;
+    }
+
+
 }

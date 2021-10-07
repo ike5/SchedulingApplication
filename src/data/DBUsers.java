@@ -1,5 +1,7 @@
 package data;
 
+import javafx.collections.ObservableList;
+import model.Customer;
 import model.User;
 import utils.ProcessQuery;
 
@@ -9,7 +11,16 @@ import java.sql.SQLException;
 import java.time.ZonedDateTime;
 import java.util.Locale;
 
-public class DBUsers extends User {
+interface UserDAO{
+    // CREATE, READ, UPDATE, DELETE
+    public User addUser(); // create
+    public ObservableList<User> getAllUsers(); // read
+    public User getUser(int UserId); // read
+    public User editUser(User user); // update
+    public boolean deleteUser(User user); // delete
+}
+
+public class DBUsers extends User implements UserDAO{
     private final String providedPassword;
 
     public DBUsers(String username, String password) {
@@ -87,6 +98,31 @@ public class DBUsers extends User {
     @Override
     public String lastUpdatedBy(String name) {
         return null;
+    }
+
+    @Override
+    public User addUser() {
+        return null;
+    }
+
+    @Override
+    public ObservableList<User> getAllUsers() {
+        return null;
+    }
+
+    @Override
+    public User getUser(int UserId) {
+        return null;
+    }
+
+    @Override
+    public User editUser(User user) {
+        return null;
+    }
+
+    @Override
+    public boolean deleteUser(User user) {
+        return false;
     }
 }
 
