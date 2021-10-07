@@ -1,5 +1,6 @@
 package utils;
 
+import java.lang.annotation.Inherited;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
@@ -39,7 +40,8 @@ public class JDBC {
         try {
             CONNECTION.close();
             System.out.println("Connection closed...");
-        } catch (Exception e) { System.out.println("Error:" + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Error:" + e.getMessage());
         }
     }
 

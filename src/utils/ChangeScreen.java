@@ -9,9 +9,10 @@ import test.Test;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-public class ChangeScreen {
 
-    public static void changeScreen(ActionEvent actionEvent, DBUsers userLogin, Parent scene, FunctionalChangeScreenInterface o) {
+@UtilityInterfaces
+public class ChangeScreen {
+  public static void changeScreen(ActionEvent actionEvent, DBUsers userLogin, Parent scene, UtilityInterfaces.FunctionalChangeScreenInterface o) {
         ResourceBundle rb = ResourceBundle.getBundle("RBundle", Locale.getDefault());
 
         if (userLogin.userExists()) {
