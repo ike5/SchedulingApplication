@@ -6,13 +6,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import utils.JDBC;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import static utils.JDBC.closeConnection;
-import static utils.JDBC.openConnection;
+import static data.JDBC.closeConnection;
+import static data.JDBC.openConnection;
 
 public class Main extends Application {
     @Override

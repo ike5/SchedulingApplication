@@ -1,6 +1,6 @@
 package test;
 
-import utils.JDBC;
+import data.JDBC;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

@@ -2,7 +2,7 @@ package controller;
 
 import javafx.scene.input.KeyEvent;
 import utils.ChangeScreen;
-import utils.DBUsers;
+import data.DBUsers;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

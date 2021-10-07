@@ -1,8 +1,9 @@
-package utils;
+package data;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Customer;
+import utils.ProcessQuery;
 
 import java.util.concurrent.atomic.AtomicReference;
 

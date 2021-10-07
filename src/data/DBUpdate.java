@@ -1,6 +1,7 @@
-package utils;
+package data;
 
 import model.Customer;
+import utils.ProcessQuery;
 
 import java.util.concurrent.atomic.AtomicReference;
 

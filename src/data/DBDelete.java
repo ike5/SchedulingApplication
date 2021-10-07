@@ -1,4 +1,4 @@
-package utils;
+package data;
 
 public abstract class DBDelete {
 }

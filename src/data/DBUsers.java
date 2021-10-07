@@ -1,6 +1,7 @@
-package utils;
+package data;
 
 import model.User;
+import utils.ProcessQuery;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
