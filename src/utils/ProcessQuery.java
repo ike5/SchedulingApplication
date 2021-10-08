@@ -17,8 +17,7 @@ public class ProcessQuery {
             ResultSet resultSet = ps.executeQuery();
 
             while (resultSet.next()) {
-                // Set up logic inside while loop
-                o.whileLogic(resultSet);
+                o.whileLogic(resultSet); // processes logic inside of while loop
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -36,10 +35,11 @@ public class ProcessQuery {
         try {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ResultSet resultSet = ps.executeQuery();
-            // Send resultSet to logic for processing
 
-            //FIXME - fix naming convention of whileLogic since it's not used with an while() loop here
-            o.whileLogic(resultSet);
+            //FIXME
+            // - fix naming convention of whileLogic since it's not used with an while() loop here
+
+            o.whileLogic(resultSet); // Send resultSet to logic for processing in an if-statement
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }

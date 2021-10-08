@@ -38,6 +38,7 @@ public class Customer {
         return phone;
     }
 
+    // probably need only country Id
     public Country getCountry() {
         return country;
     }

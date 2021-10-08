@@ -24,6 +24,8 @@ public class DBCustomers extends JDBC implements CustomerDAO{
 
     public ObservableList<Customer> getAllCustomers() {
         ObservableList<Customer> customerList = FXCollections.observableArrayList();
+        // widen query SELECT *
+        // select * from customers INNER JOIN first_level_divisions ON first_level_divisions.Division_ID = customers.Division_ID;
         ProcessQuery.process("SELECT * FROM customers", resultSet -> {
             Customer customer = new Customer(
                     resultSet.getInt("Customer_ID"),

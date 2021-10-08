@@ -6,7 +6,7 @@ import utils.UtilityInterfaces;
  * This class should not be instantiated but should be extended.
  */
 @UtilityInterfaces
-public abstract class User implements UtilityInterfaces.PersonInterface {
+public class User {
     private String password;
     private String username;
 
