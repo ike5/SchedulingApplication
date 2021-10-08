@@ -10,20 +10,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
-interface CountryDAO {
-    // CREATE, READ, UPDATE, DELETE
 
-    public ObservableList<Country> getAllCountries(); // read
-
-    public Country getCountry(int countryId); // read
-
-    public Country editCountry(Country country); // update
-
-    public boolean deleteCountry(Country country); // delete
-}
-
-public class DBCountries extends JDBC implements CountryDAO {
-
+public class DBCountries extends JDBC {
 
     public ObservableList<Country> getAllCountries() {
         ObservableList<Country> countrieslist = FXCollections.observableArrayList();
@@ -48,17 +36,14 @@ public class DBCountries extends JDBC implements CountryDAO {
         return countrieslist;
     }
 
-    @Override
     public Country getCountry(int countryId) {
         return null;
     }
 
-    @Override
     public Country editCountry(Country country) {
         return null;
     }
 
-    @Override
     public boolean deleteCountry(Country country) {
         return false;
     }

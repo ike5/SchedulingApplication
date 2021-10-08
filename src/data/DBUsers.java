@@ -5,20 +5,8 @@ import model.User;
 import utils.ProcessQuery;
 
 
-interface UserDAO {
-    // CREATE, READ, UPDATE, DELETE
-    public User addUser();                      // create
 
-    public ObservableList<User> getAllUsers();  // read
-
-    public User getUser(); // read
-
-    public User editUser(User user); // update
-
-    public boolean deleteUser(User user); // delete
-}
-
-public class DBUsers extends JDBC implements UserDAO {
+public class DBUsers extends JDBC {
     private final String providedPassword;
     User user;
 
@@ -70,27 +58,22 @@ public class DBUsers extends JDBC implements UserDAO {
         return user.getPassword().equals(providedPassword);
     }
 
-    @Override
     public User addUser() {
         return null;
     }
 
-    @Override
     public ObservableList<User> getAllUsers() {
         return null;
     }
 
-    @Override
     public User getUser() {
         return user;
     }
 
-    @Override
     public User editUser(User user) {
         return null;
     }
 
-    @Override
     public boolean deleteUser(User user) {
         return false;
     }

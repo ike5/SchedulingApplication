@@ -5,19 +5,7 @@ import javafx.collections.ObservableList;
 import model.Customer;
 import utils.ProcessQuery;
 
-import java.util.concurrent.atomic.AtomicReference;
-
-interface CustomerDAO{
-    // CREATE, READ, UPDATE, DELETE
-    public Customer addCustomer(); // create
-    public ObservableList<Customer> getAllCustomers(); // read
-    public Customer getCustomer(int customerId); // read
-    public Customer editCustomer(Customer customer); // update
-    public boolean deleteCustomer(Customer customer); // delete
-}
-
-public class DBCustomers extends JDBC implements CustomerDAO{
-    @Override
+public class DBCustomers extends JDBC {
     public Customer addCustomer() {
         return null;
     }
@@ -41,7 +29,6 @@ public class DBCustomers extends JDBC implements CustomerDAO{
         return customerList;
     }
 
-    @Override
     public Customer getCustomer(int customerId) {
         return null;
     }
@@ -50,7 +37,6 @@ public class DBCustomers extends JDBC implements CustomerDAO{
 
     // FIXME
     //
-    @Override
     public Customer editCustomer(Customer customer) {
 //        AtomicReference<Customer> C = null;
         String sql = "UPDATE customers SET" +
@@ -76,7 +62,6 @@ public class DBCustomers extends JDBC implements CustomerDAO{
         return null;
     }
 
-    @Override
     public boolean deleteCustomer(Customer customer) {
         return false;
     }
