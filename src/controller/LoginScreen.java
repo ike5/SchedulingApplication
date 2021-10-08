@@ -75,6 +75,7 @@ public class LoginScreen implements Initializable {
         //FIXME (med) - pressing ENTER when button is highlighted doesn't work
 
         userLogin = new DBUsers(username_field_id.getText(), password_field_id.getText());
+
         ChangeScreen.changeScreen(
                 actionEvent,
                 userLogin,

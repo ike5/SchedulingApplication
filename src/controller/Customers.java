@@ -12,6 +12,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.Country;
+import model.CustomAlert;
 import model.Customer;
 
 import java.io.IOException;
@@ -66,15 +67,16 @@ public class Customers implements Initializable {
         DBCustomers dbCustomers = new DBCustomers();
         ObservableList<Customer> customerObservableList = dbCustomers.getAllCustomers();
 
-        // Set up table view, let table know which objects will be working with
         table_view_id.setItems(customerObservableList);
 
+        // string is tied to getter in the Country class--example: getDivisionId()
         id_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<>("id"));
         name_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<>("name"));
         address_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<>("address"));
         postal_code_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<>("postal"));
         phone_number_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<>("phone"));
-        country_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<>("country"));
+        state_province_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<>("divisionID")); // note 'd' is capitalized
+        country_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<>("countryId"));
 
         DBCountries dbCountries = new DBCountries();
         ObservableList<Country> countryObservableList = dbCountries.getAllCountries();
@@ -86,6 +88,7 @@ public class Customers implements Initializable {
     }
 
     public void saveButtonOnAction(ActionEvent actionEvent) {
+        // worry about validation here
     }
 
     public void deleteCustomerButtonOnAction(ActionEvent actionEvent) {
@@ -97,6 +100,9 @@ public class Customers implements Initializable {
     public void logoutButtonOnAction(ActionEvent actionEvent) throws IOException {
         //TODO
         // - Alert to save or discard
+
+        CustomAlert.makeAlert(Alert.AlertType.CONFIRMATION, "logout_button", "confirm_message");
+
         Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
         Parent scene = FXMLLoader.load(getClass().getResource("/view/LoginScreen.fxml"));
         stage.setTitle(null);

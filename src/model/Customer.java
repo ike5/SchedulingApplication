@@ -6,16 +6,17 @@ public class Customer {
     private String address;
     private String postalCode;
     private String phone;
-    private Country country;
+    private int countryId;
     private int divisionID;
 
-    public Customer(int id, String name, String address, String postalCode, String phone, int divisionId) {
+    public Customer(int id, String name, String address, String postalCode, String phone, int divisionId, int countryId) {
         this.id = id;
         this.name = name;
         this.address = address;
         this.postalCode = postalCode;
         this.phone = phone;
         this.divisionID = divisionId;
+        this.countryId = countryId;
     }
 
     public int getId() {
@@ -38,9 +39,12 @@ public class Customer {
         return phone;
     }
 
-    // probably need only country Id
-    public Country getCountry() {
-        return country;
+    public int getCountryId() {
+        return countryId;
+    }
+
+    public void setCountryId(int countryId) {
+        this.countryId = countryId;
     }
 
     public int getDivisionID() {
@@ -71,7 +75,5 @@ public class Customer {
         this.phone = phone;
     }
 
-    public void setCountry(Country country) {
-        this.country = country;
-    }
+
 }

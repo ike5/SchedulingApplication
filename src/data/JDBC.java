@@ -15,7 +15,6 @@ public class JDBC {
     static Connection conn;
 
     public static Connection openConnection() {
-
         try {
             Class.forName(driver); // Locate Driver
             conn = DriverManager.getConnection(jdbc_url, username, password);

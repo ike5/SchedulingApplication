@@ -34,7 +34,6 @@ public class ChangeScreen {
             }
         } else {
             CustomAlert.makeAlert(Alert.AlertType.ERROR, "incorrect_username", "username_alert_title");
-
         }
     }
 }

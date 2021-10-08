@@ -26,14 +26,15 @@ public class DBCustomers extends JDBC implements CustomerDAO{
         ObservableList<Customer> customerList = FXCollections.observableArrayList();
         // widen query SELECT *
         // select * from customers INNER JOIN first_level_divisions ON first_level_divisions.Division_ID = customers.Division_ID;
-        ProcessQuery.process("SELECT * FROM customers", resultSet -> {
+        ProcessQuery.process("select * from customers INNER JOIN first_level_divisions ON first_level_divisions.Division_ID = customers.Division_ID", resultSet -> {
             Customer customer = new Customer(
                     resultSet.getInt("Customer_ID"),
                     resultSet.getString("Customer_Name"),
                     resultSet.getString("Address"),
                     resultSet.getString("Postal_Code"),
                     resultSet.getString("Phone"),
-                    resultSet.getInt("Division_ID")
+                    resultSet.getInt("Division_ID"),
+                    resultSet.getInt("COUNTRY_ID")
             );
             customerList.add(customer);
         });
@@ -47,9 +48,11 @@ public class DBCustomers extends JDBC implements CustomerDAO{
 
 
 
+    // FIXME
+    //
     @Override
     public Customer editCustomer(Customer customer) {
-        AtomicReference<Customer> C = null;
+//        AtomicReference<Customer> C = null;
         String sql = "UPDATE customers SET" +
                 " Customer_Name = " + customer.getName() +
                 ", Address = " + customer.getAddress() +
@@ -58,19 +61,19 @@ public class DBCustomers extends JDBC implements CustomerDAO{
                 ", Division_ID = " + customer.getDivisionID() +
                 " WHERE Customer_ID = " + customer.getId();
 
-        ProcessQuery.process(sql, resultSet -> {
-            assert false;
-            C.set(new Customer(
-                    resultSet.getInt("Customer_ID"),
-                    resultSet.getString("Customer_Name"),
-                    resultSet.getString("Address"),
-                    resultSet.getString("Postal_Code"),
-                    resultSet.getString("Phone"),
-                    resultSet.getInt("Division_ID")
-            ));
-
-        });
-        return C.get();
+//        ProcessQuery.process(sql, resultSet -> {
+//            assert false;
+//            C.set(new Customer(
+//                    resultSet.getInt("Customer_ID"),
+//                    resultSet.getString("Customer_Name"),
+//                    resultSet.getString("Address"),
+//                    resultSet.getString("Postal_Code"),
+//                    resultSet.getString("Phone"),
+//                    resultSet.getInt("Division_ID")
+//            ));
+//
+//        });
+        return null;
     }
 
     @Override

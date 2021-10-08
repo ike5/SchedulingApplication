@@ -7,9 +7,9 @@ import utils.ProcessQuery;
 
 interface UserDAO {
     // CREATE, READ, UPDATE, DELETE
-    public User addUser(); // create
+    public User addUser();                      // create
 
-    public ObservableList<User> getAllUsers(); // read
+    public ObservableList<User> getAllUsers();  // read
 
     public User getUser(); // read
 
