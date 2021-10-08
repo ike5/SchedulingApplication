@@ -5,6 +5,7 @@ import model.User;
 import utils.ProcessQuery;
 
 
+// TODO - Add CRUD functionality
 
 public class DBUsers extends JDBC {
     private final String providedPassword;

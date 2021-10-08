@@ -1,7 +1,7 @@
 package data;
-interface DivisionsDAO{
 
-}
-public class DBDivisions implements DivisionsDAO{
+// TODO - Add CRUD functionality
+
+public class DBDivisions {
 
 }

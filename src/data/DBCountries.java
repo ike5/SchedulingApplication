@@ -10,6 +10,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
+//TODO
+// - Add CRUD functionality
+// - Remove extending JDBC
 
 public class DBCountries extends JDBC {
 

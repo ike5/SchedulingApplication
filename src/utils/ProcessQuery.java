@@ -11,7 +11,7 @@ import java.sql.SQLException;
  */
 @UtilityInterfaces
 public class ProcessQuery {
-    public static void process(String sql, UtilityInterfaces.FunctionalResultSetInterface o) {
+    public static void processExecute(String sql, UtilityInterfaces.FunctionalResultSetInterface o) {
         try {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ResultSet resultSet = ps.executeQuery();

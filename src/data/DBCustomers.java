@@ -5,6 +5,12 @@ import javafx.collections.ObservableList;
 import model.Customer;
 import utils.ProcessQuery;
 
+//TODO
+// - Add CRUD functionality
+// - remove extending JDBC
+
+
+
 public class DBCustomers extends JDBC {
     public Customer addCustomer() {
         return null;
@@ -14,7 +20,7 @@ public class DBCustomers extends JDBC {
         ObservableList<Customer> customerList = FXCollections.observableArrayList();
         // widen query SELECT *
         // select * from customers INNER JOIN first_level_divisions ON first_level_divisions.Division_ID = customers.Division_ID;
-        ProcessQuery.process("select * from customers INNER JOIN first_level_divisions ON first_level_divisions.Division_ID = customers.Division_ID", resultSet -> {
+        ProcessQuery.processExecute("select * from customers INNER JOIN first_level_divisions ON first_level_divisions.Division_ID = customers.Division_ID", resultSet -> {
             Customer customer = new Customer(
                     resultSet.getInt("Customer_ID"),
                     resultSet.getString("Customer_Name"),
