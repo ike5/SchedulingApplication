@@ -6,7 +6,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
-import model.CustomAlert;
 import test.Test;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -30,10 +29,14 @@ public class ChangeScreen {
                 stage.setScene(new Scene(scene));
                 stage.show();
             } else {
-                CustomAlert.makeAlert(Alert.AlertType.ERROR, "incorrect_password", "password_alert_title");
+                Alert alert = new Alert(Alert.AlertType.ERROR, rb.getString("incorrect_password"));
+                alert.setTitle(rb.getString("password_alert_title"));
+                alert.showAndWait();
             }
         } else {
-            CustomAlert.makeAlert(Alert.AlertType.ERROR, "incorrect_username", "username_alert_title");
+            Alert alert = new Alert(Alert.AlertType.ERROR, rb.getString("incorrect_username"));
+            alert.setTitle(rb.getString("username_alert_title"));
+            alert.showAndWait();
         }
     }
 }

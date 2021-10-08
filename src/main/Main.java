@@ -14,11 +14,14 @@ import static data.JDBC.closeConnection;
 import static data.JDBC.openConnection;
 
 public class Main extends Application {
+    public static ResourceBundle resourceBundle;
+
     @Override
     public void start(Stage stage) throws Exception {
-        ResourceBundle rb = ResourceBundle.getBundle("RBundle", Locale.getDefault());
+        resourceBundle = ResourceBundle.getBundle("RBundle", Locale.getDefault()); // initialize ResourceBundle for application
+
         Parent root = FXMLLoader.load(getClass().getResource("/view/LoginScreen.fxml")); // slash represents the src folder
-        stage.setTitle(rb.getString("set_title"));
+        stage.setTitle(resourceBundle.getString("set_title"));
         stage.setScene(new Scene(root, 400, 300)); // (width, height)
         stage.show();
 

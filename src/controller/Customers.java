@@ -12,7 +12,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.Country;
-import model.CustomAlert;
 import model.Customer;
 
 import java.io.IOException;
@@ -101,7 +100,9 @@ public class Customers implements Initializable {
         //TODO
         // - Alert to save or discard
 
-        CustomAlert.makeAlert(Alert.AlertType.CONFIRMATION, "logout_button", "confirm_message");
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Logout?");
+        alert.setTitle("Confirm logout?");
+        alert.showAndWait();
 
         Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
         Parent scene = FXMLLoader.load(getClass().getResource("/view/LoginScreen.fxml"));

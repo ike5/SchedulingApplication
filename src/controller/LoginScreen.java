@@ -1,6 +1,7 @@
 package controller;
 
 import javafx.scene.input.KeyEvent;
+import main.Main;
 import utils.ChangeScreen;
 import data.DBUsers;
 import javafx.event.ActionEvent;
@@ -14,7 +15,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class LoginScreen implements Initializable {
@@ -30,17 +30,16 @@ public class LoginScreen implements Initializable {
     public Button login_id;
     private DBUsers userLogin;
 
-    ResourceBundle rb = ResourceBundle.getBundle("RBundle", Locale.getDefault());
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Set Labels to default language
-        language_zone_id.setText(rb.getString("zone_id"));
-        welcome_message.setText(rb.getString("welcome_message"));
-        username_id.setText(rb.getString("username"));
-        password_id.setText(rb.getString("password"));
-        login_id.setText(rb.getString("login_button"));
-        username_field_id.setText(rb.getString("username_field"));
+        language_zone_id.setText(Main.resourceBundle.getString("zone_id"));
+        welcome_message.setText(Main.resourceBundle.getString("welcome_message"));
+        username_id.setText(Main.resourceBundle.getString("username"));
+        password_id.setText(Main.resourceBundle.getString("password"));
+        login_id.setText(Main.resourceBundle.getString("login_button"));
+        username_field_id.setText(Main.resourceBundle.getString("username_field"));
     }
 
     @FXML
@@ -111,7 +110,7 @@ public class LoginScreen implements Initializable {
         if (validateUsernameString()) {
             username_label_id.setVisible(false);
         } else {
-            username_label_id.setText(rb.getString("invalid_username_format"));
+            username_label_id.setText(Main.resourceBundle.getString("invalid_username_format"));
             username_label_id.setVisible(true);
         }
     }
@@ -120,7 +119,7 @@ public class LoginScreen implements Initializable {
         if (validatePasswordString()) {
             password_label_id.setVisible(false);
         } else {
-            password_label_id.setText(rb.getString("invalid_password_format"));
+            password_label_id.setText(Main.resourceBundle.getString("invalid_password_format"));
             password_label_id.setVisible(true);
         }
 

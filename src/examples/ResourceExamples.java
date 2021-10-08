@@ -76,8 +76,8 @@ public class ResourceExamples {
          */
 
 //        Locale locale = new Locale("fr", "CA");
-//        ResourceBundle rb = ResourceBundle.getBundle("RB", locale);
-//        System.out.println(rb.getObject("mykey"));
+//        ResourceBundle resourceBundle = ResourceBundle.getBundle("RB", locale);
+//        System.out.println(resourceBundle.getObject("mykey"));
 
         Locale locale = new Locale("en", "UK");
         ResourceBundle rb = ResourceBundle.getBundle("RB", locale);
