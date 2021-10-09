@@ -24,9 +24,6 @@ public class Main extends Application {
         stage.setTitle(resourceBundle.getString("set_title"));
         stage.setScene(new Scene(root, 400, 300)); // (width, height)
         stage.show();
-
-        //FIXME
-        // - Set appropriate width and height for LoginScreen.fxml
     }
 
     public static void main(String[] args) {

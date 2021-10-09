@@ -222,3 +222,9 @@ public class Test {
 ## Documentation on DateTime
 
 https://docs.oracle.com/javase/8/docs/api/java/time/package-summary.html
+
+
+## How to create the database in MySQL
+
+CREATE DATABASE client_schedule;
+

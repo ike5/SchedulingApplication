@@ -14,7 +14,7 @@ import java.sql.Timestamp;
 // - Add CRUD functionality
 // - Remove extending JDBC
 
-public class DBCountries extends JDBC {
+public class DBCountries {
 
     /**
      * Returns the ResultSet object of the SELECT * query from the countries database table.
@@ -65,7 +65,7 @@ public class DBCountries extends JDBC {
         String sql = "SELECT Country_ID, Country FROM countries WHERE Country_ID = " + countryId;
         Country country;
         try {
-            PreparedStatement ps = getConnection().prepareStatement(sql);
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ResultSet resultSet = ps.executeQuery();
 
             while (resultSet.next()) {
@@ -99,6 +99,13 @@ public class DBCountries extends JDBC {
         return false;
     }
 
+    /**
+     * Should not use this method since SQL database is READ ONLY for Country
+     * @param country
+     * @return
+     */
+    @Deprecated
+    public boolean createCountry(Country country){ return false;}
 //    /**
 //     * Could implement some sort of factory to reduce the repetitive code?
 //     *

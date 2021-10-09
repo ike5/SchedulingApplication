@@ -36,9 +36,7 @@ public class ProcessQuery {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ResultSet resultSet = ps.executeQuery();
 
-            //FIXME
-            // - fix naming convention of whileLogic since it's not used with an while() loop here
-
+            //fixme - fix the naming convention for the lambda if you use it
             o.whileLogic(resultSet); // Send resultSet to logic for processing in an if-statement
         } catch (SQLException throwables) {
             throwables.printStackTrace();
