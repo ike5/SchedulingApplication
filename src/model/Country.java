@@ -4,17 +4,11 @@ public class Country {
     private final int countryId;
     private final String name;
 
+    // country id should always pair with a name (and ideally never change)
     public Country(int countryId, String name){
         this.countryId = countryId;
         this.name = name;
     }
-
-//    public Country(String name, int divisionId){
-//        this.name = name;
-//        this.id = divisionId;
-//    }
-
-
 
     public int getCountryId() {
         return countryId;

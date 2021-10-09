@@ -16,42 +16,51 @@ import java.sql.Timestamp;
 
 public class DBCountries extends JDBC {
 
+    /**
+     * Returns the ResultSet object of the SELECT * query from the countries database table.
+     *
+     * @return ResultSet object
+     */
     public ResultSet getAllCountriesResultSet() {
         try {
             String sql = "SELECT * FROM countries";
 
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
-
             return ps.executeQuery();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
         }
         return null;
     }
 
+    /**
+     * Returns an ObservableList<Country> object of all countries listed in the countries database table.
+     * listed in the countries database table.
+     *
+     * @return ObservableList<Country> object
+     */
     public ObservableList<Country> getAllCountries() {
         ObservableList<Country> countryObservableList = FXCollections.observableArrayList();
         try {
-            String sql = "SELECT * FROM countries";
-
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
-
-            ResultSet rs = ps.executeQuery();
+            ResultSet rs = getAllCountriesResultSet();
 
             while (rs.next()) {
-                int countryId = rs.getInt("Country_ID");
-                String countryName = rs.getString("Country");
-                Country C = new Country(countryId, countryName);
+                Country C = new Country(rs.getInt("Country_ID"), rs.getString("Country"));
                 countryObservableList.add(C);
             }
-
         } catch (SQLException throwable) {
             throwable.printStackTrace();
         }
-
         return countryObservableList;
     }
 
+
+    /**
+     * Returns a Country object provided a country id.
+     *
+     * @param countryId
+     * @return Country object
+     */
     public Country getCountry(int countryId) {
         String sql = "SELECT Country_ID, Country FROM countries WHERE Country_ID = " + countryId;
         Country country;
@@ -59,19 +68,33 @@ public class DBCountries extends JDBC {
             PreparedStatement ps = getConnection().prepareStatement(sql);
             ResultSet resultSet = ps.executeQuery();
 
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 country = new Country(resultSet.getInt(1), resultSet.getString(2));
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
         }
         return null;
     }
 
-    public Country editCountry(Country country) {
+    /**
+     * Should not use this method since SQL database is READ ONLY for Country
+     *
+     * @param country
+     * @return
+     */
+    @Deprecated
+    public Country updateCountry(Country country) {
         return null;
     }
 
+    /**
+     * Should not use this method since SQL database is READ ONLY for Country
+     *
+     * @param country
+     * @return
+     */
+    @Deprecated
     public boolean deleteCountry(Country country) {
         return false;
     }
@@ -103,6 +126,11 @@ public class DBCountries extends JDBC {
 //        return country;
 //    }
 
+    //FIXME - flagged unused method
+
+    /**
+     * Not sure if this method is necessary. Flag for removal
+     */
     public static void checkDateConversion() {
         System.out.println("CREATE DATE TEST");
         String sql = "SELECT Create_Date from countries";
