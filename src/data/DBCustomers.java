@@ -11,12 +11,10 @@ import java.sql.SQLException;
 
 //TODO
 // - Add CRUD functionality
-// - remove extending JDBC
-
 
 public class DBCustomers {
 
-    public Customer addCustomer(String customerName, String address, String postalCode, String phone, int divisionId) {
+    public Customer insertCustomer(String customerName, String address, String postalCode, String phone, int divisionId) {
         String sql = "INSERT INTO customers (Customer_Name, Address, Postal_Code, Phone, Division_ID) VALUES (" +
                 "'" + customerName + "', " +
                 "'" + address + "', " +
@@ -26,12 +24,13 @@ public class DBCustomers {
         try {
             PreparedStatement ps = JDBC.openConnection().prepareStatement(sql);
             int sentinelValue = ps.executeUpdate();
-            ResultSet resultSet = getCustomerResultSet(sentinelValue);
-            while(resultSet.next()){
+//            ResultSet resultSet = getCustomerResultSet(sentinelValue);
+            ResultSet resultSet = getAllCustomersResultSet();
+            while (resultSet.next()) {
                 System.out.println(
                         "Customer_ID: " + resultSet.getInt(1) +
-                        "\t Customer_Name: " + resultSet.getString(2) +
-                        "\t Address: "+ resultSet.getString(3)
+                                "\t Customer_Name: " + resultSet.getString(2) +
+                                "\t Address: " + resultSet.getString(3)
                 );
             }
             return customer;
@@ -43,9 +42,9 @@ public class DBCustomers {
 
     public static void main(String[] args) {
         JDBC.openConnection();
-        System.out.println(
-                new DBCustomers().addCustomer("John Maloney", "321 Main Street", "93342", "990-998-5434", 323)
-        );
+        // Division IDs must be real since they are foreign key constraints
+        Customer customer = new DBCustomers().insertCustomer("Test 1 Smithf", "23423 Avenue street", "98432", "432-123-6656", 42);
+        System.out.println(customer.getName());
     }
 
     /**
@@ -64,7 +63,7 @@ public class DBCustomers {
         return null;
     }
 
-    public ResultSet getCustomerResultSet(int customerId){
+    public ResultSet getCustomerResultSet(int customerId) {
         String sql = "SELECT * FROM customers WHERE Customer_ID = " + customerId;
         try {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
@@ -166,8 +165,6 @@ public class DBCustomers {
     public boolean deleteCustomer(Customer customer) {
         return false;
     }
-
-
 
 
 }

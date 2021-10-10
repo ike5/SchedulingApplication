@@ -101,11 +101,14 @@ public class DBCountries {
 
     /**
      * Should not use this method since SQL database is READ ONLY for Country
+     *
      * @param country
      * @return
      */
     @Deprecated
-    public boolean createCountry(Country country){ return false;}
+    public boolean createCountry(Country country) {
+        return false;
+    }
 //    /**
 //     * Could implement some sort of factory to reduce the repetitive code?
 //     *
