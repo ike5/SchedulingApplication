@@ -9,11 +9,21 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-//TODO
-// - Add CRUD functionality
 
+// Completed CRUD functions
 public class DBCustomers {
 
+    /**
+     * Inserts a customer into the customers database table. All data must be provided in order for this method to
+     * work properly.
+     *
+     * @param customerName The Customer_Name field
+     * @param address      The Address field
+     * @param postalCode   The Postal_Code field
+     * @param phone        The Phone field
+     * @param divisionId   The Division_ID foreign key constraint
+     * @return Returns a new Customer object or null if entry was unsuccessful.
+     */
     public Customer insertCustomer(String customerName, String address, String postalCode, String phone, int divisionId) {
         String sql = "INSERT INTO customers (Customer_Name, Address, Postal_Code, Phone, Division_ID) VALUES (" +
                 "'" + customerName + "', " +
@@ -22,29 +32,48 @@ public class DBCustomers {
                 "'" + phone + "', " + divisionId + ")";
         Customer customer = null;
         try {
-            PreparedStatement ps = JDBC.openConnection().prepareStatement(sql);
-            int sentinelValue = ps.executeUpdate();
-//            ResultSet resultSet = getCustomerResultSet(sentinelValue);
+            PreparedStatement ps = JDBC.openConnection().prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE,
+                    ResultSet.CONCUR_UPDATABLE);
+
+            ps.executeUpdate();
             ResultSet resultSet = getAllCustomersResultSet();
             while (resultSet.next()) {
-                System.out.println(
-                        "Customer_ID: " + resultSet.getInt(1) +
-                                "\t Customer_Name: " + resultSet.getString(2) +
-                                "\t Address: " + resultSet.getString(3)
+                resultSet.last(); // go to last row of table for efficiency
+                customer = new Customer(
+                        resultSet.getInt("Customer_ID"),
+                        resultSet.getString("Customer_Name"),
+                        resultSet.getString("Address"),
+                        resultSet.getString("Postal_Code"),
+                        resultSet.getString("Phone"),
+                        resultSet.getInt("Division_ID")
                 );
             }
-            return customer;
+            return customer; // only the last entry is the customer created
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
         return customer;
     }
 
-    public static void main(String[] args) {
-        JDBC.openConnection();
-        // Division IDs must be real since they are foreign key constraints
-        Customer customer = new DBCustomers().insertCustomer("Test 1 Smithf", "23423 Avenue street", "98432", "432-123-6656", 42);
-        System.out.println(customer.getName());
+    /**
+     * Inserts a customer into the customers database table provided a Customer object.
+     *
+     * @param customer The Customer object to insert
+     * @return Returns -1 if insert unsuccessful and a value >= 1 if successful.
+     */
+    public int insertCustomerByObject(Customer customer) {
+        String sql = "INSERT INTO customers (Customer_Name, Address, Postal_Code, Phone, Division_ID) VALUES (" +
+                "'" + customer.getName() + "', " +
+                "'" + customer.getAddress() + "', " +
+                "'" + customer.getPostal() + "', " +
+                "'" + customer.getPhone() + "', " + customer.getDivisionID() + ")";
+        try {
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            return ps.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return -1; // if unsuccessful
     }
 
     /**
@@ -55,7 +84,8 @@ public class DBCustomers {
     public ResultSet getAllCustomersResultSet() {
         String sql = "SELECT * FROM customers INNER JOIN first_level_divisions ON first_level_divisions.Division_ID = customers.Division_ID";
         try {
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE,
+                    ResultSet.CONCUR_UPDATABLE);
             return ps.executeQuery();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -91,8 +121,7 @@ public class DBCustomers {
                         resultSet.getString("Address"),
                         resultSet.getString("Postal_Code"),
                         resultSet.getString("Phone"),
-                        resultSet.getInt("Division_ID"),
-                        resultSet.getInt("COUNTRY_ID")
+                        resultSet.getInt("Division_ID")
                 );
                 customerList.add(customer);
             }
@@ -123,8 +152,7 @@ public class DBCustomers {
                         resultSet.getString("Address"),
                         resultSet.getString("Postal_Code"),
                         resultSet.getString("Phone"),
-                        resultSet.getInt("Division_ID"),
-                        resultSet.getInt("COUNTRY_ID")
+                        resultSet.getInt("Division_ID")
                 );
             }
             return customer;
@@ -155,15 +183,47 @@ public class DBCustomers {
             PreparedStatement ps = JDBC.openConnection().prepareStatement(sql);
             int sentinelValue = ps.executeUpdate();
 
-            return getCustomer(sentinelValue);
+            return getCustomer(customer.getId()); // returns updated customer object from database
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        return null;
+        return null; // if unsuccessful
     }
 
-    public boolean deleteCustomer(Customer customer) {
-        return false;
+    /**
+     * Deletes customer from database table provided a Customer object.
+     *
+     * @param customer Customer object
+     * @return Returns -1 if unsuccessful and > 1 if successful
+     */
+    public int deleteCustomer(Customer customer) {
+        String sql = "DELETE FROM customers WHERE Customer_ID = " + customer.getId();
+        // May have trouble with ON CASCADE DELETE since there are tied foreign key values.
+        try {
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            return ps.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return -1; // if unsuccessful
+    }
+
+    /**
+     * Deletes customer from database table provided a customer ID integer.
+     *
+     * @param customerId An integer representing the customer ID
+     * @return Returns -1 if unsuccessful and > 1 if successful
+     */
+    public int deleteCustomerById(int customerId) {
+        String sql = "DELETE FROM customers WHERE Customer_ID = " + customerId;
+        // You may have trouble deleting without first cascading delete other items in the database related to the customer
+        try {
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            return ps.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return -1; // if unsuccessful
     }
 
 
