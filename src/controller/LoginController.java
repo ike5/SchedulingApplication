@@ -2,6 +2,7 @@ package controller;
 
 import javafx.scene.input.KeyEvent;
 import main.Main;
+import model.User;
 import utils.ChangeScreen;
 import data.DBUsers;
 import javafx.event.ActionEvent;
@@ -29,6 +30,7 @@ public class LoginController implements Initializable {
     public TextField password_field_id;
     public Button login_id;
     private DBUsers userLogin;
+    private User user;
 
 
 

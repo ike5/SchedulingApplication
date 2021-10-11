@@ -1,11 +1,9 @@
 package model;
 
-import utils.UtilityInterfaces;
 
 /**
  * This class should not be instantiated but should be extended.
  */
-@UtilityInterfaces
 public class User {
     private String password;
     private String username;

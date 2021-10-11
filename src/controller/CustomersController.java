@@ -16,6 +16,7 @@ import model.Customer;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class CustomersController implements Initializable {
@@ -97,17 +98,16 @@ public class CustomersController implements Initializable {
     }
 
     public void logoutButtonOnAction(ActionEvent actionEvent) throws IOException {
-        //TODO
-        // - Alert to save or discard
-
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Logout?");
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION,"Logout?");
         alert.setTitle("Confirm logout?");
-        alert.showAndWait();
+        Optional<ButtonType> result = alert.showAndWait();
 
-        Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
-        Parent scene = FXMLLoader.load(getClass().getResource("/view/LoginScreen.fxml"));
-        stage.setTitle(null);
-        stage.setScene(new Scene(scene));
-        stage.show();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
+            Parent scene = FXMLLoader.load(getClass().getResource("/view/LoginScreen.fxml"));
+            stage.setTitle(null);
+            stage.setScene(new Scene(scene));
+            stage.show();
+        }
     }
 }
