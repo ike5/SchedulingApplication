@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class LoginScreen implements Initializable {
+public class LoginController implements Initializable {
     public Label zone_id;
     public Label language_zone_id;
     public Label welcome_message;

@@ -1,5 +1,7 @@
 package model;
 
+import data.DBCountries;
+
 public class Customer {
     private int id;
     private String name;
@@ -7,14 +9,18 @@ public class Customer {
     private String postalCode;
     private String phone;
     private int divisionID;
+    private int countryId;
+    private Country country;
 
     public Customer(int id, String name, String address, String postalCode, String phone, int divisionId) {
-        this.id = id;
+        this.id = id; // This can throw an error in the database if not normalized
         this.name = name;
         this.address = address;
         this.postalCode = postalCode;
         this.phone = phone;
         this.divisionID = divisionId;
+        this.country = DBCountries.getCountryFromDivisionId(divisionId); // This can throw an error
+        this.countryId = country.getCountryId();
     }
 
     public int getId() {
@@ -43,6 +49,18 @@ public class Customer {
 
     public void setDivisionID(int divisionID) {
         this.divisionID = divisionID;
+    }
+
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public int getCountryId() {
+        return countryId;
+    }
+
+    public void setCountryId(int countryId) {
+        this.countryId = countryId;
     }
 
     public void setId(int id) {

@@ -10,10 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
-//TODO
-// - Add CRUD functionality
-// - Remove extending JDBC
-
+// Completed CRUD functionality
 public class DBCountries {
 
     /**
@@ -42,11 +39,11 @@ public class DBCountries {
     public ObservableList<Country> getAllCountries() {
         ObservableList<Country> countryObservableList = FXCollections.observableArrayList();
         try {
-            ResultSet rs = getAllCountriesResultSet();
+            ResultSet resultSet = getAllCountriesResultSet();
 
-            while (rs.next()) {
-                Country C = new Country(rs.getInt("Country_ID"), rs.getString("Country"));
-                countryObservableList.add(C);
+            while (resultSet.next()) {
+                Country country = new Country(resultSet.getInt("Country_ID"), resultSet.getString("Country"));
+                countryObservableList.add(country);
             }
         } catch (SQLException throwable) {
             throwable.printStackTrace();
@@ -63,7 +60,7 @@ public class DBCountries {
      */
     public Country getCountry(int countryId) {
         String sql = "SELECT Country_ID, Country FROM countries WHERE Country_ID = " + countryId;
-        Country country;
+        Country country = null;
         try {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ResultSet resultSet = ps.executeQuery();
@@ -71,10 +68,11 @@ public class DBCountries {
             while (resultSet.next()) {
                 country = new Country(resultSet.getInt(1), resultSet.getString(2));
             }
+
         } catch (SQLException throwable) {
             throwable.printStackTrace();
         }
-        return null;
+        return country;
     }
 
     /**
@@ -109,39 +107,41 @@ public class DBCountries {
     public boolean createCountry(Country country) {
         return false;
     }
-//    /**
-//     * Could implement some sort of factory to reduce the repetitive code?
-//     *
-//     * @param divisionId
-//     * @return
-//     */
-//    public static Country getCountryFromDivisionId(int divisionId) {
-//        Country country = null;
-//        try {
-//            String sql = "USE client_schedule; SELECT * FROM (SELECT countries.Country, client_schedule.first_level_divisions.Division_ID " +
-//                    "FROM countries INNER JOIN first_level_divisions ON countries.Country_ID = client_schedule.first_level_divisions.COUNTRY_ID) " +
-//                    "as CDI WHERE CDI.Division_ID = " + divisionId;
-//
-//            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
-//
-//            ResultSet rs = ps.executeQuery();
-//
-//            while (rs.next()) {
-//                country = new Country(rs.getString("Country"), rs.getInt("Division_ID"));
-//            }
-//
-//        } catch (SQLException throwables) {
-//            throwables.printStackTrace();
-//        }
-//        return country;
-//    }
 
-    //FIXME - flagged unused method
+    /**
+     * Could implement some sort of factory to reduce the repetitive code?
+     *
+     * @param divisionId
+     * @return
+     */
+    public static Country getCountryFromDivisionId(int divisionId) {
+        Country country = null;
+        try {
+            String sql = "USE client_schedule; SELECT * FROM (SELECT countries.Country, client_schedule.first_level_divisions.Division_ID " +
+                    "FROM countries INNER JOIN first_level_divisions ON countries.Country_ID = client_schedule.first_level_divisions.COUNTRY_ID) " +
+                    "as CDI WHERE CDI.Division_ID = " + divisionId;
+
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+
+            ResultSet resultSet = ps.executeQuery();
+
+            while (resultSet.next()) {
+                country = new Country(
+                        resultSet.getInt(1),
+                        resultSet.getString(2)
+                );
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return country;
+    }
 
     /**
      * Not sure if this method is necessary. Flag for removal
      */
-    public static void checkDateConversion() {
+    public static void checkDateConversion() { //FIXME - Do I need this method?
         System.out.println("CREATE DATE TEST");
         String sql = "SELECT Create_Date from countries";
         try {

@@ -18,7 +18,7 @@ import java.util.ResourceBundle;
  * This class serves no purpose for the project. I'm using it as a repository for my ideas
  * and will be deleting it before submission.
  */
-public class Users implements Initializable  {
+public class UsersController implements Initializable  {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
     }

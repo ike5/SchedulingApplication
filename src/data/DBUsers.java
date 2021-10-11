@@ -5,9 +5,13 @@ import model.User;
 import utils.ProcessQuery;
 
 
-// TODO - Add CRUD functionality
+//TODO - Add CRUD functionality
+// - Create
+// - Read
+// - Update
+// - Delete
 
-public class DBUsers extends JDBC {
+public class DBUsers {
     private final String providedPassword;
     User user;
 

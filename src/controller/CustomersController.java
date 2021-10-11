@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class Customers implements Initializable {
+public class CustomersController implements Initializable {
     public TextField customer_id_id;
     public TextField customer_name_id;
     public ComboBox<Country> country_combo_id;
@@ -68,7 +68,7 @@ public class Customers implements Initializable {
 
         table_view_id.setItems(customerObservableList);
 
-        // string is tied to getter in the Country class--example: getDivisionId()
+        // string is tied to getter in the Customer class--example: getDivisionId()
         id_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<>("id"));
         name_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<>("name"));
         address_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<>("address"));
