@@ -3,7 +3,12 @@ package data;
 //TODO - Add CRUD functionality
 // Read
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import model.Country;
+import model.Division;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,15 +26,20 @@ public class DBDivisions {
      *
      * @return A ResultSet object containing all listed Division_ID, Divisions related to the Country ID.
      */
-    public static ResultSet getDivisions(int countryId) {
+    public static ObservableList<Division> getDivisions(int countryId) {
         String sql = "SELECT Division_ID, Division FROM first_level_divisions WHERE COUNTRY_ID = " + countryId;
+        ObservableList<Division> divisionObservableList = FXCollections.observableArrayList();
         try {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
-            return ps.executeQuery();
+            ResultSet resultSet =  ps.executeQuery();
+            while(resultSet.next()){
+                Division division = new Division(resultSet.getInt("Division_ID"), resultSet.getString("Division"));
+                divisionObservableList.add(division);
+            }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        return null; // if unsuccessful
+        return divisionObservableList;
     }
 
     public static ResultSet getAllFirstLevelDivisions() {

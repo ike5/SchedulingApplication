@@ -1,5 +1,6 @@
 package controller;
 
+import data.DBDivisions;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -64,11 +65,13 @@ public class CustomersController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("Customers controller initialized!");
+
+        // Make a Customer ObservableList to populate the table
         DBCustomers dbCustomers = new DBCustomers();
         ObservableList<Customer> customerObservableList = dbCustomers.getAllCustomers();
 
+        // Populate table with customers
         table_view_id.setItems(customerObservableList);
-
         // string is tied to getter in the Customer class--example: getDivisionId()
         id_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<>("id"));
         name_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -78,13 +81,22 @@ public class CustomersController implements Initializable {
         state_province_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<>("divisionID")); // note 'd' is capitalized
         country_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<>("countryId"));
 
+        // Make a Country ObservableList to populate the ComboBox
         DBCountries dbCountries = new DBCountries();
         ObservableList<Country> countryObservableList = dbCountries.getAllCountries();
+        // Populate the ComboBox with Countries
         country_combo_id.setItems(countryObservableList);
 
-        // Get value of combobox
-        Country countryCombo = country_combo_id.getSelectionModel().getSelectedItem();
-        country_combo_id.setValue(countryCombo);
+        // Need callback of Country ComboBox in order to get the correct list of States/Provinces
+//        Country countryCombo = country_combo_id.getSelectionModel().getSelectedItem();
+//        country_combo_id.setValue(countryCombo);
+
+        table_view_id.getSelectionModel().selectedItemProperty().addListener((observableValue, oldSelection, newSelection) -> {
+                    if(newSelection != null){
+
+                    }
+                }
+        );
     }
 
     public void saveButtonOnAction(ActionEvent actionEvent) {
@@ -98,7 +110,7 @@ public class CustomersController implements Initializable {
     }
 
     public void logoutButtonOnAction(ActionEvent actionEvent) throws IOException {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION,"Logout?");
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Logout?");
         alert.setTitle("Confirm logout?");
         Optional<ButtonType> result = alert.showAndWait();
 
