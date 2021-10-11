@@ -93,6 +93,7 @@ public class DBCustomers {
         return null;
     }
 
+
     public ResultSet getCustomerResultSet(int customerId) {
         String sql = "SELECT * FROM customers WHERE Customer_ID = " + customerId;
         try {

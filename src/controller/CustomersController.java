@@ -14,6 +14,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.Country;
 import model.Customer;
+import model.Division;
 
 import java.io.IOException;
 import java.net.URL;
@@ -24,7 +25,7 @@ public class CustomersController implements Initializable {
     public TextField customer_id_id;
     public TextField customer_name_id;
     public ComboBox<Country> country_combo_id;
-    public ComboBox state_province_combo_id;
+    public ComboBox<Division> state_province_combo_id;
     public TextField address_id;
     public TextField postal_code_id;
     public TextField phone_number_id;
@@ -86,17 +87,20 @@ public class CustomersController implements Initializable {
         ObservableList<Country> countryObservableList = dbCountries.getAllCountries();
         // Populate the ComboBox with Countries
         country_combo_id.setItems(countryObservableList);
+        // Initialize ComboBox with a selected Country
+        country_combo_id.setValue(countryObservableList.get(0));
+        // get selection of Country ComboBox, returning only the division equal to the country
+        Country country = country_combo_id.getValue();
+        // Set Division ComboBox once selected
+        ObservableList<Division> divisionObservableList = DBDivisions.getDivisions(country.getCountryId());
+        state_province_combo_id.setItems(divisionObservableList);
 
         // Need callback of Country ComboBox in order to get the correct list of States/Provinces
 //        Country countryCombo = country_combo_id.getSelectionModel().getSelectedItem();
 //        country_combo_id.setValue(countryCombo);
 
-        table_view_id.getSelectionModel().selectedItemProperty().addListener((observableValue, oldSelection, newSelection) -> {
-                    if(newSelection != null){
 
-                    }
-                }
-        );
+
     }
 
     public void saveButtonOnAction(ActionEvent actionEvent) {
