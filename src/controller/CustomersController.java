@@ -46,9 +46,11 @@ public class CustomersController implements Initializable {
     }
 
     public void countryOnAction(ActionEvent actionEvent) {
+        onPull(null);
     }
 
     public void stateProvinceOnAction(ActionEvent actionEvent) {
+        onPull(null);
     }
 
     public void addressOnAction(ActionEvent actionEvent) {
@@ -97,7 +99,8 @@ public class CustomersController implements Initializable {
         country_combo_id.getSelectionModel().selectFirst();
 
         Country country = country_combo_id.getSelectionModel().getSelectedItem();
-        ObservableList<Division> divisionObservableList = DBDivisions.getDivisions(country.getCountryId());
+//        ObservableList<Division> divisionObservableList = DBDivisions.getDivisions(country.getCountryId());
+        ObservableList<Division> divisionObservableList = DBDivisions.getAllFirstLevelDivisions();
         state_province_combo_id.setVisibleRowCount(5);
         state_province_combo_id.setPromptText("Choose a country first...");
         state_province_combo_id.setItems(divisionObservableList);
@@ -105,6 +108,20 @@ public class CustomersController implements Initializable {
         // Need callback of Country ComboBox in order to get the correct list of States/Provinces
 //        Country countryCombo = country_combo_id.getSelectionModel().getSelectedItem();
 //        country_combo_id.setValue(countryCombo);
+
+        table_view_id.getSelectionModel().selectedItemProperty().addListener((observableValue, oldSelection, newSelection) -> {
+            if(newSelection != null){
+//                for (int i = 0; i < table_view_id.getItems().size(); i++){
+                    Customer customer = (Customer) table_view_id.getSelectionModel().getSelectedItem();
+                    customer_id_id.setText(String.valueOf(customer.getId()));
+                    customer_name_id.setText(customer.getName());
+                    address_id.setText(customer.getAddress());
+                    postal_code_id.setText(customer.getPostal());
+                    phone_number_id.setText(customer.getPhone());
+                    country_combo_id.getSelectionModel().select(customer.getCountryId());
+                    state_province_combo_id.getSelectionModel().select(customer.getDivisionID()); // only works for the united states
+            }
+        });
 
         //FIXME - remove callback text (ugly)
         Callback<ListView<Country>, ListCell<Country>> factory = countryListView -> new ListCell<Country>(){
@@ -127,16 +144,18 @@ public class CustomersController implements Initializable {
 
     }
 
-    public void saveButtonOnAction(ActionEvent actionEvent) {
-        // worry about validation here
-
+    public void onPull(ActionEvent actionEvent){
         Customer customer = (Customer) table_view_id.getSelectionModel().getSelectedItem();
         customer_id_id.setText(Integer.toString(customer.getId()));
         customer_name_id.setText(customer.getName());
         address_id.setText(customer.getAddress());
         postal_code_id.setText(customer.getPostal());
         phone_number_id.setText(customer.getPhone());
+    }
 
+    public void saveButtonOnAction(ActionEvent actionEvent) {
+        // worry about validation here
+        onPull(actionEvent);
     }
 
     public void deleteCustomerButtonOnAction(ActionEvent actionEvent) {
@@ -157,5 +176,12 @@ public class CustomersController implements Initializable {
             stage.setScene(new Scene(scene));
             stage.show();
         }
+    }
+
+    private boolean validateNameString() {
+        //FIXME (low) - Allow spaces
+
+        String regexUsername = "^[0-z]+";
+        return customer_name_id.getText().matches(regexUsername);
     }
 }

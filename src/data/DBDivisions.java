@@ -31,8 +31,8 @@ public class DBDivisions {
         ObservableList<Division> divisionObservableList = FXCollections.observableArrayList();
         try {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
-            ResultSet resultSet =  ps.executeQuery();
-            while(resultSet.next()){
+            ResultSet resultSet = ps.executeQuery();
+            while (resultSet.next()) {
                 Division division = new Division(resultSet.getInt("Division_ID"), resultSet.getString("Division"));
                 divisionObservableList.add(division);
             }
@@ -43,16 +43,22 @@ public class DBDivisions {
     }
 
 
-
-    public static ResultSet getAllFirstLevelDivisions() {
+    public static ObservableList<Division> getAllFirstLevelDivisions() {
         String sql = "select * from first_level_divisions";
+        ObservableList<Division> divisionObservableList = FXCollections.observableArrayList();
+
         try {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
-            return ps.executeQuery();
+            ResultSet resultSet = ps.executeQuery();
+
+            while (resultSet.next()) {
+                Division division = new Division(resultSet.getInt("Division_ID"), resultSet.getString("Division"));
+                divisionObservableList.add(division);
+            }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        return null; // if unsuccessful
+        return divisionObservableList;
     }
 
     /**
