@@ -24,4 +24,9 @@ public class Division {
     public void setDivisionId(int divisionId) {
         this.divisionId = divisionId;
     }
+
+    @Override
+    public String toString() {
+        return "#" + this.divisionId + " " + this.divisionName;
+    }
 }

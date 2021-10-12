@@ -117,7 +117,7 @@ public class DBCountries {
     public static Country getCountryFromDivisionId(int divisionId) {
         Country country = null;
         try {
-            String sql = "USE client_schedule; SELECT * FROM (SELECT countries.Country, client_schedule.first_level_divisions.Division_ID " +
+            String sql = "SELECT * FROM (SELECT countries.Country, client_schedule.first_level_divisions.Division_ID " +
                     "FROM countries INNER JOIN first_level_divisions ON countries.Country_ID = client_schedule.first_level_divisions.COUNTRY_ID) " +
                     "as CDI WHERE CDI.Division_ID = " + divisionId;
 

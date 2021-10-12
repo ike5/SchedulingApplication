@@ -42,6 +42,8 @@ public class DBDivisions {
         return divisionObservableList;
     }
 
+
+
     public static ResultSet getAllFirstLevelDivisions() {
         String sql = "select * from first_level_divisions";
         try {

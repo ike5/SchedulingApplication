@@ -60,6 +60,14 @@ public class CustomersController implements Initializable {
     }
 
     public void clearFormButtonOnAction(ActionEvent actionEvent) {
+        country_combo_id.getSelectionModel().clearSelection();
+        state_province_combo_id.getSelectionModel().clearSelection();
+
+        customer_id_id.clear();
+        customer_name_id.clear();
+        address_id.clear();
+        postal_code_id.clear();
+        phone_number_id.clear();
     }
 
 
@@ -82,29 +90,32 @@ public class CustomersController implements Initializable {
         state_province_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<>("divisionID")); // note 'd' is capitalized
         country_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<>("countryId"));
 
-        // Make a Country ObservableList to populate the ComboBox
         DBCountries dbCountries = new DBCountries();
         ObservableList<Country> countryObservableList = dbCountries.getAllCountries();
-        // Populate the ComboBox with Countries
         country_combo_id.setItems(countryObservableList);
-        // Initialize ComboBox with a selected Country
-        country_combo_id.setValue(countryObservableList.get(0));
-        // get selection of Country ComboBox, returning only the division equal to the country
-        Country country = country_combo_id.getValue();
-        // Set Division ComboBox once selected
+        country_combo_id.getSelectionModel().selectFirst();
+
+        Country country = country_combo_id.getSelectionModel().getSelectedItem();
         ObservableList<Division> divisionObservableList = DBDivisions.getDivisions(country.getCountryId());
+        state_province_combo_id.setVisibleRowCount(5);
+        state_province_combo_id.setPromptText("Choose a country first...");
         state_province_combo_id.setItems(divisionObservableList);
 
         // Need callback of Country ComboBox in order to get the correct list of States/Provinces
 //        Country countryCombo = country_combo_id.getSelectionModel().getSelectedItem();
 //        country_combo_id.setValue(countryCombo);
 
-
-
     }
 
     public void saveButtonOnAction(ActionEvent actionEvent) {
         // worry about validation here
+
+        Customer customer = (Customer) table_view_id.getSelectionModel().getSelectedItem();
+        customer_id_id.setText(Integer.toString(customer.getId()));
+        customer_name_id.setText(customer.getName());
+        address_id.setText(customer.getAddress());
+        postal_code_id.setText(customer.getPostal());
+        phone_number_id.setText(customer.getPhone());
     }
 
     public void deleteCustomerButtonOnAction(ActionEvent actionEvent) {
