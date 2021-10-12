@@ -12,6 +12,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.util.Callback;
 import model.Country;
 import model.Customer;
 import model.Division;
@@ -105,6 +106,25 @@ public class CustomersController implements Initializable {
 //        Country countryCombo = country_combo_id.getSelectionModel().getSelectedItem();
 //        country_combo_id.setValue(countryCombo);
 
+        //FIXME - remove callback text (ugly)
+        Callback<ListView<Country>, ListCell<Country>> factory = countryListView -> new ListCell<Country>(){
+            @Override
+            protected void updateItem(Country country, boolean empty) {
+                super.updateItem(country, empty);
+                setText(empty ? "" : ("C : " + country.getName()));
+            }
+        };
+        Callback<ListView<Country>, ListCell<Country>> factoryUsed = countryListView -> new ListCell<Country>(){
+            @Override
+            protected void updateItem(Country country, boolean empty) {
+                super.updateItem(country, empty);
+                setText(empty ? "" : ("Co: " + country.getName()));
+            }
+        };
+        country_combo_id.setCellFactory(factory);
+        country_combo_id.setButtonCell(factoryUsed.call(null));
+
+
     }
 
     public void saveButtonOnAction(ActionEvent actionEvent) {
@@ -116,6 +136,7 @@ public class CustomersController implements Initializable {
         address_id.setText(customer.getAddress());
         postal_code_id.setText(customer.getPostal());
         phone_number_id.setText(customer.getPhone());
+
     }
 
     public void deleteCustomerButtonOnAction(ActionEvent actionEvent) {
