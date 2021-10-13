@@ -13,6 +13,7 @@ public class Customer {
     private int countryId;
     private String countryName;
     private Country country;
+    private Division division;
 
     public Customer(int id, String name, String address, String postalCode, String phone, int divisionId) {
         this.id = id; // This can throw an error in the database if not normalized
@@ -21,9 +22,14 @@ public class Customer {
         this.postalCode = postalCode;
         this.phone = phone;
         this.divisionId = divisionId;
-        this.country = DBDivisions.getCountry(divisionId);
+        this.country = DBCountries.getCountry(divisionId);
         this.countryName = country.getName();
         this.countryId = country.getCountryId();
+        this.division = DBDivisions.getDivision(divisionId);
+    }
+
+    public Division getDivision(){
+        return division;
     }
 
     public int getId() {

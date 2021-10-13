@@ -80,8 +80,8 @@ public class DBCustomers {
      *
      * @return ResultSet object or null if query unsuccessful or if table empty
      */
-    public ResultSet getAllCustomersResultSet() {
-        String sql = "SELECT * FROM customers INNER JOIN first_level_divisions ON first_level_divisions.Division_ID = customers.Division_ID";
+    public static ResultSet getAllCustomersResultSet() {
+        String sql = "SELECT * FROM customers";
         try {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE,
                     ResultSet.CONCUR_UPDATABLE);
@@ -93,7 +93,7 @@ public class DBCustomers {
     }
 
 
-    public ResultSet getCustomerResultSet(int customerId) {
+    public static ResultSet getCustomerResultSet(int customerId) {
         String sql = "SELECT * FROM customers WHERE Customer_ID = " + customerId;
         try {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
@@ -110,7 +110,7 @@ public class DBCustomers {
      *
      * @return an ObservableList<Customer> object or null if no entries.
      */
-    public ObservableList<Customer> getAllCustomers() {
+    public static ObservableList<Customer> getAllCustomers() {
         ObservableList<Customer> customerList = FXCollections.observableArrayList();
         try {
             ResultSet resultSet = getAllCustomersResultSet(); // helper method

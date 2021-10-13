@@ -77,8 +77,7 @@ public class CustomersController implements Initializable {
         System.out.println("Customers controller initialized!");
 
         // Make a Customer ObservableList to populate the table
-        DBCustomers dbCustomers = new DBCustomers();
-        ObservableList<Customer> customerObservableList = dbCustomers.getAllCustomers();
+        ObservableList<Customer> customerObservableList = DBCustomers.getAllCustomers();
 
         // Populate table with customers
         table_view_id.setItems(customerObservableList);
