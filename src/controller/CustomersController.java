@@ -94,7 +94,6 @@ public class CustomersController implements Initializable {
         // Initialize Country ComboBox
         ObservableList<Country> countryObservableList = DBCountries.getAllCountries();
         country_combo_id.setItems(countryObservableList);
-        country_combo_id.getSelectionModel().selectFirst();
 
         // Initialize Province/State ComboBox
         ObservableList<Division> divisionObservableList = DBDivisions.getAllFirstLevelDivisions();
@@ -103,7 +102,12 @@ public class CustomersController implements Initializable {
 
         table_view_id.getSelectionModel().selectedItemProperty().addListener((observableValue, oldSelection, newSelection) -> {
             if (newSelection != null) {
-                new Test("new: " + newSelection.toString());
+                new Test("new: " + newSelection);
+                customer_id_id.setText(String.valueOf(((Customer) newSelection).getId()));
+                customer_name_id.setText(((Customer) newSelection).getName());
+                address_id.setText(((Customer)newSelection).getAddress());
+                phone_number_id.setText(((Customer) newSelection).getPhone());
+                postal_code_id.setText(((Customer) newSelection).getPostal());
 
             }
         });
