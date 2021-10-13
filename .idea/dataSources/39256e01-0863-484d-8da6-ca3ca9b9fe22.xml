@@ -1104,16 +1104,16 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
       <Position>14</Position>
       <DataType>int|0s</DataType>
     </column>
-    <index id="304" parent="284" name="Contact_ID">
-      <ColNames>Contact_ID</ColNames>
-      <Type>btree</Type>
-    </index>
-    <index id="305" parent="284" name="Customer_ID">
+    <index id="304" parent="284" name="Customer_ID">
       <ColNames>Customer_ID</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="306" parent="284" name="User_ID">
+    <index id="305" parent="284" name="User_ID">
       <ColNames>User_ID</ColNames>
+      <Type>btree</Type>
+    </index>
+    <index id="306" parent="284" name="Contact_ID">
+      <ColNames>Contact_ID</ColNames>
       <Type>btree</Type>
     </index>
     <key id="307" parent="284" name="PRIMARY">
