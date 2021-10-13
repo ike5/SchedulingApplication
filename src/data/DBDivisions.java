@@ -81,4 +81,22 @@ public class DBDivisions {
         return -1; // if unsuccessful
     }
 
+    public static Country getCountry(int divisionId){
+        String sql = "SELECT client_schedule.countries.Country_ID, Country, Division_ID " +
+                "FROM countries " +
+                "LEFT JOIN first_level_divisions fld ON countries.Country_ID = fld.COUNTRY_ID " +
+                "WHERE Division_ID = " + divisionId;
+        Country country = null;
+        try {
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ResultSet resultSet = ps.executeQuery();
+            while (resultSet.next()){
+                country = new Country(resultSet.getInt("Country_ID"), resultSet.getString("Country"));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return country;
+    }
+
 }

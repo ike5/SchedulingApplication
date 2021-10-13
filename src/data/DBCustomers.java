@@ -64,7 +64,7 @@ public class DBCustomers {
         String sql = "INSERT INTO customers (Customer_Name, Address, Postal_Code, Phone, Division_ID) VALUES (" +
                 "'" + customer.getName() + "', " +
                 "'" + customer.getAddress() + "', " +
-                "'" + customer.getPostal() + "', " +
+                "'" + customer.getPostalCode() + "', " +
                 "'" + customer.getPhone() + "', " + customer.getDivisionId() + ")";
         try {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
@@ -174,7 +174,7 @@ public class DBCustomers {
         String sql = "UPDATE customers SET" +
                 " Customer_Name = " + customer.getName() +
                 ", Address = " + customer.getAddress() +
-                ", Postal_Code = " + customer.getPostal() +
+                ", Postal_Code = " + customer.getPostalCode() +
                 ", Phone = " + customer.getPhone() +
                 ", Division_ID = " + customer.getDivisionId() +
                 " WHERE Customer_ID = " + customer.getId();

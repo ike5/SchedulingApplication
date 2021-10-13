@@ -87,7 +87,7 @@ public class CustomersController implements Initializable {
         name_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<Customer, String>("Name"));
         address_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<Customer, String>("Address"));
         phone_number_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<Customer, String>("Phone"));
-        postal_code_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<Customer, String>("Postal"));
+        postal_code_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<Customer, String>("PostalCode"));
         state_province_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<Customer, String>("DivisionId")); // note 'd' is capitalized
         country_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<Customer, String>("CountryName"));
 
@@ -107,8 +107,9 @@ public class CustomersController implements Initializable {
                 customer_name_id.setText(((Customer) newSelection).getName());
                 address_id.setText(((Customer)newSelection).getAddress());
                 phone_number_id.setText(((Customer) newSelection).getPhone());
-                postal_code_id.setText(((Customer) newSelection).getPostal());
+                postal_code_id.setText(((Customer) newSelection).getPostalCode());
 
+//                country_combo_id.setValue(((Customer)newSelection).getCountryName();
             }
         });
 
@@ -138,7 +139,7 @@ public class CustomersController implements Initializable {
         customer_id_id.setText(Integer.toString(customer.getId()));
         customer_name_id.setText(customer.getName());
         address_id.setText(customer.getAddress());
-        postal_code_id.setText(customer.getPostal());
+        postal_code_id.setText(customer.getPostalCode());
         phone_number_id.setText(customer.getPhone());
     }
 
