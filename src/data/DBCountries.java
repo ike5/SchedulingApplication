@@ -18,7 +18,7 @@ public class DBCountries {
      *
      * @return ResultSet object
      */
-    public ResultSet getAllCountriesResultSet() {
+    public static ResultSet getAllCountriesResultSet() {
         try {
             String sql = "SELECT * FROM countries";
 
@@ -36,7 +36,7 @@ public class DBCountries {
      *
      * @return ObservableList<Country> object
      */
-    public ObservableList<Country> getAllCountries() {
+    public static ObservableList<Country> getAllCountries() {
         ObservableList<Country> countryObservableList = FXCollections.observableArrayList();
         try {
             ResultSet resultSet = getAllCountriesResultSet();

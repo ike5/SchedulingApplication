@@ -15,6 +15,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import model.Country;
 import model.Customer;
 import model.Division;
+import test.Test;
 
 import java.io.IOException;
 import java.net.URL;
@@ -29,13 +30,13 @@ public class CustomersController implements Initializable {
     public TextField address_id;
     public TextField postal_code_id;
     public TextField phone_number_id;
-    public TableColumn id_tablecolumn_id;
-    public TableColumn name_tablecolumn_id;
-    public TableColumn address_tablecolumn_id;
-    public TableColumn postal_code_tablecolumn_id;
-    public TableColumn phone_number_tablecolumn_id;
-    public TableColumn country_tablecolumn_id;
-    public TableColumn state_province_tablecolumn_id;
+    public TableColumn<Customer, Integer> id_tablecolumn_id;
+    public TableColumn<Customer, String> name_tablecolumn_id;
+    public TableColumn<Customer, String> address_tablecolumn_id;
+    public TableColumn<Customer, String> postal_code_tablecolumn_id;
+    public TableColumn<Customer, String> phone_number_tablecolumn_id;
+    public TableColumn<Customer, String> country_tablecolumn_id;
+    public TableColumn<Customer, String> state_province_tablecolumn_id;
     public TableView table_view_id;
 
     public void customerIdOnAction(ActionEvent actionEvent) {
@@ -82,17 +83,16 @@ public class CustomersController implements Initializable {
         // Populate table with customers
         table_view_id.setItems(customerObservableList);
         // string is tied to getter in the Customer class--example: getDivisionId()
-        id_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<>("Id"));
-        name_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<>("Name"));
-        address_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<>("Address"));
-        phone_number_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<>("Phone"));
-        postal_code_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<>("Postal"));
-        state_province_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<>("DivisionId")); // note 'd' is capitalized
-        country_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<>("CountryName"));
+        id_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("Id"));
+        name_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<Customer, String>("Name"));
+        address_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<Customer, String>("Address"));
+        phone_number_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<Customer, String>("Phone"));
+        postal_code_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<Customer, String>("Postal"));
+        state_province_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<Customer, String>("DivisionId")); // note 'd' is capitalized
+        country_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<Customer, String>("CountryName"));
 
         // Initialize Country ComboBox
-        DBCountries dbCountries = new DBCountries();
-        ObservableList<Country> countryObservableList = dbCountries.getAllCountries();
+        ObservableList<Country> countryObservableList = DBCountries.getAllCountries();
         country_combo_id.setItems(countryObservableList);
         country_combo_id.getSelectionModel().selectFirst();
 
@@ -102,17 +102,9 @@ public class CustomersController implements Initializable {
         state_province_combo_id.setVisibleRowCount(5);
 
         table_view_id.getSelectionModel().selectedItemProperty().addListener((observableValue, oldSelection, newSelection) -> {
-            if(newSelection != null){
-                    Customer customer = (Customer) table_view_id.getSelectionModel().getSelectedItem();
-                System.out.println(customer.toString());
-                    customer_id_id.setText(String.valueOf(customer.getId()));
-                    customer_name_id.setText(customer.getName());
-                    address_id.setText(customer.getAddress());
-                    postal_code_id.setText(customer.getPostal());
-                    phone_number_id.setText(customer.getPhone());
+            if (newSelection != null) {
+                new Test("new: " + newSelection.toString());
 
-                    country_combo_id.getSelectionModel().select(customer.getCountryId());
-                    state_province_combo_id.getSelectionModel().select(customer.getDivisionId()); // only works for the united states and Canada
             }
         });
 
@@ -137,7 +129,7 @@ public class CustomersController implements Initializable {
 
     }
 
-    public void onPull(ActionEvent actionEvent){
+    public void onPull(ActionEvent actionEvent) {
         Customer customer = (Customer) table_view_id.getSelectionModel().getSelectedItem();
         customer_id_id.setText(Integer.toString(customer.getId()));
         customer_name_id.setText(customer.getName());
