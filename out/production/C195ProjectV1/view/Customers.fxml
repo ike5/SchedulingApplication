@@ -38,15 +38,15 @@
                                 <Label text="Customer ID" />
                                 <TextField fx:id="customer_id_id" editable="false" onAction="#customerIdOnAction" GridPane.columnIndex="1" />
                                 <Label text="Customer Name" GridPane.rowIndex="1" />
-                                <TextField fx:id="customer_name_id" onAction="#customerNameOnAction" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                <TextField fx:id="customer_name_id" onAction="#customerNameOnAction" onKeyTyped="#customerNameOnKeyTyped" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                 <ComboBox fx:id="country_combo_id" onAction="#countryComboBoxOnAction" prefWidth="150.0" promptText="Country" GridPane.rowIndex="2" />
                                 <ComboBox fx:id="state_province_combo_id" onAction="#divisionComboBoxOnAction" prefHeight="26.0" prefWidth="129.0" promptText="State/Province" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                 <Label text="Address" GridPane.rowIndex="3" />
-                                <TextField fx:id="address_id" onAction="#addressOnAction" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                <TextField fx:id="address_id" onAction="#addressOnAction" onKeyTyped="#addressOnKeyTyped" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                 <Label text="Postal Code" GridPane.rowIndex="4" />
-                                <TextField fx:id="postal_code_id" onAction="#postalCodeOnAction" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                <TextField fx:id="postal_code_id" onAction="#postalCodeOnAction" onKeyTyped="#postalCodeOnKeyTyped" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                                 <Label text="Phone Number" GridPane.rowIndex="5" />
-                                <TextField fx:id="phone_number_id" onAction="#phoneNumberOnAction" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                <TextField fx:id="phone_number_id" onAction="#phoneNumberOnAction" onKeyTyped="#phoneNumberOnKeyTyped" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                               <Button mnemonicParsing="false" onAction="#saveButtonOnAction" prefHeight="26.0" prefWidth="67.0" text="Save" GridPane.rowIndex="6" />
                               <Button mnemonicParsing="false" onAction="#clearFormButtonOnAction" text="Clear Form" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                             </children>

@@ -23,7 +23,7 @@ public class DBCustomers {
      * @param divisionId   The Division_ID foreign key constraint
      * @return Returns a new Customer object or null if entry was unsuccessful.
      */
-    public Customer insertCustomer(String customerName, String address, String postalCode, String phone, int divisionId) {
+    public static Customer insertCustomer(String customerName, String address, String postalCode, String phone, int divisionId) {
         String sql = "INSERT INTO customers (Customer_Name, Address, Postal_Code, Phone, Division_ID) VALUES (" +
                 "'" + customerName + "', " +
                 "'" + address + "', " +

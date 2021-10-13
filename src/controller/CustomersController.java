@@ -5,6 +5,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import data.DBCountries;
 import data.DBCustomers;
@@ -18,6 +24,7 @@ import model.Customer;
 import model.Division;
 import test.Test;
 
+import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
@@ -40,11 +47,12 @@ public class CustomersController implements Initializable {
     public TableColumn<Customer, String> state_province_tablecolumn_id;
     public TableView table_view_id;
     ObservableList<Division> divisionObservableList;
+    ObservableList<Customer> customerObservableList;
+    private boolean allFieldsValid;
 
-    public void customerIdOnAction(ActionEvent actionEvent) {
-    }
 
     public void customerNameOnAction(ActionEvent actionEvent) {
+
     }
 
     public void addressOnAction(ActionEvent actionEvent) {
@@ -57,6 +65,7 @@ public class CustomersController implements Initializable {
     }
 
     public void clearFormButtonOnAction(ActionEvent actionEvent) {
+        // Clear 7 items
         country_combo_id.getSelectionModel().clearSelection();
         state_province_combo_id.getSelectionModel().clearSelection();
 
@@ -73,7 +82,7 @@ public class CustomersController implements Initializable {
         System.out.println("Customers controller initialized!");
 
         // Make a Customer ObservableList to populate the table
-        ObservableList<Customer> customerObservableList = DBCustomers.getAllCustomers();
+        customerObservableList = DBCustomers.getAllCustomers();
 
         // Populate table with customers
         table_view_id.setItems(customerObservableList);
@@ -109,8 +118,8 @@ public class CustomersController implements Initializable {
         });
 
         //FIXME - remove callback text (ugly)
-        // - when selection for Country is made, list only States/Provinces of that country
         // - Make name of selection dropdown change to either States OR Provinces
+        // - Make States/Provinces autofill to first selection when choosing the Country
 
 //        Callback<ListView<Country>, ListCell<Country>> factory = countryListView -> new ListCell<Country>(){
 //            @Override
@@ -129,18 +138,6 @@ public class CustomersController implements Initializable {
 //        country_combo_id.setCellFactory(factory);
 //        country_combo_id.setButtonCell(factoryUsed.call(null));
 
-//        Callback<ListView<Country>, ListCell<Country>> factory = countryListView -> new ListCell<>() {
-//            @Override
-//            protected void updateItem(Country country, boolean b) {
-//                super.updateItem(country, b);
-//                divisionObservableList = DBDivisions.getDivisions(country_combo_id.getSelectionModel().getSelectedItem().getCountryId());
-//                state_province_combo_id.setItems(divisionObservableList);
-//            }
-//        };
-//        country_combo_id.setCellFactory(factory);
-
-
-
     }
 
     public void countryComboBoxOnAction(ActionEvent actionEvent) {
@@ -149,7 +146,9 @@ public class CustomersController implements Initializable {
         state_province_combo_id.setItems(divisionObservableList);
     }
 
+    @Deprecated
     public void divisionComboBoxOnAction(ActionEvent actionEvent) {
+        // Not sure what to do here.
     }
 
     public void onPull(ActionEvent actionEvent) {
@@ -162,6 +161,24 @@ public class CustomersController implements Initializable {
     }
 
     public void saveButtonOnAction(ActionEvent actionEvent) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Do you want to save changes?");
+        Optional<ButtonType> result = alert.showAndWait();
+        Customer customer = null;
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            // Insert into database
+            customer = DBCustomers.insertCustomer(
+                    customer_name_id.getText().trim(),
+                    address_id.getText().trim(),
+                    postal_code_id.getText().trim(),
+                    phone_number_id.getText().trim(),
+                    state_province_combo_id.getSelectionModel().getSelectedItem().getDivisionId()
+            );
+            new Test(customer.toString());
+
+            customerObservableList = DBCustomers.getAllCustomers();
+            table_view_id.setItems(customerObservableList);
+            table_view_id.refresh(); // not necessary?
+        }
 
     }
 
@@ -185,12 +202,60 @@ public class CustomersController implements Initializable {
         }
     }
 
-    private boolean validateNameString() {
-        //FIXME (low) - Allow spaces
-
-        String regexUsername = "^[0-z]+";
-        return customer_name_id.getText().matches(regexUsername);
+    private boolean validateTextField(TextField textField) {
+//        String regexUsername = "^[0-z]+";
+        String regexTextField = "^[^\\s].*"; // Can't start with a whitespace and matches 1 or more characters
+        return textField.getText().matches(regexTextField);
     }
 
+    private boolean validateCountryComboBox(ComboBox<Country> countryComboBox){
+        return countryComboBox.isPickOnBounds();
+    }
 
+    private boolean validateDivisionComboBox(ComboBox<Division> divisionComboBox){
+        return divisionComboBox.isPickOnBounds();
+    }
+
+    @Deprecated
+    public void customerIdOnAction(ActionEvent actionEvent) {
+    }
+
+    public void customerNameOnKeyTyped(KeyEvent keyEvent) {
+        allFieldsValid = validateTextField((TextField) keyEvent.getSource());
+        if (allFieldsValid) {
+            customer_name_id.setStyle("-fx-background-color: white");
+        } else {
+            customer_name_id.setStyle("-fx-background-color: pink");
+        }
+    }
+
+    public void addressOnKeyTyped(KeyEvent keyEvent) {
+        allFieldsValid = validateTextField((TextField) keyEvent.getSource());
+        if (allFieldsValid) {
+            address_id.setStyle("-fx-background-color: white");
+        } else {
+            address_id.setStyle("-fx-background-color: pink");
+        }
+    }
+
+    public void postalCodeOnKeyTyped(KeyEvent keyEvent) {
+        allFieldsValid = validateTextField((TextField) keyEvent.getSource());
+        if (allFieldsValid) {
+            postal_code_id.setStyle("-fx-background-color: white");
+        } else {
+            postal_code_id.setStyle("-fx-background-color: pink");
+        }
+    }
+
+    public void phoneNumberOnKeyTyped(KeyEvent keyEvent) {
+        allFieldsValid = validateTextField((TextField) keyEvent.getSource());
+        if (allFieldsValid) {
+            phone_number_id.setStyle("-fx-background-color: white");
+        } else {
+           phone_number_id.setStyle("-fx-background-color: pink");
+        }
+    }
 }
+
+//TODO
+// - Add validation before sending data into database for collection
