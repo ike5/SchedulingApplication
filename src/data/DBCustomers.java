@@ -3,7 +3,6 @@ package data;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Customer;
-import utils.ProcessQuery;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -66,7 +65,7 @@ public class DBCustomers {
                 "'" + customer.getName() + "', " +
                 "'" + customer.getAddress() + "', " +
                 "'" + customer.getPostal() + "', " +
-                "'" + customer.getPhone() + "', " + customer.getDivisionID() + ")";
+                "'" + customer.getPhone() + "', " + customer.getDivisionId() + ")";
         try {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             return ps.executeUpdate();
@@ -177,7 +176,7 @@ public class DBCustomers {
                 ", Address = " + customer.getAddress() +
                 ", Postal_Code = " + customer.getPostal() +
                 ", Phone = " + customer.getPhone() +
-                ", Division_ID = " + customer.getDivisionID() +
+                ", Division_ID = " + customer.getDivisionId() +
                 " WHERE Customer_ID = " + customer.getId();
 
         try {

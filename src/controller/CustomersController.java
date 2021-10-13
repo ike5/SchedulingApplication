@@ -12,7 +12,6 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.util.Callback;
 import model.Country;
 import model.Customer;
 import model.Division;
@@ -46,11 +45,9 @@ public class CustomersController implements Initializable {
     }
 
     public void countryOnAction(ActionEvent actionEvent) {
-        onPull(null);
     }
 
     public void stateProvinceOnAction(ActionEvent actionEvent) {
-        onPull(null);
     }
 
     public void addressOnAction(ActionEvent actionEvent) {
@@ -85,61 +82,57 @@ public class CustomersController implements Initializable {
         // Populate table with customers
         table_view_id.setItems(customerObservableList);
         // string is tied to getter in the Customer class--example: getDivisionId()
-        id_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<>("id"));
-        name_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<>("name"));
-        address_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<>("address"));
-        postal_code_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<>("postal"));
-        phone_number_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<>("phone"));
-        state_province_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<>("divisionID")); // note 'd' is capitalized
-        country_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<>("countryId"));
+        id_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<>("Id"));
+        name_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<>("Name"));
+        address_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<>("Address"));
+        phone_number_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<>("Phone"));
+        postal_code_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<>("Postal"));
+        state_province_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<>("DivisionId")); // note 'd' is capitalized
+        country_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<>("CountryName"));
 
+        // Initialize Country ComboBox
         DBCountries dbCountries = new DBCountries();
         ObservableList<Country> countryObservableList = dbCountries.getAllCountries();
         country_combo_id.setItems(countryObservableList);
         country_combo_id.getSelectionModel().selectFirst();
 
-        Country country = country_combo_id.getSelectionModel().getSelectedItem();
-//        ObservableList<Division> divisionObservableList = DBDivisions.getDivisions(country.getCountryId());
+        // Initialize Province/State ComboBox
         ObservableList<Division> divisionObservableList = DBDivisions.getAllFirstLevelDivisions();
-        state_province_combo_id.setVisibleRowCount(5);
-        state_province_combo_id.setPromptText("Choose a country first...");
         state_province_combo_id.setItems(divisionObservableList);
-
-        // Need callback of Country ComboBox in order to get the correct list of States/Provinces
-//        Country countryCombo = country_combo_id.getSelectionModel().getSelectedItem();
-//        country_combo_id.setValue(countryCombo);
+        state_province_combo_id.setVisibleRowCount(5);
 
         table_view_id.getSelectionModel().selectedItemProperty().addListener((observableValue, oldSelection, newSelection) -> {
             if(newSelection != null){
-//                for (int i = 0; i < table_view_id.getItems().size(); i++){
                     Customer customer = (Customer) table_view_id.getSelectionModel().getSelectedItem();
+                System.out.println(customer.toString());
                     customer_id_id.setText(String.valueOf(customer.getId()));
                     customer_name_id.setText(customer.getName());
                     address_id.setText(customer.getAddress());
                     postal_code_id.setText(customer.getPostal());
                     phone_number_id.setText(customer.getPhone());
+
                     country_combo_id.getSelectionModel().select(customer.getCountryId());
-                    state_province_combo_id.getSelectionModel().select(customer.getDivisionID()); // only works for the united states
+                    state_province_combo_id.getSelectionModel().select(customer.getDivisionId()); // only works for the united states and Canada
             }
         });
 
         //FIXME - remove callback text (ugly)
-        Callback<ListView<Country>, ListCell<Country>> factory = countryListView -> new ListCell<Country>(){
-            @Override
-            protected void updateItem(Country country, boolean empty) {
-                super.updateItem(country, empty);
-                setText(empty ? "" : ("C : " + country.getName()));
-            }
-        };
-        Callback<ListView<Country>, ListCell<Country>> factoryUsed = countryListView -> new ListCell<Country>(){
-            @Override
-            protected void updateItem(Country country, boolean empty) {
-                super.updateItem(country, empty);
-                setText(empty ? "" : ("Co: " + country.getName()));
-            }
-        };
-        country_combo_id.setCellFactory(factory);
-        country_combo_id.setButtonCell(factoryUsed.call(null));
+//        Callback<ListView<Country>, ListCell<Country>> factory = countryListView -> new ListCell<Country>(){
+//            @Override
+//            protected void updateItem(Country country, boolean empty) {
+//                super.updateItem(country, empty);
+//                setText(empty ? "" : ("C : " + country.getName()));
+//            }
+//        };
+//        Callback<ListView<Country>, ListCell<Country>> factoryUsed = countryListView -> new ListCell<Country>(){
+//            @Override
+//            protected void updateItem(Country country, boolean empty) {
+//                super.updateItem(country, empty);
+//                setText(empty ? "" : ("Co: " + country.getName()));
+//            }
+//        };
+//        country_combo_id.setCellFactory(factory);
+//        country_combo_id.setButtonCell(factoryUsed.call(null));
 
 
     }
