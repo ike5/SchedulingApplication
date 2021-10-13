@@ -39,8 +39,8 @@
                                 <TextField fx:id="customer_id_id" editable="false" onAction="#customerIdOnAction" GridPane.columnIndex="1" />
                                 <Label text="Customer Name" GridPane.rowIndex="1" />
                                 <TextField fx:id="customer_name_id" onAction="#customerNameOnAction" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                <ComboBox fx:id="country_combo_id" onAction="#countryOnAction" prefWidth="150.0" promptText="Country" GridPane.rowIndex="2" />
-                                <ComboBox fx:id="state_province_combo_id" onAction="#stateProvinceOnAction" prefHeight="26.0" prefWidth="129.0" promptText="State/Province" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                <ComboBox fx:id="country_combo_id" onAction="#countryComboBoxOnAction" prefWidth="150.0" promptText="Country" GridPane.rowIndex="2" />
+                                <ComboBox fx:id="state_province_combo_id" onAction="#divisionComboBoxOnAction" prefHeight="26.0" prefWidth="129.0" promptText="State/Province" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                 <Label text="Address" GridPane.rowIndex="3" />
                                 <TextField fx:id="address_id" onAction="#addressOnAction" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                 <Label text="Postal Code" GridPane.rowIndex="4" />

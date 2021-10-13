@@ -12,6 +12,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.util.Callback;
 import model.Country;
 import model.Customer;
 import model.Division;
@@ -38,17 +39,12 @@ public class CustomersController implements Initializable {
     public TableColumn<Customer, String> country_tablecolumn_id;
     public TableColumn<Customer, String> state_province_tablecolumn_id;
     public TableView table_view_id;
+    ObservableList<Division> divisionObservableList;
 
     public void customerIdOnAction(ActionEvent actionEvent) {
     }
 
     public void customerNameOnAction(ActionEvent actionEvent) {
-    }
-
-    public void countryOnAction(ActionEvent actionEvent) {
-    }
-
-    public void stateProvinceOnAction(ActionEvent actionEvent) {
     }
 
     public void addressOnAction(ActionEvent actionEvent) {
@@ -95,7 +91,7 @@ public class CustomersController implements Initializable {
         country_combo_id.setItems(countryObservableList);
 
         // Initialize Province/State ComboBox
-        ObservableList<Division> divisionObservableList = DBDivisions.getAllFirstLevelDivisions();
+        divisionObservableList = DBDivisions.getAllFirstLevelDivisions();
         state_province_combo_id.setItems(divisionObservableList);
         state_province_combo_id.setVisibleRowCount(5);
 
@@ -113,23 +109,47 @@ public class CustomersController implements Initializable {
         });
 
         //FIXME - remove callback text (ugly)
+        // - when selection for Country is made, list only States/Provinces of that country
+        // - Make name of selection dropdown change to either States OR Provinces
+
 //        Callback<ListView<Country>, ListCell<Country>> factory = countryListView -> new ListCell<Country>(){
 //            @Override
 //            protected void updateItem(Country country, boolean empty) {
 //                super.updateItem(country, empty);
-//                setText(empty ? "" : ("C : " + country.getName()));
+//                setText(empty ? "" : ("" + country.getName()));
 //            }
 //        };
 //        Callback<ListView<Country>, ListCell<Country>> factoryUsed = countryListView -> new ListCell<Country>(){
 //            @Override
 //            protected void updateItem(Country country, boolean empty) {
 //                super.updateItem(country, empty);
-//                setText(empty ? "" : ("Co: " + country.getName()));
+//                setText(empty ? "" : ("" + country.getName()));
 //            }
 //        };
 //        country_combo_id.setCellFactory(factory);
 //        country_combo_id.setButtonCell(factoryUsed.call(null));
 
+//        Callback<ListView<Country>, ListCell<Country>> factory = countryListView -> new ListCell<>() {
+//            @Override
+//            protected void updateItem(Country country, boolean b) {
+//                super.updateItem(country, b);
+//                divisionObservableList = DBDivisions.getDivisions(country_combo_id.getSelectionModel().getSelectedItem().getCountryId());
+//                state_province_combo_id.setItems(divisionObservableList);
+//            }
+//        };
+//        country_combo_id.setCellFactory(factory);
+
+
+
+    }
+
+    public void countryComboBoxOnAction(ActionEvent actionEvent) {
+        // Automatically limits division list to only those states/provinces within the country selected
+        divisionObservableList = DBDivisions.getDivisions(country_combo_id.getSelectionModel().getSelectedItem().getCountryId());
+        state_province_combo_id.setItems(divisionObservableList);
+    }
+
+    public void divisionComboBoxOnAction(ActionEvent actionEvent) {
     }
 
     public void onPull(ActionEvent actionEvent) {
@@ -142,8 +162,7 @@ public class CustomersController implements Initializable {
     }
 
     public void saveButtonOnAction(ActionEvent actionEvent) {
-        // worry about validation here
-        onPull(actionEvent);
+
     }
 
     public void deleteCustomerButtonOnAction(ActionEvent actionEvent) {
@@ -172,4 +191,6 @@ public class CustomersController implements Initializable {
         String regexUsername = "^[0-z]+";
         return customer_name_id.getText().matches(regexUsername);
     }
+
+
 }
