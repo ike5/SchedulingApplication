@@ -108,6 +108,7 @@ public class CustomersController implements Initializable {
                 phone_number_id.setText(((Customer) newSelection).getPhone());
                 postal_code_id.setText(((Customer) newSelection).getPostalCode());
                 country_combo_id.setValue(((Customer) newSelection).getCountry());
+                state_province_combo_id.setValue(((Customer) newSelection).getDivision());
             }
         });
 
@@ -128,7 +129,6 @@ public class CustomersController implements Initializable {
 //        };
 //        country_combo_id.setCellFactory(factory);
 //        country_combo_id.setButtonCell(factoryUsed.call(null));
-
 
     }
 
