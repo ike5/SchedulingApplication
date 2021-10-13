@@ -109,7 +109,6 @@ public class CustomersController implements Initializable {
                 phone_number_id.setText(((Customer) newSelection).getPhone());
                 postal_code_id.setText(((Customer) newSelection).getPostalCode());
                 country_combo_id.setValue(((Customer) newSelection).getCountry());
-                state_province_combo_id.setValue();
             }
         });
 
