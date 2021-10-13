@@ -105,11 +105,11 @@ public class CustomersController implements Initializable {
                 new Test("new: " + newSelection);
                 customer_id_id.setText(String.valueOf(((Customer) newSelection).getId()));
                 customer_name_id.setText(((Customer) newSelection).getName());
-                address_id.setText(((Customer)newSelection).getAddress());
+                address_id.setText(((Customer) newSelection).getAddress());
                 phone_number_id.setText(((Customer) newSelection).getPhone());
                 postal_code_id.setText(((Customer) newSelection).getPostalCode());
-
-//                country_combo_id.setValue(((Customer)newSelection).getCountryName();
+                country_combo_id.setValue(((Customer) newSelection).getCountry());
+                state_province_combo_id.setValue();
             }
         });
 
