@@ -50,17 +50,19 @@ public class CustomersController implements Initializable {
     ObservableList<Customer> customerObservableList;
     private boolean allFieldsValid;
 
-
+    @Deprecated
     public void customerNameOnAction(ActionEvent actionEvent) {
-
     }
 
+    @Deprecated
     public void addressOnAction(ActionEvent actionEvent) {
     }
 
+    @Deprecated
     public void postalCodeOnAction(ActionEvent actionEvent) {
     }
 
+    @Deprecated
     public void phoneNumberOnAction(ActionEvent actionEvent) {
     }
 
@@ -151,6 +153,7 @@ public class CustomersController implements Initializable {
         // Not sure what to do here.
     }
 
+    @Deprecated
     public void onPull(ActionEvent actionEvent) {
         Customer customer = (Customer) table_view_id.getSelectionModel().getSelectedItem();
         customer_id_id.setText(Integer.toString(customer.getId()));
