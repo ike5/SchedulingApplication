@@ -47,8 +47,8 @@
                                 <TextField fx:id="postal_code_id" onAction="#postalCodeOnAction" onKeyTyped="#postalCodeOnKeyTyped" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                                 <Label text="Phone Number" GridPane.rowIndex="5" />
                                 <TextField fx:id="phone_number_id" onAction="#phoneNumberOnAction" onKeyTyped="#phoneNumberOnKeyTyped" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                              <Button mnemonicParsing="false" onAction="#saveButtonOnAction" prefHeight="26.0" prefWidth="67.0" text="Save" GridPane.rowIndex="6" />
-                              <Button mnemonicParsing="false" onAction="#clearFormButtonOnAction" text="Clear Form" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                                <Button fx:id="save_button" mnemonicParsing="false" onAction="#saveButtonOnAction" onKeyTyped="#saveButtonOnKeyTyped" prefHeight="26.0" prefWidth="67.0" text="Save" GridPane.rowIndex="6" />
+                                <Button fx:id="clear_form_button" mnemonicParsing="false" onAction="#clearFormButtonOnAction" text="Clear Form" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                             </children>
                             <padding>
                                 <Insets left="20.0" top="20.0" />
@@ -72,9 +72,9 @@
                 </HBox>
                 <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                     <children>
-                        <Button mnemonicParsing="false" onAction="#newCustomerButtonOnAction" text="New Customer" />
-                        <Button mnemonicParsing="false" onAction="#deleteCustomerButtonOnAction" text="Delete Customer" />
-                  <Button mnemonicParsing="false" onAction="#logoutButtonOnAction" text="Logout" />
+                        <Button fx:id="new_customer_button" mnemonicParsing="false" onAction="#newCustomerButtonOnAction" text="New Customer" />
+                        <Button fx:id="delete_customer_button" mnemonicParsing="false" onAction="#deleteCustomerButtonOnAction" text="Delete Customer" />
+                        <Button fx:id="logout_button" mnemonicParsing="false" onAction="#logoutButtonOnAction" text="Logout" />
                     </children>
                     <opaqueInsets>
                         <Insets />
@@ -87,9 +87,9 @@
             <opaqueInsets>
                 <Insets />
             </opaqueInsets>
-         <padding>
-            <Insets top="20.0" />
-         </padding>
+            <padding>
+                <Insets top="20.0" />
+            </padding>
         </VBox>
     </children>
 </AnchorPane>
