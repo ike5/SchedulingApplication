@@ -47,7 +47,7 @@
                                 <TextField fx:id="postal_code_id" onAction="#postalCodeOnAction" onKeyTyped="#postalCodeOnKeyTyped" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                                 <Label text="Phone Number" GridPane.rowIndex="5" />
                                 <TextField fx:id="phone_number_id" onAction="#phoneNumberOnAction" onKeyTyped="#phoneNumberOnKeyTyped" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                                <Button fx:id="save_button" mnemonicParsing="false" onAction="#saveButtonOnAction" onKeyTyped="#saveButtonOnKeyTyped" prefHeight="26.0" prefWidth="67.0" text="Save" GridPane.rowIndex="6" />
+                                <Button fx:id="save_button" mnemonicParsing="false" onAction="#saveButtonOnAction" prefHeight="26.0" prefWidth="67.0" text="Save" GridPane.rowIndex="6" />
                                 <Button fx:id="clear_form_button" mnemonicParsing="false" onAction="#clearFormButtonOnAction" text="Clear Form" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                             </children>
                             <padding>

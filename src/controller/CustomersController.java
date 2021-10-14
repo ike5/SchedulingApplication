@@ -19,6 +19,7 @@ import model.Country;
 import model.Customer;
 import model.Division;
 import test.Test;
+import utils.UtilityInterfaces;
 
 import java.io.IOException;
 import java.net.URL;
@@ -65,11 +66,7 @@ public class CustomersController implements Initializable {
 
     // Initialize the state of the buttons once when the program starts
     static {
-        isSaveButtonDisabled = true;
-        isClearFormButtonDisabled = true;
-        isNewCustomerButtonDisabled = false;
-        isDeleteCustomerButtonDisabled = true;
-        isLogoutButtonDisabled = false;
+
     }
 
     @Deprecated
@@ -106,12 +103,14 @@ public class CustomersController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("Customers controller initialized!");
 
+
         // Set focus options on buttons
         save_button.setDisable(isSaveButtonDisabled);
         clear_form_button.setDisable(isClearFormButtonDisabled);
         delete_customer_button.setDisable(isDeleteCustomerButtonDisabled);
         new_customer_button.setDisable(isNewCustomerButtonDisabled);
         customer_id_id.setDisable(true); // Prevent users from changing touching customer id value
+
 
         // Make a Customer ObservableList to populate the table
         customerObservableList = DBCustomers.getAllCustomers();
@@ -146,9 +145,6 @@ public class CustomersController implements Initializable {
                 postal_code_id.setText(((Customer) newSelection).getPostalCode());
                 country_combo_id.setValue(((Customer) newSelection).getCountry());
                 state_province_combo_id.setValue(((Customer) newSelection).getDivision());
-
-                // make all fields valid by default when populating
-                setAllFieldsValidity(true);
             }
         });
 
@@ -270,10 +266,8 @@ public class CustomersController implements Initializable {
         isCustomerNameFieldValid = validateTextField((TextField) keyEvent.getSource());
         if (isCustomerNameFieldValid) {
             customer_name_id.setStyle("-fx-background-color: white");
-            save_button.setDisable(isAllFieldsValid());
         } else {
             customer_name_id.setStyle("-fx-background-color: pink");
-            save_button.setDisable(!isAllFieldsValid());
         }
     }
 
@@ -281,10 +275,8 @@ public class CustomersController implements Initializable {
         isAddressFieldValid = validateTextField((TextField) keyEvent.getSource());
         if (isAddressFieldValid) {
             address_id.setStyle("-fx-background-color: white");
-            save_button.setDisable(isAllFieldsValid());
         } else {
             address_id.setStyle("-fx-background-color: pink");
-            save_button.setDisable(!isAllFieldsValid());
         }
     }
 
@@ -292,10 +284,8 @@ public class CustomersController implements Initializable {
         isPostalCodeFieldValid = validateTextField((TextField) keyEvent.getSource());
         if (isPostalCodeFieldValid) {
             postal_code_id.setStyle("-fx-background-color: white");
-            save_button.setDisable(isAllFieldsValid());
         } else {
             postal_code_id.setStyle("-fx-background-color: pink");
-            save_button.setDisable(!isAllFieldsValid());
         }
     }
 
@@ -303,29 +293,50 @@ public class CustomersController implements Initializable {
         isPhoneNumberFieldValid = validateTextField((TextField) keyEvent.getSource());
         if (isPhoneNumberFieldValid) {
             phone_number_id.setStyle("-fx-background-color: white");
-            save_button.setDisable(isAllFieldsValid());
         } else {
             phone_number_id.setStyle("-fx-background-color: pink");
-            save_button.setDisable(!isAllFieldsValid());
         }
     }
 
-
-    @Deprecated
-    public void saveButtonOnKeyTyped(KeyEvent keyEvent) {
+    //TODO - work on lambda to get entire expression for field validity
+    private boolean getFieldValidityObject() {
+        ValidateAllFieldsInterface validateAllFieldsInterface = fieldValidityObject -> fieldValidityObject.isEntireValid();
+        return validateAllFieldsInterface.validateAllFields(new FieldValidity(
+                isPhoneNumberFieldValid,
+                isPostalCodeFieldValid,
+                isCustomerNameFieldValid,
+                isAddressFieldValid,
+                isDivisionComboBoxValid,
+                isCountryComboBoxValid)
+        );
     }
 
-    //FIXME
-    // - assumes that when one is correct, all are correct. need to fix this bug
-    private boolean isAllFieldsValid() {
-        // short-circuit AND ok
-        return (isCustomerNameFieldValid
-                && isCountryComboBoxValid
-                && isDivisionComboBoxValid
-                && isAddressFieldValid
-                && isPostalCodeFieldValid
-                && isPhoneNumberFieldValid
-        );
+
+    interface ValidateAllFieldsInterface {
+        // What function will be passed in?
+        public boolean validateAllFields(FieldValidity fieldValidityObject);
+    }
+
+    class FieldValidity {
+        private boolean isPhoneValid;
+        private boolean isPostalValid;
+        private boolean isNameValid;
+        private boolean isAddressValid;
+        private boolean isDivisionValid;
+        private boolean isCountryValid;
+
+        public FieldValidity(boolean isPhoneValid, boolean isPostalValid, boolean isNameValid, boolean isAddressValid, boolean isDivisionValid, boolean isCountryValid) {
+            this.isPhoneValid = isPhoneValid;
+            this.isPostalValid = isPostalValid;
+            this.isNameValid = isNameValid;
+            this.isAddressValid = isAddressValid;
+            this.isDivisionValid = isDivisionValid;
+            this.isCountryValid = isCountryValid;
+        }
+
+        public boolean isEntireValid() {
+            return isAddressValid & isCountryValid & isNameValid & isDivisionValid & isPhoneValid & isPostalValid;
+        }
     }
 
     private boolean setAllFieldsValidity(boolean fieldsValid) {
