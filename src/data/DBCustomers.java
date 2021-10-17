@@ -24,6 +24,7 @@ public class DBCustomers {
      * @return Returns a new Customer object or null if entry was unsuccessful.
      */
     public static Customer insertCustomer(String customerName, String address, String postalCode, String phone, int divisionId) {
+        //FIXME - Use a helper method instead of duplicating the code to insert a customer
         String sql = "INSERT INTO customers (Customer_Name, Address, Postal_Code, Phone, Division_ID) VALUES (" +
                 "'" + customerName + "', " +
                 "'" + address + "', " +
