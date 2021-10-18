@@ -26,6 +26,8 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import static java.lang.Integer.parseInt;
+
 public class CustomersController implements Initializable {
     public TextField customer_id_id;
     public TextField customer_name_id;
@@ -58,6 +60,7 @@ public class CustomersController implements Initializable {
     private static boolean isAddressFieldValid;
     private static boolean isPostalCodeFieldValid;
     private static boolean isPhoneNumberFieldValid;
+    private static int customerSelctionId;
 
 
     ObservableList<Division> divisionObservableList;
@@ -129,7 +132,6 @@ public class CustomersController implements Initializable {
         table_view_id.getSelectionModel().selectedItemProperty().addListener((observableValue, oldSelection, newSelection) -> {
             if (newSelection != null) {
                 // Set the values of the fields/comboboxes when clicked
-                new Test("new: " + newSelection);
                 customer_id_id.setText(String.valueOf(((Customer) newSelection).getId()));
                 customer_name_id.setText(((Customer) newSelection).getName());
                 address_id.setText(((Customer) newSelection).getAddress());
@@ -142,35 +144,13 @@ public class CustomersController implements Initializable {
             }
             table_view_id.refresh();
         });
-
-        //FIXME - remove callback text (ugly)
-        // - Make name of selection dropdown change to either States OR Provinces
-        // - Make States/Provinces autofill to first selection when choosing the Country
-
-//        Callback<ListView<Country>, ListCell<Country>> factory = countryListView -> new ListCell<Country>(){
-//            @Override
-//            protected void updateItem(Country country, boolean empty) {
-//                super.updateItem(country, empty);
-//                setText(empty ? "" : ("" + country.getName()));
-//            }
-//        };
-//        Callback<ListView<Country>, ListCell<Country>> factoryUsed = countryListView -> new ListCell<Country>(){
-//            @Override
-//            protected void updateItem(Country country, boolean empty) {
-//                super.updateItem(country, empty);
-//                setText(empty ? "" : ("" + country.getName()));
-//            }
-//        };
-//        country_combo_id.setCellFactory(factory);
-//        country_combo_id.setButtonCell(factoryUsed.call(null));
-
     }
 
     //FIXME - limit the Division list to only states/provinces within country selected
     public void countryComboBoxOnAction(ActionEvent actionEvent) {
         // Automatically limits division list to only those states/provinces within the country selected
-        divisionObservableList = DBDivisions.getDivisions(country_combo_id.getSelectionModel().getSelectedItem().getCountryId());
-        state_province_combo_id.setItems(divisionObservableList);
+//        divisionObservableList = DBDivisions.getDivisions(country_combo_id.getSelectionModel().getSelectedItem().getCountryId());
+//        state_province_combo_id.setItems(divisionObservableList);
     }
 
     @Deprecated
@@ -220,7 +200,15 @@ public class CustomersController implements Initializable {
     }
 
     public void deleteCustomerButtonOnAction(ActionEvent actionEvent) {
-
+        try {
+            System.out.println(
+                    ((Customer) table_view_id.getSelectionModel().getSelectedItem()).getId()
+            );
+            DBCustomers.deleteCustomerById(((Customer) table_view_id.getSelectionModel().getSelectedItem()).getId());
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Could not delete item");
+        }
     }
 
     public void newCustomerButtonOnAction(ActionEvent actionEvent) {

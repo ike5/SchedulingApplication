@@ -215,17 +215,17 @@ public class DBCustomers {
      * @param customerId An integer representing the customer ID
      * @return Returns -1 if unsuccessful and > 1 if successful
      */
-    public int deleteCustomerById(int customerId) {
-        String sql = "DELETE FROM customers WHERE Customer_ID = " + customerId;
-        // You may have trouble deleting without first cascading delete other items in the database related to the customer
+    public static int deleteCustomerById(int customerId) {
+        //FIXME - is deleting, but not based off customerid
+        String sql = "DELETE FROM customers WHERE Customer_ID = ?";
+
         try {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ps.setInt(1, customerId);
             return ps.executeUpdate();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
         return -1; // if unsuccessful
     }
-
-
 }

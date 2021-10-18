@@ -228,3 +228,24 @@ https://docs.oracle.com/javase/8/docs/api/java/time/package-summary.html
 
 CREATE DATABASE client_schedule;
 
+
+## Old ComboBox code I can use
+
+```java
+        Callback<ListView<Country>, ListCell<Country>> factory = countryListView -> new ListCell<Country>(){
+            @Override
+            protected void updateItem(Country country, boolean empty) {
+                super.updateItem(country, empty);
+                setText(empty ? "" : ("" + country.getName()));
+            }
+        };
+        Callback<ListView<Country>, ListCell<Country>> factoryUsed = countryListView -> new ListCell<Country>(){
+            @Override
+            protected void updateItem(Country country, boolean empty) {
+                super.updateItem(country, empty);
+                setText(empty ? "" : ("" + country.getName()));
+            }
+        };
+        country_combo_id.setCellFactory(factory);
+        country_combo_id.setButtonCell(factoryUsed.call(null));
+```
