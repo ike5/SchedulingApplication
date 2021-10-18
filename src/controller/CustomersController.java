@@ -62,12 +62,7 @@ public class CustomersController implements Initializable {
 
     ObservableList<Division> divisionObservableList;
     ObservableList<Customer> customerObservableList;
-
-
-    // Initialize the state of the buttons once when the program starts
-    static {
-
-    }
+    ObservableList<Country> countryObservableList;
 
     @Deprecated
     public void customerNameOnAction(ActionEvent actionEvent) {
@@ -86,24 +81,19 @@ public class CustomersController implements Initializable {
     }
 
     public void clearFormButtonOnAction(ActionEvent actionEvent) {
-        // Clear 7 items
-        country_combo_id.getSelectionModel().clearSelection();
-        state_province_combo_id.getSelectionModel().clearSelection();
+        // Clear all fields and set ComboBoxes to first item
         customer_id_id.clear();
         customer_name_id.clear();
         address_id.clear();
         postal_code_id.clear();
         phone_number_id.clear();
-
-        setAllFieldsValidity(false);
+        country_combo_id.getSelectionModel().selectFirst();
+        state_province_combo_id.getSelectionModel().selectFirst();
     }
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        System.out.println("Customers controller initialized!");
-
-
         // Set focus options on buttons
         save_button.setDisable(isSaveButtonDisabled);
         clear_form_button.setDisable(isClearFormButtonDisabled);
@@ -111,12 +101,13 @@ public class CustomersController implements Initializable {
         new_customer_button.setDisable(isNewCustomerButtonDisabled);
         customer_id_id.setDisable(true); // Prevent users from changing touching customer id value
 
-
         // Make a Customer ObservableList to populate the table
         customerObservableList = DBCustomers.getAllCustomers();
 
         // Populate table with customers
         table_view_id.setItems(customerObservableList);
+
+        // Set the cell values within the TableView
         // Tied to getter in the Customer class --> getDivisionId()
         id_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("Id"));
         name_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<Customer, String>("Name"));
@@ -127,7 +118,7 @@ public class CustomersController implements Initializable {
         country_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<Customer, String>("CountryName"));
 
         // Initialize Country ComboBox
-        ObservableList<Country> countryObservableList = DBCountries.getAllCountries();
+        countryObservableList = DBCountries.getAllCountries();
         country_combo_id.setItems(countryObservableList);
 
         // Initialize Province/State ComboBox
@@ -137,15 +128,19 @@ public class CustomersController implements Initializable {
 
         table_view_id.getSelectionModel().selectedItemProperty().addListener((observableValue, oldSelection, newSelection) -> {
             if (newSelection != null) {
+                // Set the values of the fields/comboboxes when clicked
                 new Test("new: " + newSelection);
                 customer_id_id.setText(String.valueOf(((Customer) newSelection).getId()));
                 customer_name_id.setText(((Customer) newSelection).getName());
                 address_id.setText(((Customer) newSelection).getAddress());
                 phone_number_id.setText(((Customer) newSelection).getPhone());
                 postal_code_id.setText(((Customer) newSelection).getPostalCode());
+
+                //FIXME - doesn't show value if: Clear -> Click item -> Click another item
                 country_combo_id.setValue(((Customer) newSelection).getCountry());
                 state_province_combo_id.setValue(((Customer) newSelection).getDivision());
             }
+            table_view_id.refresh();
         });
 
         //FIXME - remove callback text (ugly)
@@ -171,6 +166,7 @@ public class CustomersController implements Initializable {
 
     }
 
+    //FIXME - limit the Division list to only states/provinces within country selected
     public void countryComboBoxOnAction(ActionEvent actionEvent) {
         // Automatically limits division list to only those states/provinces within the country selected
         divisionObservableList = DBDivisions.getDivisions(country_combo_id.getSelectionModel().getSelectedItem().getCountryId());
@@ -194,7 +190,7 @@ public class CustomersController implements Initializable {
 
     public void saveButtonOnAction(ActionEvent actionEvent) {
         //FIXME
-        // - if row in TableView is selected update the row with information in TextField
+        // - if row in TableView is selected, update the row in the database with information in TextField
         // - new customer button clears form an unselects rows in TableView (if changes were made to TextFields, prompt alert)
         // - save button updates selected table row
         // - save button creates new customer if no table row selected
