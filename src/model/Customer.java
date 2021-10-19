@@ -3,6 +3,9 @@ package model;
 import data.DBCountries;
 import data.DBDivisions;
 
+/**
+ * Rules: A customer cannot be made without a first_level_division and country
+ */
 public class Customer {
     private int id;
     private String name;
@@ -12,8 +15,8 @@ public class Customer {
     private int divisionId;
     private int countryId;
     private String countryName;
-    private Country country;
-    private Division division;
+    private Country country;    // Required constraint
+    private Division division;  // Required constraint
 
     public Customer(int id, String name, String address, String postalCode, String phone, int divisionId) {
         this.id = id; // This can throw an error in the database if not normalized

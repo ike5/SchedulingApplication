@@ -59,10 +59,12 @@ public class DBCountries {
      * @return Country object
      */
     public Country getCountryFromCountryId(int countryId) {
-        String sql = "SELECT Country_ID, Country FROM countries WHERE Country_ID = " + countryId;
+        String sql = "SELECT Country_ID, Country FROM countries WHERE Country_ID = ?";
         Country country = null;
         try {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ps.setInt(1, countryId);
+
             ResultSet resultSet = ps.executeQuery();
 
             while (resultSet.next()) {
