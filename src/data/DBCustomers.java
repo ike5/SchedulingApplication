@@ -3,10 +3,12 @@ package data;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Customer;
+import test.Test;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 
 // Completed CRUD functions
@@ -23,36 +25,66 @@ public class DBCustomers {
      * @param divisionId   The Division_ID foreign key constraint
      * @return Returns a new Customer object or null if entry was unsuccessful.
      */
-    public static Customer insertCustomer(String customerName, String address, String postalCode, String phone, int divisionId) {
+    public static void insertCustomer(String customerName, String address, String postalCode, String phone, int divisionId) {
         //FIXME - Use a helper method instead of duplicating the code to insert a customer
-        String sql = "INSERT INTO customers (Customer_Name, Address, Postal_Code, Phone, Division_ID) VALUES (" +
-                "'" + customerName + "', " +
-                "'" + address + "', " +
-                "'" + postalCode + "', " +
-                "'" + phone + "', " + divisionId + ")";
-        Customer customer = null;
-        try {
-            PreparedStatement ps = JDBC.openConnection().prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE,
-                    ResultSet.CONCUR_UPDATABLE);
+//        String sql = "INSERT INTO customers (Customer_Name, Address, Postal_Code, Phone, Division_ID) VALUES (" +
+//                "'" + customerName + "', " +
+//                "'" + address + "', " +
+//                "'" + postalCode + "', " +
+//                "'" + phone + "', " + divisionId + ")";
+        String title = "default title";
+        String description = "default description of things";
+        String location = "default location";
+        String type = "default type";
+        String created_by = "default created_by";
+        String last_updated_by = "default last_updated_by";
+        int user_id = 1; // test
+        int contact_id = 3; // Li Lee
 
-            ps.executeUpdate();
-            ResultSet resultSet = getAllCustomersResultSet();
-            while (resultSet.next()) {
-                resultSet.last(); // go to last row of table for efficiency
-                customer = new Customer(
-                        resultSet.getInt("Customer_ID"),
-                        resultSet.getString("Customer_Name"),
-                        resultSet.getString("Address"),
-                        resultSet.getString("Postal_Code"),
-                        resultSet.getString("Phone"),
-                        resultSet.getInt("Division_ID")
-                );
-            }
-            return customer; // only the last entry is the customer created
+        Customer customer = null;
+        String sql_cus = "INSERT INTO customers VALUES(Null, ?, ?, ?, ?, current_timestamp, ?, current_timestamp, ?, ?)";
+
+        try {
+            PreparedStatement ps = JDBC.openConnection().prepareStatement(sql_cus, Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, customerName);
+            ps.setString(2, address);
+            ps.setString(3, postalCode);
+            ps.setString(4, phone);
+            ps.setString(5, "Created by test user");
+            ps.setString(6, "Last updated by test user");
+            // 5 = created_by
+            // 6 = last_updated_by
+            ps.setInt(7, divisionId);
+
+            ps.execute();
+//            ResultSet resultSet = getAllCustomersResultSet();
+            ResultSet rs = ps.getGeneratedKeys();
+            rs.next();
+            int customerId = rs.getInt(1);
+
+            // Take acquired ID from above and put it into the next insert
+            String sql_app = "INSERT INTO appointments VALUES (null, ?, ?, ?, ?, current_timestamp, current_timestamp, current_timestamp, ?, current_timestamp, ?, ?, ?, ?)";
+            PreparedStatement preparedStatement = JDBC.getConnection().prepareStatement(sql_app);
+            preparedStatement.setString(1, title);
+            preparedStatement.setString(2, description);
+            preparedStatement.setString(3, location);
+            preparedStatement.setString(4, type);
+            preparedStatement.setString(5, created_by);
+            preparedStatement.setString(6, last_updated_by);
+            preparedStatement.setInt(7, customerId);
+            preparedStatement.setInt(8, user_id);
+            preparedStatement.setInt(9, contact_id);
+
+            preparedStatement.execute();
+
+
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        return customer;
+    }
+
+    public static void main(String[] args) {
+        insertCustomer("Ike Maldonado", "555 Franklin Street", "94102", "415-777-8950", 40);
     }
 
     /**

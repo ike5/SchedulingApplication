@@ -180,17 +180,15 @@ public class CustomersController implements Initializable {
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Do you want to save changes?");
         Optional<ButtonType> result = alert.showAndWait();
-        Customer customer = null;
         if (result.isPresent() && result.get() == ButtonType.OK) {
             // Insert into database
-            customer = DBCustomers.insertCustomer(
+             DBCustomers.insertCustomer(
                     customer_name_id.getText().trim(),
                     address_id.getText().trim(),
                     postal_code_id.getText().trim(),
                     phone_number_id.getText().trim(),
                     state_province_combo_id.getSelectionModel().getSelectedItem().getDivisionId()
             );
-            new Test(customer.toString());
 
             customerObservableList = DBCustomers.getAllCustomers();
             table_view_id.setItems(customerObservableList);
