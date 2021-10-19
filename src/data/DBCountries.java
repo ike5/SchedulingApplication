@@ -18,7 +18,8 @@ import java.sql.Timestamp;
 public class DBCountries {
 
     /**
-     * Returns the ResultSet object.
+     * Returns the ResultSet object of Countries. Since countries doesn't have a constraint, it is okay to implement
+     * this method.
      *
      * @return ResultSet object
      */
@@ -61,11 +62,12 @@ public class DBCountries {
 
 
     /**
-     * Returns a Country object provided a country id. Searches database for a specific Country_ID.
+     * This method is unnecessary for CRUD constraint restrictions. Should be getting country id from a division object.
      *
      * @param countryId
      * @return Country object
      */
+    @Deprecated
     public Country getCountryFromCountryId(int countryId) {
         String sql = "SELECT Country_ID, Country FROM countries WHERE Country_ID = ?";
         Country country = null;
@@ -119,15 +121,16 @@ public class DBCountries {
     }
 
     /**
-     *
+     * This method is unnecessary since every Division object should have a Country associated with it in order to
+     * make CRUD operations possible.
      *
      * @param divisionId
      * @return
      */
+    @Deprecated
     public static Country getCountryFromDivisionId(int divisionId) {
         Country country = null;
         try {
-            //FIXME - refactor SQL statement. Or don't include this method at all and keep it inside DBDivisions
             String sql = "SELECT * FROM (SELECT countries.Country, client_schedule.first_level_divisions.Division_ID " +
                     "FROM countries INNER JOIN first_level_divisions ON countries.Country_ID = client_schedule.first_level_divisions.COUNTRY_ID) " +
                     "as CDI WHERE CDI.Division_ID = " + divisionId;
@@ -152,7 +155,8 @@ public class DBCountries {
     /**
      * Not sure if this method is necessary. Flag for removal
      */
-    public static void checkDateConversion() { //FIXME - Do I need this method?
+    @Deprecated
+    public static void checkDateConversion() {
         System.out.println("CREATE DATE TEST");
         String sql = "SELECT Create_Date from countries";
         try {
@@ -173,6 +177,7 @@ public class DBCountries {
      * @param divisionId
      * @return
      */
+    @Deprecated
     public static Country getCountry(int divisionId) {
         String sql = "SELECT client_schedule.countries.Country_ID, Country, Division_ID " +
                 "FROM countries " +

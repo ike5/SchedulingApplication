@@ -147,11 +147,4 @@ public class DBDivisions {
         }
         return division;
     }
-
-    public static void main(String[] args) {
-        JDBC.openConnection();
-        System.out.println(DBDivisions.getDivision(104));
-        JDBC.closeConnection();
-    }
-
 }
