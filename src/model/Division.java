@@ -3,13 +3,14 @@ package model;
 import data.DBDivisions;
 
 public class Division {
-    private int divisionId;
-    private String divisionName;
-    private Country country;
+    private final int divisionId;
+    private final String divisionName;
+    private final Country country;
 
-    public Division(int divisionId, String divisionName) {
+    public Division(int divisionId, String divisionName, int countryId, String countryName) {
         this.divisionName = divisionName;
         this.divisionId = divisionId;
+        this.country = new Country(countryId, countryName);
     }
 
     public int getDivisionId() {
@@ -20,8 +21,16 @@ public class Division {
         return divisionName;
     }
 
+    public Country getCountry() {
+        return country;
+    }
+
     @Override
     public String toString() {
-        return "#" + this.divisionId + " " + this.divisionName;
+        return "Division{" +
+                "divisionId=" + divisionId +
+                ", divisionName='" + divisionName + '\'' +
+                ", country=" + country +
+                '}';
     }
 }

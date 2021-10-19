@@ -27,36 +27,65 @@ public class DBDivisions {
      * @return A ResultSet object containing all listed Division_ID, Divisions related to the Country ID.
      */
     public static ObservableList<Division> getDivisions(int countryId) {
-        String sql = "SELECT Division_ID, Division FROM first_level_divisions WHERE COUNTRY_ID = " + countryId;
+        String sql = "SELECT client_schedule.first_level_divisions.Division_ID,\n" +
+                "       client_schedule.first_level_divisions.Division,\n" +
+                "       client_schedule.countries.Country_ID,\n" +
+                "       client_schedule.countries.Country\n" +
+                "FROM countries, first_level_divisions\n" +
+                "WHERE (client_schedule.first_level_divisions.COUNTRY_ID = client_schedule.countries.Country_ID)\n" +
+                "AND (client_schedule.countries.Country_ID = ?);";
         ObservableList<Division> divisionObservableList = FXCollections.observableArrayList();
         try {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ps.setInt(1, countryId);
+
             ResultSet resultSet = ps.executeQuery();
+
             while (resultSet.next()) {
-                Division division = new Division(resultSet.getInt("Division_ID"), resultSet.getString("Division"));
+                Division division = new Division(
+                        resultSet.getInt("Division_ID"),
+                        resultSet.getString("Division"),
+                        resultSet.getInt("Country_ID"),
+                        resultSet.getString("Country")
+                );
                 divisionObservableList.add(division);
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return divisionObservableList;
     }
 
 
+    /**
+     * Returns a list of all Division objects.
+     *
+     * @return Returns an ObservableList<Division>
+     */
     public static ObservableList<Division> getAllFirstLevelDivisions() {
-        String sql = "select * from first_level_divisions";
+        String sql = "SELECT client_schedule.first_level_divisions.Division_ID,\n" +
+                "       client_schedule.first_level_divisions.Division,\n" +
+                "       client_schedule.countries.Country_ID,\n" +
+                "       client_schedule.countries.Country\n" +
+                "FROM countries, first_level_divisions\n" +
+                "WHERE (client_schedule.first_level_divisions.COUNTRY_ID = client_schedule.countries.Country_ID);";
         ObservableList<Division> divisionObservableList = FXCollections.observableArrayList();
-
         try {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+
             ResultSet resultSet = ps.executeQuery();
 
             while (resultSet.next()) {
-                Division division = new Division(resultSet.getInt("Division_ID"), resultSet.getString("Division"));
+                Division division = new Division(
+                        resultSet.getInt("Division_ID"),
+                        resultSet.getString("Division"),
+                        resultSet.getInt("Country_ID"),
+                        resultSet.getString("Country")
+                );
                 divisionObservableList.add(division);
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return divisionObservableList;
     }
@@ -68,9 +97,11 @@ public class DBDivisions {
      * @return Returns an integer representing the country id or -1 if invalid division id provided.
      */
     public static int getCountryId(int divisionId) {
-        String sql = "SELECT COUNTRY_ID FROM first_level_divisions WHERE Division_ID = " + divisionId;
+        String sql = "SELECT COUNTRY_ID FROM first_level_divisions WHERE Division_ID = ?";
         try {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ps.setInt(1, divisionId);
+
             ResultSet resultSet = ps.executeQuery();
 
             resultSet.next();
@@ -81,23 +112,46 @@ public class DBDivisions {
         return -1; // if unsuccessful
     }
 
+    /**
+     * Create a Division object. Creating a Division object also creates a Country object. Note that first_level_divisions
+     * has a constraint on countries in the ERD model. We will want to make sure that all CRUD operations follow this
+     * constraint with countries.
+     *
+     * @param divisionId
+     * @return
+     */
     public static Division getDivision(int divisionId) {
-        String sql = "SELECT " +
-                "client_schedule.first_level_divisions.Division_ID, " +
-                "client_schedule.first_level_divisions.Division " +
-                "FROM first_level_divisions " +
-                "WHERE Division_ID = " + divisionId;
+        String sql = "SELECT client_schedule.first_level_divisions.Division_ID,\n" +
+                "       client_schedule.first_level_divisions.Division,\n" +
+                "       client_schedule.countries.Country_ID,\n" +
+                "       client_schedule.countries.Country\n" +
+                "FROM countries, first_level_divisions\n" +
+                "WHERE (client_schedule.first_level_divisions.COUNTRY_ID = client_schedule.countries.Country_ID)\n" +
+                "AND (client_schedule.first_level_divisions.Division_ID = ?);";
         Division division = null;
         try {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ps.setInt(1, divisionId);
+
             ResultSet resultSet = ps.executeQuery();
             while (resultSet.next()) {
-                division = new Division(resultSet.getInt("Division_ID"), resultSet.getString("Division"));
+                division = new Division(
+                        resultSet.getInt("Division_ID"),
+                        resultSet.getString("Division"),
+                        resultSet.getInt("Country_ID"),
+                        resultSet.getString("Country")
+                );
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return division;
+    }
+
+    public static void main(String[] args) {
+        JDBC.openConnection();
+        System.out.println(DBDivisions.getDivision(104));
+        JDBC.closeConnection();
     }
 
 }

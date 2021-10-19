@@ -11,10 +11,14 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 
 // Completed CRUD functionality
+
+/**
+ * This class doesn't have any constraints.
+ */
 public class DBCountries {
 
     /**
-     * Returns the ResultSet object of the SELECT * query from the countries database table.
+     * Returns the ResultSet object.
      *
      * @return ResultSet object
      */
@@ -31,18 +35,22 @@ public class DBCountries {
     }
 
     /**
-     * Returns an ObservableList<Country> object of all countries listed in the countries database table.
-     * listed in the countries database table.
+     * Returns an ObservableList<Country> object. Since the countries table does not have any constraints,
+     * the only fields retrieved from the table are Country_ID and the Country (name).
      *
      * @return ObservableList<Country> object
      */
     public static ObservableList<Country> getAllCountries() {
         ObservableList<Country> countryObservableList = FXCollections.observableArrayList();
         try {
+            // Get the ResultSet object from helper method
             ResultSet resultSet = getAllCountriesResultSet();
 
             while (resultSet.next()) {
-                Country country = new Country(resultSet.getInt("Country_ID"), resultSet.getString("Country"));
+                Country country = new Country(
+                        resultSet.getInt("Country_ID"),
+                        resultSet.getString("Country")
+                );
                 countryObservableList.add(country);
             }
         } catch (SQLException throwable) {
@@ -53,7 +61,7 @@ public class DBCountries {
 
 
     /**
-     * Returns a Country object provided a country id.
+     * Returns a Country object provided a country id. Searches database for a specific Country_ID.
      *
      * @param countryId
      * @return Country object
@@ -111,7 +119,7 @@ public class DBCountries {
     }
 
     /**
-     * Could implement some sort of factory to reduce the repetitive code?
+     *
      *
      * @param divisionId
      * @return
@@ -119,6 +127,7 @@ public class DBCountries {
     public static Country getCountryFromDivisionId(int divisionId) {
         Country country = null;
         try {
+            //FIXME - refactor SQL statement. Or don't include this method at all and keep it inside DBDivisions
             String sql = "SELECT * FROM (SELECT countries.Country, client_schedule.first_level_divisions.Division_ID " +
                     "FROM countries INNER JOIN first_level_divisions ON countries.Country_ID = client_schedule.first_level_divisions.COUNTRY_ID) " +
                     "as CDI WHERE CDI.Division_ID = " + divisionId;
@@ -158,7 +167,13 @@ public class DBCountries {
         }
     }
 
-    public static Country getCountry(int divisionId){
+    /**
+     * This is an unnecessary method if you have a Division object at hand.
+     *
+     * @param divisionId
+     * @return
+     */
+    public static Country getCountry(int divisionId) {
         String sql = "SELECT client_schedule.countries.Country_ID, Country, Division_ID " +
                 "FROM countries " +
                 "LEFT JOIN first_level_divisions fld ON countries.Country_ID = fld.COUNTRY_ID " +
@@ -167,7 +182,7 @@ public class DBCountries {
         try {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ResultSet resultSet = ps.executeQuery();
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 country = new Country(resultSet.getInt("Country_ID"), resultSet.getString("Country"));
             }
         } catch (SQLException throwables) {
