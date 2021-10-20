@@ -1,30 +1,33 @@
 package data;
 
-import jdk.jfr.Description;
 import model.Appointment;
 import model.Contact;
 import model.Customer;
 import model.User;
-import test.Test;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+//TODO
+// - Need a READ method
+// - Need a DELETE method
+// - Need an UPDATE method
 public class DBAppointment {
-    //FIXME - The only way to get an Appointment ID is to have it retrieved from the Database. It is not possible to create
-    // an Appointment object without an item in the database. Therefore you must make related objects in the database
-    // before making an Appointment object. Related objects like Customer and User are already created (so you can pass an object),
-    // but Contact is not created until you make an appointment, so you will need to get the generatedKeyID from Contact
-    // after you create it.
-    public static void main(String[] args) {
-        JDBC.openConnection();
-        Customer customer = DBCustomers.getCustomer(1);
-        User user = new User();
-        System.out.println(insertAppointment("Title of appointment", "Description of Appointment", "London", "Briefing of things", customer, user, "Joey Contacty", "joey@gmail.com"));
-    }
-
+    /**
+     * The CREATE method. Inserts a new appointment into the appointments database table and returns an Appointment object.
+     *
+     * @param appointmentTitle
+     * @param appointmentDescription
+     * @param appointmentLocation
+     * @param appointmentType
+     * @param customerObj_customerId
+     * @param userObj_userId
+     * @param contactName
+     * @param contactEmail
+     * @return Appointment object
+     */
     public static Appointment insertAppointment(String appointmentTitle, String appointmentDescription, String appointmentLocation, String appointmentType, Customer customerObj_customerId, User userObj_userId, String contactName, String contactEmail) {
         try {
             // Insert into the contacts database table (works)
@@ -45,7 +48,8 @@ public class DBAppointment {
             ResultSet resultSetGetContact = preparedStatementContact.executeQuery();
 
             Contact contactObject = null;
-            while(resultSetGetContact.next()){
+            // Create a Contact object
+            while (resultSetGetContact.next()) {
                 contactObject = new Contact(
                         resultSetGetContact.getInt(1),
                         resultSetGetContact.getString(2),
@@ -63,20 +67,22 @@ public class DBAppointment {
             preparedStatement.setInt(5, customerObj_customerId.getId());
             preparedStatement.setInt(6, 1); //FIXME - replace with an actual User object: user.getId()
             preparedStatement.setInt(7, contactIdKey);
-
             preparedStatement.execute();
 
+            // Get key for generated appointment
             ResultSet resultSetAppointment = preparedStatement.getGeneratedKeys();
             resultSetAppointment.next();
             int appointmentKey = resultSetAppointment.getInt(1);
 
+            // Retrieve appointment row from database
             String sql_get_appointment = "SELECT Appointment_ID, Title, Description, Location, Type, Customer_ID, User_ID, Contact_ID FROM appointments WHERE Appointment_ID = ?";
             PreparedStatement preparedStatementGetAppointment = JDBC.getConnection().prepareStatement(sql_get_appointment, Statement.NO_GENERATED_KEYS);
             preparedStatementGetAppointment.setInt(1, appointmentKey);
             ResultSet resultSetGetAppointment = preparedStatementGetAppointment.executeQuery();
             Appointment appointment = null;
 
-            while (resultSetGetAppointment.next()){
+            // Create an Appointment object
+            while (resultSetGetAppointment.next()) {
                 System.out.println(resultSetGetAppointment.getInt(1) +
                         "\t" + resultSetGetAppointment.getString(2));
                 appointment = new Appointment(

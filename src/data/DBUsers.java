@@ -4,13 +4,14 @@ import javafx.collections.ObservableList;
 import model.User;
 import utils.ProcessQuery;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
-//TODO - Add CRUD functionality
-// - Create
-// - Read
-// - Update
-// - Delete
 
+//TODO
+// - Create READ method
 public class DBUsers {
     private final String providedPassword;
     User user;
@@ -20,6 +21,37 @@ public class DBUsers {
         user = new User(username, password);
         this.providedPassword = password;
         validateUsernamePassword();
+    }
+
+    public static void main(String[] args) {
+        System.out.println(
+                getUser("admin", "admin")
+        );
+    }
+
+    public static User getUser(String username, String password){
+        String sql = "SELECT * FROM users WHERE User_Name = ?";
+        User user = null;
+        try{
+            PreparedStatement ps = JDBC.openConnection().prepareStatement(sql);
+            ps.setString(1, username);
+            ResultSet resultSet = ps.executeQuery();
+            while(resultSet.next()){
+                user = new User(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        if(user != null){
+            if (password.equals(user.getPassword())){
+                return user;
+            }else {
+                return null;
+            }
+        } else{
+            return null;
+        }
     }
 
     /**
