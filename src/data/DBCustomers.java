@@ -157,42 +157,55 @@ public class DBCustomers {
      * @return an ObservableList<Customer> object or null if no entries.
      */
     public static ObservableList<Customer> getAllCustomers() {
-        String sql = "SELECT client_schedule.customers.Customer_ID,\n" +
-                "       client_schedule.customers.Customer_Name,\n" +
-                "       client_schedule.customers.Address,\n" +
-                "       client_schedule.customers.Postal_Code,\n" +
-                "       client_schedule.customers.Phone,\n" +
-                "       client_schedule.customers.Division_ID,\n" +
-                "       client_schedule.first_level_divisions.Division_ID,\n" +
-                "       client_schedule.first_level_divisions.Division,\n" +
-                "       client_schedule.countries.Country_ID,\n" +
-                "       client_schedule.countries.Country\n" +
-                "FROM client_schedule.customers,\n" +
-                "     client_schedule.first_level_divisions,\n" +
-                "     client_schedule.countries\n" +
-                "WHERE client_schedule.customers.Division_ID = client_schedule.first_level_divisions.Division_ID\n" +
-                "  AND client_schedule.first_level_divisions.COUNTRY_ID = client_schedule.countries.Country_ID;";
-
+//        String sql = "SELECT client_schedule.customers.Customer_ID,\n" +
+//                "       client_schedule.customers.Customer_Name,\n" +
+//                "       client_schedule.customers.Address,\n" +
+//                "       client_schedule.customers.Postal_Code,\n" +
+//                "       client_schedule.customers.Phone,\n" +
+//                "       client_schedule.customers.Division_ID,\n" +
+//                "       client_schedule.first_level_divisions.Division_ID,\n" +
+//                "       client_schedule.first_level_divisions.Division,\n" +
+//                "       client_schedule.countries.Country_ID,\n" +
+//                "       client_schedule.countries.Country\n" +
+//                "FROM client_schedule.customers,\n" +
+//                "     client_schedule.first_level_divisions,\n" +
+//                "     client_schedule.countries\n" +
+//                "WHERE client_schedule.customers.Division_ID = client_schedule.first_level_divisions.Division_ID\n" +
+//                "AND client_schedule.first_level_divisions.COUNTRY_ID = client_schedule.countries.Country_ID;";
+        String sql_customers = "SELECT Customer_ID, Customer_Name, Address, Postal_Code, Phone, Division_ID FROM customers";
+        
         ObservableList<Customer> customerList = FXCollections.observableArrayList();
         try {
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            PreparedStatement psCustomer = JDBC.getConnection().prepareStatement(sql_customers);
+            ResultSet resultSetCustomers = psCustomer.executeQuery();
 
-            ResultSet resultSet = getAllCustomersResultSet(); // helper method
-            while (resultSet.next()) {
+            while (resultSetCustomers.next()) {
+                String sql_div = "SELECT Division_ID, Division, COUNTRY_ID FROM first_level_divisions WHERE Division_ID = ?";
+                PreparedStatement psDiv = JDBC.getConnection().prepareStatement(sql_div);
+                psDiv.setInt(1, resultSetCustomers.getInt("Division_ID"));
+                ResultSet resultSetDiv = psDiv.executeQuery();
+                resultSetDiv.next();
+
+                String sql_country = "SELECT Country_ID, Country FROM countries WHERE Country_ID = ?";
+                PreparedStatement psCountry = JDBC.getConnection().prepareStatement(sql_country);
+                psCountry.setInt(1, resultSetDiv.getInt("Country_ID"));
+                ResultSet resultSetCountry = psCountry.executeQuery();
+                resultSetCountry.next();
                 //FIXME - The issue here is that when I want to get the Division column, the compiler says that
                 // it doesn't exist. The above sql statement proves that it exists however, so I am not sure
                 // where the error lies.
                 Customer customer = new Customer(
-                        resultSet.getInt(1),                // Customer_ID
-                        resultSet.getString(2),              // Customer_Name
-                        resultSet.getString(3),             // Address
-                        resultSet.getString(4),             // Postal_Code
-                        resultSet.getString(5),             // Phone
+                        resultSetCustomers.getInt(1),                // Customer_ID
+                        resultSetCustomers.getString(2),              // Customer_Name
+                        resultSetCustomers.getString(3),             // Address
+                        resultSetCustomers.getString(4),             // Postal_Code
+                        resultSetCustomers.getString(5),             // Phone
                         new Division(
-                                resultSet.getInt(7),        // first_level_divisions.Division_ID
-                                resultSet.getString(8),             // Division
-                                resultSet.getInt(9),               // Country_ID
-                                resultSet.getString(10)             // Country
+                                resultSetDiv.getInt(1),        // first_level_divisions.Division_ID
+                                resultSetDiv.getString(2),             // first_level_divisions.Division
+                                //FIXME - a Division should take a Country object
+                                resultSetCountry.getInt(1),               // Country_ID
+                                resultSetCountry.getString(2)             // Country
                         )
                 );
                 customerList.add(customer);
