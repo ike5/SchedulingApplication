@@ -249,3 +249,15 @@ CREATE DATABASE client_schedule;
         country_combo_id.setCellFactory(factory);
         country_combo_id.setButtonCell(factoryUsed.call(null));
 ```
+
+
+## How to show all columns in a database
+```sql
+            // SHOW COLUMNS
+            String sql = "SHOW COLUMNS FROM appointments";
+            PreparedStatement ps = JDBC.openConnection().prepareStatement(sql);
+            ResultSet resultSet = ps.executeQuery();
+            while(resultSet.next()){
+                System.out.println(resultSet.getString(1));
+            }
+```

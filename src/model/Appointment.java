@@ -12,30 +12,11 @@ public class Appointment {
     private String appointmentDescription;
     private String appointmentLocation; // must provide a value
     private String type;                // use ApptFactory
-    private int customerId;
-    private int userId;
-    private int contactId;
+    private Customer customer;          // to get customerId
+    private User user;
+    private Contact contact;
 
-    public Appointment(int appointmentInt, String appointmentTitle, String appointmentDescription, String appointmentLocation, String type, int customerId, int userId, int contactId) {
-        this.appointmentInt = appointmentInt;
-        this.appointmentTitle = appointmentTitle;
-        this.appointmentDescription = appointmentDescription;
-        this.appointmentLocation = appointmentLocation;
-        this.type = type;
-        this.customerId = customerId;
-        this.userId = userId;
-        this.contactId = contactId;
-    }
 
-    public Appointment(int appointmentInt, String appointmentTitle, String appointmentDescription, String appointmentLocation, String type, int customerId, int userId) {
-        this.appointmentInt = appointmentInt;
-        this.appointmentTitle = appointmentTitle;
-        this.appointmentDescription = appointmentDescription;
-        this.appointmentLocation = appointmentLocation;
-        this.type = type;
-        this.customerId = customerId;
-        this.userId = userId;
-    }
 
     // An appointment has a Contact, User, and Customer in addition to the fields that make up its body
     //FIXME - Need to refactor User model to hold a user Id
@@ -45,12 +26,10 @@ public class Appointment {
         this.appointmentDescription = appointmentDescription;
         this.appointmentLocation = appointmentLocation;
         this.type = type;
-        this.customerId = customer_customerId.getId();
-        this.userId = 0;
-        this.contactId = 0;
+        this.customer = customer_customerId;
+        this.user = user_userId;
+        this.contact = contact_contactId;
     }
-
-
 
     public int getAppointmentInt() {
         return appointmentInt;
@@ -72,16 +51,30 @@ public class Appointment {
         return type;
     }
 
-    public int getCustomerId() {
-        return customerId;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public int getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public int getContactId() {
-        return contactId;
+    public Contact getContact() {
+        return contact;
+    }
+
+    @Override
+    public String toString() {
+        return "Appointment{" +
+                "appointmentInt=" + appointmentInt +
+                ", appointmentTitle='" + appointmentTitle + '\'' +
+                ", appointmentDescription='" + appointmentDescription + '\'' +
+                ", appointmentLocation='" + appointmentLocation + '\'' +
+                ", type='" + type + '\'' +
+                ", customer=" + customer +
+                ", user=" + user +
+                ", contact=" + contact +
+                '}';
     }
 
     //                ApptFactory.getAppt(ApptType.PLAN).getAppointmentTypeDescription()
