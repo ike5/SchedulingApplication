@@ -157,21 +157,6 @@ public class DBCustomers {
      * @return an ObservableList<Customer> object or null if no entries.
      */
     public static ObservableList<Customer> getAllCustomers() {
-//        String sql = "SELECT client_schedule.customers.Customer_ID,\n" +
-//                "       client_schedule.customers.Customer_Name,\n" +
-//                "       client_schedule.customers.Address,\n" +
-//                "       client_schedule.customers.Postal_Code,\n" +
-//                "       client_schedule.customers.Phone,\n" +
-//                "       client_schedule.customers.Division_ID,\n" +
-//                "       client_schedule.first_level_divisions.Division_ID,\n" +
-//                "       client_schedule.first_level_divisions.Division,\n" +
-//                "       client_schedule.countries.Country_ID,\n" +
-//                "       client_schedule.countries.Country\n" +
-//                "FROM client_schedule.customers,\n" +
-//                "     client_schedule.first_level_divisions,\n" +
-//                "     client_schedule.countries\n" +
-//                "WHERE client_schedule.customers.Division_ID = client_schedule.first_level_divisions.Division_ID\n" +
-//                "AND client_schedule.first_level_divisions.COUNTRY_ID = client_schedule.countries.Country_ID;";
         String sql_customers = "SELECT Customer_ID, Customer_Name, Address, Postal_Code, Phone, Division_ID FROM customers";
         
         ObservableList<Customer> customerList = FXCollections.observableArrayList();
@@ -191,9 +176,7 @@ public class DBCustomers {
                 psCountry.setInt(1, resultSetDiv.getInt("Country_ID"));
                 ResultSet resultSetCountry = psCountry.executeQuery();
                 resultSetCountry.next();
-                //FIXME - The issue here is that when I want to get the Division column, the compiler says that
-                // it doesn't exist. The above sql statement proves that it exists however, so I am not sure
-                // where the error lies.
+
                 Customer customer = new Customer(
                         resultSetCustomers.getInt(1),                // Customer_ID
                         resultSetCustomers.getString(2),              // Customer_Name

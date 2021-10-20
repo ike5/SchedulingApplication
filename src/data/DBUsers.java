@@ -16,6 +16,11 @@ public class DBUsers {
     private final String providedPassword;
     User user;
 
+    public DBUsers(){
+        this.user = null;
+        providedPassword = null;
+    }
+
 
     public DBUsers(String username, String password) {
         user = new User(username, password);

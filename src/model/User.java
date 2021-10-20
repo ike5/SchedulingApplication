@@ -2,20 +2,21 @@ package model;
 
 
 /**
- * This class should not be instantiated but should be extended.
+ *
  */
 public class User {
     private int userId;
     private String username;
     private String password;
 
-    public User(String username, String password) {
-        this.password = password;
-        this.username = username;
-    }
 
     public User() {
         this(null, null);
+    }
+
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
     }
 
     public User(int userId, String username, String password) {
