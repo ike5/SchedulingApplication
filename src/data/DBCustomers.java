@@ -179,6 +179,9 @@ public class DBCustomers {
 
             ResultSet resultSet = getAllCustomersResultSet(); // helper method
             while (resultSet.next()) {
+                //FIXME - The issue here is that when I want to get the Division column, the compiler says that
+                // it doesn't exist. The above sql statement proves that it exists however, so I am not sure
+                // where the error lies.
                 Customer customer = new Customer(
                         resultSet.getInt(1),                // Customer_ID
                         resultSet.getString(2),              // Customer_Name

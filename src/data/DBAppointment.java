@@ -2,6 +2,8 @@ package data;
 
 import model.Appointment;
 import model.Contact;
+import model.Customer;
+import model.User;
 import test.Test;
 
 import java.sql.PreparedStatement;
@@ -12,16 +14,21 @@ public class DBAppointment {
     //TODO - if inserting a new appointment, will need to reference customer table as well
     // - Need to retrieve the getKey method
 
-    public static void insertAppointment(
-            String contactName,
-            String contactEmail,
-            String appointmentTitle,
-            String appointmentDescription,
-            String appointmentLocation,
-            String appointmentType,
-            int customerId,
-            int userId
-    ) {
+    //FIXME - An appointment object should be created for validation purposes and passed in to this method
+    // as it will provide the necessary Customer, User, and Contact objects without any unnecessary stuff.
+    // The id fields should derived from the appointment object created. Additionally, you must take into
+    // care the instantiation of the fields later on (the timestamps), so an Appointment object is the best
+    // solution for a modular makeup of this method for the time being.
+    public static void insertAppointment(Appointment appointment){
+//            String contactName,
+//            String contactEmail,
+//            String appointmentTitle,
+//            String appointmentDescription,
+//            String appointmentLocation,
+//            String appointmentType,
+//            Customer customer_customerId,
+//            User user_userId,
+//            Contact contact_contactId
 
         try {
             String sql_contact = "INSERT INTO client_schedule.contacts VALUES (NULL, ?, ?)";

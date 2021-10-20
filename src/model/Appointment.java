@@ -37,6 +37,8 @@ public class Appointment {
         this.userId = userId;
     }
 
+    // An appointment has a Contact, User, and Customer in addition to the fields that make up its body
+    //FIXME - Need to refactor User model to hold a user Id
     public Appointment(int appointmentInt, String appointmentTitle, String appointmentDescription, String appointmentLocation, String type, Customer customer_customerId, User user_userId, Contact contact_contactId) {
         this.appointmentInt = appointmentInt;
         this.appointmentTitle = appointmentTitle;
