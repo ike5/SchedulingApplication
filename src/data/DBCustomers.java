@@ -3,6 +3,7 @@ package data;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Customer;
+import model.Division;
 import test.Test;
 
 import java.sql.PreparedStatement;
@@ -83,27 +84,39 @@ public class DBCustomers {
         }
     }
 
-    public static void main(String[] args) {
-        insertCustomer("Ike Maldonado", "555 Franklin Street", "94102", "415-777-8950", 40);
-    }
 
     /**
      * Inserts a customer into the customers database table provided a Customer object.
+     * A customer entry can exist on its own, but must reference a first_level_division object
+     * and a country object.
      *
      * @param customer The Customer object to insert
      * @return Returns -1 if insert unsuccessful and a value >= 1 if successful.
      */
-    public int insertCustomerByObject(Customer customer) {
-        String sql = "INSERT INTO customers (Customer_Name, Address, Postal_Code, Phone, Division_ID) VALUES (" +
-                "'" + customer.getName() + "', " +
-                "'" + customer.getAddress() + "', " +
-                "'" + customer.getPostalCode() + "', " +
-                "'" + customer.getPhone() + "', " + customer.getDivisionId() + ")";
+    public int insertCustomer(Customer customer) {
+        String sql = "INSERT INTO customers VALUES (?, ?, ?, ?, ?, null, null, CURRENT_TIMESTAMP, null, ?)";
         try {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
-            return ps.executeUpdate();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            ps.setInt(1, customer.getId());
+            ps.setString(2, customer.getName());
+            ps.setString(3, customer.getAddress());
+            ps.setString(4, customer.getPostalCode());
+            ps.setString(5, customer.getPhone());
+            ps.setInt(6, customer.getDivision().getDivisionId());
+
+            ps.execute();
+
+//            //first_level_divisions is READ ONLY, why do you need to make an entry?
+//            // - Maybe validate that the first_level_division exists first?
+//            String sql2 = "INSERT INTO first_level_divisions VALUES (?, ?, null, null, CURRENT_TIMESTAMP, null, ?)";
+//            PreparedStatement ps2 = JDBC.getConnection().prepareStatement(sql2);
+//            ps2.setInt(1, customer.getDivision().getDivisionId());
+//            ps2.setString(2, customer.getDivision().getDivisionName());
+//            ps2.setInt(3, customer.getDivision().getCountry().getCountryId());
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return -1; // if unsuccessful
     }
@@ -144,17 +157,40 @@ public class DBCustomers {
      * @return an ObservableList<Customer> object or null if no entries.
      */
     public static ObservableList<Customer> getAllCustomers() {
+        String sql = "SELECT client_schedule.customers.Customer_ID,\n" +
+                "       client_schedule.customers.Customer_Name,\n" +
+                "       client_schedule.customers.Address,\n" +
+                "       client_schedule.customers.Postal_Code,\n" +
+                "       client_schedule.customers.Phone,\n" +
+                "       client_schedule.customers.Division_ID,\n" +
+                "       client_schedule.first_level_divisions.Division_ID,\n" +
+                "       client_schedule.first_level_divisions.Division,\n" +
+                "       client_schedule.countries.Country_ID,\n" +
+                "       client_schedule.countries.Country\n" +
+                "FROM client_schedule.customers,\n" +
+                "     client_schedule.first_level_divisions,\n" +
+                "     client_schedule.countries\n" +
+                "WHERE client_schedule.customers.Division_ID = client_schedule.first_level_divisions.Division_ID\n" +
+                "  AND client_schedule.first_level_divisions.COUNTRY_ID = client_schedule.countries.Country_ID;";
+
         ObservableList<Customer> customerList = FXCollections.observableArrayList();
         try {
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+
             ResultSet resultSet = getAllCustomersResultSet(); // helper method
             while (resultSet.next()) {
                 Customer customer = new Customer(
-                        resultSet.getInt("Customer_ID"),
-                        resultSet.getString("Customer_Name"),
-                        resultSet.getString("Address"),
-                        resultSet.getString("Postal_Code"),
-                        resultSet.getString("Phone"),
-                        resultSet.getInt("Division_ID")
+                        resultSet.getInt(1),                // Customer_ID
+                        resultSet.getString(2),              // Customer_Name
+                        resultSet.getString(3),             // Address
+                        resultSet.getString(4),             // Postal_Code
+                        resultSet.getString(5),             // Phone
+                        new Division(
+                                resultSet.getInt(7),        // first_level_divisions.Division_ID
+                                resultSet.getString(8),             // Division
+                                resultSet.getInt(9),               // Country_ID
+                                resultSet.getString(10)             // Country
+                        )
                 );
                 customerList.add(customer);
             }
@@ -171,11 +207,28 @@ public class DBCustomers {
      * @param customerId An integer representing the customer ID
      * @return Customer object or null if no such customer exists
      */
-    public Customer getCustomer(int customerId) {
-        String sql = "SELECT * FROM customers WHERE Customer_ID = " + customerId;
+    public static Customer getCustomer(int customerId) {
+        String sql = "SELECT client_schedule.customers.Customer_ID,\n" +
+                "       client_schedule.customers.Customer_Name,\n" +
+                "       client_schedule.customers.Address,\n" +
+                "       client_schedule.customers.Postal_Code,\n" +
+                "       client_schedule.customers.Phone,\n" +
+                "       client_schedule.customers.Division_ID,\n" +
+                "       client_schedule.first_level_divisions.Division_ID,\n" +
+                "       client_schedule.first_level_divisions.Division,\n" +
+                "       client_schedule.countries.Country_ID,\n" +
+                "       client_schedule.countries.Country\n" +
+                "FROM client_schedule.customers,\n" +
+                "     client_schedule.first_level_divisions,\n" +
+                "     client_schedule.countries\n" +
+                "WHERE client_schedule.customers.Division_ID = client_schedule.first_level_divisions.Division_ID\n" +
+                "  AND client_schedule.first_level_divisions.COUNTRY_ID = client_schedule.countries.Country_ID\n" +
+                "  AND client_schedule.customers.Customer_ID = ?;";
         Customer customer = null;
         try {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ps.setInt(1, customerId);
+
             ResultSet resultSet = ps.executeQuery();
 
             while (resultSet.next()) {
@@ -185,12 +238,17 @@ public class DBCustomers {
                         resultSet.getString("Address"),
                         resultSet.getString("Postal_Code"),
                         resultSet.getString("Phone"),
-                        resultSet.getInt("Division_ID")
+                        new Division(
+                                resultSet.getInt("first_level_divisions.Division_ID"),
+                                resultSet.getString("Division"),
+                                resultSet.getInt("Country_ID"),
+                                resultSet.getString("Country")
+                        )
                 );
             }
             return customer;
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return customer;
     }
@@ -216,7 +274,9 @@ public class DBCustomers {
             PreparedStatement ps = JDBC.openConnection().prepareStatement(sql);
             int sentinelValue = ps.executeUpdate();
 
-            return getCustomer(customer.getId()); // returns updated customer object from database
+            //FIXME - fix return statement
+//            return getCustomer(customer.getId()); // returns updated customer object from database
+            return null;
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }

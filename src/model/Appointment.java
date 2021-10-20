@@ -27,6 +27,29 @@ public class Appointment {
         this.contactId = contactId;
     }
 
+    public Appointment(int appointmentInt, String appointmentTitle, String appointmentDescription, String appointmentLocation, String type, int customerId, int userId) {
+        this.appointmentInt = appointmentInt;
+        this.appointmentTitle = appointmentTitle;
+        this.appointmentDescription = appointmentDescription;
+        this.appointmentLocation = appointmentLocation;
+        this.type = type;
+        this.customerId = customerId;
+        this.userId = userId;
+    }
+
+    public Appointment(int appointmentInt, String appointmentTitle, String appointmentDescription, String appointmentLocation, String type, Customer customer_customerId, User user_userId, Contact contact_contactId) {
+        this.appointmentInt = appointmentInt;
+        this.appointmentTitle = appointmentTitle;
+        this.appointmentDescription = appointmentDescription;
+        this.appointmentLocation = appointmentLocation;
+        this.type = type;
+        this.customerId = customer_customerId.getId();
+        this.userId = 0;
+        this.contactId = 0;
+    }
+
+
+
     public int getAppointmentInt() {
         return appointmentInt;
     }
