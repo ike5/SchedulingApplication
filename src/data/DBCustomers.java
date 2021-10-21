@@ -57,13 +57,6 @@ public class DBCustomers {
         return customer;
     }
 
-//    static {
-//        new Test();
-//        Main.user = new User("admin", "password");
-//    }
-
-
-
 
     /**
      * Inserts a customer into the customers database table provided a Customer object.
@@ -86,15 +79,6 @@ public class DBCustomers {
             ps.setInt(6, customer.getDivision().getDivisionId());
 
             ps.execute();
-
-//            //first_level_divisions is READ ONLY, why do you need to make an entry?
-//            // - Maybe validate that the first_level_division exists first?
-//            String sql2 = "INSERT INTO first_level_divisions VALUES (?, ?, null, null, CURRENT_TIMESTAMP, null, ?)";
-//            PreparedStatement ps2 = JDBC.getConnection().prepareStatement(sql2);
-//            ps2.setInt(1, customer.getDivision().getDivisionId());
-//            ps2.setString(2, customer.getDivision().getDivisionName());
-//            ps2.setInt(3, customer.getDivision().getCountry().getCountryId());
-
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -261,15 +245,9 @@ public class DBCustomers {
         return null; // if unsuccessful
     }
 
-//    public static void main(String[] args) {
-//        JDBC.openConnection();
-//        Customer customer = DBCustomers.getCustomer(1);
-//        customer.setName("Dad War");
-//        customer.setPostalCode("00000");
-//        customer.setLast_updated_by(Main.user);
-//
-//        DBCustomers.updateCustomer(customer);
-//    }
+
+    //FIXME
+    // Need to delete a customer properly 
 
     /**
      * Deletes customer from database table provided a Customer object.
@@ -277,16 +255,24 @@ public class DBCustomers {
      * @param customer Customer object
      * @return Returns -1 if unsuccessful and > 1 if successful
      */
-    public int deleteCustomer(Customer customer) {
-        String sql = "DELETE FROM customers WHERE Customer_ID = " + customer.getId();
-        // May have trouble with ON CASCADE DELETE since there are tied foreign key values.
+    public static void deleteCustomer(Customer customer) {
+        String sql_update = "UPDATE appointments SET Customer_ID = NULL WHERE Customer_ID = ?";
+        String sql_delete = "DELETE FROM customers WHERE Customer_ID = ?";
+
         try {
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
-            return ps.executeUpdate();
+            // Update any existing appointments referencing the customer to make Customer_ID field null
+            PreparedStatement ps_appointment = JDBC.getConnection().prepareStatement(sql_update);
+            ps_appointment.setInt(1, customer.getId());
+            ps_appointment.executeUpdate();
+
+            // Delete the customer
+            PreparedStatement ps_customer = JDBC.getConnection().prepareStatement(sql_delete);
+            ps_customer.setInt(1, customer.getId());
+            ps_customer.executeUpdate();
+
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        return -1; // if unsuccessful
     }
 
     /**
@@ -295,17 +281,35 @@ public class DBCustomers {
      * @param customerId An integer representing the customer ID
      * @return Returns -1 if unsuccessful and > 1 if successful
      */
-    public static int deleteCustomerById(int customerId) {
-        //FIXME - is deleting, but not based off customerid
-        String sql = "DELETE FROM customers WHERE Customer_ID = ?";
+    public static void deleteCustomerById(int customerId) {
+        String sql_update = "UPDATE appointments SET Customer_ID = NULL WHERE Customer_ID = ?";
+        String sql_delete = "DELETE FROM customers WHERE Customer_ID = ?";
 
         try {
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
-            ps.setInt(1, customerId);
-            return ps.executeUpdate();
+            // Update any existing appointments referencing the customer to make Customer_ID field null
+            PreparedStatement ps_appointment = JDBC.getConnection().prepareStatement(sql_update);
+            ps_appointment.setInt(1, customerId);
+            ps_appointment.executeUpdate();
+
+            // Delete the customer
+            PreparedStatement ps_customer = JDBC.getConnection().prepareStatement(sql_delete);
+            ps_customer.setInt(1, customerId);
+            ps_customer.executeUpdate();
+
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        return -1; // if unsuccessful
+    }
+
+
+    public static void main(String[] args) {
+        JDBC.openConnection();
+        DBCustomers.deleteCustomerById(2);
+    }
+
+    static {
+        new Test();
+        Main.user = new User("admin", "password");
     }
 }
+
