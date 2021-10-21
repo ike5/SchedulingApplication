@@ -30,9 +30,6 @@ public class LoginController implements Initializable {
     public TextField password_field_id;
     public Button login_id;
     private DBUsers dbUsers;
-    private User user;
-
-
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

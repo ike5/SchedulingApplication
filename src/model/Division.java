@@ -13,6 +13,10 @@ public class Division {
         this.country = new Country(countryId, countryName);
     }
 
+    public Division(int divisionId, String divisionName, Country country){
+        this(divisionId, divisionName, country.getCountryId(), country.getName());
+    }
+
     public int getDivisionId() {
         return divisionId;
     }

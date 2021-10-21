@@ -1,13 +1,8 @@
 package data;
 
-//TODO - Add CRUD functionality
-// Read
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import model.Country;
 import model.Division;
 
 import java.sql.PreparedStatement;
@@ -22,7 +17,7 @@ import java.sql.SQLException;
 public class DBDivisions {
 
     /**
-     * Gets all divisions provides a countryId.
+     * Gets all divisions provided a countryId.
      *
      * @return A ResultSet object containing all listed Division_ID, Divisions related to the Country ID.
      */

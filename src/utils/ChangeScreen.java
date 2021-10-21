@@ -6,15 +6,18 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
+import main.Main;
 import test.Test;
+
 import java.util.Locale;
 import java.util.ResourceBundle;
 
 
 @UtilityInterfaces
 public class ChangeScreen {
-  public static void changeScreen(ActionEvent actionEvent, DBUsers userLogin, Parent scene, UtilityInterfaces.FunctionalChangeScreenInterface o) {
+    public static void changeScreen(ActionEvent actionEvent, DBUsers userLogin, Parent scene, UtilityInterfaces.FunctionalChangeScreenInterface o) {
         ResourceBundle rb = ResourceBundle.getBundle("RBundle", Locale.getDefault());
+        Main.user = userLogin.getUser();
 
         if (userLogin.getUser().isValidUsername()) {
             new Test("User exists");

@@ -15,6 +15,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.cell.PropertyValueFactory;
+import main.Main;
 import model.Country;
 import model.Customer;
 import model.Division;
@@ -182,12 +183,13 @@ public class CustomersController implements Initializable {
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
             // Insert into database
-             DBCustomers.insertCustomer(
+            DBCustomers.insertCustomer(
                     customer_name_id.getText().trim(),
                     address_id.getText().trim(),
                     postal_code_id.getText().trim(),
                     phone_number_id.getText().trim(),
-                    state_province_combo_id.getSelectionModel().getSelectedItem().getDivisionId()
+                    state_province_combo_id.getSelectionModel().getSelectedItem().getDivisionId(),
+                    Main.user
             );
 
             customerObservableList = DBCustomers.getAllCustomers();

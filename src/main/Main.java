@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import model.User;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -15,6 +16,7 @@ import static data.JDBC.openConnection;
 
 public class Main extends Application {
     public static ResourceBundle resourceBundle;
+    public static User user;
 
     @Override
     public void start(Stage stage) throws Exception {

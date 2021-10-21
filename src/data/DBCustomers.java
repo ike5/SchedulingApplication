@@ -2,22 +2,22 @@ package data;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert;
+import main.Main;
 import model.Customer;
 import model.Division;
+import model.User;
 import test.Test;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 
 // Completed CRUD functions
 public class DBCustomers {
 
     /**
-     * Inserts a customer into the customers database table. All data must be provided in order for this method to
-     * work properly.
+     * Inserts a customer into the customers database table. All divisionId data must be validated in order for this method to
+     * work properly. While testing, make sure that the Main.user object is instantiated.
      *
      * @param customerName The Customer_Name field
      * @param address      The Address field
@@ -26,63 +26,43 @@ public class DBCustomers {
      * @param divisionId   The Division_ID foreign key constraint
      * @return Returns a new Customer object or null if entry was unsuccessful.
      */
-    public static void insertCustomer(String customerName, String address, String postalCode, String phone, int divisionId) {
-        //FIXME - Use a helper method instead of duplicating the code to insert a customer
-//        String sql = "INSERT INTO customers (Customer_Name, Address, Postal_Code, Phone, Division_ID) VALUES (" +
-//                "'" + customerName + "', " +
-//                "'" + address + "', " +
-//                "'" + postalCode + "', " +
-//                "'" + phone + "', " + divisionId + ")";
-        String title = "default title";
-        String description = "default description of things";
-        String location = "default location";
-        String type = "default type";
-        String created_by = "default created_by";
-        String last_updated_by = "default last_updated_by";
-        int user_id = 1; // test
-        int contact_id = 3; // Li Lee
+    public static Customer insertCustomer(String customerName, String address, String postalCode, String phone, int divisionId, User user) {
 
         Customer customer = null;
         String sql_cus = "INSERT INTO customers VALUES(Null, ?, ?, ?, ?, current_timestamp, ?, current_timestamp, ?, ?)";
 
         try {
-            PreparedStatement ps = JDBC.openConnection().prepareStatement(sql_cus, Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql_cus, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, customerName);
             ps.setString(2, address);
             ps.setString(3, postalCode);
             ps.setString(4, phone);
-            ps.setString(5, "Created by test user");
-            ps.setString(6, "Last updated by test user");
-            // 5 = created_by
-            // 6 = last_updated_by
+            ps.setString(5, user.getUsername());
+            ps.setString(6, user.getUsername());
             ps.setInt(7, divisionId);
 
             ps.execute();
-//            ResultSet resultSet = getAllCustomersResultSet();
             ResultSet rs = ps.getGeneratedKeys();
             rs.next();
-            int customerId = rs.getInt(1);
+            int customerIdKey = rs.getInt(1);
 
-            // Take acquired ID from above and put it into the next insert
-            String sql_app = "INSERT INTO appointments VALUES (null, ?, ?, ?, ?, current_timestamp, current_timestamp, current_timestamp, ?, current_timestamp, ?, ?, ?, ?)";
-            PreparedStatement preparedStatement = JDBC.getConnection().prepareStatement(sql_app);
-            preparedStatement.setString(1, title);
-            preparedStatement.setString(2, description);
-            preparedStatement.setString(3, location);
-            preparedStatement.setString(4, type);
-            preparedStatement.setString(5, created_by);
-            preparedStatement.setString(6, last_updated_by);
-            preparedStatement.setInt(7, customerId);
-            preparedStatement.setInt(8, user_id);
-            preparedStatement.setInt(9, contact_id);
+            customer = DBCustomers.getCustomer(customerIdKey); // Helper method
 
-            preparedStatement.execute();
-
-
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLIntegrityConstraintViolationException e) {
+            e.printStackTrace();
+            System.out.println("Invalid Division ID");
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+        return customer;
     }
+
+//    static {
+//        new Test();
+//        Main.user = new User("admin", "password");
+//    }
+
+
 
 
     /**
@@ -93,6 +73,7 @@ public class DBCustomers {
      * @param customer The Customer object to insert
      * @return Returns -1 if insert unsuccessful and a value >= 1 if successful.
      */
+    @Deprecated
     public int insertCustomer(Customer customer) {
         String sql = "INSERT INTO customers VALUES (?, ?, ?, ?, ?, null, null, CURRENT_TIMESTAMP, null, ?)";
         try {
@@ -158,7 +139,7 @@ public class DBCustomers {
      */
     public static ObservableList<Customer> getAllCustomers() {
         String sql_customers = "SELECT Customer_ID, Customer_Name, Address, Postal_Code, Phone, Division_ID FROM customers";
-        
+
         ObservableList<Customer> customerList = FXCollections.observableArrayList();
         try {
             PreparedStatement psCustomer = JDBC.getConnection().prepareStatement(sql_customers);
@@ -186,7 +167,6 @@ public class DBCustomers {
                         new Division(
                                 resultSetDiv.getInt(1),        // first_level_divisions.Division_ID
                                 resultSetDiv.getString(2),             // first_level_divisions.Division
-                                //FIXME - a Division should take a Country object
                                 resultSetCountry.getInt(1),               // Country_ID
                                 resultSetCountry.getString(2)             // Country
                         )
@@ -260,27 +240,36 @@ public class DBCustomers {
      * @return The updated Customer object reflecting what's in the database after the change or null if
      * the update was unsuccessful.
      */
-    public Customer updateCustomer(Customer customer) {
-        String sql = "UPDATE customers SET" +
-                " Customer_Name = " + customer.getName() +
-                ", Address = " + customer.getAddress() +
-                ", Postal_Code = " + customer.getPostalCode() +
-                ", Phone = " + customer.getPhone() +
-                ", Division_ID = " + customer.getDivisionId() +
-                " WHERE Customer_ID = " + customer.getId();
+    public static Customer updateCustomer(Customer customer) {
+        String sql = "UPDATE customers SET Customer_Name = ?, Address = ?, Postal_Code = ?, Phone = ?, Last_Update = CURRENT_TIMESTAMP, Last_Updated_By = ?, Division_ID = ? WHERE Customer_ID = ?";
 
         try {
-            PreparedStatement ps = JDBC.openConnection().prepareStatement(sql);
-            int sentinelValue = ps.executeUpdate();
+            PreparedStatement ps = JDBC.openConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, customer.getName());
+            ps.setString(2, customer.getAddress());
+            ps.setString(3, customer.getPostalCode());
+            ps.setString(4, customer.getPhone());
+            ps.setString(5, Main.user.getUsername());
+            ps.setInt(6, customer.getDivision().getDivisionId());
+            ps.setInt(7, customer.getId());
+            ps.executeUpdate();
 
-            //FIXME - fix return statement
-//            return getCustomer(customer.getId()); // returns updated customer object from database
-            return null;
+            return DBCustomers.getCustomer(customer.getId());
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
         return null; // if unsuccessful
     }
+
+//    public static void main(String[] args) {
+//        JDBC.openConnection();
+//        Customer customer = DBCustomers.getCustomer(1);
+//        customer.setName("Dad War");
+//        customer.setPostalCode("00000");
+//        customer.setLast_updated_by(Main.user);
+//
+//        DBCustomers.updateCustomer(customer);
+//    }
 
     /**
      * Deletes customer from database table provided a Customer object.

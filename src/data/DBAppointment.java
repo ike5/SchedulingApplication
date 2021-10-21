@@ -104,3 +104,28 @@ public class DBAppointment {
         return null;
     }
 }
+
+//            // APPOINTMENT TEST VALUES (unnecessary for this method)
+//            String title = "default title";
+//            String description = "default description of things";
+//            String location = "default location";
+//            String type = "default type";
+//            String created_by = "default created_by";
+//            String last_updated_by = "default last_updated_by";
+//            int user_id = 1; // test
+//            int contact_id = 3; // Li Lee
+//
+//            // Take acquired ID from above and put it into the next insert
+//            String sql_app = "INSERT INTO appointments VALUES (null, ?, ?, ?, ?, current_timestamp, current_timestamp, current_timestamp, ?, current_timestamp, ?, ?, ?, ?)";
+//            PreparedStatement preparedStatement = JDBC.getConnection().prepareStatement(sql_app);
+//            preparedStatement.setString(1, title);
+//            preparedStatement.setString(2, description);
+//            preparedStatement.setString(3, location);
+//            preparedStatement.setString(4, type);
+//            preparedStatement.setString(5, created_by);
+//            preparedStatement.setString(6, last_updated_by);
+//            preparedStatement.setInt(7, customerId);
+//            preparedStatement.setInt(8, user_id);
+//            preparedStatement.setInt(9, contact_id);
+//
+//            preparedStatement.execute();
