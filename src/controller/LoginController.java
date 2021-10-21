@@ -29,7 +29,7 @@ public class LoginController implements Initializable {
     public TextField username_field_id;
     public TextField password_field_id;
     public Button login_id;
-    private DBUsers userLogin;
+    private DBUsers dbUsers;
     private User user;
 
 
@@ -55,10 +55,10 @@ public class LoginController implements Initializable {
     }
 
     private void textFieldLogin(ActionEvent actionEvent) throws IOException {
-        userLogin = new DBUsers(username_field_id.getText(), password_field_id.getText());
+        dbUsers = new DBUsers(username_field_id.getText(), password_field_id.getText());
         ChangeScreen.changeScreen(
                 actionEvent,
-                userLogin,
+                dbUsers,
                 FXMLLoader.load(getClass().getResource("/view/Customers.fxml")),
                 aEvent -> (Stage) ((TextField) aEvent.getSource()).getScene().getWindow());
     }
@@ -75,11 +75,11 @@ public class LoginController implements Initializable {
 
         //FIXME (med) - pressing ENTER when button is highlighted doesn't work
 
-        userLogin = new DBUsers(username_field_id.getText(), password_field_id.getText());
+        dbUsers = new DBUsers(username_field_id.getText(), password_field_id.getText());
 
         ChangeScreen.changeScreen(
                 actionEvent,
-                userLogin,
+                dbUsers,
                 FXMLLoader.load(getClass().getResource("/view/Customers.fxml")),
                 aEvent -> (Stage) ((Button) aEvent.getSource()).getScene().getWindow()
         );

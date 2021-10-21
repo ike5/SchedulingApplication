@@ -16,9 +16,9 @@ public class ChangeScreen {
   public static void changeScreen(ActionEvent actionEvent, DBUsers userLogin, Parent scene, UtilityInterfaces.FunctionalChangeScreenInterface o) {
         ResourceBundle rb = ResourceBundle.getBundle("RBundle", Locale.getDefault());
 
-        if (userLogin.userExists()) {
+        if (userLogin.getUser().isValidUsername()) {
             new Test("User exists");
-            if (userLogin.passwordMatches()) {
+            if (userLogin.getUser().isValidPassword()) {
                 new Test("Password matches");
 
 //                Note the event source is either a Button or a TextField:
