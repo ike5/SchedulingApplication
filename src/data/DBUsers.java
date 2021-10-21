@@ -12,51 +12,49 @@ import java.sql.Statement;
 
 //TODO
 // - Create READ method
+
+/**
+ * This class must be instantiated in order to use the methods. The reason behind this is that a static User object can
+ * then be referred to throughout the lifecycle of the program.
+ */
 public class DBUsers {
     private final String providedPassword;
-    User user;
-
-    public DBUsers(){
-        this.user = null;
-        providedPassword = null;
-    }
-
+    private static User user;
 
     public DBUsers(String username, String password) {
-        user = new User(username, password);
+        this.user = new User(username, password);
         this.providedPassword = password;
-        validateUsernamePassword();
+        validateUsernamePassword(); //Sets User object's isValidUsername and isValidPassword values
     }
 
     public static void main(String[] args) {
-        System.out.println(
-                getUser("admin", "admin")
-        );
+        JDBC.openConnection();
+        DBUsers dbUsers = new DBUsers("test", "test");
+        boolean u = dbUsers.getUser().isValidUsername();
+        boolean p = dbUsers.getUser().isValidPassword();
+
+        System.out.println("Username is valid: " + u);
+        System.out.println("Password is valid: " + p);
     }
 
-    public static User getUser(String username, String password){
-        String sql = "SELECT * FROM users WHERE User_Name = ?";
+
+    @Deprecated
+    public User getUser(String username, String password) {
+        String sql = "SELECT User_ID, User_Name, Password FROM users WHERE User_Name = ?";
         User user = null;
-        try{
-            PreparedStatement ps = JDBC.openConnection().prepareStatement(sql);
+        try {
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ps.setString(1, username);
-            ResultSet resultSet = ps.executeQuery();
-            while(resultSet.next()){
-                user = new User(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3));
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                user = new User(rs.getInt(1), rs.getString(2), rs.getString(3));
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
 
-        if(user != null){
-            if (password.equals(user.getPassword())){
-                return user;
-            }else {
-                return null;
-            }
-        } else{
-            return null;
-        }
+        return password.equals(user.getPassword()) ? user : null;
     }
 
     /**
@@ -67,17 +65,49 @@ public class DBUsers {
      * The ResultStatement does not iterate more than once--so for security it expects an exact match.
      */
     private void validateUsernamePassword() {
-        ProcessQuery.processIf(
-                "SELECT User_Name, Password FROM users WHERE User_Name = '" + user.getUsername() + "'",
-                resultSet -> {
-                    if (resultSet.next()) {
-                        user.setUsername(resultSet.getString("User_Name").trim());
-                        user.setPassword(resultSet.getString("Password").trim());
-                    } else {
-                        user.setUsername(null);
-                        user.setPassword(null);
-                    }
-                });
+        String sql = "SELECT User_ID, User_Name, Password FROM users WHERE User_Name = ?";
+        try {
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ps.setString(1, user.getUsername());
+            ResultSet resultSet = ps.executeQuery();
+
+            // if a ResultSet row exists, then the provided User_Name exists
+            if (resultSet.next()) {
+//                // Set fields of the User object
+//                user.setUserId(resultSet.getInt("User_ID"));
+//                user.setUsername(resultSet.getString("User_Name"));
+//                user.setPassword(resultSet.getString("Password"));
+//
+//                // Set valid username flag to true
+//                user.setValidUsername(true);
+//
+//                // Check password against provided password
+//                if (user.getPassword().equals(providedPassword)) {
+//                    user.setValidPassword(true);
+//                }
+
+                user = new User(
+                        resultSet.getInt("User_ID"),
+                        resultSet.getString("User_Name"),
+                        resultSet.getString("Password"),
+                        true,
+                        resultSet.getString("Password").equals(providedPassword)
+                );
+            } else {
+//                user.setUserId(-1);     //sentinel value showing invalid username
+//                user.setUsername(null);
+//                user.setPassword(null);
+//
+//                // Set valid username flag to false
+//                // Set valid password flag to false by default
+//                user.setValidUsername(false);
+//                user.setValidPassword(false);
+
+                user = new User(-1, null, null, false, false);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -87,8 +117,27 @@ public class DBUsers {
      * @return returns true if ResultSet isn't null. If ResultSet isn't null, then the database
      * holds a username that matches the provided username.
      */
+    @Deprecated
     public Boolean userExists() {
         return user.getUsername() != null;
+    }
+
+    @Deprecated
+    public static boolean passwordMatches(User user) {
+        String sql = "SELECT * FROM users WHERE User_Name = ? AND Password = ?";
+        try {
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ps.setString(1, user.getUsername());
+            ps.setString(2, user.getPassword());
+            ResultSet resultSet = ps.executeQuery();
+
+            while (resultSet.next()) {
+                System.out.println(resultSet.getInt(1) + "\t" + resultSet.getString(2) + "\t" + resultSet.getString(3));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return true;
     }
 
     /**
@@ -96,14 +145,13 @@ public class DBUsers {
      *
      * @return returns true if provided password matches database password.
      */
+    @Deprecated
     public Boolean passwordMatches() {
         return user.getPassword().equals(providedPassword);
     }
 
-    public User addUser() {
-        return null;
-    }
 
+    @Deprecated
     public ObservableList<User> getAllUsers() {
         return null;
     }
@@ -112,12 +160,5 @@ public class DBUsers {
         return user;
     }
 
-    public User editUser(User user) {
-        return null;
-    }
-
-    public boolean deleteUser(User user) {
-        return false;
-    }
 }
 
