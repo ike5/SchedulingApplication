@@ -2,9 +2,11 @@ package data;
 
 import javafx.collections.ObservableList;
 import model.User;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
 /**
  * This class must be instantiated in order to use the methods. The reason behind this is that a static User object can
  * then be referred to throughout the lifecycle of the program.
