@@ -48,6 +48,8 @@ public class DBCustomers {
 
             customer = DBCustomers.getCustomer(customerIdKey); // Helper method
 
+            new Test("insertCustomer() called");
+
         } catch (SQLIntegrityConstraintViolationException e) {
             e.printStackTrace();
             System.out.println("Invalid Division ID");
@@ -79,6 +81,8 @@ public class DBCustomers {
             ps.setInt(6, customer.getDivision().getDivisionId());
 
             ps.execute();
+
+            new Test("insertCustomer() called");
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -157,6 +161,9 @@ public class DBCustomers {
                 );
                 customerList.add(customer);
             }
+
+            new Test("getAllCustomers() called");
+
             return customerList;
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -209,6 +216,7 @@ public class DBCustomers {
                         )
                 );
             }
+            new Test("getCustomer() called");
             return customer;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -238,6 +246,8 @@ public class DBCustomers {
             ps.setInt(7, customer.getId());
             ps.executeUpdate();
 
+            new Test("updateCustomer() called");
+
             return DBCustomers.getCustomer(customer.getId());
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -245,9 +255,6 @@ public class DBCustomers {
         return null; // if unsuccessful
     }
 
-
-    //FIXME
-    // Need to delete a customer properly 
 
     /**
      * Deletes customer from database table provided a Customer object.
@@ -270,6 +277,7 @@ public class DBCustomers {
             ps_customer.setInt(1, customer.getId());
             ps_customer.executeUpdate();
 
+            new Test("deleteCustomer() called");
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -296,20 +304,10 @@ public class DBCustomers {
             ps_customer.setInt(1, customerId);
             ps_customer.executeUpdate();
 
+            new Test("deleteCustomerById() called");
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-    }
-
-
-    public static void main(String[] args) {
-        JDBC.openConnection();
-        DBCustomers.deleteCustomerById(2);
-    }
-
-    static {
-        new Test();
-        Main.user = new User("admin", "password");
     }
 }
 

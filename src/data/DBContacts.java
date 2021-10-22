@@ -72,20 +72,28 @@ public class DBContacts {
     }
 
     /**
-     * Returns the ResultSet of a single contact in the contacts database table.
      *
      * @param contactId The contact ID
      * @return ResultSet object of the contact requested
      */
-    public static ResultSet getContact(int contactId) {
+    public static Contact getContact(int contactId) {
         String sql = "SELECT * FROM contacts WHERE Contact_ID = " + contactId;
+        Contact contact = null;
         try {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
-            return ps.executeQuery();
+            ResultSet resultSet = ps.executeQuery();
+
+            while (resultSet.next()) {
+                contact = new Contact(
+                        resultSet.getInt("Contact_ID"),
+                        resultSet.getString("Contact_Name"),
+                        resultSet.getString("Email")
+                );
+            }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        return null;
+        return contact;
     }
 
     /**

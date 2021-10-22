@@ -1,5 +1,11 @@
 package model;
 
+import data.DBContacts;
+import data.DBCustomers;
+import data.DBUsers;
+
+import java.time.LocalDateTime;
+import java.util.Locale;
 import java.util.function.Supplier;
 
 /**
@@ -15,6 +21,8 @@ public class Appointment {
     private Customer customer;          // to get customerId
     private User user;
     private Contact contact;
+    private LocalDateTime start;
+    private LocalDateTime end;
 
 
 
@@ -28,6 +36,33 @@ public class Appointment {
         this.customer = customer_customerId;
         this.user = user_userId;
         this.contact = contact_contactId;
+    }
+
+    // Used for the retrieval from database
+    public Appointment(int appointmentInt, String appointmentTitle, String appointmentDescription, String appointmentLocation, String type, LocalDateTime start, LocalDateTime end, Customer customer_customerId, User user_userId, Contact contact_contactId) {
+        this.appointmentInt = appointmentInt;
+        this.appointmentTitle = appointmentTitle;
+        this.appointmentDescription = appointmentDescription;
+        this.appointmentLocation = appointmentLocation;
+        this.type = type;
+        this.start = start;
+        this.end = end;
+        this.customer = customer_customerId;
+        this.user = user_userId;
+        this.contact = contact_contactId;
+    }
+
+    public Appointment(int appointmentInt, String appointmentTitle, String appointmentDescription, String appointmentLocation, String type, LocalDateTime start, LocalDateTime end, int customerId, int userId, int contactId) {
+        this.appointmentInt = appointmentInt;
+        this.appointmentTitle = appointmentTitle;
+        this.appointmentDescription = appointmentDescription;
+        this.appointmentLocation = appointmentLocation;
+        this.type = type;
+        this.start = start;
+        this.end = end;
+        this.customer = DBCustomers.getCustomer(customerId);
+        this.user = DBUsers.getUser(userId);
+        this.contact = DBContacts.getContact(contactId);
     }
 
     public int getAppointmentInt() {

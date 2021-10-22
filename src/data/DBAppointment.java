@@ -1,20 +1,50 @@
 package data;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import main.Main;
 import model.Appointment;
 import model.Contact;
 import model.Customer;
 import model.User;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 //TODO
 // - Need a READ method
 // - Need a DELETE method
 // - Need an UPDATE method
 public class DBAppointment {
+    public static ObservableList<Appointment> getAllAppointments() {
+        ObservableList<Appointment> appointmentObservableList = FXCollections.observableArrayList();
+        String sql = "SELECT Appointment_ID, Title, Description, Location, Type, Start, End, Customer_ID, User_ID, Contact_ID FROM appointments";
+        try {
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ResultSet resultSet = ps.executeQuery();
+
+            while (resultSet.next()) {
+                Appointment appointment = new Appointment(
+                        resultSet.getInt("Appointment_ID"),
+                        resultSet.getString("Title"),
+                        resultSet.getString("Description"),
+                        resultSet.getString("Location"),
+                        resultSet.getString("Type"),
+                        resultSet.getTimestamp("Start").toLocalDateTime(),
+                        resultSet.getTimestamp("End").toLocalDateTime(),
+                        resultSet.getInt("Customer_ID"),
+                        resultSet.getInt("User_ID"),
+                        resultSet.getInt("Contact_ID")
+                );
+                appointmentObservableList.add(appointment);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return appointmentObservableList;
+    }
+
+
+
     /**
      * The CREATE method. Inserts a new appointment into the appointments database table and returns an Appointment object.
      *

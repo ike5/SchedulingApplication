@@ -70,7 +70,30 @@ public class DBUsers {
         return null;
     }
 
-    public User getUser() {
+    public static User getUser(int userId) {
+        String sql = "SELECT User_ID, User_Name, Password FROM users WHERE User_ID = ?";
+        User user = null;
+        try{
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ps.setInt(1, userId);
+            ResultSet resultSet = ps.executeQuery();
+
+            while (resultSet.next()){
+                user = new User(
+                        resultSet.getInt("User_ID"),
+                        resultSet.getString("User_Name"),
+                        resultSet.getString("Password")
+                );
+                user.setValidUsername(true);
+                user.setValidPassword(true);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return user;
+    }
+
+    public User getUser(){
         return user;
     }
 }

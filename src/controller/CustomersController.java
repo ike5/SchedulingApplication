@@ -93,6 +93,8 @@ public class CustomersController implements Initializable {
         phone_number_id.clear();
         country_combo_id.getSelectionModel().selectFirst();
         state_province_combo_id.getSelectionModel().selectFirst();
+
+        new Test("clearFormButtonOnAction() called");
     }
 
 
@@ -131,20 +133,26 @@ public class CustomersController implements Initializable {
         state_province_combo_id.setVisibleRowCount(5);
 
         table_view_id.getSelectionModel().selectedItemProperty().addListener((observableValue, oldSelection, newSelection) -> {
-            if (newSelection != null) {
-                // Set the values of the fields/comboboxes when clicked
-                customer_id_id.setText(String.valueOf(((Customer) newSelection).getId()));
-                customer_name_id.setText(((Customer) newSelection).getName());
-                address_id.setText(((Customer) newSelection).getAddress());
-                phone_number_id.setText(((Customer) newSelection).getPhone());
-                postal_code_id.setText(((Customer) newSelection).getPostalCode());
+                    if (newSelection != null) {
+                        // Set the values of the fields/comboboxes when clicked
+                        customer_id_id.setText(String.valueOf(((Customer) newSelection).getId()));
+                        customer_name_id.setText(((Customer) newSelection).getName());
+                        address_id.setText(((Customer) newSelection).getAddress());
+                        phone_number_id.setText(((Customer) newSelection).getPhone());
+                        postal_code_id.setText(((Customer) newSelection).getPostalCode());
 
-                //FIXME - doesn't show value if: Clear -> Click item -> Click another item
-                country_combo_id.setValue(((Customer) newSelection).getCountry());
-                state_province_combo_id.setValue(((Customer) newSelection).getDivision());
-            }
-            table_view_id.refresh();
-        });
+                        //FIXME - doesn't show value if: Clear -> Click item -> Click another item
+                        country_combo_id.setValue(((Customer) newSelection).getCountry());
+                        state_province_combo_id.setValue(((Customer) newSelection).getDivision());
+                    }
+                    table_view_id.refresh();
+
+                    new Test("table_view_id.getSele... lambda called");
+                }
+        );
+
+        new Test("initialize() in CustomersController called");
+
     }
 
     //FIXME - limit the Division list to only states/provinces within country selected
@@ -209,6 +217,7 @@ public class CustomersController implements Initializable {
             e.printStackTrace();
             System.out.println("Could not delete item");
         }
+        new Test("deleteCustomerButtonOnAction() called");
     }
 
     public void newCustomerButtonOnAction(ActionEvent actionEvent) {
@@ -226,9 +235,11 @@ public class CustomersController implements Initializable {
             stage.setScene(new Scene(scene));
             stage.show();
         }
+        new Test("logoutButtonOnAction() called");
     }
 
     private boolean validateTextField(TextField textField) {
+        new Test("validateTextField() called");
 //        String regexUsername = "^[0-z]+";
         String regexTextField = "^[^\\s].*"; // Can't start with a whitespace and matches 1 or more characters
         return textField.getText().matches(regexTextField);
@@ -253,6 +264,7 @@ public class CustomersController implements Initializable {
         } else {
             customer_name_id.setStyle("-fx-background-color: pink");
         }
+        new Test("customerNameOnKeyTyped() called");
     }
 
     public void addressOnKeyTyped(KeyEvent keyEvent) {
@@ -262,6 +274,7 @@ public class CustomersController implements Initializable {
         } else {
             address_id.setStyle("-fx-background-color: pink");
         }
+        new Test("addressOnKeyTyped() called");
     }
 
     public void postalCodeOnKeyTyped(KeyEvent keyEvent) {
@@ -271,6 +284,7 @@ public class CustomersController implements Initializable {
         } else {
             postal_code_id.setStyle("-fx-background-color: pink");
         }
+        new Test("postalCodeOnKeyTyped() called");
     }
 
     public void phoneNumberOnKeyTyped(KeyEvent keyEvent) {
@@ -280,6 +294,7 @@ public class CustomersController implements Initializable {
         } else {
             phone_number_id.setStyle("-fx-background-color: pink");
         }
+        new Test("phoneNUmberOnKeyTyped() called");
     }
 
     //TODO - work on lambda to get entire expression for field validity
@@ -294,6 +309,7 @@ public class CustomersController implements Initializable {
                 isCountryComboBoxValid)
         );
     }
+
 
 
     interface ValidateAllFieldsInterface {
