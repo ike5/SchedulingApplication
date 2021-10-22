@@ -1,17 +1,23 @@
 package controller;
 
+import data.DBAppointment;
+import data.DBDivisions;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import model.Appointment;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
 public class AppointmentsController implements Initializable {
@@ -31,6 +37,7 @@ public class AppointmentsController implements Initializable {
     public RadioButton month_view_radio_button;
     public RadioButton week_view_radio_button;
     public RadioButton all_appointments_radio_button;
+    public ObservableList<Appointment> appointmentObservableList;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -39,6 +46,23 @@ public class AppointmentsController implements Initializable {
         month_view_radio_button.setToggleGroup(toggleGroup);
         week_view_radio_button.setToggleGroup(toggleGroup);
         all_appointments_radio_button.setSelected(true);
+
+        appointmentObservableList = DBAppointment.getAllAppointments();
+        table_view_id.setItems(appointmentObservableList);
+
+        appointment_id_tablecolumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("AppointmentId"));
+        title_tablecolumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("AppointmentTitle"));
+        description_tablecolumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("AppointmentDescription"));
+        location_tablecolumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("AppointmentLocation"));
+        type_tablecolumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("Type"));
+        start_date_time_tablecolumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("StartString"));
+        end_date_time_tablecolumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("EndString"));
+        customer_id_tablecolumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("CustomerId"));
+        user_id_tablecolumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("UserId"));
+        contact_tablecolumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("ContactId"));
+
+
+
 
         // Set listener for radio buttons
 //        toggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
@@ -51,8 +75,9 @@ public class AppointmentsController implements Initializable {
 
     public void backButtonOnAction(ActionEvent actionEvent) throws IOException {
         Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
-        Parent scene = FXMLLoader.load(getClass().getResource("/view/NewAppointmentController.fxml"));
-        stage.setTitle("Hello ");
+        //FIXME - should change to NewAppointment.fxml, not Appointments.fxml
+        Parent scene = FXMLLoader.load(getClass().getResource("/view/Appointments.fxml"));
+        stage.setTitle("Hello");
         stage.setScene(new Scene(scene));
         stage.show();
     }

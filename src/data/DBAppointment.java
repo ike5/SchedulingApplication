@@ -29,6 +29,12 @@ public class DBAppointment {
                         resultSet.getString("Description"),
                         resultSet.getString("Location"),
                         resultSet.getString("Type"),
+
+                        //FIXME The below timestamp retrieval from the database is causing issues. It seems that converting
+                        // between LocalDateTime, TimeStamp, and String is causing issues for when rendering it back to
+                        // the Appointments table. Need to figure out why the conversion isn't working, or if there's a
+                        // way to keep LocalDateTime objects for the future.
+
                         resultSet.getTimestamp("Start").toLocalDateTime(),
                         resultSet.getTimestamp("End").toLocalDateTime(),
                         resultSet.getInt("Customer_ID"),

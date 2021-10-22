@@ -310,6 +310,13 @@ public class CustomersController implements Initializable {
         );
     }
 
+    public void viewAppointmentsButtonOnAction(ActionEvent actionEvent) throws IOException {
+        Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
+        Parent scene = FXMLLoader.load(getClass().getResource("/view/Appointments.fxml"));
+        stage.setTitle("Hello ");
+        stage.setScene(new Scene(scene));
+        stage.show();
+    }
 
 
     interface ValidateAllFieldsInterface {
