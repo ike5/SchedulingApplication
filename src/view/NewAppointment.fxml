@@ -4,6 +4,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -53,17 +54,17 @@
                                 <Label text="Contact ID" GridPane.rowIndex="2" />
                                 <Label text="User ID" GridPane.rowIndex="3" />
                                 <DatePicker fx:id="start_date_picker" prefHeight="26.0" prefWidth="187.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                                <ComboBox fx:id="start_time_combo" prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="5" />
                                 <Label text="End Date" GridPane.rowIndex="6" />
                                 <Label text="End Time" GridPane.columnIndex="2" GridPane.rowIndex="6" />
                                 <DatePicker fx:id="end_date_picker" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                                <ComboBox fx:id="end_time_combo" prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="6" />
                                 <ComboBox fx:id="customer_combo" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                 <ComboBox fx:id="contact_combo" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                 <ComboBox fx:id="user_combo" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                 <Label fx:id="appointment_id_label" text="ID" GridPane.columnIndex="1" />
                                 <Label fx:id="error_message_label" text="Error Messages if any" textFill="#f30202" GridPane.columnIndex="1" GridPane.rowIndex="7" />
                         <Label fx:id="error_messages_label2" text="Error Messages if any" textFill="#f70303" GridPane.columnIndex="3" GridPane.rowIndex="7" />
+                        <Spinner fx:id="start_time_spinner" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+                        <Spinner fx:id="end_time_spinner" GridPane.columnIndex="3" GridPane.rowIndex="6" />
                             </children>
                         </GridPane>
                     </children>

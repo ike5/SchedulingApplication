@@ -11,6 +11,7 @@ import javafx.scene.control.*;
 import model.*;
 
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
 public class NewAppointmentController implements Initializable {
@@ -24,15 +25,15 @@ public class NewAppointmentController implements Initializable {
     public TextField title_textfield;
     public TextField description_textfield;
     public DatePicker start_date_picker;
-    public ComboBox start_time_combo;
     public DatePicker end_date_picker;
-    public ComboBox end_time_combo;
     public ComboBox customer_combo;
     public ComboBox contact_combo;
     public ComboBox user_combo;
     public Button cancel_button;
     public Button clear_button;
     public Button save_button;
+    public Spinner start_time_spinner;
+    public Spinner end_time_spinner;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -50,9 +51,16 @@ public class NewAppointmentController implements Initializable {
         user_combo.setItems(userObservableList);
         user_combo.setValue(appointment.getUser());
 
-        ObservableList<Division> divisionObservableList = DBDivisions.getAllFirstLevelDivisions();
-        location_combo.setItems(divisionObservableList);
+        ObservableList<Location> locationObservableList = FXCollections.observableArrayList(Location.values());
+        location_combo.setItems(locationObservableList);
         location_combo.setValue(appointment.getAppointmentLocation());
+
+        ObservableList<Type> typeObservableList = FXCollections.observableArrayList(Type.values());
+        type_combo.setItems(typeObservableList);
+        type_combo.setValue(appointment.getType());
+
+        start_time_spinner.setValueFactory(new SpinnerValueFactory.ListSpinnerValueFactory(PossibleTimes.localTimeList()));
+
 
         appointment_id_label.setText(Integer.toString(appointment.getAppointmentId()));
     }
