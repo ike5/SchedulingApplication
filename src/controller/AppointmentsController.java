@@ -76,7 +76,7 @@ public class AppointmentsController implements Initializable {
     public void backButtonOnAction(ActionEvent actionEvent) throws IOException {
         Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
         //FIXME - should change to NewAppointment.fxml, not Appointments.fxml
-        Parent scene = FXMLLoader.load(getClass().getResource("/view/Appointments.fxml"));
+        Parent scene = FXMLLoader.load(getClass().getResource("/view/NewAppointments.fxml"));
         stage.setTitle("Hello");
         stage.setScene(new Scene(scene));
         stage.show();
