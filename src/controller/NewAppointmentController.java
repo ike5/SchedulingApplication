@@ -2,6 +2,7 @@ package controller;
 
 import data.DBContacts;
 import data.DBCustomers;
+import data.DBDivisions;
 import data.DBUsers;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -37,8 +38,6 @@ public class NewAppointmentController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Appointment appointment = AppointmentSingleton.getInstance().getAppointment();
 
-        appointment_id_label.setText(Integer.toString(appointment.getAppointmentId()));
-
         ObservableList<Customer> customerObservableList = DBCustomers.getAllCustomers();
         customer_combo.setItems(customerObservableList);
         customer_combo.setValue(appointment.getCustomer());
@@ -47,10 +46,15 @@ public class NewAppointmentController implements Initializable {
         contact_combo.setItems(contactObservableList);
         contact_combo.setValue(appointment.getContact());
 
-//        ObservableList<User> userObservableList = DBUsers.getUser()
+        ObservableList<User> userObservableList = DBUsers.getAllUsers();
+        user_combo.setItems(userObservableList);
+        user_combo.setValue(appointment.getUser());
 
+        ObservableList<Division> divisionObservableList = DBDivisions.getAllFirstLevelDivisions();
+        location_combo.setItems(divisionObservableList);
+        location_combo.setValue(appointment.getAppointmentLocation());
 
-        
+        appointment_id_label.setText(Integer.toString(appointment.getAppointmentId()));
     }
 
 }

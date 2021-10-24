@@ -1,5 +1,6 @@
 package data;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.User;
 
@@ -40,6 +41,28 @@ public class DBUsers {
         return password.equals(user.getPassword()) ? user : null;
     }
 
+    public static ObservableList<User> getAllUsers() {
+        ObservableList<User> userObservableList = FXCollections.observableArrayList();
+
+        String sql = "SELECT User_ID, User_Name, Password FROM users";
+        try {
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ResultSet resultSet = ps.executeQuery();
+
+            while (resultSet.next()) {
+                User user = new User(
+                        resultSet.getInt("User_ID"),
+                        resultSet.getString("User_Name"),
+                        resultSet.getString("Password")
+                );
+                userObservableList.add(user);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return userObservableList;
+    }
+
     private void validateUsernamePassword() {
         String sql = "SELECT User_ID, User_Name, Password FROM users WHERE User_Name = ?";
         try {
@@ -65,20 +88,15 @@ public class DBUsers {
     }
 
 
-    @Deprecated
-    public ObservableList<User> getAllUsers() {
-        return null;
-    }
-
     public static User getUser(int userId) {
         String sql = "SELECT User_ID, User_Name, Password FROM users WHERE User_ID = ?";
         User user = null;
-        try{
+        try {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ps.setInt(1, userId);
             ResultSet resultSet = ps.executeQuery();
 
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 user = new User(
                         resultSet.getInt("User_ID"),
                         resultSet.getString("User_Name"),
@@ -93,7 +111,7 @@ public class DBUsers {
         return user;
     }
 
-    public User getUser(){
+    public User getUser() {
         return user;
     }
 }

@@ -171,6 +171,7 @@ public class Appointment {
         return appointmentDescription;
     }
 
+    //FIXME - Location is not specific: is it a Division? is it separate and made up by the user?
     public String getAppointmentLocation() {
         return appointmentLocation;
     }
