@@ -14,6 +14,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Appointment;
+import model.AppointmentSingleton;
+import test.Test;
 
 import java.io.IOException;
 import java.net.URL;
@@ -62,7 +64,14 @@ public class AppointmentsController implements Initializable {
         contact_tablecolumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("ContactId"));
 
 
+        table_view_id.getSelectionModel().selectedItemProperty().addListener((observable, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                Appointment appointment = (Appointment) newSelection;
+                AppointmentSingleton.getInstance().setAppointment(appointment);
+                new Test("Sent and added Appointment to Singleton");
 
+            }
+        });
 
         // Set listener for radio buttons
 //        toggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {

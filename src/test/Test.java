@@ -20,6 +20,11 @@ public class Test {
         System.out.println(str + " [" + instances + "]");
     }
 
+    public Test(Object obj){
+        incrementInstances();
+        System.out.println(obj.toString() + " [" + instances + "]");
+    }
+
     /**
      * In order for an accurate number of instances to be recorded, you must
      * execute a new run of the JVM.
