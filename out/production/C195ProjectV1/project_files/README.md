@@ -22,3 +22,9 @@ Steps
 
 countries table is populated
 first_level_divisions is populated
+
+
+### MySQL version
+8.0.25
+
+

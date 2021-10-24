@@ -9,6 +9,7 @@ import model.Customer;
 import model.User;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 
 //TODO
 // - Need a READ method
@@ -23,20 +24,20 @@ public class DBAppointment {
             ResultSet resultSet = ps.executeQuery();
 
             while (resultSet.next()) {
+                Timestamp ts_start = resultSet.getTimestamp("Start");
+                Timestamp ts_end = resultSet.getTimestamp("End");
+                LocalDateTime ldt_start = ts_start.toLocalDateTime();
+                LocalDateTime ldt_end = ts_end.toLocalDateTime();
+
+
                 Appointment appointment = new Appointment(
                         resultSet.getInt("Appointment_ID"),
                         resultSet.getString("Title"),
                         resultSet.getString("Description"),
                         resultSet.getString("Location"),
                         resultSet.getString("Type"),
-
-                        //FIXME The below timestamp retrieval from the database is causing issues. It seems that converting
-                        // between LocalDateTime, TimeStamp, and String is causing issues for when rendering it back to
-                        // the Appointments table. Need to figure out why the conversion isn't working, or if there's a
-                        // way to keep LocalDateTime objects for the future.
-
-                        resultSet.getTimestamp("Start").toLocalDateTime(),
-                        resultSet.getTimestamp("End").toLocalDateTime(),
+                        ldt_start,
+                        ldt_end,
                         resultSet.getInt("Customer_ID"),
                         resultSet.getInt("User_ID"),
                         resultSet.getInt("Contact_ID")
@@ -47,6 +48,15 @@ public class DBAppointment {
             e.printStackTrace();
         }
         return appointmentObservableList;
+    }
+
+    public static void main(String[] args) {
+        JDBC.openConnection();
+        ObservableList<Appointment> appointmentObservableList = DBAppointment.getAllAppointments();
+
+        for(Appointment a : appointmentObservableList){
+            System.out.println(a);
+        }
     }
     /*
     MySQL converts TIMESTAMP values from the current time zone to UTC for storage, and back from UTC to the current time zone for retrieval.
