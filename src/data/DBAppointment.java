@@ -48,6 +48,30 @@ public class DBAppointment {
         }
         return appointmentObservableList;
     }
+    /*
+    MySQL converts TIMESTAMP values from the current time zone to UTC for storage, and back from UTC to the current time zone for retrieval.
+    (This does not occur for other types such as DATETIME.
+
+    In MySQL 8.0.19 and later, you can specify a time zone offset when inserting a TIMESTAMP or DATETIME value into a table.
+    See Section 9.1.3, “Date and Time Literals”, for more information and examples.
+
+    In MySQL 8.0.22 and later, you can convert TIMESTAMP values to UTC DATETIME values when retrieving them using CAST()
+    with the AT TIME ZONE operator, as shown here:
+
+    mysql> SELECT col,
+     >     CAST(col AT TIME ZONE INTERVAL '+00:00' AS DATETIME) AS ut
+     >     FROM ts ORDER BY id;
++---------------------+---------------------+
+| col                 | ut                  |
++---------------------+---------------------+
+| 2020-01-01 10:10:10 | 2020-01-01 15:10:10 |
+| 2019-12-31 23:40:10 | 2020-01-01 04:40:10 |
+| 2020-01-01 13:10:10 | 2020-01-01 18:10:10 |
+| 2020-01-01 10:10:10 | 2020-01-01 15:10:10 |
+| 2020-01-01 04:40:10 | 2020-01-01 09:40:10 |
+| 2020-01-01 18:10:10 | 2020-01-01 23:10:10 |
++---------------------+---------------------+
+     */
 
 
 
