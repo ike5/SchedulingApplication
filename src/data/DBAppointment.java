@@ -50,14 +50,7 @@ public class DBAppointment {
         return appointmentObservableList;
     }
 
-    public static void main(String[] args) {
-        JDBC.openConnection();
-        ObservableList<Appointment> appointmentObservableList = DBAppointment.getAllAppointments();
 
-        for(Appointment a : appointmentObservableList){
-            System.out.println(a);
-        }
-    }
     /*
     MySQL converts TIMESTAMP values from the current time zone to UTC for storage, and back from UTC to the current time zone for retrieval.
     (This does not occur for other types such as DATETIME.
@@ -84,6 +77,41 @@ public class DBAppointment {
      */
 
 
+    public static Appointment getAppointment(int appointmentId) {
+        String sql = "SELECT Appointment_ID, Title, Description, Location, Type, Start, End, Customer_ID, User_ID, Contact_ID " +
+                "FROM appointments " +
+                "WHERE Appointment_ID = ?";
+        Appointment appointment = null;
+        try {
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ps.setInt(1, appointmentId);
+            ResultSet resultSet = ps.executeQuery();
+
+            while (resultSet.next()) {
+                Timestamp ts_start = resultSet.getTimestamp("Start");
+                Timestamp ts_end = resultSet.getTimestamp("End");
+                LocalDateTime ldt_start = ts_start.toLocalDateTime();
+                LocalDateTime ldt_end = ts_end.toLocalDateTime();
+
+
+                appointment = new Appointment(
+                        resultSet.getInt("Appointment_ID"),
+                        resultSet.getString("Title"),
+                        resultSet.getString("Description"),
+                        resultSet.getString("Location"),
+                        resultSet.getString("Type"),
+                        ldt_start,
+                        ldt_end,
+                        resultSet.getInt("Customer_ID"),
+                        resultSet.getInt("User_ID"),
+                        resultSet.getInt("Contact_ID")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return appointment;
+    }
 
     /**
      * The CREATE method. Inserts a new appointment into the appointments database table and returns an Appointment object.
