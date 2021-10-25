@@ -40,14 +40,15 @@ public class AppointmentsController implements Initializable {
     public RadioButton week_view_radio_button;
     public RadioButton all_appointments_radio_button;
     public ObservableList<Appointment> appointmentObservableList;
+    public ToggleGroup appointmentToggleGroup;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        final ToggleGroup toggleGroup = new ToggleGroup();
-        all_appointments_radio_button.setToggleGroup(toggleGroup);
-        month_view_radio_button.setToggleGroup(toggleGroup);
-        week_view_radio_button.setToggleGroup(toggleGroup);
-        all_appointments_radio_button.setSelected(true);
+//        final ToggleGroup toggleGroup = new ToggleGroup();
+//        all_appointments_radio_button.setToggleGroup(toggleGroup);
+//        month_view_radio_button.setToggleGroup(toggleGroup);
+//        week_view_radio_button.setToggleGroup(toggleGroup);
+//        all_appointments_radio_button.setSelected(true);
 
         appointmentObservableList = DBAppointment.getAllAppointments();
         table_view_id.setItems(appointmentObservableList);
@@ -103,4 +104,9 @@ public class AppointmentsController implements Initializable {
     }
 
 
+    public void newAppointmentButtonOnAction(ActionEvent actionEvent) {
+    }
+
+    public void updateAppointmentButtonOnAction(ActionEvent actionEvent) {
+    }
 }
