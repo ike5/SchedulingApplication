@@ -64,6 +64,7 @@ public class AppointmentsController implements Initializable {
         contact_tablecolumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("ContactId"));
 
 
+        // TableView listener
         table_view_id.getSelectionModel().selectedItemProperty().addListener((observable, oldSelection, newSelection) -> {
             if (newSelection != null) {
                 Appointment appointment = (Appointment) newSelection;
@@ -84,8 +85,7 @@ public class AppointmentsController implements Initializable {
 
     public void backButtonOnAction(ActionEvent actionEvent) throws IOException {
         Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
-        //FIXME - should change to NewAppointment.fxml, not Appointments.fxml
-        Parent scene = FXMLLoader.load(getClass().getResource("/view/NewAppointment.fxml"));
+        Parent scene = FXMLLoader.load(getClass().getResource("/view/Customers.fxml"));
         stage.setTitle("Hello");
         stage.setScene(new Scene(scene));
         stage.show();

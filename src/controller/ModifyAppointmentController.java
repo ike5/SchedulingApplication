@@ -14,7 +14,7 @@ import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
-public class NewAppointmentController implements Initializable {
+public class ModifyAppointmentController implements Initializable {
 
 
     public Label appointment_id_label;
@@ -70,7 +70,6 @@ public class NewAppointmentController implements Initializable {
         description_textfield.setText(appointment.getAppointmentDescription());
 
         //TODO
-        // - change name of class to ModifyAppointmentController, since the actions provided by this controller
         // include modification.
         // - set listeners to the comboboxes
 

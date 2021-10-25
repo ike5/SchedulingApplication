@@ -132,6 +132,7 @@ public class CustomersController implements Initializable {
         state_province_combo_id.setItems(divisionObservableList);
         state_province_combo_id.setVisibleRowCount(5);
 
+        // TableView listener
         table_view_id.getSelectionModel().selectedItemProperty().addListener((observableValue, oldSelection, newSelection) -> {
                     if (newSelection != null) {
                         // Set the values of the fields/comboboxes when clicked
@@ -146,13 +147,8 @@ public class CustomersController implements Initializable {
                         state_province_combo_id.setValue(((Customer) newSelection).getDivision());
                     }
                     table_view_id.refresh();
-
-                    new Test("table_view_id.getSele... lambda called");
                 }
         );
-
-        new Test("initialize() in CustomersController called");
-
     }
 
     //FIXME - limit the Division list to only states/provinces within country selected
@@ -311,6 +307,7 @@ public class CustomersController implements Initializable {
     }
 
     public void viewAppointmentsButtonOnAction(ActionEvent actionEvent) throws IOException {
+        //TODO Alert user if any changes were made to Fields
         Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
         Parent scene = FXMLLoader.load(getClass().getResource("/view/Appointments.fxml"));
         stage.setTitle("Hello ");
