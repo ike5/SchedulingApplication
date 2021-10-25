@@ -60,9 +60,14 @@ public class NewAppointmentController implements Initializable {
         type_combo.setValue(appointment.getType());
 
         start_time_spinner.setValueFactory(new SpinnerValueFactory.ListSpinnerValueFactory(PossibleTimes.localTimeList()));
+        end_time_spinner.setValueFactory(new SpinnerValueFactory.ListSpinnerValueFactory(PossibleTimes.localTimeList()));
 
 
         appointment_id_label.setText(Integer.toString(appointment.getAppointmentId()));
+
+        title_textfield.setText(appointment.getAppointmentTitle());
+
+        description_textfield.setText(appointment.getAppointmentDescription());
     }
 
 }

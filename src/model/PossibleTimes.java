@@ -68,10 +68,6 @@ public enum PossibleTimes {
                 LocalTime.parse("11:45", dateTimeFormatter)
 
         );
-
-
-
         return localTimeObservableList;
-
     }
 }
