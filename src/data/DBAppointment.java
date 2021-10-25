@@ -1,5 +1,6 @@
 package data;
 
+import com.mysql.cj.xdevapi.DbDoc;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import main.Main;
@@ -201,29 +202,118 @@ public class DBAppointment {
         }
         return null;
     }
+
+    public static ObservableList<Appointment> getAllAppointmentsInMonth() {
+        String sql = "SELECT * FROM appointments WHERE Start >= ?;";
+        ObservableList<Appointment> appointmentObservableList = FXCollections.observableArrayList();
+        try {
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ps.setTimestamp(1, Timestamp.valueOf(LocalDateTime.now().minusMonths(1)));
+            ResultSet resultSet = ps.executeQuery();
+
+            while (resultSet.next()) {
+                Timestamp ts_start = resultSet.getTimestamp("Start");
+                Timestamp ts_end = resultSet.getTimestamp("End");
+                LocalDateTime ldt_start = ts_start.toLocalDateTime();
+                LocalDateTime ldt_end = ts_end.toLocalDateTime();
+
+
+                Appointment appointment = new Appointment(
+                        resultSet.getInt("Appointment_ID"),
+                        resultSet.getString("Title"),
+                        resultSet.getString("Description"),
+                        resultSet.getString("Location"),
+                        resultSet.getString("Type"),
+                        ldt_start,
+                        ldt_end,
+                        resultSet.getInt("Customer_ID"),
+                        resultSet.getInt("User_ID"),
+                        resultSet.getInt("Contact_ID")
+                );
+
+                appointmentObservableList.add(appointment);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return appointmentObservableList;
+    }
+
+    public static ObservableList<Appointment> getAllAppointmentsInWeek() {
+        String sql = "SELECT * FROM appointments WHERE Start >= ?;";
+        ObservableList<Appointment> appointmentObservableList = FXCollections.observableArrayList();
+        try {
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ps.setTimestamp(1, Timestamp.valueOf(LocalDateTime.now().minusDays(7)));
+            ResultSet resultSet = ps.executeQuery();
+
+            while (resultSet.next()) {
+                Timestamp ts_start = resultSet.getTimestamp("Start");
+                Timestamp ts_end = resultSet.getTimestamp("End");
+                LocalDateTime ldt_start = ts_start.toLocalDateTime();
+                LocalDateTime ldt_end = ts_end.toLocalDateTime();
+
+
+
+
+                Appointment appointment = new Appointment(
+                        resultSet.getInt("Appointment_ID"),
+                        resultSet.getString("Title"),
+                        resultSet.getString("Description"),
+                        resultSet.getString("Location"),
+                        resultSet.getString("Type"),
+                        ldt_start,
+                        ldt_end,
+                        resultSet.getInt("Customer_ID"),
+                        resultSet.getInt("User_ID"),
+                        resultSet.getInt("Contact_ID")
+                );
+
+                appointmentObservableList.add(appointment);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return appointmentObservableList;
+    }
+
+    public static void insertTestAppointment(String user) {
+        // APPOINTMENT TEST VALUES (uncomment in Main to use)
+
+        String title = "Bringing in the wealth";
+        String description = "default description of things";
+        String location = "default location";
+        String type = "default type";
+        String created_by = user;
+        String last_updated_by = user;
+        Timestamp timestampStart= Timestamp.valueOf(LocalDateTime.of(2021, 10, 20, 2, 2));
+        Timestamp timestampEnd = Timestamp.valueOf(LocalDateTime.of(2021, 10, 22, 2, 2));
+
+        int user_id = Main.user.getUserId(); // test
+        int customer_id = DBCustomers.getCustomer(1).getId();
+        int contact_id = 3; // Li Lee
+
+        // Take acquired ID from above and put it into the next insert
+        String sql_app = "INSERT INTO appointments VALUES (null, ?, ?, ?, ?, ?, ?, current_timestamp, ?, current_timestamp, ?, ?, ?, ?)";
+        try { //5 6 are start and end
+            PreparedStatement preparedStatement = JDBC.getConnection().prepareStatement(sql_app);
+            preparedStatement.setString(1, title);
+            preparedStatement.setString(2, description);
+            preparedStatement.setString(3, location);
+            preparedStatement.setString(4, type);
+            preparedStatement.setTimestamp(5, timestampStart);
+            preparedStatement.setTimestamp(6, timestampEnd);
+            preparedStatement.setString(7, created_by);
+            preparedStatement.setString(8, last_updated_by);
+            preparedStatement.setInt(9, customer_id);
+            preparedStatement.setInt(10, user_id);
+            preparedStatement.setInt(11, contact_id);
+
+            preparedStatement.execute();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
 }
 
-//            // APPOINTMENT TEST VALUES (unnecessary for this method)
-//            String title = "default title";
-//            String description = "default description of things";
-//            String location = "default location";
-//            String type = "default type";
-//            String created_by = "default created_by";
-//            String last_updated_by = "default last_updated_by";
-//            int user_id = 1; // test
-//            int contact_id = 3; // Li Lee
-//
-//            // Take acquired ID from above and put it into the next insert
-//            String sql_app = "INSERT INTO appointments VALUES (null, ?, ?, ?, ?, current_timestamp, current_timestamp, current_timestamp, ?, current_timestamp, ?, ?, ?, ?)";
-//            PreparedStatement preparedStatement = JDBC.getConnection().prepareStatement(sql_app);
-//            preparedStatement.setString(1, title);
-//            preparedStatement.setString(2, description);
-//            preparedStatement.setString(3, location);
-//            preparedStatement.setString(4, type);
-//            preparedStatement.setString(5, created_by);
-//            preparedStatement.setString(6, last_updated_by);
-//            preparedStatement.setInt(7, customerId);
-//            preparedStatement.setInt(8, user_id);
-//            preparedStatement.setInt(9, contact_id);
-//
-//            preparedStatement.execute();
+

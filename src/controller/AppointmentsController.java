@@ -70,8 +70,7 @@ public class AppointmentsController implements Initializable {
             if (newSelection != null) {
                 Appointment appointment = (Appointment) newSelection;
                 AppointmentSingleton.getInstance().setAppointment(appointment);
-                new Test("Sent and added Appointment to Singleton");
-
+                new Test("Created Appointment Singleton");
             }
         });
 
@@ -93,14 +92,18 @@ public class AppointmentsController implements Initializable {
     }
 
     public void monthViewRadioButtonOnAction(ActionEvent actionEvent) {
-
+        appointmentObservableList = DBAppointment.getAllAppointmentsInMonth();
+        table_view_id.setItems(appointmentObservableList);
     }
 
     public void weekViewRadioButtonOnAction(ActionEvent actionEvent) {
+        appointmentObservableList = DBAppointment.getAllAppointmentsInWeek();
+        table_view_id.setItems(appointmentObservableList);
     }
 
     public void allAppointmentsRadioButtonOnAction(ActionEvent actionEvent) {
-
+        appointmentObservableList = DBAppointment.getAllAppointments();
+        table_view_id.setItems(appointmentObservableList);
     }
 
 

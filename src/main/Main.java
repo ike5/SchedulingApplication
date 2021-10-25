@@ -1,6 +1,7 @@
 package main;
 
 
+import data.DBAppointment;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -34,7 +35,10 @@ public class Main extends Application {
 //        Locale.setDefault(new Locale("fr", "CA")); // Test to set default to French
 
         openConnection();
+
+
         launch(args);
+//        DBAppointment.insertTestAppointment(user.getUsername());
         closeConnection();
     }
 

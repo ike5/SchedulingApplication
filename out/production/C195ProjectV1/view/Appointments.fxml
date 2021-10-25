@@ -5,6 +5,7 @@
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -33,10 +34,20 @@
                 </HBox>
                 <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                     <children>
+                  <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="200.0" spacing="5.0">
+                     <children>
+                        <RadioButton fx:id="all_appointments_radio_button" mnemonicParsing="false" onAction="#allAppointmentsRadioButtonOnAction" selected="true" text="All Appointments">
+                           <toggleGroup>
+                              <ToggleGroup fx:id="appointmentToggleGroup" />
+                           </toggleGroup>
+                        </RadioButton>
+                        <RadioButton fx:id="month_view_radio_button" mnemonicParsing="false" onAction="#monthViewRadioButtonOnAction" text="Month View" toggleGroup="$appointmentToggleGroup" />
+                        <RadioButton fx:id="week_view_radio_button" mnemonicParsing="false" onAction="#weekViewRadioButtonOnAction" text="Week View" toggleGroup="$appointmentToggleGroup" />
+                     </children>
+                  </VBox>
+                  <Button mnemonicParsing="false" onAction="#newAppointmentButtonOnAction" text="New Appointment" />
+                  <Button mnemonicParsing="false" onAction="#updateAppointmentButtonOnAction" text="Update Appointment" />
                         <Button mnemonicParsing="false" onAction="#backButtonOnAction" text="Back" />
-                  <RadioButton fx:id="month_view_radio_button" mnemonicParsing="false" onAction="#monthViewRadioButtonOnAction" text="Month View" />
-                  <RadioButton fx:id="week_view_radio_button" mnemonicParsing="false" onAction="#weekViewRadioButtonOnAction" text="Week View" />
-                  <RadioButton fx:id="all_appointments_radio_button" mnemonicParsing="false" onAction="#allAppointmentsRadioButtonOnAction" text="All Appointments" />
                     </children>
                     <opaqueInsets>
                         <Insets />
