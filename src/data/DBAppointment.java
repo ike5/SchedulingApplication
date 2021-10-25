@@ -12,9 +12,9 @@ import java.sql.*;
 import java.time.LocalDateTime;
 
 //TODO
-// - Need a READ method
 // - Need a DELETE method
 // - Need an UPDATE method
+
 public class DBAppointment {
     public static ObservableList<Appointment> getAllAppointments() {
         ObservableList<Appointment> appointmentObservableList = FXCollections.observableArrayList();
@@ -163,7 +163,7 @@ public class DBAppointment {
             preparedStatement.setString(3, appointmentLocation);
             preparedStatement.setString(4, appointmentType);
             preparedStatement.setInt(5, customerObj_customerId.getId());
-            preparedStatement.setInt(6, 1); //FIXME - replace with an actual User object: user.getId()
+            preparedStatement.setInt(6, Main.user.getUserId());
             preparedStatement.setInt(7, contactIdKey);
             preparedStatement.execute();
 

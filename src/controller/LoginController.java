@@ -114,6 +114,9 @@ public class LoginController implements Initializable {
         }
     }
 
+    //FIXME (low) -The red password error starts as soon as the focus is shifted from username to the password
+    // textfield. You need to make sure that the password error message does not show until an actual
+    // error presents itself.
     public void onPasswordKeyTyped(KeyEvent keyEvent) {
         if (validatePasswordString()) {
             password_label_id.setVisible(false);

@@ -68,6 +68,12 @@ public class NewAppointmentController implements Initializable {
         title_textfield.setText(appointment.getAppointmentTitle());
 
         description_textfield.setText(appointment.getAppointmentDescription());
+
+        //TODO
+        // - change name of class to ModifyAppointmentController, since the actions provided by this controller
+        // include modification.
+        // - set listeners to the comboboxes
+
     }
 
 }

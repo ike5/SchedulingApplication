@@ -20,14 +20,11 @@ import model.Country;
 import model.Customer;
 import model.Division;
 import test.Test;
-import utils.UtilityInterfaces;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
-
-import static java.lang.Integer.parseInt;
 
 public class CustomersController implements Initializable {
     public TextField customer_id_id;
@@ -67,6 +64,9 @@ public class CustomersController implements Initializable {
     ObservableList<Division> divisionObservableList;
     ObservableList<Customer> customerObservableList;
     ObservableList<Country> countryObservableList;
+
+    //TODO
+    // - Buttons needed: New Appointment, View Appointments
 
     @Deprecated
     public void customerNameOnAction(ActionEvent actionEvent) {
