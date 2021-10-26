@@ -59,43 +59,9 @@ public class CustomersController implements Initializable {
     private static boolean isPostalCodeFieldValid;
     private static boolean isPhoneNumberFieldValid;
     private static int customerSelctionId;
-
-
     ObservableList<Division> divisionObservableList;
     ObservableList<Customer> customerObservableList;
     ObservableList<Country> countryObservableList;
-
-    //TODO
-    // - Buttons needed: New Appointment, View Appointments
-
-    @Deprecated
-    public void customerNameOnAction(ActionEvent actionEvent) {
-    }
-
-    @Deprecated
-    public void addressOnAction(ActionEvent actionEvent) {
-    }
-
-    @Deprecated
-    public void postalCodeOnAction(ActionEvent actionEvent) {
-    }
-
-    @Deprecated
-    public void phoneNumberOnAction(ActionEvent actionEvent) {
-    }
-
-    public void clearFormButtonOnAction(ActionEvent actionEvent) {
-        // Clear all fields and set ComboBoxes to first item
-        customer_id_id.clear();
-        customer_name_id.clear();
-        address_id.clear();
-        postal_code_id.clear();
-        phone_number_id.clear();
-        country_combo_id.getSelectionModel().selectFirst();
-        state_province_combo_id.getSelectionModel().selectFirst();
-
-        new Test("clearFormButtonOnAction() called");
-    }
 
 
     @Override
@@ -151,11 +117,40 @@ public class CustomersController implements Initializable {
         );
     }
 
-    //FIXME - limit the Division list to only states/provinces within country selected
+    @Deprecated
+    public void customerNameOnAction(ActionEvent actionEvent) {
+    }
+
+    @Deprecated
+    public void addressOnAction(ActionEvent actionEvent) {
+    }
+
+    @Deprecated
+    public void postalCodeOnAction(ActionEvent actionEvent) {
+    }
+
+    @Deprecated
+    public void phoneNumberOnAction(ActionEvent actionEvent) {
+    }
+
+    public void clearFormButtonOnAction(ActionEvent actionEvent) {
+        // Clear all fields and set ComboBoxes to first item
+        customer_id_id.clear();
+        customer_name_id.clear();
+        address_id.clear();
+        postal_code_id.clear();
+        phone_number_id.clear();
+        country_combo_id.getSelectionModel().selectFirst();
+        state_province_combo_id.getSelectionModel().selectFirst();
+
+        new Test("clearFormButtonOnAction() called");
+    }
+
+    //        limit the Division list to only states/provinces within country selected
     public void countryComboBoxOnAction(ActionEvent actionEvent) {
         // Automatically limits division list to only those states/provinces within the country selected
-//        divisionObservableList = DBDivisions.getDivisions(country_combo_id.getSelectionModel().getSelectedItem().getCountryId());
-//        state_province_combo_id.setItems(divisionObservableList);
+        divisionObservableList = DBDivisions.getDivisions(country_combo_id.getSelectionModel().getSelectedItem().getCountryId());
+        state_province_combo_id.setItems(divisionObservableList);
     }
 
     @Deprecated

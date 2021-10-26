@@ -15,6 +15,7 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import model.*;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
@@ -23,7 +24,6 @@ import java.util.ResourceBundle;
 public class ModifyAppointmentController implements Initializable {
 
 
-    public Label appointment_id_label;
     public Label error_message_label;
     public Label error_messages_label2;
     public ComboBox type_combo;
@@ -40,6 +40,7 @@ public class ModifyAppointmentController implements Initializable {
     public Button save_button;
     public Spinner start_time_spinner;
     public Spinner end_time_spinner;
+    public TextField appointment_id_textfield;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -67,11 +68,21 @@ public class ModifyAppointmentController implements Initializable {
 
         if(appointment != null){
             customer_combo.setValue(appointment.getCustomer());
+            customer_combo.setVisibleRowCount(5);
+
             contact_combo.setValue(appointment.getContact());
+            contact_combo.setVisibleRowCount(5);
+
             user_combo.setValue(appointment.getUser());
+            user_combo.setVisibleRowCount(5);
+
             location_combo.setValue(appointment.getAppointmentLocation());
+            location_combo.setVisibleRowCount(5);
+
             type_combo.setValue(appointment.getType());
-            appointment_id_label.setText(Integer.toString(appointment.getAppointmentId()));
+            type_combo.setVisibleRowCount(5);
+
+            appointment_id_textfield.setText(Integer.toString(appointment.getAppointmentId()));
             title_textfield.setText(appointment.getAppointmentTitle());
             description_textfield.setText(appointment.getAppointmentDescription());
         }
@@ -83,6 +94,19 @@ public class ModifyAppointmentController implements Initializable {
 
     }
 
+    //FIXME - still can't figure out why when clicking clear it doesn't turn all the comboboxes to empty. Maybe I need
+    // to use a listener or a callback?
+    private void onClear(ActionEvent actionEvent){
+        customer_combo.getSelectionModel().clearSelection();
+        contact_combo.getSelectionModel().clearSelection();
+        user_combo.getSelectionModel().clearSelection();
+        location_combo.getSelectionModel().clearSelection();
+        type_combo.getSelectionModel().clearSelection();
+        appointment_id_textfield.clear();
+        title_textfield.clear();
+        description_textfield.clear();
+    }
+
     public void cancelButtonOnAction(ActionEvent actionEvent) throws IOException {
         Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
         Parent scene = FXMLLoader.load(getClass().getResource("/view/Appointments.fxml"));
@@ -92,6 +116,7 @@ public class ModifyAppointmentController implements Initializable {
     }
 
     public void clearButtonOnAction(ActionEvent actionEvent) {
+        onClear(actionEvent);
     }
 
     public void saveButtonOnAction(ActionEvent actionEvent) {
