@@ -39,6 +39,7 @@ public class Main extends Application {
 
         launch(args);
 //        DBAppointment.insertTestAppointment(user.getUsername());
+        System.out.println(System.getProperties());
         closeConnection();
     }
 

@@ -101,28 +101,30 @@ public class LoginController implements Initializable {
      * @return Returns true if password field complies with regex
      */
     private boolean validatePasswordString() {
-        String regexPassword = "[\\S]+";
+        String regexPassword = "^[\\S]+";
         return password_field_id.getText().matches(regexPassword);
     }
 
     public void onUsernameKeyTyped(KeyEvent keyEvent) {
         if (validateUsernameString()) {
             username_label_id.setVisible(false);
+            username_field_id.setStyle("-fx-background-color: white");
         } else {
-            username_label_id.setText(Main.resourceBundle.getString("invalid_username_format"));
             username_label_id.setVisible(true);
+            username_label_id.setText(Main.resourceBundle.getString("invalid_username_format"));
+            username_field_id.setStyle("-fx-background-color: pink");
         }
     }
 
-    //FIXME (low) -The red password error starts as soon as the focus is shifted from username to the password
-    // textfield. You need to make sure that the password error message does not show until an actual
-    // error presents itself.
+    //FIXME (low) - The red password error happens because of a TAB keystroke when entering the password TextField.
     public void onPasswordKeyTyped(KeyEvent keyEvent) {
         if (validatePasswordString()) {
             password_label_id.setVisible(false);
+            password_field_id.setStyle("-fx-background-color: white");
         } else {
-            password_label_id.setText(Main.resourceBundle.getString("invalid_password_format"));
             password_label_id.setVisible(true);
+            password_label_id.setText(Main.resourceBundle.getString("invalid_password_format"));
+            password_field_id.setStyle("-fx-background-color: pink");
         }
 
     }

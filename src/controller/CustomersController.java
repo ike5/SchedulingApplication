@@ -107,14 +107,12 @@ public class CustomersController implements Initializable {
                         address_id.setText(((Customer) newSelection).getAddress());
                         phone_number_id.setText(((Customer) newSelection).getPhone());
                         postal_code_id.setText(((Customer) newSelection).getPostalCode());
-
-                        //FIXME - doesn't show value if: Clear -> Click item -> Click another item
                         country_combo_id.setValue(((Customer) newSelection).getCountry());
                         state_province_combo_id.setValue(((Customer) newSelection).getDivision());
                     }
-                    table_view_id.refresh();
                 }
         );
+
     }
 
     @Deprecated
@@ -140,8 +138,8 @@ public class CustomersController implements Initializable {
         address_id.clear();
         postal_code_id.clear();
         phone_number_id.clear();
-        country_combo_id.getSelectionModel().selectFirst();
-        state_province_combo_id.getSelectionModel().selectFirst();
+        country_combo_id.valueProperty().setValue(null);
+        state_province_combo_id.valueProperty().setValue(null);
 
         new Test("clearFormButtonOnAction() called");
     }
@@ -149,8 +147,16 @@ public class CustomersController implements Initializable {
     //        limit the Division list to only states/provinces within country selected
     public void countryComboBoxOnAction(ActionEvent actionEvent) {
         // Automatically limits division list to only those states/provinces within the country selected
-        divisionObservableList = DBDivisions.getDivisions(country_combo_id.getSelectionModel().getSelectedItem().getCountryId());
-        state_province_combo_id.setItems(divisionObservableList);
+
+        //FIXME - use an if statement instead?
+        try {
+            divisionObservableList = DBDivisions.getDivisions(country_combo_id.getSelectionModel().getSelectedItem().getCountryId());
+            state_province_combo_id.setItems(divisionObservableList);
+        } catch (NullPointerException e){
+            divisionObservableList = DBDivisions.getAllFirstLevelDivisions();
+            state_province_combo_id.setItems(divisionObservableList);
+            new Test("Set all back to normal when Country is null");
+        }
     }
 
     @Deprecated
@@ -177,11 +183,7 @@ public class CustomersController implements Initializable {
         // - clear form unselects table rows and clears TextFields
         // - if logout button pressed and if table row was selected and if field was changed, prompt save
 
-
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Do you want to save changes?");
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-            // Insert into database
+        if(! table_view_id.isFocused()){
             DBCustomers.insertCustomer(
                     customer_name_id.getText().trim(),
                     address_id.getText().trim(),
@@ -194,20 +196,22 @@ public class CustomersController implements Initializable {
             customerObservableList = DBCustomers.getAllCustomers();
             table_view_id.setItems(customerObservableList);
             table_view_id.refresh(); // not necessary?
+        } else {
+            System.out.println("Table view is focused");
         }
+
+
+//        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Do you want to save changes?");
+//        Optional<ButtonType> result = alert.showAndWait();
+//        if (result.isPresent() && result.get() == ButtonType.OK) {
+//            // Insert into database
+//
+//        }
 
     }
 
     public void deleteCustomerButtonOnAction(ActionEvent actionEvent) {
-        try {
-            System.out.println(
-                    ((Customer) table_view_id.getSelectionModel().getSelectedItem()).getId()
-            );
-            DBCustomers.deleteCustomerById(((Customer) table_view_id.getSelectionModel().getSelectedItem()).getId());
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Could not delete item");
-        }
+        DBCustomers.deleteCustomerById(((Customer) table_view_id.getSelectionModel().getSelectedItem()).getId());
         new Test("deleteCustomerButtonOnAction() called");
     }
 
@@ -230,18 +234,8 @@ public class CustomersController implements Initializable {
     }
 
     private boolean validateTextField(TextField textField) {
-        new Test("validateTextField() called");
-//        String regexUsername = "^[0-z]+";
-        String regexTextField = "^[^\\s].*"; // Can't start with a whitespace and matches 1 or more characters
-        return textField.getText().matches(regexTextField);
-    }
-
-    private boolean validateCountryComboBox(ComboBox<Country> countryComboBox) {
-        return countryComboBox.isPickOnBounds();
-    }
-
-    private boolean validateDivisionComboBox(ComboBox<Division> divisionComboBox) {
-        return divisionComboBox.isPickOnBounds();
+        String regex = "^[^\\s].*\\S"; // Can't start with a whitespace and matches 1 or more characters and can't end with a whitespace
+        return textField.getText().matches(regex);
     }
 
     @Deprecated
@@ -288,19 +282,6 @@ public class CustomersController implements Initializable {
         new Test("phoneNUmberOnKeyTyped() called");
     }
 
-    //TODO - work on lambda to get entire expression for field validity
-    private boolean getFieldValidityObject() {
-        ValidateAllFieldsInterface validateAllFieldsInterface = fieldValidityObject -> fieldValidityObject.isEntireValid();
-        return validateAllFieldsInterface.validateAllFields(new FieldValidity(
-                isPhoneNumberFieldValid,
-                isPostalCodeFieldValid,
-                isCustomerNameFieldValid,
-                isAddressFieldValid,
-                isDivisionComboBoxValid,
-                isCountryComboBoxValid)
-        );
-    }
-
     public void viewAppointmentsButtonOnAction(ActionEvent actionEvent) throws IOException {
         //TODO Alert user if any changes were made to Fields
         Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
@@ -309,46 +290,5 @@ public class CustomersController implements Initializable {
         stage.setScene(new Scene(scene));
         stage.show();
     }
-
-
-    interface ValidateAllFieldsInterface {
-        // What function will be passed in?
-        public boolean validateAllFields(FieldValidity fieldValidityObject);
-    }
-
-    class FieldValidity {
-        private boolean isPhoneValid;
-        private boolean isPostalValid;
-        private boolean isNameValid;
-        private boolean isAddressValid;
-        private boolean isDivisionValid;
-        private boolean isCountryValid;
-
-        public FieldValidity(boolean isPhoneValid, boolean isPostalValid, boolean isNameValid, boolean isAddressValid, boolean isDivisionValid, boolean isCountryValid) {
-            this.isPhoneValid = isPhoneValid;
-            this.isPostalValid = isPostalValid;
-            this.isNameValid = isNameValid;
-            this.isAddressValid = isAddressValid;
-            this.isDivisionValid = isDivisionValid;
-            this.isCountryValid = isCountryValid;
-        }
-
-        public boolean isEntireValid() {
-            return isAddressValid & isCountryValid & isNameValid & isDivisionValid & isPhoneValid & isPostalValid;
-        }
-    }
-
-    private boolean setAllFieldsValidity(boolean fieldsValid) {
-        isCustomerNameFieldValid = fieldsValid;
-        isCountryComboBoxValid = fieldsValid;
-        isDivisionComboBoxValid = fieldsValid;
-        isAddressFieldValid = fieldsValid;
-        isPostalCodeFieldValid = fieldsValid;
-        isPhoneNumberFieldValid = fieldsValid;
-        return fieldsValid;
-    }
 }
-
-//TODO
-// - Add validation before sending data into database for collection
 
