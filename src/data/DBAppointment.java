@@ -314,6 +314,16 @@ public class DBAppointment {
             throwables.printStackTrace();
         }
     }
+
+    public static void updateAppointment(){
+        String sql = "";
+        try{
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
 }
 
 

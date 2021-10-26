@@ -81,9 +81,9 @@
                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                             </rowConstraints>
                      <children>
-                                <Button fx:id="cancel_button" mnemonicParsing="false" text="Cancel" />
-                                <Button fx:id="clear_button" mnemonicParsing="false" text="Clear" GridPane.columnIndex="1" />
-                                <Button fx:id="save_button" mnemonicParsing="false" text="Save" GridPane.columnIndex="2" />
+                                <Button fx:id="cancel_button" mnemonicParsing="false" onAction="#cancelButtonOnAction" text="Cancel" />
+                                <Button fx:id="clear_button" mnemonicParsing="false" onAction="#clearButtonOnAction" text="Clear" GridPane.columnIndex="1" />
+                                <Button fx:id="save_button" mnemonicParsing="false" onAction="#saveButtonOnAction" text="Save" GridPane.columnIndex="2" />
                      </children>
                         </GridPane>
                     </children>

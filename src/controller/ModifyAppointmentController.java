@@ -6,10 +6,16 @@ import data.DBDivisions;
 import data.DBUsers;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 import model.*;
 
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.ResourceBundle;
@@ -41,33 +47,35 @@ public class ModifyAppointmentController implements Initializable {
 
         ObservableList<Customer> customerObservableList = DBCustomers.getAllCustomers();
         customer_combo.setItems(customerObservableList);
-        customer_combo.setValue(appointment.getCustomer());
 
         ObservableList<Contact> contactObservableList = DBContacts.getAllContacts();
         contact_combo.setItems(contactObservableList);
-        contact_combo.setValue(appointment.getContact());
 
         ObservableList<User> userObservableList = DBUsers.getAllUsers();
         user_combo.setItems(userObservableList);
-        user_combo.setValue(appointment.getUser());
 
         ObservableList<Location> locationObservableList = FXCollections.observableArrayList(Location.values());
         location_combo.setItems(locationObservableList);
-        location_combo.setValue(appointment.getAppointmentLocation());
 
         ObservableList<Type> typeObservableList = FXCollections.observableArrayList(Type.values());
         type_combo.setItems(typeObservableList);
-        type_combo.setValue(appointment.getType());
 
         start_time_spinner.setValueFactory(new SpinnerValueFactory.ListSpinnerValueFactory(PossibleTimes.localTimeList()));
         end_time_spinner.setValueFactory(new SpinnerValueFactory.ListSpinnerValueFactory(PossibleTimes.localTimeList()));
 
 
-        appointment_id_label.setText(Integer.toString(appointment.getAppointmentId()));
 
-        title_textfield.setText(appointment.getAppointmentTitle());
+        if(appointment != null){
+            customer_combo.setValue(appointment.getCustomer());
+            contact_combo.setValue(appointment.getContact());
+            user_combo.setValue(appointment.getUser());
+            location_combo.setValue(appointment.getAppointmentLocation());
+            type_combo.setValue(appointment.getType());
+            appointment_id_label.setText(Integer.toString(appointment.getAppointmentId()));
+            title_textfield.setText(appointment.getAppointmentTitle());
+            description_textfield.setText(appointment.getAppointmentDescription());
+        }
 
-        description_textfield.setText(appointment.getAppointmentDescription());
 
         //TODO
         // include modification.
@@ -75,4 +83,17 @@ public class ModifyAppointmentController implements Initializable {
 
     }
 
+    public void cancelButtonOnAction(ActionEvent actionEvent) throws IOException {
+        Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
+        Parent scene = FXMLLoader.load(getClass().getResource("/view/Appointments.fxml"));
+        stage.setTitle("Appointments");
+        stage.setScene(new Scene(scene));
+        stage.show();
+    }
+
+    public void clearButtonOnAction(ActionEvent actionEvent) {
+    }
+
+    public void saveButtonOnAction(ActionEvent actionEvent) {
+    }
 }

@@ -44,11 +44,6 @@ public class AppointmentsController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-//        final ToggleGroup toggleGroup = new ToggleGroup();
-//        all_appointments_radio_button.setToggleGroup(toggleGroup);
-//        month_view_radio_button.setToggleGroup(toggleGroup);
-//        week_view_radio_button.setToggleGroup(toggleGroup);
-//        all_appointments_radio_button.setSelected(true);
 
         appointmentObservableList = DBAppointment.getAllAppointments();
         table_view_id.setItems(appointmentObservableList);
@@ -107,9 +102,25 @@ public class AppointmentsController implements Initializable {
     }
 
 
-    public void newAppointmentButtonOnAction(ActionEvent actionEvent) {
+    public void newAppointmentButtonOnAction(ActionEvent actionEvent) throws IOException {
+        AppointmentSingleton.getInstance().setAppointment(null);
+
+        Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
+        Parent scene = FXMLLoader.load(getClass().getResource("/view/ModifyAppointment.fxml"));
+        stage.setTitle("New Appointment");
+        stage.setScene(new Scene(scene));
+        stage.show();
     }
 
-    public void updateAppointmentButtonOnAction(ActionEvent actionEvent) {
+    public void updateAppointmentButtonOnAction(ActionEvent actionEvent) throws IOException {
+        if (table_view_id.getSelectionModel().selectedItemProperty() != null) {
+            AppointmentSingleton.getInstance().setAppointment((Appointment) table_view_id.getSelectionModel().getSelectedItem());
+
+            Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
+            Parent scene = FXMLLoader.load(getClass().getResource("/view/ModifyAppointment.fxml"));
+            stage.setTitle("Modify Appointment");
+            stage.setScene(new Scene(scene));
+            stage.show();
+        }
     }
 }
