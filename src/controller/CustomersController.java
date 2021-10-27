@@ -1,5 +1,6 @@
 package controller;
 
+import com.mysql.cj.xdevapi.Client;
 import data.DBDivisions;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -27,6 +28,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class CustomersController implements Initializable {
     public TextField customer_id_id;
@@ -109,12 +112,25 @@ public class CustomersController implements Initializable {
                         address_id.setText(((Customer) newSelection).getAddress());
                         phone_number_id.setText(((Customer) newSelection).getPhone());
                         postal_code_id.setText(((Customer) newSelection).getPostalCode());
+                        // These still show up blank
                         country_combo_id.setValue(((Customer) newSelection).getCountry());
+
                         state_province_combo_id.setValue(((Customer) newSelection).getDivision());
+                        new Test("Country selection: " + ((Customer) newSelection).getCountry());
+                        new Test("Division selection: " + ((Customer) newSelection).getDivision());
                     }
                 }
         );
 
+    }
+
+    private ObservableList<Division> getDivisionObservableListFromSelectedCountry(){
+        Predicate<Division> sameDivisionAsCountry =
+                c -> countryObservableList.stream().anyMatch(country -> country.equals(c.getCountry()));
+
+        return countryObservableList.stream()
+                .filter(sameDivisionAsCountry)
+                .collect(Collectors.toList());
     }
 
     @Deprecated
@@ -138,7 +154,6 @@ public class CustomersController implements Initializable {
         table_view_id.getSelectionModel().clearSelection();
         customer_id_id.clear();
         customer_name_id.clear();
-        customer_name_id.requestFocus(); // sets focus on first editable field
         address_id.clear();
         postal_code_id.clear();
         phone_number_id.clear();
@@ -151,10 +166,13 @@ public class CustomersController implements Initializable {
     //        limit the Division list to only states/provinces within country selected
     public void countryComboBoxOnAction(ActionEvent actionEvent) {
         // Automatically limits division list to only those states/provinces within the country selected
+        setDivisionsToCountryComboBox(country_combo_id.getSelectionModel().getSelectedItem().getCountryId());
 
-        //FIXME - use an if statement instead?
+    }
+
+    private void setDivisionsToCountryComboBox(int countryId) {
         try {
-            divisionObservableList = DBDivisions.getDivisions(country_combo_id.getSelectionModel().getSelectedItem().getCountryId());
+            divisionObservableList = DBDivisions.getDivisions(countryId);
             state_province_combo_id.setItems(divisionObservableList);
         } catch (NullPointerException e) {
             divisionObservableList = DBDivisions.getAllFirstLevelDivisions();
@@ -179,16 +197,13 @@ public class CustomersController implements Initializable {
     }
 
     public void saveButtonOnAction(ActionEvent actionEvent) {
-        //FIXME - if changes were made to the TextFields after selecting a row, prompt alert
         isValuesChanged = !(((Customer) table_view_id.getSelectionModel().getSelectedItem()).getName().equals(customer_name_id.getText()) &
                 ((Customer) table_view_id.getSelectionModel().getSelectedItem()).getAddress().equals(address_id.getText()) &
                 ((Customer) table_view_id.getSelectionModel().getSelectedItem()).getPhone().equals(phone_number_id.getText()) &
-                ((Customer) table_view_id.getSelectionModel().getSelectedItem()).getPostalCode().equals(postal_code_id.getText())
+                ((Customer) table_view_id.getSelectionModel().getSelectedItem()).getPostalCode().equals(postal_code_id.getText()) &
+                ((Customer) table_view_id.getSelectionModel().getSelectedItem()).getCountry().equals(country_combo_id.getValue()) &
+                ((Customer) table_view_id.getSelectionModel().getSelectedItem()).getDivision().equals(state_province_combo_id.getValue())
         );
-
-
-        new Test("is missing text: " + isMissingTextFieldValues());
-        new Test("values changed: " + isValuesChanged);
 
         if (table_view_id.getSelectionModel().isEmpty()) {
             // Make a new entry
@@ -205,9 +220,7 @@ public class CustomersController implements Initializable {
                         state_province_combo_id.getSelectionModel().getSelectedItem().getDivisionId(),
                         Main.user
                 );
-
                 resetCustomerTableView();
-
             }
         } else {
             if (isMissingTextFieldValues()) {
