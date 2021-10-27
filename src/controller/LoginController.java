@@ -1,8 +1,13 @@
 package controller;
 
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import main.Main;
 import model.User;
+import test.Test;
 import utils.ChangeScreen;
 import data.DBUsers;
 import javafx.event.ActionEvent;
@@ -128,4 +133,35 @@ public class LoginController implements Initializable {
         }
 
     }
+
+    public void onLoginKeyPressed(KeyEvent keyEvent) throws IOException {
+        if (keyEvent.getCode().equals(KeyCode.ENTER)) {
+            dbUsers = new DBUsers(username_field_id.getText(), password_field_id.getText());
+
+            if (dbUsers.getUser().isValidUsername()) {
+                new Test("User exists");
+                if (dbUsers.getUser().isValidPassword()) {
+                    new Test("Password matches");
+
+                    Stage stage = (Stage) ((Button) keyEvent.getSource()).getScene().getWindow();
+                    Parent scene = FXMLLoader.load(getClass().getResource("/view/Customers.fxml"));
+                    stage.setTitle("Welcome " + dbUsers.getUser().getUsername() + "!");
+                    stage.setScene(new Scene(scene));
+                    stage.show();
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.ERROR, Main.resourceBundle.getString("incorrect_password"));
+                    alert.setTitle(Main.resourceBundle.getString("password_alert_title"));
+                    alert.showAndWait();
+                }
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR, Main.resourceBundle.getString("incorrect_username"));
+                alert.setTitle(Main.resourceBundle.getString("username_alert_title"));
+                alert.showAndWait();
+            }
+
+
+        }
+    }
+
+
 }

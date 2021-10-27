@@ -152,7 +152,7 @@ public class CustomersController implements Initializable {
         try {
             divisionObservableList = DBDivisions.getDivisions(country_combo_id.getSelectionModel().getSelectedItem().getCountryId());
             state_province_combo_id.setItems(divisionObservableList);
-        } catch (NullPointerException e){
+        } catch (NullPointerException e) {
             divisionObservableList = DBDivisions.getAllFirstLevelDivisions();
             state_province_combo_id.setItems(divisionObservableList);
             new Test("Set all back to normal when Country is null");
@@ -183,7 +183,7 @@ public class CustomersController implements Initializable {
         // - clear form unselects table rows and clears TextFields
         // - if logout button pressed and if table row was selected and if field was changed, prompt save
 
-        if(! table_view_id.isFocused()){
+        if (! table_view_id.getSelectionModel().isEmpty()){
             DBCustomers.insertCustomer(
                     customer_name_id.getText().trim(),
                     address_id.getText().trim(),
