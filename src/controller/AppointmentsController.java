@@ -105,6 +105,7 @@ public class AppointmentsController implements Initializable {
     public void newAppointmentButtonOnAction(ActionEvent actionEvent) throws IOException {
         AppointmentSingleton.getInstance().setAppointment(null);
 
+        // No need to alert user, since it doesn't matter if anything is selected or not.
         Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
         Parent scene = FXMLLoader.load(getClass().getResource("/view/ModifyAppointment.fxml"));
         stage.setTitle("New Appointment");
@@ -113,6 +114,7 @@ public class AppointmentsController implements Initializable {
     }
 
     public void updateAppointmentButtonOnAction(ActionEvent actionEvent) throws IOException {
+        // Alert user if nothing is selected.
         if (table_view_id.getSelectionModel().selectedItemProperty() != null) {
             AppointmentSingleton.getInstance().setAppointment((Appointment) table_view_id.getSelectionModel().getSelectedItem());
 
@@ -121,6 +123,10 @@ public class AppointmentsController implements Initializable {
             stage.setTitle("Modify Appointment");
             stage.setScene(new Scene(scene));
             stage.show();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Nothing selected");
+            alert.setTitle("Nothing is selected!");
+            alert.showAndWait();
         }
     }
 }

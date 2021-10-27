@@ -133,8 +133,11 @@ public class CustomersController implements Initializable {
 
     public void clearFormButtonOnAction(ActionEvent actionEvent) {
         // Clear all fields and set ComboBoxes to first item
+        //FIXME - unselect all rows on the TableView
+        table_view_id.getSelectionModel().clearSelection();
         customer_id_id.clear();
         customer_name_id.clear();
+        customer_name_id.requestFocus(); // unselects row in TableView
         address_id.clear();
         postal_code_id.clear();
         phone_number_id.clear();
@@ -176,14 +179,15 @@ public class CustomersController implements Initializable {
 
     public void saveButtonOnAction(ActionEvent actionEvent) {
         //FIXME
-        // - if row in TableView is selected, update the row in the database with information in TextField
         // - new customer button clears form an unselects rows in TableView (if changes were made to TextFields, prompt alert)
         // - save button updates selected table row
         // - save button creates new customer if no table row selected
         // - clear form unselects table rows and clears TextFields
         // - if logout button pressed and if table row was selected and if field was changed, prompt save
 
-        if (! table_view_id.getSelectionModel().isEmpty()){
+        if (table_view_id.getSelectionModel().isEmpty()) {
+            new Test("Make an insert");
+            // Make a new entry
             DBCustomers.insertCustomer(
                     customer_name_id.getText().trim(),
                     address_id.getText().trim(),
@@ -197,7 +201,17 @@ public class CustomersController implements Initializable {
             table_view_id.setItems(customerObservableList);
             table_view_id.refresh(); // not necessary?
         } else {
-            System.out.println("Table view is focused");
+            new Test("Update customer");
+            DBCustomers.updateCustomer(
+                    new Customer(
+                            Integer.parseInt(customer_id_id.getText().trim()),
+                            customer_name_id.getText().trim(),
+                            address_id.getText().trim(),
+                            postal_code_id.getText().trim(),
+                            phone_number_id.getText().trim(),
+                            state_province_combo_id.getSelectionModel().getSelectedItem()
+                    )
+            );
         }
 
 

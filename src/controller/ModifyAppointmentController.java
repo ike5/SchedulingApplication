@@ -14,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import model.*;
+import test.Test;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -97,14 +98,15 @@ public class ModifyAppointmentController implements Initializable {
     //FIXME - still can't figure out why when clicking clear it doesn't turn all the comboboxes to empty. Maybe I need
     // to use a listener or a callback?
     private void onClear(ActionEvent actionEvent){
-        customer_combo.getSelectionModel().clearSelection();
-        contact_combo.getSelectionModel().clearSelection();
-        user_combo.getSelectionModel().clearSelection();
-        location_combo.getSelectionModel().clearSelection();
-        type_combo.getSelectionModel().clearSelection();
+        customer_combo.valueProperty().set(null);
+        contact_combo.valueProperty().set(null);
+        user_combo.valueProperty().set(null);
+        location_combo.getSelectionModel().clearAndSelect(0);
+        type_combo.getSelectionModel().clearAndSelect(0);
         appointment_id_textfield.clear();
         title_textfield.clear();
         description_textfield.clear();
+        new Test("onClear() called");
     }
 
     public void cancelButtonOnAction(ActionEvent actionEvent) throws IOException {
@@ -113,12 +115,15 @@ public class ModifyAppointmentController implements Initializable {
         stage.setTitle("Appointments");
         stage.setScene(new Scene(scene));
         stage.show();
+        new Test("cancelButtonOnAction() called");
     }
 
     public void clearButtonOnAction(ActionEvent actionEvent) {
         onClear(actionEvent);
+        new Test("clearbuttonOnAction() called");
     }
 
     public void saveButtonOnAction(ActionEvent actionEvent) {
+        new Test("saveButtonOnAction() called");
     }
 }

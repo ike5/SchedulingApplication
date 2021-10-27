@@ -32,14 +32,12 @@ public class Customer {
         this.countryId = division.getCountry().getCountryId();
         this.division = division;
         this.divisionId = division.getDivisionId();
-
-        created_by = Main.user;
+        this.created_by = Main.user;
     }
 
     public int getId() {
         return id;
     }
-
 
     public String getName() {
         return name;

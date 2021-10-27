@@ -6,7 +6,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import main.Main;
-import model.User;
 import test.Test;
 import utils.ChangeScreen;
 import data.DBUsers;
@@ -158,8 +157,6 @@ public class LoginController implements Initializable {
                 alert.setTitle(Main.resourceBundle.getString("username_alert_title"));
                 alert.showAndWait();
             }
-
-
         }
     }
 
