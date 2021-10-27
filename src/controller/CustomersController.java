@@ -70,7 +70,6 @@ public class CustomersController implements Initializable {
         save_button.setDisable(isSaveButtonDisabled);
         clear_form_button.setDisable(isClearFormButtonDisabled);
         delete_customer_button.setDisable(isDeleteCustomerButtonDisabled);
-        new_customer_button.setDisable(isNewCustomerButtonDisabled);
         customer_id_id.setDisable(true); // Prevent users from changing touching customer id value
 
         // Make a Customer ObservableList to populate the table
@@ -179,49 +178,49 @@ public class CustomersController implements Initializable {
     public void saveButtonOnAction(ActionEvent actionEvent) {
         //FIXME
         // - new customer button clears form an unselects rows in TableView (if changes were made to TextFields, prompt alert)
-        // - if logout button pressed and if table row was selected and if field was changed, prompt save
 
         if (table_view_id.getSelectionModel().isEmpty()) {
-            new Test("Make an insert");
             // Make a new entry
-            DBCustomers.insertCustomer(
-                    customer_name_id.getText().trim(),
-                    address_id.getText().trim(),
-                    postal_code_id.getText().trim(),
-                    phone_number_id.getText().trim(),
-                    state_province_combo_id.getSelectionModel().getSelectedItem().getDivisionId(),
-                    Main.user
-            );
+            new Test(isMissingTextFieldValues());
 
-            customerObservableList = DBCustomers.getAllCustomers();
-            table_view_id.setItems(customerObservableList);
-            table_view_id.refresh(); // not necessary?
+            if (isMissingTextFieldValues()) {
+                Alert alert = new Alert(Alert.AlertType.WARNING, "Invalid/Missing values provided");
+                alert.showAndWait();
+            } else {
+                DBCustomers.insertCustomer(
+                        customer_name_id.getText().trim(),
+                        address_id.getText().trim(),
+                        postal_code_id.getText().trim(),
+                        phone_number_id.getText().trim(),
+                        state_province_combo_id.getSelectionModel().getSelectedItem().getDivisionId(),
+                        Main.user
+                );
+
+                customerObservableList = DBCustomers.getAllCustomers();
+                table_view_id.setItems(customerObservableList);
+                table_view_id.refresh(); // not necessary?
+            }
         } else {
-            new Test("Update customer");
-            DBCustomers.updateCustomer(
-                    new Customer(
-                            Integer.parseInt(customer_id_id.getText().trim()),
-                            customer_name_id.getText().trim(),
-                            address_id.getText().trim(),
-                            postal_code_id.getText().trim(),
-                            phone_number_id.getText().trim(),
-                            state_province_combo_id.getSelectionModel().getSelectedItem()
-                    )
-            );
+            if (isMissingTextFieldValues()) {
+                Alert alert = new Alert(Alert.AlertType.WARNING, "Missing TextField values");
+                alert.showAndWait();
+            } else {
+                DBCustomers.updateCustomer(
+                        new Customer(
+                                Integer.parseInt(customer_id_id.getText().trim()),
+                                customer_name_id.getText().trim(),
+                                address_id.getText().trim(),
+                                postal_code_id.getText().trim(),
+                                phone_number_id.getText().trim(),
+                                state_province_combo_id.getSelectionModel().getSelectedItem()
+                        )
+                );
+            }
         }
-
-
-//        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Do you want to save changes?");
-//        Optional<ButtonType> result = alert.showAndWait();
-//        if (result.isPresent() && result.get() == ButtonType.OK) {
-//            // Insert into database
-//
-//        }
-
     }
 
     public void deleteCustomerButtonOnAction(ActionEvent actionEvent) {
-        if(! table_view_id.getSelectionModel().isEmpty()) {
+        if (!table_view_id.getSelectionModel().isEmpty()) {
             DBCustomers.deleteCustomerById(((Customer) table_view_id.getSelectionModel().getSelectedItem()).getId());
             table_view_id.getSelectionModel().clearSelection();
 
@@ -237,10 +236,9 @@ public class CustomersController implements Initializable {
         new Test("deleteCustomerButtonOnAction() called");
     }
 
-    public void newCustomerButtonOnAction(ActionEvent actionEvent) {
-    }
-
     public void logoutButtonOnAction(ActionEvent actionEvent) throws IOException {
+        //FIXME
+        // - if logout button pressed and table row was selected and if field was changed, prompt alert that something was changed
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Logout?");
         alert.setTitle("Confirm logout?");
         Optional<ButtonType> result = alert.showAndWait();
@@ -255,9 +253,13 @@ public class CustomersController implements Initializable {
         new Test("logoutButtonOnAction() called");
     }
 
-    private boolean validateTextField(TextField textField) {
+    private boolean isValidTextField(TextField textField) {
         String regex = "^[^\\s].*\\S"; // Can't start with a whitespace and matches 1 or more characters and can't end with a whitespace
         return textField.getText().matches(regex);
+    }
+
+    private boolean isMissingTextFieldValues() {
+        return ! (isValidTextField(customer_name_id) & isValidTextField(address_id) & isValidTextField(postal_code_id) & isValidTextField(phone_number_id));
     }
 
     @Deprecated
@@ -265,7 +267,7 @@ public class CustomersController implements Initializable {
     }
 
     public void customerNameOnKeyTyped(KeyEvent keyEvent) {
-        isCustomerNameFieldValid = validateTextField((TextField) keyEvent.getSource());
+        isCustomerNameFieldValid = isValidTextField((TextField) keyEvent.getSource());
         if (isCustomerNameFieldValid) {
             customer_name_id.setStyle("-fx-background-color: white");
         } else {
@@ -275,7 +277,7 @@ public class CustomersController implements Initializable {
     }
 
     public void addressOnKeyTyped(KeyEvent keyEvent) {
-        isAddressFieldValid = validateTextField((TextField) keyEvent.getSource());
+        isAddressFieldValid = isValidTextField((TextField) keyEvent.getSource());
         if (isAddressFieldValid) {
             address_id.setStyle("-fx-background-color: white");
         } else {
@@ -285,7 +287,7 @@ public class CustomersController implements Initializable {
     }
 
     public void postalCodeOnKeyTyped(KeyEvent keyEvent) {
-        isPostalCodeFieldValid = validateTextField((TextField) keyEvent.getSource());
+        isPostalCodeFieldValid = isValidTextField((TextField) keyEvent.getSource());
         if (isPostalCodeFieldValid) {
             postal_code_id.setStyle("-fx-background-color: white");
         } else {
@@ -295,7 +297,7 @@ public class CustomersController implements Initializable {
     }
 
     public void phoneNumberOnKeyTyped(KeyEvent keyEvent) {
-        isPhoneNumberFieldValid = validateTextField((TextField) keyEvent.getSource());
+        isPhoneNumberFieldValid = isValidTextField((TextField) keyEvent.getSource());
         if (isPhoneNumberFieldValid) {
             phone_number_id.setStyle("-fx-background-color: white");
         } else {

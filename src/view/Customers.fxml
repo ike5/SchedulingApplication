@@ -72,7 +72,7 @@
                 </HBox>
                 <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                     <children>
-                        <Button fx:id="new_customer_button" mnemonicParsing="false" onAction="#newCustomerButtonOnAction" text="New Customer" />
+
                         <Button fx:id="delete_customer_button" mnemonicParsing="false" onAction="#deleteCustomerButtonOnAction" text="Delete Customer" />
                   <Button mnemonicParsing="false" onAction="#viewAppointmentsButtonOnAction" text="View Appointments" />
                         <Button fx:id="logout_button" mnemonicParsing="false" onAction="#logoutButtonOnAction" text="Logout" />
