@@ -1,6 +1,8 @@
 package controller;
 
 import data.DBDivisions;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -47,6 +49,7 @@ public class CustomersController implements Initializable {
     public Button new_customer_button;
     public Button delete_customer_button;
     public Button logout_button;
+    private static boolean isValuesChanged;
     private static boolean isSaveButtonDisabled;
     private static boolean isClearFormButtonDisabled;
     private static boolean isNewCustomerButtonDisabled;
@@ -176,12 +179,19 @@ public class CustomersController implements Initializable {
     }
 
     public void saveButtonOnAction(ActionEvent actionEvent) {
-        //FIXME
-        // - new customer button clears form an unselects rows in TableView (if changes were made to TextFields, prompt alert)
+        //FIXME - if changes were made to the TextFields after selecting a row, prompt alert
+        isValuesChanged = !(((Customer) table_view_id.getSelectionModel().getSelectedItem()).getName().equals(customer_name_id.getText()) &
+                ((Customer) table_view_id.getSelectionModel().getSelectedItem()).getAddress().equals(address_id.getText()) &
+                ((Customer) table_view_id.getSelectionModel().getSelectedItem()).getPhone().equals(phone_number_id.getText()) &
+                ((Customer) table_view_id.getSelectionModel().getSelectedItem()).getPostalCode().equals(postal_code_id.getText())
+        );
+
+
+        new Test("is missing text: " + isMissingTextFieldValues());
+        new Test("values changed: " + isValuesChanged);
 
         if (table_view_id.getSelectionModel().isEmpty()) {
             // Make a new entry
-            new Test(isMissingTextFieldValues());
 
             if (isMissingTextFieldValues()) {
                 Alert alert = new Alert(Alert.AlertType.WARNING, "Invalid/Missing values provided");
@@ -196,27 +206,39 @@ public class CustomersController implements Initializable {
                         Main.user
                 );
 
-                customerObservableList = DBCustomers.getAllCustomers();
-                table_view_id.setItems(customerObservableList);
-                table_view_id.refresh(); // not necessary?
+                resetCustomerTableView();
+
             }
         } else {
             if (isMissingTextFieldValues()) {
                 Alert alert = new Alert(Alert.AlertType.WARNING, "Missing TextField values");
                 alert.showAndWait();
-            } else {
-                DBCustomers.updateCustomer(
-                        new Customer(
-                                Integer.parseInt(customer_id_id.getText().trim()),
-                                customer_name_id.getText().trim(),
-                                address_id.getText().trim(),
-                                postal_code_id.getText().trim(),
-                                phone_number_id.getText().trim(),
-                                state_province_combo_id.getSelectionModel().getSelectedItem()
-                        )
-                );
+            } else if (isValuesChanged) {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Values changed. Continue?");
+                alert.setTitle("Values changed");
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.isPresent() && result.get() == ButtonType.OK) {
+                    DBCustomers.updateCustomer(
+                            new Customer(
+                                    Integer.parseInt(customer_id_id.getText().trim()),
+                                    customer_name_id.getText().trim(),
+                                    address_id.getText().trim(),
+                                    postal_code_id.getText().trim(),
+                                    phone_number_id.getText().trim(),
+                                    state_province_combo_id.getSelectionModel().getSelectedItem()
+                            )
+                    );
+                    resetCustomerTableView();
+                }
             }
         }
+
+    }
+
+    public void resetCustomerTableView() {
+        customerObservableList = DBCustomers.getAllCustomers();
+        table_view_id.setItems(customerObservableList);
+        table_view_id.refresh(); // not necessary?
     }
 
     public void deleteCustomerButtonOnAction(ActionEvent actionEvent) {
@@ -259,7 +281,7 @@ public class CustomersController implements Initializable {
     }
 
     private boolean isMissingTextFieldValues() {
-        return ! (isValidTextField(customer_name_id) & isValidTextField(address_id) & isValidTextField(postal_code_id) & isValidTextField(phone_number_id));
+        return !(isValidTextField(customer_name_id) & isValidTextField(address_id) & isValidTextField(postal_code_id) & isValidTextField(phone_number_id));
     }
 
     @Deprecated
