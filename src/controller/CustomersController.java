@@ -112,9 +112,9 @@ public class CustomersController implements Initializable {
                         address_id.setText(((Customer) newSelection).getAddress());
                         phone_number_id.setText(((Customer) newSelection).getPhone());
                         postal_code_id.setText(((Customer) newSelection).getPostalCode());
-                        // These still show up blank
-                        country_combo_id.setValue(((Customer) newSelection).getCountry());
 
+                        //FIXME These still show up blank, so maybe using a lambda filter Predicate?
+                        country_combo_id.setValue(((Customer) newSelection).getCountry());
                         state_province_combo_id.setValue(((Customer) newSelection).getDivision());
                         new Test("Country selection: " + ((Customer) newSelection).getCountry());
                         new Test("Division selection: " + ((Customer) newSelection).getDivision());
@@ -122,15 +122,6 @@ public class CustomersController implements Initializable {
                 }
         );
 
-    }
-
-    private ObservableList<Division> getDivisionObservableListFromSelectedCountry(){
-        Predicate<Division> sameDivisionAsCountry =
-                c -> countryObservableList.stream().anyMatch(country -> country.equals(c.getCountry()));
-
-        return countryObservableList.stream()
-                .filter(sameDivisionAsCountry)
-                .collect(Collectors.toList());
     }
 
     @Deprecated
