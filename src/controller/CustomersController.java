@@ -133,11 +133,10 @@ public class CustomersController implements Initializable {
 
     public void clearFormButtonOnAction(ActionEvent actionEvent) {
         // Clear all fields and set ComboBoxes to first item
-        //FIXME - unselect all rows on the TableView
         table_view_id.getSelectionModel().clearSelection();
         customer_id_id.clear();
         customer_name_id.clear();
-        customer_name_id.requestFocus(); // unselects row in TableView
+        customer_name_id.requestFocus(); // sets focus on first editable field
         address_id.clear();
         postal_code_id.clear();
         phone_number_id.clear();
@@ -180,9 +179,6 @@ public class CustomersController implements Initializable {
     public void saveButtonOnAction(ActionEvent actionEvent) {
         //FIXME
         // - new customer button clears form an unselects rows in TableView (if changes were made to TextFields, prompt alert)
-        // - save button updates selected table row
-        // - save button creates new customer if no table row selected
-        // - clear form unselects table rows and clears TextFields
         // - if logout button pressed and if table row was selected and if field was changed, prompt save
 
         if (table_view_id.getSelectionModel().isEmpty()) {
@@ -225,7 +221,19 @@ public class CustomersController implements Initializable {
     }
 
     public void deleteCustomerButtonOnAction(ActionEvent actionEvent) {
-        DBCustomers.deleteCustomerById(((Customer) table_view_id.getSelectionModel().getSelectedItem()).getId());
+        if(! table_view_id.getSelectionModel().isEmpty()) {
+            DBCustomers.deleteCustomerById(((Customer) table_view_id.getSelectionModel().getSelectedItem()).getId());
+            table_view_id.getSelectionModel().clearSelection();
+
+            // Repopulate the table
+            customerObservableList = DBCustomers.getAllCustomers();
+            table_view_id.setItems(customerObservableList);
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Nothing to delete!");
+            alert.setTitle("Select an item to delete!");
+            alert.showAndWait();
+        }
+
         new Test("deleteCustomerButtonOnAction() called");
     }
 
