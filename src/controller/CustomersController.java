@@ -18,6 +18,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.util.Callback;
 import main.Main;
 import model.Country;
 import model.Customer;
@@ -122,6 +123,39 @@ public class CustomersController implements Initializable {
                 }
         );
 
+        Callback<ListView<Country>, ListCell<Country>> countryFactoryMade = countryListView -> new ListCell<Country>() {
+            @Override
+            protected void updateItem(Country country, boolean empty) {
+                super.updateItem(country, empty);
+                setText(empty ? "empty" : ("" + country.getName()));
+            }
+        };
+        Callback<ListView<Country>, ListCell<Country>> countryFactoryUsed = countryListView -> new ListCell<Country>() {
+            @Override
+            protected void updateItem(Country country, boolean empty) {
+                super.updateItem(country, empty);
+                setText(empty ? "" : ("" + country.getName()));
+            }
+        };
+        country_combo_id.setCellFactory(countryFactoryMade);
+        country_combo_id.setButtonCell(countryFactoryUsed.call(null));
+
+        Callback<ListView<Division>, ListCell<Division>> divisionFactoryMade = divisionListView -> new ListCell<>() {
+            @Override
+            protected void updateItem(Division division, boolean empty) {
+                super.updateItem(division, empty);
+                setText(empty ? "empty" : ("" + division.getDivisionName()));
+            }
+        };
+        Callback<ListView<Division>, ListCell<Division>> divisionFactoryUsed = divisionListView -> new ListCell<>() {
+            @Override
+            protected void updateItem(Division division, boolean empty) {
+                super.updateItem(division, empty);
+                setText(empty ? "" : ("" + division.getDivisionName()));
+            }
+        };
+        state_province_combo_id.setCellFactory(divisionFactoryMade);
+        state_province_combo_id.setButtonCell(divisionFactoryUsed.call(null));
     }
 
     @Deprecated

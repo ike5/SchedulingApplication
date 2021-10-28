@@ -42,7 +42,7 @@ public class LoginController implements Initializable {
         username_id.setText(Main.resourceBundle.getString("username"));
         password_id.setText(Main.resourceBundle.getString("password"));
         login_id.setText(Main.resourceBundle.getString("login_button"));
-        username_field_id.setText(Main.resourceBundle.getString("username_field"));
+//        username_field_id.setText(Main.resourceBundle.getString("username_field"));
     }
 
     @FXML
