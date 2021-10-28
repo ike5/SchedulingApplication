@@ -1,8 +1,6 @@
 package controller;
 
 import data.DBDivisions;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -17,7 +15,6 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.util.Callback;
 import main.Main;
 import model.Country;
 import model.Customer;
@@ -91,13 +88,10 @@ public class CustomersController implements Initializable {
         // Initialize Country ComboBox
         countryObservableList = DBCountries.getAllCountries();
         country_combo_id.setItems(countryObservableList);
-        country_combo_id.getSelectionModel().clearAndSelect(0);
 
         // Initialize Province/State (Division) ComboBox
         divisionObservableList = DBDivisions.getAllFirstLevelDivisions();
         division_combo_id.setItems(divisionObservableList);
-        division_combo_id.getSelectionModel().clearAndSelect(0);
-        division_combo_id.setVisibleRowCount(5);
 
         // Callback methods
 //        Callback<ListView<Country>, ListCell<Country>> countryFactoryMade = countryListView -> new ListCell<Country>() {
@@ -138,13 +132,12 @@ public class CustomersController implements Initializable {
         // TableView listener
         table_view_id.getSelectionModel().selectedItemProperty().addListener((observableValue, oldSelection, newSelection) -> {
                     if (newSelection != null) {
-                        // Set the values of the fields/comboboxes when clicked
                         customer_id_id.setText(String.valueOf(((Customer) newSelection).getId()));
                         customer_name_id.setText(((Customer) newSelection).getName());
                         address_id.setText(((Customer) newSelection).getAddress());
                         phone_number_id.setText(((Customer) newSelection).getPhone());
                         postal_code_id.setText(((Customer) newSelection).getPostalCode());
-                        setComboBoxes();
+                        setDivisionComboBox((Customer) newSelection);
                     }
 
                 }
@@ -188,25 +181,42 @@ public class CustomersController implements Initializable {
         new Test("clearFormButtonOnAction() called");
     }
 
+    //FIXME - When resetting the combo boxes, this invalidates the logic used to set the country and division in the below methods.
     private void resetComboBoxes() {
         country_combo_id.getSelectionModel().clearAndSelect(0);
         setDivisionsToCountryComboBox(division_combo_id.getSelectionModel().getSelectedItem().getCountry().getCountryId());
     }
 
-    private void setComboBoxes() {
-        if (!(table_view_id.getSelectionModel().isEmpty())) {
-            country_combo_id.setValue(country_tablecolumn_id.getTableView().getSelectionModel().getSelectedItem().getCountry());
+    private void setDivisionComboBox(Customer customer) {
+        if (!table_view_id.getSelectionModel().isEmpty()) {
+            Object[] d = divisionObservableList.toArray();
+            for (int i = 0; i < d.length; i++) {
+                if (((Division) d[i]).getDivisionId() == customer.getDivisionId()) {
+                    division_combo_id.getSelectionModel().select(i);
+                    setCountryComboBox(((Division) d[i]));
+                }
+            }
         }
         new Test("setComboBoxes() triggered");
     }
 
-    //        limit the Division list to only states/provinces within country selected
-    public void countryComboBoxOnAction(ActionEvent actionEvent) {
-        int countryId = country_combo_id.getSelectionModel().getSelectedItem().getCountryId();
-        setDivisionsToCountryComboBox(countryId);
-        new Test("countryComboBoxOnAction() triggered");
+    private void setCountryComboBox(Division division){
+        country_combo_id.getSelectionModel().select(division.getCountry());
     }
 
+    //FIXME
+    // - While clicking on TableView to set Division and thus Country is fixes, now there's the issue of having
+    // the countryComboBox change separately without affecting the division logic above. You are trying to make
+    // the country combobox be able to change.
+
+    //        limit the Division list to only states/provinces within country selected
+    public void countryComboBoxOnAction(ActionEvent actionEvent) {
+//        int countryId = country_combo_id.getSelectionModel().getSelectedItem().getCountryId();
+//        setDivisionsToCountryComboBox(countryId);
+//        new Test("countryComboBoxOnAction() triggered");
+    }
+
+    //FIXME - see method above concerning errors
     private void setDivisionsToCountryComboBox(int countryId) {
         try {
             divisionObservableList = DBDivisions.getDivisions(countryId);
@@ -257,14 +267,9 @@ public class CustomersController implements Initializable {
         return isValuesChanged;
     }
 
-
-    //FIXME
-    // - value doesn't save when changed
-    // - country combobox does not populate when clicked
     public void saveButtonOnAction(ActionEvent actionEvent) {
-
-        if (table_view_id.getSelectionModel().isEmpty()) {// Make a new entry
-            if (isMissingTextFieldValues()) { // Alert user to missing fields
+        if (table_view_id.getSelectionModel().isEmpty()) {// Make a new Customer
+            if (isMissingTextFieldValues()) { // Alert user of missing fields
                 Alert alert = new Alert(Alert.AlertType.WARNING, "Invalid/Missing values provided");
                 alert.showAndWait();
             } else { // Save new customer information
@@ -276,13 +281,13 @@ public class CustomersController implements Initializable {
                         division_combo_id.getSelectionModel().getSelectedItem().getDivisionId(),
                         Main.user
                 );
-                resetCustomerTableView();
+                repopulateTaleView();
             }
-        } else {
-            if (isMissingTextFieldValues()) {
+        } else { // Update an existing Customer
+            if (isMissingTextFieldValues()) { // Alert user of missing fields
                 Alert alert = new Alert(Alert.AlertType.WARNING, "Missing TextField values");
                 alert.showAndWait();
-            } else if (isValuesChanged()) {
+            } else if (isValuesChanged()) { // If any changes made to field, alert user before updating
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Save changes?");
                 alert.setTitle("Save or Discard");
                 Optional<ButtonType> result = alert.showAndWait();
@@ -297,14 +302,14 @@ public class CustomersController implements Initializable {
                                     division_combo_id.getSelectionModel().getSelectedItem()
                             )
                     );
-                    resetCustomerTableView();
+                    repopulateTaleView();
                 }
             }
         }
-
+        new Test("saveButtonOnAction() called");
     }
 
-    public void resetCustomerTableView() {
+    public void repopulateTaleView() {
         customerObservableList = DBCustomers.getAllCustomers();
         table_view_id.setItems(customerObservableList);
         table_view_id.refresh(); // not necessary?
