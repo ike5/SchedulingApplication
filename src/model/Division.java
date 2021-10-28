@@ -13,7 +13,7 @@ public class Division {
         this.country = new Country(countryId, countryName);
     }
 
-    public Division(int divisionId, String divisionName, Country country){
+    public Division(int divisionId, String divisionName, Country country) {
         this(divisionId, divisionName, country.getCountryId(), country.getName());
     }
 
@@ -31,10 +31,6 @@ public class Division {
 
     @Override
     public String toString() {
-        return "Division{" +
-                "divisionId=" + divisionId +
-                ", divisionName='" + divisionName + '\'' +
-                ", country=" + country +
-                '}';
+        return divisionName;
     }
 }

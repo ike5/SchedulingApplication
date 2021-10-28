@@ -16,14 +16,12 @@ import java.util.ResourceBundle;
 @UtilityInterfaces
 public class ChangeScreen {
     public static void changeScreen(ActionEvent actionEvent, DBUsers userLogin, Parent scene, UtilityInterfaces.FunctionalChangeScreenInterface o) {
+        new Test("changeScreen() lambda called");
         ResourceBundle rb = ResourceBundle.getBundle("RBundle", Locale.getDefault());
         Main.user = userLogin.getUser();
 
         if (userLogin.getUser().isValidUsername()) {
-            new Test("User exists");
             if (userLogin.getUser().isValidPassword()) {
-                new Test("Password matches");
-
 //                Note the event source is either a Button or a TextField:
 //                stage = (Stage) ((TextField) actionEvent.getSource()).getScene().getWindow();
 //                stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();

@@ -14,7 +14,8 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="500.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CustomersController">
+<AnchorPane prefHeight="500.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/16"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CustomersController">
     <children>
         <VBox alignment="CENTER" prefHeight="500.0">
             <children>
@@ -22,50 +23,73 @@
                     <children>
                         <GridPane hgap="10.0" prefHeight="400.0" prefWidth="300.0">
                             <columnConstraints>
-                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="10.0" prefWidth="109.0" />
-                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="182.0" minWidth="10.0" prefWidth="161.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="10.0"
+                                                   prefWidth="109.0"/>
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="182.0" minWidth="10.0"
+                                                   prefWidth="161.0"/>
                             </columnConstraints>
                             <rowConstraints>
-                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
                             </rowConstraints>
                             <children>
-                                <Label text="Customer ID" />
-                                <TextField fx:id="customer_id_id" editable="false" onAction="#customerIdOnAction" GridPane.columnIndex="1" />
-                                <Label text="Customer Name" GridPane.rowIndex="1" />
-                                <TextField fx:id="customer_name_id" onAction="#customerNameOnAction" onKeyTyped="#customerNameOnKeyTyped" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                <ComboBox fx:id="country_combo_id" onAction="#countryComboBoxOnAction" prefWidth="150.0" promptText="Country" GridPane.rowIndex="2" />
-                                <ComboBox fx:id="state_province_combo_id" onAction="#divisionComboBoxOnAction" prefHeight="26.0" prefWidth="129.0" promptText="State/Province" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                <Label text="Address" GridPane.rowIndex="3" />
-                                <TextField fx:id="address_id" onAction="#addressOnAction" onKeyTyped="#addressOnKeyTyped" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                <Label text="Postal Code" GridPane.rowIndex="4" />
-                                <TextField fx:id="postal_code_id" onAction="#postalCodeOnAction" onKeyTyped="#postalCodeOnKeyTyped" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                                <Label text="Phone Number" GridPane.rowIndex="5" />
-                                <TextField fx:id="phone_number_id" onAction="#phoneNumberOnAction" onKeyTyped="#phoneNumberOnKeyTyped" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                                <Button fx:id="save_button" mnemonicParsing="false" onAction="#saveButtonOnAction" prefHeight="26.0" prefWidth="67.0" text="Save" GridPane.rowIndex="6" />
-                                <Button fx:id="clear_form_button" mnemonicParsing="false" onAction="#clearFormButtonOnAction" text="Clear Form" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                                <Label text="Customer ID"/>
+                                <TextField fx:id="customer_id_id" editable="false" onAction="#customerIdOnAction"
+                                           GridPane.columnIndex="1"/>
+                                <Label text="Customer Name" GridPane.rowIndex="1"/>
+                                <TextField fx:id="customer_name_id" onAction="#customerNameOnAction"
+                                           onKeyTyped="#customerNameOnKeyTyped" GridPane.columnIndex="1"
+                                           GridPane.rowIndex="1"/>
+                                <ComboBox fx:id="country_combo_id" onAction="#countryComboBoxOnAction" prefWidth="150.0"
+                                          GridPane.rowIndex="2"/>
+                                <ComboBox fx:id="division_combo_id" onAction="#divisionComboBoxOnAction"
+                                          prefHeight="26.0" prefWidth="129.0" GridPane.columnIndex="1"
+                                          GridPane.rowIndex="2"/>
+                                <Label text="Address" GridPane.rowIndex="3"/>
+                                <TextField fx:id="address_id" onAction="#addressOnAction"
+                                           onKeyTyped="#addressOnKeyTyped" GridPane.columnIndex="1"
+                                           GridPane.rowIndex="3"/>
+                                <Label text="Postal Code" GridPane.rowIndex="4"/>
+                                <TextField fx:id="postal_code_id" onAction="#postalCodeOnAction"
+                                           onKeyTyped="#postalCodeOnKeyTyped" GridPane.columnIndex="1"
+                                           GridPane.rowIndex="4"/>
+                                <Label text="Phone Number" GridPane.rowIndex="5"/>
+                                <TextField fx:id="phone_number_id" onAction="#phoneNumberOnAction"
+                                           onKeyTyped="#phoneNumberOnKeyTyped" GridPane.columnIndex="1"
+                                           GridPane.rowIndex="5"/>
+                                <Button fx:id="save_button" mnemonicParsing="false" onAction="#saveButtonOnAction"
+                                        prefHeight="26.0" prefWidth="67.0" text="Save" GridPane.rowIndex="6"/>
+                                <Button fx:id="clear_form_button" mnemonicParsing="false"
+                                        onAction="#clearFormButtonOnAction" text="Clear Form" GridPane.columnIndex="1"
+                                        GridPane.rowIndex="6"/>
                             </children>
                             <padding>
-                                <Insets left="20.0" top="20.0" />
+                                <Insets left="20.0" top="20.0"/>
                             </padding>
                             <HBox.margin>
-                                <Insets />
+                                <Insets/>
                             </HBox.margin>
                         </GridPane>
                         <TableView fx:id="table_view_id" prefHeight="200.0">
                             <columns>
-                                <TableColumn fx:id="id_tablecolumn_id" minWidth="-1.0" prefWidth="30.0" text="ID" />
-                                <TableColumn fx:id="name_tablecolumn_id" minWidth="-1.0" prefWidth="150.0" text="Customer Name" />
-                                <TableColumn fx:id="address_tablecolumn_id" minWidth="-1.0" prefWidth="150.0" text="Address" />
-                                <TableColumn fx:id="postal_code_tablecolumn_id" minWidth="-1.0" prefWidth="75.0" text="Postal Code" />
-                                <TableColumn fx:id="phone_number_tablecolumn_id" minWidth="-1.0" prefWidth="125.0" text="Phone Number" />
-                                <TableColumn fx:id="country_tablecolumn_id" minWidth="-1.0" prefWidth="100.0" text="Country" />
-                                <TableColumn fx:id="state_province_tablecolumn_id" minWidth="-1.0" prefWidth="100.0" text="State/Province" />
+                                <TableColumn fx:id="id_tablecolumn_id" minWidth="-1.0" prefWidth="30.0" text="ID"/>
+                                <TableColumn fx:id="name_tablecolumn_id" minWidth="-1.0" prefWidth="150.0"
+                                             text="Customer Name"/>
+                                <TableColumn fx:id="address_tablecolumn_id" minWidth="-1.0" prefWidth="150.0"
+                                             text="Address"/>
+                                <TableColumn fx:id="postal_code_tablecolumn_id" minWidth="-1.0" prefWidth="75.0"
+                                             text="Postal Code"/>
+                                <TableColumn fx:id="phone_number_tablecolumn_id" minWidth="-1.0" prefWidth="125.0"
+                                             text="Phone Number"/>
+                                <TableColumn fx:id="country_tablecolumn_id" minWidth="-1.0" prefWidth="100.0"
+                                             text="Country"/>
+                                <TableColumn fx:id="division_tablecolumn_id" minWidth="-1.0" prefWidth="100.0"
+                                             text="State/Province"/>
                             </columns>
                         </TableView>
                     </children>
@@ -73,23 +97,26 @@
                 <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                     <children>
 
-                        <Button fx:id="delete_customer_button" mnemonicParsing="false" onAction="#deleteCustomerButtonOnAction" text="Delete Customer" />
-                  <Button mnemonicParsing="false" onAction="#viewAppointmentsButtonOnAction" text="View Appointments" />
-                        <Button fx:id="logout_button" mnemonicParsing="false" onAction="#logoutButtonOnAction" text="Logout" />
+                        <Button fx:id="delete_customer_button" mnemonicParsing="false"
+                                onAction="#deleteCustomerButtonOnAction" text="Delete Customer"/>
+                        <Button mnemonicParsing="false" onAction="#viewAppointmentsButtonOnAction"
+                                text="View Appointments"/>
+                        <Button fx:id="logout_button" mnemonicParsing="false" onAction="#logoutButtonOnAction"
+                                text="Logout"/>
                     </children>
                     <opaqueInsets>
-                        <Insets />
+                        <Insets/>
                     </opaqueInsets>
                     <padding>
-                        <Insets left="20.0" />
+                        <Insets left="20.0"/>
                     </padding>
                 </HBox>
             </children>
             <opaqueInsets>
-                <Insets />
+                <Insets/>
             </opaqueInsets>
             <padding>
-                <Insets top="20.0" />
+                <Insets top="20.0"/>
             </padding>
         </VBox>
     </children>

@@ -138,10 +138,7 @@ public class LoginController implements Initializable {
             dbUsers = new DBUsers(username_field_id.getText(), password_field_id.getText());
 
             if (dbUsers.getUser().isValidUsername()) {
-                new Test("User exists");
                 if (dbUsers.getUser().isValidPassword()) {
-                    new Test("Password matches");
-
                     Stage stage = (Stage) ((Button) keyEvent.getSource()).getScene().getWindow();
                     Parent scene = FXMLLoader.load(getClass().getResource("/view/Customers.fxml"));
                     stage.setTitle("Welcome " + dbUsers.getUser().getUsername() + "!");

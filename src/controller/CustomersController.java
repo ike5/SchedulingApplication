@@ -1,6 +1,5 @@
 package controller;
 
-import com.mysql.cj.xdevapi.Client;
 import data.DBDivisions;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -29,14 +28,12 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 public class CustomersController implements Initializable {
     public TextField customer_id_id;
     public TextField customer_name_id;
     public ComboBox<Country> country_combo_id;
-    public ComboBox<Division> state_province_combo_id;
+    public ComboBox<Division> division_combo_id;
     public TextField address_id;
     public TextField postal_code_id;
     public TextField phone_number_id;
@@ -46,7 +43,7 @@ public class CustomersController implements Initializable {
     public TableColumn<Customer, String> postal_code_tablecolumn_id;
     public TableColumn<Customer, String> phone_number_tablecolumn_id;
     public TableColumn<Customer, String> country_tablecolumn_id;
-    public TableColumn<Customer, String> state_province_tablecolumn_id;
+    public TableColumn<Customer, String> division_tablecolumn_id;
     public TableView table_view_id;
     public Button save_button;
     public Button clear_form_button;
@@ -79,30 +76,65 @@ public class CustomersController implements Initializable {
         delete_customer_button.setDisable(isDeleteCustomerButtonDisabled);
         customer_id_id.setDisable(true); // Prevent users from changing touching customer id value
 
-        // Make a Customer ObservableList to populate the table
+        // Populate table with Customers
         customerObservableList = DBCustomers.getAllCustomers();
-
-        // Populate table with customers
         table_view_id.setItems(customerObservableList);
-
-        // Set the cell values within the TableView
         // Tied to getter in the Customer class --> getDivisionId()
         id_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("Id"));
         name_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<Customer, String>("Name"));
         address_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<Customer, String>("Address"));
         phone_number_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<Customer, String>("Phone"));
         postal_code_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<Customer, String>("PostalCode"));
-        state_province_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<Customer, String>("DivisionId")); // note 'd' is capitalized
+        //FIXME - change the division and country tablecolumns to use Country and Division objects instead of strings
+        division_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<Customer, String>("DivisionId")); // note 'd' is capitalized
         country_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<Customer, String>("CountryName"));
 
         // Initialize Country ComboBox
         countryObservableList = DBCountries.getAllCountries();
         country_combo_id.setItems(countryObservableList);
+        country_combo_id.getSelectionModel().clearAndSelect(0);
 
-        // Initialize Province/State ComboBox
+        // Initialize Province/State (Division) ComboBox
         divisionObservableList = DBDivisions.getAllFirstLevelDivisions();
-        state_province_combo_id.setItems(divisionObservableList);
-        state_province_combo_id.setVisibleRowCount(5);
+        division_combo_id.setItems(divisionObservableList);
+        division_combo_id.getSelectionModel().clearAndSelect(0);
+        division_combo_id.setVisibleRowCount(5);
+
+        // Callback methods
+//        Callback<ListView<Country>, ListCell<Country>> countryFactoryMade = countryListView -> new ListCell<Country>() {
+//            @Override
+//            protected void updateItem(Country country, boolean empty) {
+//                super.updateItem(country, empty);
+//                setText(empty ? "empty" : (country.getName()));
+//            }
+//        };
+//        Callback<ListView<Country>, ListCell<Country>> countryFactoryUsed = countryListView -> new ListCell<Country>() {
+//            @Override
+//            protected void updateItem(Country country, boolean empty) {
+//                super.updateItem(country, empty);
+//                setText(empty ? "empty" : (country.getName()));
+//            }
+//        };
+//        country_combo_id.setCellFactory(countryFactoryMade);
+//        country_combo_id.setButtonCell(countryFactoryUsed.call(null));
+//
+//        Callback<ListView<Division>, ListCell<Division>> divisionFactoryMade = divisionListView -> new ListCell<>() {
+//            @Override
+//            protected void updateItem(Division division, boolean empty) {
+//                super.updateItem(division, empty);
+//                setText(empty ? "empty" : (division.getDivisionName()));
+//            }
+//        };
+//        Callback<ListView<Division>, ListCell<Division>> divisionFactoryUsed = divisionListView -> new ListCell<>() {
+//            @Override
+//            protected void updateItem(Division division, boolean empty) {
+//                super.updateItem(division, empty);
+//                setText(empty ? "empty" : (division.getDivisionName()));
+//            }
+//        };
+//        division_combo_id.setCellFactory(divisionFactoryMade);
+//        division_combo_id.setButtonCell(divisionFactoryUsed.call(null));
+
 
         // TableView listener
         table_view_id.getSelectionModel().selectedItemProperty().addListener((observableValue, oldSelection, newSelection) -> {
@@ -113,49 +145,19 @@ public class CustomersController implements Initializable {
                         address_id.setText(((Customer) newSelection).getAddress());
                         phone_number_id.setText(((Customer) newSelection).getPhone());
                         postal_code_id.setText(((Customer) newSelection).getPostalCode());
-
-                        //FIXME These still show up blank, so maybe using a lambda filter Predicate?
-                        country_combo_id.setValue(((Customer) newSelection).getCountry());
-                        state_province_combo_id.setValue(((Customer) newSelection).getDivision());
-                        new Test("Country selection: " + ((Customer) newSelection).getCountry());
-                        new Test("Division selection: " + ((Customer) newSelection).getDivision());
                     }
+
                 }
         );
 
-        Callback<ListView<Country>, ListCell<Country>> countryFactoryMade = countryListView -> new ListCell<Country>() {
-            @Override
-            protected void updateItem(Country country, boolean empty) {
-                super.updateItem(country, empty);
-                setText(empty ? "empty" : ("" + country.getName()));
-            }
-        };
-        Callback<ListView<Country>, ListCell<Country>> countryFactoryUsed = countryListView -> new ListCell<Country>() {
-            @Override
-            protected void updateItem(Country country, boolean empty) {
-                super.updateItem(country, empty);
-                setText(empty ? "" : ("" + country.getName()));
-            }
-        };
-        country_combo_id.setCellFactory(countryFactoryMade);
-        country_combo_id.setButtonCell(countryFactoryUsed.call(null));
+//        country_combo_id.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Country>() {
+//            @Override
+//            public void changed(ObservableValue<? extends Country> observableValue, Country country, Country t1) {
+//                int countryId = country_combo_id.getSelectionModel().getSelectedItem().getCountryId();
+//                setDivisionsToCountryComboBox(countryId);
+//            }
+//        });
 
-        Callback<ListView<Division>, ListCell<Division>> divisionFactoryMade = divisionListView -> new ListCell<>() {
-            @Override
-            protected void updateItem(Division division, boolean empty) {
-                super.updateItem(division, empty);
-                setText(empty ? "empty" : ("" + division.getDivisionName()));
-            }
-        };
-        Callback<ListView<Division>, ListCell<Division>> divisionFactoryUsed = divisionListView -> new ListCell<>() {
-            @Override
-            protected void updateItem(Division division, boolean empty) {
-                super.updateItem(division, empty);
-                setText(empty ? "" : ("" + division.getDivisionName()));
-            }
-        };
-        state_province_combo_id.setCellFactory(divisionFactoryMade);
-        state_province_combo_id.setButtonCell(divisionFactoryUsed.call(null));
     }
 
     @Deprecated
@@ -182,26 +184,35 @@ public class CustomersController implements Initializable {
         address_id.clear();
         postal_code_id.clear();
         phone_number_id.clear();
-        country_combo_id.valueProperty().setValue(null);
-        state_province_combo_id.valueProperty().setValue(null);
-
+        resetComboBoxes();
         new Test("clearFormButtonOnAction() called");
+    }
+
+    private void resetComboBoxes() {
+        country_combo_id.getSelectionModel().clearAndSelect(0);
+        setDivisionsToCountryComboBox(division_combo_id.getSelectionModel().getSelectedItem().getCountry().getCountryId());
+    }
+
+    private void setComboBoxes() {
+        if (!(table_view_id.getSelectionModel().isEmpty())) {
+            country_combo_id.setValue(country_tablecolumn_id);
+        }
     }
 
     //        limit the Division list to only states/provinces within country selected
     public void countryComboBoxOnAction(ActionEvent actionEvent) {
-        // Automatically limits division list to only those states/provinces within the country selected
-        setDivisionsToCountryComboBox(country_combo_id.getSelectionModel().getSelectedItem().getCountryId());
-
+        int countryId = country_combo_id.getSelectionModel().getSelectedItem().getCountryId();
+        setDivisionsToCountryComboBox(countryId);
     }
 
     private void setDivisionsToCountryComboBox(int countryId) {
         try {
             divisionObservableList = DBDivisions.getDivisions(countryId);
-            state_province_combo_id.setItems(divisionObservableList);
+            division_combo_id.setItems(divisionObservableList);
+            division_combo_id.getSelectionModel().clearAndSelect(0);
         } catch (NullPointerException e) {
             divisionObservableList = DBDivisions.getAllFirstLevelDivisions();
-            state_province_combo_id.setItems(divisionObservableList);
+            division_combo_id.setItems(divisionObservableList);
             new Test("Set all back to normal when Country is null");
         }
     }
@@ -227,8 +238,9 @@ public class CustomersController implements Initializable {
                 ((Customer) table_view_id.getSelectionModel().getSelectedItem()).getPhone().equals(phone_number_id.getText()) &
                 ((Customer) table_view_id.getSelectionModel().getSelectedItem()).getPostalCode().equals(postal_code_id.getText()) &
                 ((Customer) table_view_id.getSelectionModel().getSelectedItem()).getCountry().equals(country_combo_id.getValue()) &
-                ((Customer) table_view_id.getSelectionModel().getSelectedItem()).getDivision().equals(state_province_combo_id.getValue())
+                ((Customer) table_view_id.getSelectionModel().getSelectedItem()).getDivision().equals(division_combo_id.getValue())
         );
+
 
         if (table_view_id.getSelectionModel().isEmpty()) {
             // Make a new entry
@@ -242,7 +254,7 @@ public class CustomersController implements Initializable {
                         address_id.getText().trim(),
                         postal_code_id.getText().trim(),
                         phone_number_id.getText().trim(),
-                        state_province_combo_id.getSelectionModel().getSelectedItem().getDivisionId(),
+                        division_combo_id.getSelectionModel().getSelectedItem().getDivisionId(),
                         Main.user
                 );
                 resetCustomerTableView();
@@ -263,7 +275,7 @@ public class CustomersController implements Initializable {
                                     address_id.getText().trim(),
                                     postal_code_id.getText().trim(),
                                     phone_number_id.getText().trim(),
-                                    state_province_combo_id.getSelectionModel().getSelectedItem()
+                                    division_combo_id.getSelectionModel().getSelectedItem()
                             )
                     );
                     resetCustomerTableView();
