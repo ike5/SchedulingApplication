@@ -42,8 +42,8 @@ public class CustomersController implements Initializable {
     public TableColumn<Customer, String> address_tablecolumn_id;
     public TableColumn<Customer, String> postal_code_tablecolumn_id;
     public TableColumn<Customer, String> phone_number_tablecolumn_id;
-    public TableColumn<Customer, String> country_tablecolumn_id;
-    public TableColumn<Customer, String> division_tablecolumn_id;
+    public TableColumn<Customer, Country> country_tablecolumn_id;
+    public TableColumn<Customer, Division> division_tablecolumn_id;
     public TableView table_view_id;
     public Button save_button;
     public Button clear_form_button;
@@ -86,8 +86,8 @@ public class CustomersController implements Initializable {
         phone_number_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<Customer, String>("Phone"));
         postal_code_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<Customer, String>("PostalCode"));
         //FIXME - change the division and country tablecolumns to use Country and Division objects instead of strings
-        division_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<Customer, String>("DivisionId")); // note 'd' is capitalized
-        country_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<Customer, String>("CountryName"));
+        division_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<Customer, Division>("Division")); // note 'd' is capitalized
+        country_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<Customer, Country>("Country"));
 
         // Initialize Country ComboBox
         countryObservableList = DBCountries.getAllCountries();
@@ -145,6 +145,7 @@ public class CustomersController implements Initializable {
                         address_id.setText(((Customer) newSelection).getAddress());
                         phone_number_id.setText(((Customer) newSelection).getPhone());
                         postal_code_id.setText(((Customer) newSelection).getPostalCode());
+                        setComboBoxes();
                     }
 
                 }
@@ -195,14 +196,16 @@ public class CustomersController implements Initializable {
 
     private void setComboBoxes() {
         if (!(table_view_id.getSelectionModel().isEmpty())) {
-            country_combo_id.setValue(country_tablecolumn_id);
+            country_combo_id.setValue(country_tablecolumn_id.getTableView().getSelectionModel().getSelectedItem().getCountry());
         }
+        new Test("setComboBoxes() triggered");
     }
 
     //        limit the Division list to only states/provinces within country selected
     public void countryComboBoxOnAction(ActionEvent actionEvent) {
         int countryId = country_combo_id.getSelectionModel().getSelectedItem().getCountryId();
         setDivisionsToCountryComboBox(countryId);
+        new Test("countryComboBoxOnAction() triggered");
     }
 
     private void setDivisionsToCountryComboBox(int countryId) {
