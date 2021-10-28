@@ -85,7 +85,6 @@ public class CustomersController implements Initializable {
         address_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<Customer, String>("Address"));
         phone_number_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<Customer, String>("Phone"));
         postal_code_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<Customer, String>("PostalCode"));
-        //FIXME - change the division and country tablecolumns to use Country and Division objects instead of strings
         division_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<Customer, Division>("Division")); // note 'd' is capitalized
         country_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<Customer, Country>("Country"));
 
@@ -235,23 +234,40 @@ public class CustomersController implements Initializable {
         phone_number_id.setText(customer.getPhone());
     }
 
+    private boolean isValuesChanged() {
+
+        if (!table_view_id.getSelectionModel().isEmpty()) {
+            isValuesChanged = !(((Customer) table_view_id.getSelectionModel().getSelectedItem()).getName().equals(customer_name_id.getText()) &
+                    ((Customer) table_view_id.getSelectionModel().getSelectedItem()).getAddress().equals(address_id.getText()) &
+                    ((Customer) table_view_id.getSelectionModel().getSelectedItem()).getPhone().equals(phone_number_id.getText()) &
+                    ((Customer) table_view_id.getSelectionModel().getSelectedItem()).getPostalCode().equals(postal_code_id.getText()) &
+                    ((Customer) table_view_id.getSelectionModel().getSelectedItem()).getCountry().equals(country_combo_id.getValue()) &
+                    ((Customer) table_view_id.getSelectionModel().getSelectedItem()).getDivision().equals(division_combo_id.getValue())
+            );
+            new Test("Name matches: " + ((Customer) table_view_id.getSelectionModel().getSelectedItem()).getName().equals(customer_name_id.getText()));
+            new Test("Address matches: " + ((Customer) table_view_id.getSelectionModel().getSelectedItem()).getAddress().equals(address_id.getText()));
+            new Test("Phone matches: " + ((Customer) table_view_id.getSelectionModel().getSelectedItem()).getPhone().equals(phone_number_id.getText()));
+            new Test("Postal matches: " + ((Customer) table_view_id.getSelectionModel().getSelectedItem()).getPostalCode().equals(postal_code_id.getText()));
+            new Test("Country matches: " + ((Customer) table_view_id.getSelectionModel().getSelectedItem()).getCountry().equals(country_combo_id.getValue()));
+            new Test("Division matches: " + ((Customer) table_view_id.getSelectionModel().getSelectedItem()).getDivision().equals(division_combo_id.getValue()));
+        } else {
+            isValuesChanged = false;
+        }
+        new Test("isValuesChanged() called");
+        return isValuesChanged;
+    }
+
+
+    //FIXME
+    // - value doesn't save when changed
+    // - country combobox does not populate when clicked
     public void saveButtonOnAction(ActionEvent actionEvent) {
-        isValuesChanged = !(((Customer) table_view_id.getSelectionModel().getSelectedItem()).getName().equals(customer_name_id.getText()) &
-                ((Customer) table_view_id.getSelectionModel().getSelectedItem()).getAddress().equals(address_id.getText()) &
-                ((Customer) table_view_id.getSelectionModel().getSelectedItem()).getPhone().equals(phone_number_id.getText()) &
-                ((Customer) table_view_id.getSelectionModel().getSelectedItem()).getPostalCode().equals(postal_code_id.getText()) &
-                ((Customer) table_view_id.getSelectionModel().getSelectedItem()).getCountry().equals(country_combo_id.getValue()) &
-                ((Customer) table_view_id.getSelectionModel().getSelectedItem()).getDivision().equals(division_combo_id.getValue())
-        );
 
-
-        if (table_view_id.getSelectionModel().isEmpty()) {
-            // Make a new entry
-
-            if (isMissingTextFieldValues()) {
+        if (table_view_id.getSelectionModel().isEmpty()) {// Make a new entry
+            if (isMissingTextFieldValues()) { // Alert user to missing fields
                 Alert alert = new Alert(Alert.AlertType.WARNING, "Invalid/Missing values provided");
                 alert.showAndWait();
-            } else {
+            } else { // Save new customer information
                 DBCustomers.insertCustomer(
                         customer_name_id.getText().trim(),
                         address_id.getText().trim(),
@@ -266,9 +282,9 @@ public class CustomersController implements Initializable {
             if (isMissingTextFieldValues()) {
                 Alert alert = new Alert(Alert.AlertType.WARNING, "Missing TextField values");
                 alert.showAndWait();
-            } else if (isValuesChanged) {
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Values changed. Continue?");
-                alert.setTitle("Values changed");
+            } else if (isValuesChanged()) {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Save changes?");
+                alert.setTitle("Save or Discard");
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.isPresent() && result.get() == ButtonType.OK) {
                     DBCustomers.updateCustomer(
