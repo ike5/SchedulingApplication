@@ -65,14 +65,15 @@ public class CustomersController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Set focus options on buttons
-        save_button.setDisable(isSaveButtonDisabled);
-        clear_form_button.setDisable(isClearFormButtonDisabled);
-        delete_customer_button.setDisable(isDeleteCustomerButtonDisabled);
-        customer_id_id.setDisable(true); // Prevent users from changing touching customer id value
+//        save_button.setDisable(isSaveButtonDisabled);
+//        clear_form_button.setDisable(isClearFormButtonDisabled);
+//        delete_customer_button.setDisable(isDeleteCustomerButtonDisabled);
+//        customer_id_id.setDisable(true); // Prevent users from changing touching customer id value
 
         // Populate table with Customers
-        customerObservableList = DBCustomers.getAllCustomers();
-        table_view_id.setItems(customerObservableList);
+        CustomerSingleton.getInstance().setCustomerObservableList(DBCustomers.getAllCustomers());
+        table_view_id.setItems(CustomerSingleton.getInstance().getCustomerObservableList());
+
         // Tied to getter in the Customer class --> getDivisionId()
         id_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("Id"));
         name_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<Customer, String>("Name"));
@@ -144,7 +145,7 @@ public class CustomersController implements Initializable {
      * @param customer
      */
     private void setDivisionCountryComboBoxes(Customer customer) {
-        if (!table_view_id.getSelectionModel().isEmpty()) {
+        if (!table_view_id.getSelectionModel().isEmpty()) { // this will always be true
             // Allow for any possibility of divisions to be selected
             DivisionSingleton.getInstance().setDivisionObservableList(DBDivisions.getAllFirstLevelDivisions());
             Object[] d = DivisionSingleton.getInstance().getDivisionObservableList().toArray();
@@ -154,21 +155,29 @@ public class CustomersController implements Initializable {
                     division_combo_id.getSelectionModel().select(i);
                 }
             }
-            new Test("TableView is selected");
-        } else {
-            DivisionSingleton
-                    .getInstance()
-                    .setDivisionObservableList(DBDivisions.getDivisions(country_combo_id.getSelectionModel().getSelectedItem().getCountryId()));
-            division_combo_id.setItems(DivisionSingleton.getInstance().getDivisionObservableList());
-            division_combo_id.getSelectionModel().select(1);
-            new Test("TableView is not selected");
         }
         new Test("setComboBoxes() triggered");
     }
 
+    private void setDivisionCountryComboBoxes(){
+        table_view_id.getSelectionModel().clearSelection();
+        if(!table_view_id.getSelectionModel().isEmpty()){
+            // do nothing
+            new Test("Tableview is STILL selectedd!");
+        } else {
+            new Test("Nothin is selected");
+            DivisionSingleton
+                    .getInstance()
+                    .setDivisionObservableList(DBDivisions.getDivisions(country_combo_id.getSelectionModel().getSelectedItem().getCountryId()));
+            division_combo_id.setItems(DivisionSingleton.getInstance().getDivisionObservableList());
+            division_combo_id.getSelectionModel().clearAndSelect(0);
+            new Test("TableView is not selected");
+        }
+    }
+
     //limit the Division list to only states/provinces within country selected
     public void countryComboBoxOnAction(ActionEvent actionEvent) {
-
+        setDivisionCountryComboBoxes();
     }
 
 
