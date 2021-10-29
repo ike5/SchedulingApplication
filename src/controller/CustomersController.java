@@ -1,17 +1,15 @@
 package controller;
 
-import com.sun.javafx.animation.KeyValueType;
 import data.DBDivisions;
-import javafx.collections.FXCollections;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import data.DBCountries;
 import data.DBCustomers;
@@ -20,10 +18,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.cell.PropertyValueFactory;
 import main.Main;
-import model.Country;
-import model.Customer;
-import model.Division;
-import model.DivisionSingleton;
+import model.*;
 import test.Test;
 
 import java.io.IOException;
@@ -64,9 +59,7 @@ public class CustomersController implements Initializable {
     private static boolean isAddressFieldValid;
     private static boolean isPostalCodeFieldValid;
     private static boolean isPhoneNumberFieldValid;
-    private static int customerSelctionId;
     ObservableList<Customer> customerObservableList;
-    ObservableList<Country> countryObservableList;
 
 
     @Override
@@ -90,48 +83,12 @@ public class CustomersController implements Initializable {
         country_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<Customer, Country>("Country"));
 
         // Initialize Country ComboBox
-        countryObservableList = DBCountries.getAllCountries();
-        country_combo_id.setItems(countryObservableList);
+        CountrySingleton.getInstance().setCountryObservableList(DBCountries.getAllCountries());
+        country_combo_id.setItems(CountrySingleton.getInstance().getCountryObservableList());
 
         // Initialize Province/State (Division) ComboBox
         DivisionSingleton.getInstance().setDivisionObservableList(DBDivisions.getAllFirstLevelDivisions());
         division_combo_id.setItems(DivisionSingleton.getInstance().getDivisionObservableList());
-
-        // Callback methods
-//        Callback<ListView<Country>, ListCell<Country>> countryFactoryMade = countryListView -> new ListCell<Country>() {
-//            @Override
-//            protected void updateItem(Country country, boolean empty) {
-//                super.updateItem(country, empty);
-//                setText(empty ? "empty" : (country.getName()));
-//            }
-//        };
-//        Callback<ListView<Country>, ListCell<Country>> countryFactoryUsed = countryListView -> new ListCell<Country>() {
-//            @Override
-//            protected void updateItem(Country country, boolean empty) {
-//                super.updateItem(country, empty);
-//                setText(empty ? "empty" : (country.getName()));
-//            }
-//        };
-//        country_combo_id.setCellFactory(countryFactoryMade);
-//        country_combo_id.setButtonCell(countryFactoryUsed.call(null));
-//
-//        Callback<ListView<Division>, ListCell<Division>> divisionFactoryMade = divisionListView -> new ListCell<>() {
-//            @Override
-//            protected void updateItem(Division division, boolean empty) {
-//                super.updateItem(division, empty);
-//                setText(empty ? "empty" : (division.getDivisionName()));
-//            }
-//        };
-//        Callback<ListView<Division>, ListCell<Division>> divisionFactoryUsed = divisionListView -> new ListCell<>() {
-//            @Override
-//            protected void updateItem(Division division, boolean empty) {
-//                super.updateItem(division, empty);
-//                setText(empty ? "empty" : (division.getDivisionName()));
-//            }
-//        };
-//        division_combo_id.setCellFactory(divisionFactoryMade);
-//        division_combo_id.setButtonCell(divisionFactoryUsed.call(null));
-
 
         // TableView listener
         table_view_id.getSelectionModel().selectedItemProperty().addListener((observableValue, oldSelection, newSelection) -> {
@@ -141,19 +98,11 @@ public class CustomersController implements Initializable {
                         address_id.setText(((Customer) newSelection).getAddress());
                         phone_number_id.setText(((Customer) newSelection).getPhone());
                         postal_code_id.setText(((Customer) newSelection).getPostalCode());
-                        setDivisionComboBox((Customer) newSelection);
+                        setDivisionCountryComboBoxes((Customer) newSelection);
                     }
 
                 }
         );
-
-//        country_combo_id.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Country>() {
-//            @Override
-//            public void changed(ObservableValue<? extends Country> observableValue, Country country, Country t1) {
-//                int countryId = country_combo_id.getSelectionModel().getSelectedItem().getCountryId();
-//                setDivisionsToCountryComboBox(countryId);
-//            }
-//        });
 
     }
 
@@ -187,49 +136,39 @@ public class CustomersController implements Initializable {
 
     //FIXME - When resetting the combo boxes, this invalidates the logic used to set the country and division in the below methods.
     private void resetComboBoxes() {
-        country_combo_id.getSelectionModel().clearAndSelect(0);
     }
 
     /**
-     * This helper method sets the Division ComboBox after clicking on the TableView.
+     * This helper method sets the Division and Country ComboBox (separately) after clicking on the TableView.
      *
      * @param customer
      */
-    private void setDivisionComboBox(Customer customer) {
+    private void setDivisionCountryComboBoxes(Customer customer) {
         if (!table_view_id.getSelectionModel().isEmpty()) {
+            // Allow for any possibility of divisions to be selected
+            DivisionSingleton.getInstance().setDivisionObservableList(DBDivisions.getAllFirstLevelDivisions());
             Object[] d = DivisionSingleton.getInstance().getDivisionObservableList().toArray();
             for (int i = 0; i < d.length; i++) {
                 if (((Division) d[i]).getDivisionId() == customer.getDivisionId()) {
+                    country_combo_id.setValue(((Division) d[i]).getCountry());
                     division_combo_id.getSelectionModel().select(i);
-                    setCountryComboBox(((Division) d[i]));
                 }
             }
+            new Test("TableView is selected");
+        } else {
+            DivisionSingleton
+                    .getInstance()
+                    .setDivisionObservableList(DBDivisions.getDivisions(country_combo_id.getSelectionModel().getSelectedItem().getCountryId()));
+            division_combo_id.setItems(DivisionSingleton.getInstance().getDivisionObservableList());
+            division_combo_id.getSelectionModel().select(1);
+            new Test("TableView is not selected");
         }
         new Test("setComboBoxes() triggered");
     }
 
-    /**
-     * This helper method sets the Country ComboBox after receiving a corresponding Division object.
-     *
-     * @param division
-     */
-    private void setCountryComboBox(Division division) {
-        country_combo_id.getSelectionModel().select(division.getCountry());
-    }
-
-    //FIXME
-    // - While clicking on TableView to set Division and thus Country is fixes, now there's the issue of having
-    // the countryComboBox change separately without affecting the division logic above. You are trying to make
-    // the country combobox be able to change.
-
     //limit the Division list to only states/provinces within country selected
     public void countryComboBoxOnAction(ActionEvent actionEvent) {
-        // Get the Country object
-        // Set the Division list separately
-        Country country = country_combo_id.getValue();
-        ObservableList<Division> divisionObservableList1 = FXCollections.observableArrayList();
-        divisionObservableList1.addAll(DBDivisions.getDivisions(country.getCountryId()));
-        division_combo_id.setItems(divisionObservableList1);
+
     }
 
 
