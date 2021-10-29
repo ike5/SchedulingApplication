@@ -1,5 +1,6 @@
 package controller;
 
+import com.sun.javafx.animation.KeyValueType;
 import data.DBDivisions;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -7,7 +8,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import data.DBCountries;
 import data.DBCustomers;
@@ -187,6 +190,11 @@ public class CustomersController implements Initializable {
         setDivisionsToCountryComboBox(division_combo_id.getSelectionModel().getSelectedItem().getCountry().getCountryId());
     }
 
+    /**
+     * This helper method sets the Division ComboBox after clicking on the TableView.
+     *
+     * @param customer
+     */
     private void setDivisionComboBox(Customer customer) {
         if (!table_view_id.getSelectionModel().isEmpty()) {
             Object[] d = divisionObservableList.toArray();
@@ -200,7 +208,12 @@ public class CustomersController implements Initializable {
         new Test("setComboBoxes() triggered");
     }
 
-    private void setCountryComboBox(Division division){
+    /**
+     * This helper method sets the Country ComboBox after receiving a corresponding Division object.
+     *
+     * @param division
+     */
+    private void setCountryComboBox(Division division) {
         country_combo_id.getSelectionModel().select(division.getCountry());
     }
 
@@ -209,11 +222,9 @@ public class CustomersController implements Initializable {
     // the countryComboBox change separately without affecting the division logic above. You are trying to make
     // the country combobox be able to change.
 
-    //        limit the Division list to only states/provinces within country selected
+    //limit the Division list to only states/provinces within country selected
     public void countryComboBoxOnAction(ActionEvent actionEvent) {
-//        int countryId = country_combo_id.getSelectionModel().getSelectedItem().getCountryId();
-//        setDivisionsToCountryComboBox(countryId);
-//        new Test("countryComboBoxOnAction() triggered");
+        setDivisionsToCountryComboBox(country_combo_id.getSelectionModel().getSelectedItem().getCountryId());
     }
 
     //FIXME - see method above concerning errors
@@ -221,7 +232,6 @@ public class CustomersController implements Initializable {
         try {
             divisionObservableList = DBDivisions.getDivisions(countryId);
             division_combo_id.setItems(divisionObservableList);
-            division_combo_id.getSelectionModel().clearAndSelect(0);
         } catch (NullPointerException e) {
             divisionObservableList = DBDivisions.getAllFirstLevelDivisions();
             division_combo_id.setItems(divisionObservableList);
