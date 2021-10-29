@@ -2,6 +2,7 @@ package controller;
 
 import com.sun.javafx.animation.KeyValueType;
 import data.DBDivisions;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -22,6 +23,7 @@ import main.Main;
 import model.Country;
 import model.Customer;
 import model.Division;
+import model.DivisionSingleton;
 import test.Test;
 
 import java.io.IOException;
@@ -63,7 +65,6 @@ public class CustomersController implements Initializable {
     private static boolean isPostalCodeFieldValid;
     private static boolean isPhoneNumberFieldValid;
     private static int customerSelctionId;
-    ObservableList<Division> divisionObservableList;
     ObservableList<Customer> customerObservableList;
     ObservableList<Country> countryObservableList;
 
@@ -93,8 +94,8 @@ public class CustomersController implements Initializable {
         country_combo_id.setItems(countryObservableList);
 
         // Initialize Province/State (Division) ComboBox
-        divisionObservableList = DBDivisions.getAllFirstLevelDivisions();
-        division_combo_id.setItems(divisionObservableList);
+        DivisionSingleton.getInstance().setDivisionObservableList(DBDivisions.getAllFirstLevelDivisions());
+        division_combo_id.setItems(DivisionSingleton.getInstance().getDivisionObservableList());
 
         // Callback methods
 //        Callback<ListView<Country>, ListCell<Country>> countryFactoryMade = countryListView -> new ListCell<Country>() {
@@ -187,7 +188,6 @@ public class CustomersController implements Initializable {
     //FIXME - When resetting the combo boxes, this invalidates the logic used to set the country and division in the below methods.
     private void resetComboBoxes() {
         country_combo_id.getSelectionModel().clearAndSelect(0);
-        setDivisionsToCountryComboBox(division_combo_id.getSelectionModel().getSelectedItem().getCountry().getCountryId());
     }
 
     /**
@@ -197,7 +197,7 @@ public class CustomersController implements Initializable {
      */
     private void setDivisionComboBox(Customer customer) {
         if (!table_view_id.getSelectionModel().isEmpty()) {
-            Object[] d = divisionObservableList.toArray();
+            Object[] d = DivisionSingleton.getInstance().getDivisionObservableList().toArray();
             for (int i = 0; i < d.length; i++) {
                 if (((Division) d[i]).getDivisionId() == customer.getDivisionId()) {
                     division_combo_id.getSelectionModel().select(i);
@@ -224,20 +224,14 @@ public class CustomersController implements Initializable {
 
     //limit the Division list to only states/provinces within country selected
     public void countryComboBoxOnAction(ActionEvent actionEvent) {
-        setDivisionsToCountryComboBox(country_combo_id.getSelectionModel().getSelectedItem().getCountryId());
+        // Get the Country object
+        // Set the Division list separately
+        Country country = country_combo_id.getValue();
+        ObservableList<Division> divisionObservableList1 = FXCollections.observableArrayList();
+        divisionObservableList1.addAll(DBDivisions.getDivisions(country.getCountryId()));
+        division_combo_id.setItems(divisionObservableList1);
     }
 
-    //FIXME - see method above concerning errors
-    private void setDivisionsToCountryComboBox(int countryId) {
-        try {
-            divisionObservableList = DBDivisions.getDivisions(countryId);
-            division_combo_id.setItems(divisionObservableList);
-        } catch (NullPointerException e) {
-            divisionObservableList = DBDivisions.getAllFirstLevelDivisions();
-            division_combo_id.setItems(divisionObservableList);
-            new Test("Set all back to normal when Country is null");
-        }
-    }
 
     @Deprecated
     public void divisionComboBoxOnAction(ActionEvent actionEvent) {
