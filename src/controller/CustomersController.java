@@ -135,6 +135,7 @@ public class CustomersController implements Initializable {
 
     private void resetComboBoxes() {
     }
+
     /**
      * This helper method sets the Division and Country ComboBox (separately) after clicking on the TableView.
      *
@@ -152,29 +153,19 @@ public class CustomersController implements Initializable {
                 isValuesChangedViaSetDivisionCountryMethod = false; // set to false after changing country_combo_id
             }
         }
-        new Test("setComboBoxes() triggered");
+        new Test("setDivisionCountryComboBoxes(Customer customer) triggered");
     }
 
     private void setDivisionCountryComboBoxes() {
-        table_view_id.getSelectionModel().clearSelection();
-        if (!table_view_id.getSelectionModel().isEmpty()) {
-            // do nothing
-            new Test("Tableview is STILL selected!");
-        } else {
-            new Test("Nothing is selected");
-            DivisionSingleton
-                    .getInstance()
-                    .setDivisionObservableList(DBDivisions.getDivisions(country_combo_id.getSelectionModel().getSelectedItem().getCountryId()));
-            division_combo_id.setItems(DivisionSingleton.getInstance().getDivisionObservableList());
-            division_combo_id.getSelectionModel().clearAndSelect(0);
-            new Test("TableView is not selected");
-        }
+        DivisionSingleton.getInstance().setDivisionObservableList(DBDivisions.getDivisions(country_combo_id.getSelectionModel().getSelectedItem().getCountryId()));
+        division_combo_id.setItems(DivisionSingleton.getInstance().getDivisionObservableList());
+        division_combo_id.getSelectionModel().clearAndSelect(0);
+        new Test("setDivisionCountryComboBoxes() triggered");
     }
 
     //limit the Division list to only states/provinces within country selected
-
     public void countryComboBoxOnAction(ActionEvent actionEvent) {
-        if(isValuesChangedViaSetDivisionCountryMethod){
+        if (isValuesChangedViaSetDivisionCountryMethod) {
             // do nothing since being handled by the setDivisionCountryComboBox() method
         } else {
             setDivisionCountryComboBoxes();
@@ -182,7 +173,6 @@ public class CustomersController implements Initializable {
     }
 
     private boolean isValuesChanged() {
-
         if (!table_view_id.getSelectionModel().isEmpty()) {
             isValuesChanged = !(((Customer) table_view_id.getSelectionModel().getSelectedItem()).getName().equals(customer_name_id.getText()) &
                     ((Customer) table_view_id.getSelectionModel().getSelectedItem()).getAddress().equals(address_id.getText()) &
