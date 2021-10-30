@@ -3,6 +3,7 @@ package controller;
 import data.DBDivisions;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.EventType;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -10,6 +11,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import data.DBCountries;
 import data.DBCustomers;
@@ -105,6 +107,15 @@ public class CustomersController implements Initializable {
                 }
         );
 
+        country_combo_id.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Country>() {
+            @Override
+            public void changed(ObservableValue<? extends Country> observableValue, Country country, Country t1) {
+                System.out.println("observableValue: " + observableValue);
+                System.out.println("country: " + country);
+                System.out.println("t1: " + t1);
+            }
+        });
+
     }
 
     @Deprecated
@@ -145,27 +156,25 @@ public class CustomersController implements Initializable {
      * @param customer
      */
     private void setDivisionCountryComboBoxes(Customer customer) {
-        if (!table_view_id.getSelectionModel().isEmpty()) { // this will always be true
-            // Allow for any possibility of divisions to be selected
-            DivisionSingleton.getInstance().setDivisionObservableList(DBDivisions.getAllFirstLevelDivisions());
-            Object[] d = DivisionSingleton.getInstance().getDivisionObservableList().toArray();
-            for (int i = 0; i < d.length; i++) {
-                if (((Division) d[i]).getDivisionId() == customer.getDivisionId()) {
-                    country_combo_id.setValue(((Division) d[i]).getCountry());
-                    division_combo_id.getSelectionModel().select(i);
-                }
+        // Allow for any possibility of divisions to be selected
+        DivisionSingleton.getInstance().setDivisionObservableList(DBDivisions.getAllFirstLevelDivisions());
+        Object[] d = DivisionSingleton.getInstance().getDivisionObservableList().toArray();
+        for (int i = 0; i < d.length; i++) {
+            if (((Division) d[i]).getDivisionId() == customer.getDivisionId()) {
+                country_combo_id.setValue(((Division) d[i]).getCountry());
+                division_combo_id.getSelectionModel().select(i);
             }
         }
         new Test("setComboBoxes() triggered");
     }
 
-    private void setDivisionCountryComboBoxes(){
+    private void setDivisionCountryComboBoxes() {
         table_view_id.getSelectionModel().clearSelection();
-        if(!table_view_id.getSelectionModel().isEmpty()){
+        if (!table_view_id.getSelectionModel().isEmpty()) {
             // do nothing
-            new Test("Tableview is STILL selectedd!");
+            new Test("Tableview is STILL selected!");
         } else {
-            new Test("Nothin is selected");
+            new Test("Nothing is selected");
             DivisionSingleton
                     .getInstance()
                     .setDivisionObservableList(DBDivisions.getDivisions(country_combo_id.getSelectionModel().getSelectedItem().getCountryId()));
@@ -177,7 +186,6 @@ public class CustomersController implements Initializable {
 
     //limit the Division list to only states/provinces within country selected
     public void countryComboBoxOnAction(ActionEvent actionEvent) {
-        setDivisionCountryComboBoxes();
     }
 
 
