@@ -62,6 +62,7 @@ public class CustomersController implements Initializable {
     private static boolean isPostalCodeFieldValid;
     private static boolean isPhoneNumberFieldValid;
     ObservableList<Customer> customerObservableList;
+    private boolean isValuesChangedViaSetDivisionCountryMethod;
 
 
     @Override
@@ -118,22 +119,6 @@ public class CustomersController implements Initializable {
 
     }
 
-    @Deprecated
-    public void customerNameOnAction(ActionEvent actionEvent) {
-    }
-
-    @Deprecated
-    public void addressOnAction(ActionEvent actionEvent) {
-    }
-
-    @Deprecated
-    public void postalCodeOnAction(ActionEvent actionEvent) {
-    }
-
-    @Deprecated
-    public void phoneNumberOnAction(ActionEvent actionEvent) {
-    }
-
     public void clearFormButtonOnAction(ActionEvent actionEvent) {
         // Clear all fields and set ComboBoxes to first item
         table_view_id.getSelectionModel().clearSelection();
@@ -147,9 +132,9 @@ public class CustomersController implements Initializable {
     }
 
     //FIXME - When resetting the combo boxes, this invalidates the logic used to set the country and division in the below methods.
+
     private void resetComboBoxes() {
     }
-
     /**
      * This helper method sets the Division and Country ComboBox (separately) after clicking on the TableView.
      *
@@ -161,8 +146,10 @@ public class CustomersController implements Initializable {
         Object[] d = DivisionSingleton.getInstance().getDivisionObservableList().toArray();
         for (int i = 0; i < d.length; i++) {
             if (((Division) d[i]).getDivisionId() == customer.getDivisionId()) {
-                country_combo_id.setValue(((Division) d[i]).getCountry());
+                isValuesChangedViaSetDivisionCountryMethod = true; // set to true before changing country_combo_id //FIXME - use State pattern instead
+                country_combo_id.setValue(((Division) d[i]).getCountry()); // Triggers Country ComboBox to activate
                 division_combo_id.getSelectionModel().select(i);
+                isValuesChangedViaSetDivisionCountryMethod = false; // set to false after changing country_combo_id
             }
         }
         new Test("setComboBoxes() triggered");
@@ -185,23 +172,13 @@ public class CustomersController implements Initializable {
     }
 
     //limit the Division list to only states/provinces within country selected
+
     public void countryComboBoxOnAction(ActionEvent actionEvent) {
-    }
-
-
-    @Deprecated
-    public void divisionComboBoxOnAction(ActionEvent actionEvent) {
-        // Not sure what to do here.
-    }
-
-    @Deprecated
-    public void onPull(ActionEvent actionEvent) {
-        Customer customer = (Customer) table_view_id.getSelectionModel().getSelectedItem();
-        customer_id_id.setText(Integer.toString(customer.getId()));
-        customer_name_id.setText(customer.getName());
-        address_id.setText(customer.getAddress());
-        postal_code_id.setText(customer.getPostalCode());
-        phone_number_id.setText(customer.getPhone());
+        if(isValuesChangedViaSetDivisionCountryMethod){
+            // do nothing since being handled by the setDivisionCountryComboBox() method
+        } else {
+            setDivisionCountryComboBoxes();
+        }
     }
 
     private boolean isValuesChanged() {
@@ -318,10 +295,6 @@ public class CustomersController implements Initializable {
         return !(isValidTextField(customer_name_id) & isValidTextField(address_id) & isValidTextField(postal_code_id) & isValidTextField(phone_number_id));
     }
 
-    @Deprecated
-    public void customerIdOnAction(ActionEvent actionEvent) {
-    }
-
     public void customerNameOnKeyTyped(KeyEvent keyEvent) {
         isCustomerNameFieldValid = isValidTextField((TextField) keyEvent.getSource());
         if (isCustomerNameFieldValid) {
@@ -369,6 +342,41 @@ public class CustomersController implements Initializable {
         stage.setTitle("Hello ");
         stage.setScene(new Scene(scene));
         stage.show();
+    }
+
+    @Deprecated
+    public void customerNameOnAction(ActionEvent actionEvent) {
+    }
+
+    @Deprecated
+    public void addressOnAction(ActionEvent actionEvent) {
+    }
+
+    @Deprecated
+    public void postalCodeOnAction(ActionEvent actionEvent) {
+    }
+
+    @Deprecated
+    public void phoneNumberOnAction(ActionEvent actionEvent) {
+    }
+
+    @Deprecated
+    public void divisionComboBoxOnAction(ActionEvent actionEvent) {
+        // Not sure what to do here.
+    }
+
+    @Deprecated
+    public void customerIdOnAction(ActionEvent actionEvent) {
+    }
+
+    @Deprecated
+    public void onPull(ActionEvent actionEvent) {
+        Customer customer = (Customer) table_view_id.getSelectionModel().getSelectedItem();
+        customer_id_id.setText(Integer.toString(customer.getId()));
+        customer_name_id.setText(customer.getName());
+        address_id.setText(customer.getAddress());
+        postal_code_id.setText(customer.getPostalCode());
+        phone_number_id.setText(customer.getPhone());
     }
 }
 
