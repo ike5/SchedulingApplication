@@ -24,10 +24,8 @@ public class Main extends Application {
         resourceBundle = ResourceBundle.getBundle("RBundle", Locale.getDefault()); // initialize ResourceBundle for application
 
         Parent root = FXMLLoader.load(getClass().getResource("/view/LoginScreen.fxml")); // slash represents the src folder
-//        Parent root = FXMLLoader.load(getClass().getResource("/view/Customers.fxml")); // TEST. Use above line in production
         stage.setTitle(resourceBundle.getString("set_title"));
         stage.setScene(new Scene(root, 400, 300)); // (width, height)
-//        stage.setScene(new Scene(root, 1200, 500)); // TEST. Use above line in production
         stage.show();
     }
 

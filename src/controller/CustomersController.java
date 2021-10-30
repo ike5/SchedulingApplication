@@ -46,18 +46,13 @@ public class CustomersController implements Initializable {
     public TableView table_view_id;
     public Button save_button;
     public Button clear_form_button;
-    public Button new_customer_button;
     public Button delete_customer_button;
     public Button logout_button;
     private static boolean isValuesChanged;
     private static boolean isSaveButtonDisabled;
     private static boolean isClearFormButtonDisabled;
-    private static boolean isNewCustomerButtonDisabled;
     private static boolean isDeleteCustomerButtonDisabled;
-    private static boolean isLogoutButtonDisabled;
     private static boolean isCustomerNameFieldValid;
-    private static boolean isCountryComboBoxValid;
-    private static boolean isDivisionComboBoxValid;
     private static boolean isAddressFieldValid;
     private static boolean isPostalCodeFieldValid;
     private static boolean isPhoneNumberFieldValid;
@@ -68,15 +63,18 @@ public class CustomersController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Set focus options on buttons
-//        save_button.setDisable(isSaveButtonDisabled);
-//        clear_form_button.setDisable(isClearFormButtonDisabled);
-//        delete_customer_button.setDisable(isDeleteCustomerButtonDisabled);
-//        customer_id_id.setDisable(true); // Prevent users from changing touching customer id value
+        save_button.setDisable(isSaveButtonDisabled);
+        clear_form_button.setDisable(isClearFormButtonDisabled);
+        delete_customer_button.setDisable(isDeleteCustomerButtonDisabled);
+
+        // Prevent users from changing touching customer id value
+        customer_id_id.setDisable(true);
 
         // Populate table with Customers
         CustomerSingleton.getInstance().setCustomerObservableList(DBCustomers.getAllCustomers());
         table_view_id.setItems(CustomerSingleton.getInstance().getCustomerObservableList());
 
+        // Bind table cell values to class getter methods
         // Tied to getter in the Customer class --> getDivisionId()
         id_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("Id"));
         name_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<Customer, String>("Name"));
@@ -194,6 +192,8 @@ public class CustomersController implements Initializable {
         return isValuesChanged;
     }
 
+    //FIXME
+    // - after saving, repopulate the textfields from the database so that you can get the customer ID value
     public void saveButtonOnAction(ActionEvent actionEvent) {
         if (table_view_id.getSelectionModel().isEmpty()) {// Make a new Customer
             if (isMissingTextFieldValues()) { // Alert user of missing fields
