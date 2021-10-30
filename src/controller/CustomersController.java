@@ -163,11 +163,7 @@ public class CustomersController implements Initializable {
 
     //limit the Division list to only states/provinces within country selected
     public void countryComboBoxOnAction(ActionEvent actionEvent) {
-        if (isValuesChangedViaSetDivisionCountryMethod) {
-            // do nothing since being handled by the setDivisionCountryComboBox() method
-        } else {
-            setDivisionCountryComboBoxes();
-        }
+        if (! isValuesChangedViaSetDivisionCountryMethod) setDivisionCountryComboBoxes();
     }
 
     private boolean isValuesChanged() {
