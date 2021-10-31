@@ -101,18 +101,12 @@ public class CustomersController implements Initializable {
                         postal_code_id.setText(((Customer) newSelection).getPostalCode());
                         setDivisionCountryComboBoxes((Customer) newSelection);
                     }
-
                 }
         );
 
-        country_combo_id.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Country>() {
-            @Override
-            public void changed(ObservableValue<? extends Country> observableValue, Country country, Country t1) {
-                System.out.println("observableValue: " + observableValue);
-                System.out.println("country: " + country);
-                System.out.println("t1: " + t1);
-            }
-        });
+//        country_combo_id.setOnAction(actionEvent -> {
+//
+//        });
 
     }
 
@@ -155,12 +149,6 @@ public class CustomersController implements Initializable {
             division_combo_id.getSelectionModel().clearAndSelect(0);
             new Test("setDivisionCountryComboBoxes() triggered");
         }
-    }
-
-
-
-    //limit the Division list to only states/provinces within country selected
-    public void countryComboBoxOnAction(ActionEvent actionEvent) {
     }
 
     private boolean isValuesChanged() {
