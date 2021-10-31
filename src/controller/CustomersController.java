@@ -57,7 +57,6 @@ public class CustomersController implements Initializable {
     private static boolean isPostalCodeFieldValid;
     private static boolean isPhoneNumberFieldValid;
     ObservableList<Customer> customerObservableList;
-    private boolean isValuesChangedViaSetDivisionCountryMethod;
 
 
     @Override
@@ -130,7 +129,6 @@ public class CustomersController implements Initializable {
     }
 
     //FIXME - When resetting the combo boxes, this invalidates the logic used to set the country and division in the below methods.
-
     private void resetComboBoxes() {
     }
 
@@ -140,30 +138,29 @@ public class CustomersController implements Initializable {
      * @param customer
      */
     private void setDivisionCountryComboBoxes(Customer customer) {
-        // Allow for any possibility of divisions to be selected
-        DivisionSingleton.getInstance().setDivisionObservableList(DBDivisions.getAllFirstLevelDivisions());
-        Object[] d = DivisionSingleton.getInstance().getDivisionObservableList().toArray();
-        for (int i = 0; i < d.length; i++) {
-            if (((Division) d[i]).getDivisionId() == customer.getDivisionId()) {
-                isValuesChangedViaSetDivisionCountryMethod = true; // set to true before changing country_combo_id //FIXME - use State pattern instead
-                country_combo_id.setValue(((Division) d[i]).getCountry()); // Triggers Country ComboBox to activate
-                division_combo_id.getSelectionModel().select(i);
-                isValuesChangedViaSetDivisionCountryMethod = false; // set to false after changing country_combo_id
+        if(customer != null) {
+            // Allow for any possibility of divisions to be selected
+            DivisionSingleton.getInstance().setDivisionObservableList(DBDivisions.getAllFirstLevelDivisions());
+            Object[] d = DivisionSingleton.getInstance().getDivisionObservableList().toArray();
+            for (int i = 0; i < d.length; i++) {
+                if (((Division) d[i]).getDivisionId() == customer.getDivisionId()) {
+                    country_combo_id.setValue(((Division) d[i]).getCountry()); // Triggers Country ComboBox to activate
+                    division_combo_id.getSelectionModel().select(i);
+                }
             }
+            new Test("setDivisionCountryComboBoxes(Customer customer) triggered");
+        } else {
+            DivisionSingleton.getInstance().setDivisionObservableList(DBDivisions.getDivisions(country_combo_id.getSelectionModel().getSelectedItem().getCountryId()));
+            division_combo_id.setItems(DivisionSingleton.getInstance().getDivisionObservableList());
+            division_combo_id.getSelectionModel().clearAndSelect(0);
+            new Test("setDivisionCountryComboBoxes() triggered");
         }
-        new Test("setDivisionCountryComboBoxes(Customer customer) triggered");
     }
 
-    private void setDivisionCountryComboBoxes() {
-        DivisionSingleton.getInstance().setDivisionObservableList(DBDivisions.getDivisions(country_combo_id.getSelectionModel().getSelectedItem().getCountryId()));
-        division_combo_id.setItems(DivisionSingleton.getInstance().getDivisionObservableList());
-        division_combo_id.getSelectionModel().clearAndSelect(0);
-        new Test("setDivisionCountryComboBoxes() triggered");
-    }
+
 
     //limit the Division list to only states/provinces within country selected
     public void countryComboBoxOnAction(ActionEvent actionEvent) {
-        if (! isValuesChangedViaSetDivisionCountryMethod) setDivisionCountryComboBoxes();
     }
 
     private boolean isValuesChanged() {
