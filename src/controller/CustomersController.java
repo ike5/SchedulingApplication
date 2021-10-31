@@ -99,7 +99,11 @@ public class CustomersController implements Initializable {
                         address_id.setText(((Customer) newSelection).getAddress());
                         phone_number_id.setText(((Customer) newSelection).getPhone());
                         postal_code_id.setText(((Customer) newSelection).getPostalCode());
-                        setDivisionCountryComboBoxes((Customer) newSelection);
+//                        setDivisionCountryComboBoxes((Customer) newSelection);
+                        ComboInterface divisionCombo = new DivisionCombo();
+                        ComboInterface countryCombo = new CountryCombo();
+                        divisionCombo.setComboBox((Customer) newSelection, division_combo_id);
+                        countryCombo.setComboBox((Customer) newSelection, country_combo_id);
                     }
                 }
         );
@@ -124,31 +128,6 @@ public class CustomersController implements Initializable {
 
     //FIXME - When resetting the combo boxes, this invalidates the logic used to set the country and division in the below methods.
     private void resetComboBoxes() {
-    }
-
-    /**
-     * This helper method sets the Division and Country ComboBox (separately) after clicking on the TableView.
-     *
-     * @param customer
-     */
-    private void setDivisionCountryComboBoxes(Customer customer) {
-        if(customer != null) {
-            // Allow for any possibility of divisions to be selected
-            DivisionSingleton.getInstance().setDivisionObservableList(DBDivisions.getAllFirstLevelDivisions());
-            Object[] d = DivisionSingleton.getInstance().getDivisionObservableList().toArray();
-            for (int i = 0; i < d.length; i++) {
-                if (((Division) d[i]).getDivisionId() == customer.getDivisionId()) {
-                    country_combo_id.setValue(((Division) d[i]).getCountry()); // Triggers Country ComboBox to activate
-                    division_combo_id.getSelectionModel().select(i);
-                }
-            }
-            new Test("setDivisionCountryComboBoxes(Customer customer) triggered");
-        } else {
-            DivisionSingleton.getInstance().setDivisionObservableList(DBDivisions.getDivisions(country_combo_id.getSelectionModel().getSelectedItem().getCountryId()));
-            division_combo_id.setItems(DivisionSingleton.getInstance().getDivisionObservableList());
-            division_combo_id.getSelectionModel().clearAndSelect(0);
-            new Test("setDivisionCountryComboBoxes() triggered");
-        }
     }
 
     private boolean isValuesChanged() {

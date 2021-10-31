@@ -45,7 +45,7 @@
                                 <TextField fx:id="customer_name_id" onAction="#customerNameOnAction"
                                            onKeyTyped="#customerNameOnKeyTyped" GridPane.columnIndex="1"
                                            GridPane.rowIndex="1"/>
-                                <ComboBox fx:id="country_combo_id" onAction="#countryComboBoxOnAction" prefWidth="150.0"
+                                <ComboBox fx:id="country_combo_id"  prefWidth="150.0"
                                           GridPane.rowIndex="2"/>
                                 <ComboBox fx:id="division_combo_id" onAction="#divisionComboBoxOnAction"
                                           prefHeight="26.0" prefWidth="129.0" GridPane.columnIndex="1"
