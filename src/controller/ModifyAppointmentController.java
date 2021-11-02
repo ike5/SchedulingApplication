@@ -13,13 +13,19 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import javafx.util.converter.DateTimeStringConverter;
 import model.*;
 import test.Test;
 
 import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
+import java.text.DateFormat;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.Formatter;
 import java.util.ResourceBundle;
 
 public class ModifyAppointmentController implements Initializable {
@@ -45,16 +51,14 @@ public class ModifyAppointmentController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        Appointment appointment = AppointmentSingleton.getInstance().getAppointment();
+        CustomerSingleton.getInstance().setCustomerObservableList(DBCustomers.getAllCustomers());
+        customer_combo.setItems(CustomerSingleton.getInstance().getCustomerObservableList());
 
-        ObservableList<Customer> customerObservableList = DBCustomers.getAllCustomers();
-        customer_combo.setItems(customerObservableList);
+        ContactsSingleton.getInstance().setContactObservableList(DBContacts.getAllContacts());
+        contact_combo.setItems(ContactsSingleton.getInstance().getContactObservableList());
 
-        ObservableList<Contact> contactObservableList = DBContacts.getAllContacts();
-        contact_combo.setItems(contactObservableList);
-
-        ObservableList<User> userObservableList = DBUsers.getAllUsers();
-        user_combo.setItems(userObservableList);
+        UserSingleton.getInstance().setUserObservableList(DBUsers.getAllUsers());
+        user_combo.setItems(UserSingleton.getInstance().getUserObservableList());
 
         ObservableList<Location> locationObservableList = FXCollections.observableArrayList(Location.values());
         location_combo.setItems(locationObservableList);
@@ -62,30 +66,37 @@ public class ModifyAppointmentController implements Initializable {
         ObservableList<Type> typeObservableList = FXCollections.observableArrayList(Type.values());
         type_combo.setItems(typeObservableList);
 
-        start_time_spinner.setValueFactory(new SpinnerValueFactory.ListSpinnerValueFactory(PossibleTimes.localTimeList()));
-        end_time_spinner.setValueFactory(new SpinnerValueFactory.ListSpinnerValueFactory(PossibleTimes.localTimeList()));
+//        start_time_spinner.setValueFactory(new SpinnerValueFactory.ListSpinnerValueFactory(PossibleTimes.localTimeList()));
+//        end_time_spinner.setValueFactory(new SpinnerValueFactory.ListSpinnerValueFactory(PossibleTimes.localTimeList()));
 
 
+        DateTimeStringConverter dateTimeStringConverter = new DateTimeStringConverter(DateFormat.SHORT, DateFormat.SHORT);
 
-        if(appointment != null){
-            customer_combo.setValue(appointment.getCustomer());
+
+        if(AppointmentSingleton.getInstance().getAppointment() != null){
+            customer_combo.setValue(AppointmentSingleton.getInstance().getAppointment().getCustomer());
             customer_combo.setVisibleRowCount(5);
 
-            contact_combo.setValue(appointment.getContact());
+            contact_combo.setValue(AppointmentSingleton.getInstance().getAppointment().getContact());
             contact_combo.setVisibleRowCount(5);
 
-            user_combo.setValue(appointment.getUser());
+            user_combo.setValue(AppointmentSingleton.getInstance().getAppointment().getUser());
             user_combo.setVisibleRowCount(5);
 
-            location_combo.setValue(appointment.getAppointmentLocation());
+            location_combo.setValue(AppointmentSingleton.getInstance().getAppointment().getAppointmentLocation());
             location_combo.setVisibleRowCount(5);
 
-            type_combo.setValue(appointment.getType());
+            type_combo.setValue(AppointmentSingleton.getInstance().getAppointment().getType());
             type_combo.setVisibleRowCount(5);
 
-            appointment_id_textfield.setText(Integer.toString(appointment.getAppointmentId()));
-            title_textfield.setText(appointment.getAppointmentTitle());
-            description_textfield.setText(appointment.getAppointmentDescription());
+            appointment_id_textfield.setText(Integer.toString(AppointmentSingleton.getInstance().getAppointment().getAppointmentId()));
+            title_textfield.setText(AppointmentSingleton.getInstance().getAppointment().getAppointmentTitle());
+            description_textfield.setText(AppointmentSingleton.getInstance().getAppointment().getAppointmentDescription());
+
+            start_date_picker.setValue(AppointmentSingleton.getInstance().getAppointment().getStart().toLocalDate());
+            end_date_picker.setValue(AppointmentSingleton.getInstance().getAppointment().getEnd().toLocalDate());
+
+
         }
 
 

@@ -54,8 +54,10 @@ public class DBContacts {
      */
     public static ObservableList<Contact> getAllContacts() {
         ObservableList<Contact> contactObservableList = FXCollections.observableArrayList();
+        String sql = "SELECT * FROM contacts";
         try {
-            ResultSet resultSet = getAllContactsResultSet(); // calls helper method
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ResultSet resultSet = ps.executeQuery();
 
             while (resultSet.next()) {
                 Contact contact = new Contact(
@@ -68,7 +70,7 @@ public class DBContacts {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        return null;
+        return contactObservableList;
     }
 
     /**

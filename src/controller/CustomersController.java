@@ -99,18 +99,22 @@ public class CustomersController implements Initializable {
                         address_id.setText(((Customer) newSelection).getAddress());
                         phone_number_id.setText(((Customer) newSelection).getPhone());
                         postal_code_id.setText(((Customer) newSelection).getPostalCode());
-//                        setDivisionCountryComboBoxes((Customer) newSelection);
-                        ComboInterface divisionCombo = new DivisionCombo();
-                        ComboInterface countryCombo = new CountryCombo();
-                        divisionCombo.setComboBox((Customer) newSelection, division_combo_id);
-                        countryCombo.setComboBox((Customer) newSelection, country_combo_id);
+                        division_combo_id.setValue(((Customer) newSelection).getDivision());
+                        country_combo_id.setValue(((Customer) newSelection).getCountry());
+
+//                        ComboInterface divisionCombo = new DivisionCombo();
+//                        ComboInterface countryCombo = new CountryCombo();
+//                        divisionCombo.setComboBox((Customer) newSelection, division_combo_id);
+//                        countryCombo.setComboBox((Customer) newSelection, country_combo_id);
                     }
                 }
         );
 
-//        country_combo_id.setOnAction(actionEvent -> {
-//
-//        });
+        country_combo_id.setOnAction(actionEvent -> {
+            if (division_combo_id.getValue() == null | country_combo_id.getValue() == null) {
+                division_combo_id.setItems(DBDivisions.getDivisions(country_combo_id.getValue().getCountryId()));
+            }
+        });
 
     }
 
