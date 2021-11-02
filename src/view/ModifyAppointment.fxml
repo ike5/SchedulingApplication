@@ -62,9 +62,19 @@
                                 <ComboBox fx:id="user_combo" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                 <Label fx:id="error_message_label" text="Error Messages if any" textFill="#f30202" GridPane.columnIndex="1" GridPane.rowIndex="7" />
                         <Label fx:id="error_messages_label2" text="Error Messages if any" textFill="#f70303" GridPane.columnIndex="3" GridPane.rowIndex="7" />
-                        <Spinner fx:id="start_time_spinner" GridPane.columnIndex="3" GridPane.rowIndex="5" />
-                        <Spinner fx:id="end_time_spinner" GridPane.columnIndex="3" GridPane.rowIndex="6" />
                         <TextField fx:id="appointment_id_textfield" disable="true" GridPane.columnIndex="1" />
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="5">
+                           <children>
+                              <Spinner fx:id="start_hour_spinner" prefHeight="26.0" prefWidth="69.0" />
+                              <Spinner fx:id="start_minute_spinner" prefHeight="26.0" prefWidth="69.0" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="6">
+                           <children>
+                              <Spinner fx:id="end_hour_spinner" prefHeight="26.0" prefWidth="69.0" />
+                              <Spinner fx:id="end_minute_spinner" prefHeight="26.0" prefWidth="69.0" />
+                           </children>
+                        </HBox>
                             </children>
                         </GridPane>
                     </children>

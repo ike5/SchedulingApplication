@@ -48,6 +48,10 @@ public class ModifyAppointmentController implements Initializable {
     public Spinner start_time_spinner;
     public Spinner end_time_spinner;
     public TextField appointment_id_textfield;
+    public Spinner start_hour_spinner;
+    public Spinner start_minute_spinner;
+    public Spinner end_hour_spinner;
+    public Spinner end_minute_spinner;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -70,10 +74,15 @@ public class ModifyAppointmentController implements Initializable {
 //        end_time_spinner.setValueFactory(new SpinnerValueFactory.ListSpinnerValueFactory(PossibleTimes.localTimeList()));
 
 
-        DateTimeStringConverter dateTimeStringConverter = new DateTimeStringConverter(DateFormat.SHORT, DateFormat.SHORT);
+        start_hour_spinner.setValueFactory(
+                new SpinnerValueFactory.ListSpinnerValueFactory<LocalTime>(PossibleTimes.localTimeList())
+        );
+        start_minute_spinner.setValueFactory(
+                new SpinnerValueFactory.IntegerSpinnerValueFactory()
+        );
 
 
-        if(AppointmentSingleton.getInstance().getAppointment() != null){
+        if (AppointmentSingleton.getInstance().getAppointment() != null) {
             customer_combo.setValue(AppointmentSingleton.getInstance().getAppointment().getCustomer());
             customer_combo.setVisibleRowCount(5);
 
@@ -108,7 +117,7 @@ public class ModifyAppointmentController implements Initializable {
 
     //FIXME - still can't figure out why when clicking clear it doesn't turn all the comboboxes to empty. Maybe I need
     // to use a listener or a callback?
-    private void onClear(ActionEvent actionEvent){
+    private void onClear(ActionEvent actionEvent) {
         customer_combo.valueProperty().set(null);
         contact_combo.valueProperty().set(null);
         user_combo.valueProperty().set(null);
