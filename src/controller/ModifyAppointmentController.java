@@ -19,6 +19,7 @@ import test.Test;
 import java.io.IOException;
 import java.net.URL;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ResourceBundle;
 
@@ -86,6 +87,12 @@ public class ModifyAppointmentController implements Initializable {
             appointment_id_textfield.setText(Integer.toString(AppointmentSingleton.getInstance().getAppointment().getAppointmentId()));
             title_textfield.setText(AppointmentSingleton.getInstance().getAppointment().getAppointmentTitle());
             description_textfield.setText(AppointmentSingleton.getInstance().getAppointment().getAppointmentDescription());
+
+            LocalTime localStartTime = AppointmentSingleton.getInstance().getAppointment().getStart().toLocalTime();
+            start_combo.setValue(localStartTime);
+
+            LocalTime localEndTime = AppointmentSingleton.getInstance().getAppointment().getEnd().toLocalTime();
+            end_combo.setValue(localEndTime);
 
         }
 
