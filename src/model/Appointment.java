@@ -27,6 +27,8 @@ public class Appointment {
     private LocalDateTime end;
     private String startString;
     private String endString;
+    private Location locationEnum;
+    private Type typeEnum;
 
 
 
@@ -69,6 +71,19 @@ public class Appointment {
         this.customer = DBCustomers.getCustomer(customerId);
         this.user = DBUsers.getUser(userId);
         this.contact = DBContacts.getContact(contactId);
+    }
+
+    public Appointment(int appointmentId, String appointmentTitle, String appointmentDescription, Location locationEnum, Type typeEnum, LocalDateTime start, LocalDateTime end, Customer customer, User user, Contact contact) {
+        this.appointmentId = appointmentId;
+        this.appointmentTitle = appointmentTitle;
+        this.appointmentDescription = appointmentDescription;
+        this.locationEnum = locationEnum;
+        this.typeEnum = typeEnum;
+        this.start = start;
+        this.end = end;
+        this.customer = customer;
+        this.user = user;
+        this.contact = contact;
     }
 
     public String getStartString() {

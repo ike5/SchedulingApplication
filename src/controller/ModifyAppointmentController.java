@@ -1,9 +1,6 @@
 package controller;
 
-import data.DBContacts;
-import data.DBCustomers;
-import data.DBDivisions;
-import data.DBUsers;
+import data.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -68,6 +65,7 @@ public class ModifyAppointmentController implements Initializable {
 
 
 
+        // If coming to view from Updating appointments, populate fields and combo
         if (AppointmentSingleton.getInstance().getAppointment() != null) {
             customer_combo.setValue(AppointmentSingleton.getInstance().getAppointment().getCustomer());
             customer_combo.setVisibleRowCount(5);
@@ -93,7 +91,6 @@ public class ModifyAppointmentController implements Initializable {
 
             LocalTime localEndTime = AppointmentSingleton.getInstance().getAppointment().getEnd().toLocalTime();
             end_combo.setValue(localEndTime);
-
         }
 
 
@@ -130,8 +127,23 @@ public class ModifyAppointmentController implements Initializable {
         onClear(actionEvent);
         new Test("clearbuttonOnAction() called");
     }
-
+    //AppointmentID, CustomerID, ContactID, UserID, StartDate, EndDate, Title, Description, Location, Type, StartTime, EndTime
     public void saveButtonOnAction(ActionEvent actionEvent) {
+        if(AppointmentSingleton.getInstance().getAppointment() == null){
+           DBAppointment.insertAppointment(
+//                   AppointmentID is null
+                   title_textfield.getText(), // not null
+                   description_textfield.getText(),
+                   location_combo.getValue().toString(), // not null
+                   type_combo.getValue().toString(),
+                   ((Customer) customer_combo.getValue()),
+                   ((User)user_combo.getValue()),
+                   ((Contact) contact_combo.getValue()).getContactName(),
+                   ((Contact) contact_combo.getValue()).getContactEmail()
+           );
+        } else {
+            DBAppointment.updateAppointment();// add logic to update
+        }
         new Test("saveButtonOnAction() called");
     }
 }
