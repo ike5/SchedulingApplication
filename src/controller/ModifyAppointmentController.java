@@ -63,8 +63,6 @@ public class ModifyAppointmentController implements Initializable {
         end_combo.setItems(PossibleTimes.localTimeList());
 
 
-
-
         // If coming to view from Updating appointments, populate fields and combo
         if (AppointmentSingleton.getInstance().getAppointment() != null) {
             customer_combo.setValue(AppointmentSingleton.getInstance().getAppointment().getCustomer());
@@ -127,20 +125,21 @@ public class ModifyAppointmentController implements Initializable {
         onClear(actionEvent);
         new Test("clearbuttonOnAction() called");
     }
+
     //AppointmentID, CustomerID, ContactID, UserID, StartDate, EndDate, Title, Description, Location, Type, StartTime, EndTime
     public void saveButtonOnAction(ActionEvent actionEvent) {
-        if(AppointmentSingleton.getInstance().getAppointment() == null){
-           DBAppointment.insertAppointment(
-//                   AppointmentID is null
-                   title_textfield.getText(), // not null
-                   description_textfield.getText(),
-                   location_combo.getValue().toString(), // not null
-                   type_combo.getValue().toString(),
-                   ((Customer) customer_combo.getValue()),
-                   ((User)user_combo.getValue()),
-                   ((Contact) contact_combo.getValue()).getContactName(),
-                   ((Contact) contact_combo.getValue()).getContactEmail()
-           );
+        if (AppointmentSingleton.getInstance().getAppointment() == null) {
+            DBAppointment.insertAppointment(
+                    title_textfield.getText(),
+                    description_textfield.getText(),
+                    ((Location) location_combo.getValue()),
+                    ((Type) type_combo.getValue()),
+                    (LocalDateTime) start_combo.getValue(),
+                    ((LocalDateTime) end_combo.getValue()),
+                    ((Customer) customer_combo.getValue()),
+                    ((User) user_combo.getValue()),
+                    ((Contact) contact_combo.getValue())
+            );
         } else {
             DBAppointment.updateAppointment();// add logic to update
         }

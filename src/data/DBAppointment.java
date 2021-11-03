@@ -4,10 +4,7 @@ import com.mysql.cj.xdevapi.DbDoc;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import main.Main;
-import model.Appointment;
-import model.Contact;
-import model.Customer;
-import model.User;
+import model.*;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -114,93 +111,85 @@ public class DBAppointment {
         return appointment;
     }
 
-    /**
-     * The CREATE method. Inserts a new appointment into the appointments database table and returns an Appointment object.
-     *
-     * @param appointmentTitle
-     * @param appointmentDescription
-     * @param appointmentLocation
-     * @param appointmentType
-     * @param customerObj_customerId
-     * @param userObj_userId
-     * @param contactName
-     * @param contactEmail
-     * @return Appointment object
-     */
-    public static Appointment insertAppointment(String appointmentTitle, String appointmentDescription, String appointmentLocation, String appointmentType, Customer customerObj_customerId, User userObj_userId, String contactName, String contactEmail) {
+
+    public static void insertAppointment(String appointmentTitle, String appointmentDescription, Location locationEnum, Type typeEnum, LocalDateTime start, LocalDateTime end, Customer customer, User user, Contact contact) {
         try {
-            // Insert into the contacts database table (works)
-            String sql_contact = "INSERT INTO client_schedule.contacts VALUES (NULL, ?, ?)";
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql_contact, Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, contactName);
-            ps.setString(2, contactEmail);
-            ps.execute();
-            // The following ResultSet has only one column: key (works)
-            ResultSet resultSet = ps.getGeneratedKeys();    // Cannot use this result set for anything else
-            resultSet.next();
-            int contactIdKey = resultSet.getInt(1);
-
-            // Create the Contact object (You need a new query) (workds)
-            String sql_getContact = "SELECT * FROM contacts WHERE Contact_ID = ?";
-            PreparedStatement preparedStatementContact = JDBC.getConnection().prepareStatement(sql_getContact, Statement.NO_GENERATED_KEYS);
-            preparedStatementContact.setInt(1, contactIdKey);
-            ResultSet resultSetGetContact = preparedStatementContact.executeQuery();
-
-            Contact contactObject = null;
-            // Create a Contact object
-            while (resultSetGetContact.next()) {
-                contactObject = new Contact(
-                        resultSetGetContact.getInt(1),
-                        resultSetGetContact.getString(2),
-                        resultSetGetContact.getString(3)
-                );
-            }
+//            // Insert into the contacts database table (works)
+//            String sql_contact = "INSERT INTO client_schedule.contacts VALUES (NULL, ?, ?)";
+//            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql_contact, Statement.RETURN_GENERATED_KEYS);
+//            ps.setString(1, contact.getContactName());
+//            ps.setString(2, contact.getContactEmail());
+//            ps.execute();
+//            // The following ResultSet has only one column: key (works)
+//            ResultSet resultSet = ps.getGeneratedKeys();    // Cannot use this result set for anything else
+//            resultSet.next();
+//            int contactIdKey = resultSet.getInt(1);
+//
+//            // Create the Contact object (You need a new query) (works)
+//            String sql_getContact = "SELECT * FROM contacts WHERE Contact_ID = ?";
+//            PreparedStatement preparedStatementContact = JDBC.getConnection().prepareStatement(sql_getContact, Statement.NO_GENERATED_KEYS);
+//            preparedStatementContact.setInt(1, contactIdKey);
+//            ResultSet resultSetGetContact = preparedStatementContact.executeQuery();
+//
+//            Contact contactObject = null;
+//            // Create a Contact object
+//            while (resultSetGetContact.next()) {
+//                contactObject = new Contact(
+//                        resultSetGetContact.getInt(1),
+//                        resultSetGetContact.getString(2),
+//                        resultSetGetContact.getString(3)
+//                );
+//            }
 
             // Insert new appointment into appointments database table
-            String sql_appointment = "INSERT INTO client_schedule.appointments VALUES(NULL, ?, ?, ?, ?, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, NULL, ?, ?, ?)";
+            String sql_appointment = "INSERT INTO client_schedule.appointments VALUES(NULL, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, ?, CURRENT_TIMESTAMP, ?, ?, ?, ?)";
             PreparedStatement preparedStatement = JDBC.getConnection().prepareStatement(sql_appointment, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, appointmentTitle);
             preparedStatement.setString(2, appointmentDescription);
-            preparedStatement.setString(3, appointmentLocation);
-            preparedStatement.setString(4, appointmentType);
-            preparedStatement.setInt(5, customerObj_customerId.getId());
-            preparedStatement.setInt(6, Main.user.getUserId());
-            preparedStatement.setInt(7, contactIdKey);
+            preparedStatement.setString(3, locationEnum.name());
+            preparedStatement.setString(4, typeEnum.name());
+            preparedStatement.setTimestamp(5, Timestamp.valueOf(start));
+            preparedStatement.setTimestamp(6, Timestamp.valueOf(end));
+            preparedStatement.setString(7, Main.user.getUsername());
+            preparedStatement.setString(8, Main.user.getUsername());
+            preparedStatement.setInt(9, customer.getId());
+            preparedStatement.setInt(10, user.getUserId());
+            preparedStatement.setInt(11, contact.getContactId());
+
             preparedStatement.execute();
 
-            // Get key for generated appointment
-            ResultSet resultSetAppointment = preparedStatement.getGeneratedKeys();
-            resultSetAppointment.next();
-            int appointmentKey = resultSetAppointment.getInt(1);
-
-            // Retrieve appointment row from database
-            String sql_get_appointment = "SELECT Appointment_ID, Title, Description, Location, Type, Customer_ID, User_ID, Contact_ID FROM appointments WHERE Appointment_ID = ?";
-            PreparedStatement preparedStatementGetAppointment = JDBC.getConnection().prepareStatement(sql_get_appointment, Statement.NO_GENERATED_KEYS);
-            preparedStatementGetAppointment.setInt(1, appointmentKey);
-            ResultSet resultSetGetAppointment = preparedStatementGetAppointment.executeQuery();
-            Appointment appointment = null;
-
-            // Create an Appointment object
-            while (resultSetGetAppointment.next()) {
-                System.out.println(resultSetGetAppointment.getInt(1) +
-                        "\t" + resultSetGetAppointment.getString(2));
-                appointment = new Appointment(
-                        resultSetGetAppointment.getInt(1),
-                        resultSetGetAppointment.getString(2),
-                        resultSetGetAppointment.getString(3),
-                        resultSetGetAppointment.getString(4),
-                        resultSetGetAppointment.getString(5),
-                        customerObj_customerId,
-                        userObj_userId,
-                        contactObject);
-            }
-
-            return appointment;
+//            // Get key for generated appointment
+//            ResultSet resultSetAppointment = preparedStatement.getGeneratedKeys();
+//            resultSetAppointment.next();
+//            int appointmentKey = resultSetAppointment.getInt(1);
+//
+//            // Retrieve appointment row from database
+//            String sql_get_appointment = "SELECT Appointment_ID, Title, Description, Location, Type, Customer_ID, User_ID, Contact_ID FROM appointments WHERE Appointment_ID = ?";
+//            PreparedStatement preparedStatementGetAppointment = JDBC.getConnection().prepareStatement(sql_get_appointment, Statement.NO_GENERATED_KEYS);
+//            preparedStatementGetAppointment.setInt(1, appointmentKey);
+//            ResultSet resultSetGetAppointment = preparedStatementGetAppointment.executeQuery();
+//            Appointment appointment = null;
+//
+//            // Create an Appointment object
+//            while (resultSetGetAppointment.next()) {
+//                System.out.println(resultSetGetAppointment.getInt(1) +
+//                        "\t" + resultSetGetAppointment.getString(2));
+//                appointment = new Appointment(
+//                        resultSetGetAppointment.getInt(1),
+//                        resultSetGetAppointment.getString(2),
+//                        resultSetGetAppointment.getString(3),
+//                        resultSetGetAppointment.getString(4),
+//                        resultSetGetAppointment.getString(5),
+//                        customerObj_customerId,
+//                        userObj_userId,
+//                        contactObject);
+//            }
+//
+//            return appointment;
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
     }
 
     public static ObservableList<Appointment> getAllAppointmentsInMonth() {
@@ -254,8 +243,6 @@ public class DBAppointment {
                 LocalDateTime ldt_end = ts_end.toLocalDateTime();
 
 
-
-
                 Appointment appointment = new Appointment(
                         resultSet.getInt("Appointment_ID"),
                         resultSet.getString("Title"),
@@ -286,7 +273,7 @@ public class DBAppointment {
         String type = "default type";
         String created_by = user;
         String last_updated_by = user;
-        Timestamp timestampStart= Timestamp.valueOf(LocalDateTime.of(2021, 10, 20, 2, 2));
+        Timestamp timestampStart = Timestamp.valueOf(LocalDateTime.of(2021, 10, 20, 2, 2));
         Timestamp timestampEnd = Timestamp.valueOf(LocalDateTime.of(2021, 10, 22, 2, 2));
 
         int user_id = Main.user.getUserId(); // test
@@ -315,10 +302,23 @@ public class DBAppointment {
         }
     }
 
-    public static void updateAppointment(){
-        String sql = "";
-        try{
+    public static Appointment updateAppointment(int appointmentId, String appointmentTitle, String appointmentDescription, Location locationEnum, Type typeEnum, LocalDateTime start, LocalDateTime end, Customer customer, User user, Contact contact) {
+        String sql = "UPDATE appointments Set Title = ?, Description = ?, Location = ?, Type = ?, Start = ?, End = ?, Last_Update = CURRENT_TIMESTAMP, Last_Updated_By = ?, Customer_ID = ?, User_ID = ?, Contact_ID = ? WHERE Appointment_ID = ?";
+        try {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ps.setString(1, appointmentTitle);
+            ps.setString(2, appointmentDescription);
+            ps.setString(3, locationEnum.name());
+            ps.setString(4, typeEnum.name());
+            ps.setTimestamp(5, Timestamp.valueOf(start));
+            ps.setTimestamp(6, Timestamp.valueOf(end));
+            ps.setString(7, Main.user.getUsername());
+            ps.setInt(8, customer.getId());
+            ps.setInt(9, user.getUserId());
+            ps.setInt(10, contact.getContactId());
+            ps.setInt(11, appointmentId);
+
+            ps.executeUpdate();
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
