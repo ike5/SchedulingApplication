@@ -302,6 +302,7 @@ public class DBAppointment {
         }
     }
 
+    // Works
     public static Appointment updateAppointment(int appointmentId, String appointmentTitle, String appointmentDescription, Location locationEnum, Type typeEnum, LocalDateTime start, LocalDateTime end, Customer customer, User user, Contact contact) {
         String sql = "UPDATE appointments Set Title = ?, Description = ?, Location = ?, Type = ?, Start = ?, End = ?, Last_Update = CURRENT_TIMESTAMP, Last_Updated_By = ?, Customer_ID = ?, User_ID = ?, Contact_ID = ? WHERE Appointment_ID = ?";
         try {
@@ -323,6 +324,7 @@ public class DBAppointment {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+        return null; //FIXME - return an Appointment object
     }
 }
 

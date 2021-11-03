@@ -23,8 +23,8 @@ public class Main extends Application {
     public void start(Stage stage) throws Exception {
         resourceBundle = ResourceBundle.getBundle("RBundle", Locale.getDefault()); // initialize ResourceBundle for application
 
-//        Parent root = FXMLLoader.load(getClass().getResource("/view/LoginScreen.fxml")); // slash represents the src folder
-        Parent root = FXMLLoader.load(getClass().getResource("/view/ModifyAppointment.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/view/LoginScreen.fxml")); // slash represents the src folder
+//        Parent root = FXMLLoader.load(getClass().getResource("/view/ModifyAppointment.fxml"));
         stage.setTitle(resourceBundle.getString("set_title"));
         stage.setScene(new Scene(root, 400, 300)); // (width, height)
         stage.show();

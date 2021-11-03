@@ -27,12 +27,14 @@ public class Appointment {
     private LocalDateTime end;
     private String startString;
     private String endString;
+
     private Location locationEnum;
+
     private Type typeEnum;
 
 
-
     // An appointment has a Contact, User, and Customer in addition to the fields that make up its body
+
     public Appointment(int appointmentId, String appointmentTitle, String appointmentDescription, String appointmentLocation, String type, Customer customer_customerId, User user_userId, Contact contact_contactId) {
         this.appointmentId = appointmentId;
         this.appointmentTitle = appointmentTitle;
@@ -43,8 +45,8 @@ public class Appointment {
         this.user = user_userId;
         this.contact = contact_contactId;
     }
-
     // Used for the retrieval from database
+
     public Appointment(int appointmentId, String appointmentTitle, String appointmentDescription, String appointmentLocation, String type, LocalDateTime start, LocalDateTime end, Customer customer_customerId, User user_userId, Contact contact_contactId) {
         this.appointmentId = appointmentId;
         this.appointmentTitle = appointmentTitle;
@@ -57,7 +59,6 @@ public class Appointment {
         this.user = user_userId;
         this.contact = contact_contactId;
     }
-
     public Appointment(int appointmentId, String appointmentTitle, String appointmentDescription, String appointmentLocation, String type, LocalDateTime start, LocalDateTime end, int customerId, int userId, int contactId) {
         this.appointmentId = appointmentId;
         this.appointmentTitle = appointmentTitle;
@@ -84,6 +85,22 @@ public class Appointment {
         this.customer = customer;
         this.user = user;
         this.contact = contact;
+    }
+
+    public Location getLocationEnum() {
+        return locationEnum;
+    }
+
+    public void setLocationEnum(Location locationEnum) {
+        this.locationEnum = locationEnum;
+    }
+
+    public Type getTypeEnum() {
+        return typeEnum;
+    }
+
+    public void setTypeEnum(Type typeEnum) {
+        this.typeEnum = typeEnum;
     }
 
     public String getStartString() {

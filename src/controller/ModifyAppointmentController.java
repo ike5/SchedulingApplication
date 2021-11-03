@@ -16,6 +16,7 @@ import test.Test;
 import java.io.IOException;
 import java.net.URL;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ResourceBundle;
@@ -74,15 +75,21 @@ public class ModifyAppointmentController implements Initializable {
             user_combo.setValue(AppointmentSingleton.getInstance().getAppointment().getUser());
             user_combo.setVisibleRowCount(5);
 
-            location_combo.setValue(AppointmentSingleton.getInstance().getAppointment().getAppointmentLocation());
+            location_combo.setValue(AppointmentSingleton.getInstance().getAppointment().getLocationEnum());
             location_combo.setVisibleRowCount(5);
 
-            type_combo.setValue(AppointmentSingleton.getInstance().getAppointment().getType());
+            type_combo.setValue(AppointmentSingleton.getInstance().getAppointment().getTypeEnum());
             type_combo.setVisibleRowCount(5);
 
             appointment_id_textfield.setText(Integer.toString(AppointmentSingleton.getInstance().getAppointment().getAppointmentId()));
             title_textfield.setText(AppointmentSingleton.getInstance().getAppointment().getAppointmentTitle());
             description_textfield.setText(AppointmentSingleton.getInstance().getAppointment().getAppointmentDescription());
+
+            LocalDate localStartDate = AppointmentSingleton.getInstance().getAppointment().getStart().toLocalDate();
+            start_date_picker.setValue(localStartDate);
+
+            LocalDate localEndDate = AppointmentSingleton.getInstance().getAppointment().getEnd().toLocalDate();
+            end_date_picker.setValue(localEndDate);
 
             LocalTime localStartTime = AppointmentSingleton.getInstance().getAppointment().getStart().toLocalTime();
             start_combo.setValue(localStartTime);
@@ -91,10 +98,6 @@ public class ModifyAppointmentController implements Initializable {
             end_combo.setValue(localEndTime);
         }
 
-
-        //TODO
-        // include modification.
-        // - set listeners to the comboboxes
 
     }
 
@@ -134,14 +137,25 @@ public class ModifyAppointmentController implements Initializable {
                     description_textfield.getText(),
                     ((Location) location_combo.getValue()),
                     ((Type) type_combo.getValue()),
-                    (LocalDateTime) start_combo.getValue(),
-                    ((LocalDateTime) end_combo.getValue()),
+                    LocalDateTime.of(start_date_picker.getValue(), (LocalTime) start_combo.getSelectionModel().getSelectedItem()),
+                    LocalDateTime.of(end_date_picker.getValue(), (LocalTime) end_combo.getSelectionModel().getSelectedItem()),
                     ((Customer) customer_combo.getValue()),
                     ((User) user_combo.getValue()),
                     ((Contact) contact_combo.getValue())
             );
         } else {
-            DBAppointment.updateAppointment();// add logic to update
+            DBAppointment.updateAppointment(
+                    AppointmentSingleton.getInstance().getAppointment().getAppointmentId(),
+                    title_textfield.getText(),
+                    description_textfield.getText(),
+                    ((Location) location_combo.getValue()),
+                    ((Type) type_combo.getValue()),
+                    LocalDateTime.of(start_date_picker.getValue(), (LocalTime) start_combo.getSelectionModel().getSelectedItem()),
+                    LocalDateTime.of(end_date_picker.getValue(), (LocalTime) end_combo.getSelectionModel().getSelectedItem()),
+                    ((Customer) customer_combo.getValue()),
+                    ((User) user_combo.getValue()),
+                    ((Contact) contact_combo.getValue())
+            );
         }
         new Test("saveButtonOnAction() called");
     }
