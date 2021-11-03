@@ -262,6 +262,7 @@ CREATE DATABASE client_schedule;
             }
 ```
 
-```java
+## LocalDateTime
 
-```
+note that `LocalTime` by default displays HH:mm military time
+`LocalDate` dmy depending on region

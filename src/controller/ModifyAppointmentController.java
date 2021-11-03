@@ -13,19 +13,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import javafx.util.converter.DateTimeStringConverter;
 import model.*;
 import test.Test;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
-import java.text.DateFormat;
-import java.time.LocalDateTime;
+
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.Formatter;
 import java.util.ResourceBundle;
 
 public class ModifyAppointmentController implements Initializable {
@@ -45,13 +39,9 @@ public class ModifyAppointmentController implements Initializable {
     public Button cancel_button;
     public Button clear_button;
     public Button save_button;
-    public Spinner start_time_spinner;
-    public Spinner end_time_spinner;
     public TextField appointment_id_textfield;
-    public Spinner start_hour_spinner;
-    public Spinner start_minute_spinner;
-    public Spinner end_hour_spinner;
-    public Spinner end_minute_spinner;
+    public ComboBox start_combo;
+    public ComboBox end_combo;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -70,16 +60,11 @@ public class ModifyAppointmentController implements Initializable {
         ObservableList<Type> typeObservableList = FXCollections.observableArrayList(Type.values());
         type_combo.setItems(typeObservableList);
 
-//        start_time_spinner.setValueFactory(new SpinnerValueFactory.ListSpinnerValueFactory(PossibleTimes.localTimeList()));
-//        end_time_spinner.setValueFactory(new SpinnerValueFactory.ListSpinnerValueFactory(PossibleTimes.localTimeList()));
+
+        start_combo.setItems(PossibleTimes.localTimeList());
+        end_combo.setItems(PossibleTimes.localTimeList());
 
 
-        start_hour_spinner.setValueFactory(
-                new SpinnerValueFactory.ListSpinnerValueFactory<LocalTime>(PossibleTimes.localTimeList())
-        );
-        start_minute_spinner.setValueFactory(
-                new SpinnerValueFactory.IntegerSpinnerValueFactory()
-        );
 
 
         if (AppointmentSingleton.getInstance().getAppointment() != null) {
@@ -101,10 +86,6 @@ public class ModifyAppointmentController implements Initializable {
             appointment_id_textfield.setText(Integer.toString(AppointmentSingleton.getInstance().getAppointment().getAppointmentId()));
             title_textfield.setText(AppointmentSingleton.getInstance().getAppointment().getAppointmentTitle());
             description_textfield.setText(AppointmentSingleton.getInstance().getAppointment().getAppointmentDescription());
-
-            start_date_picker.setValue(AppointmentSingleton.getInstance().getAppointment().getStart().toLocalDate());
-            end_date_picker.setValue(AppointmentSingleton.getInstance().getAppointment().getEnd().toLocalDate());
-
 
         }
 
