@@ -19,6 +19,7 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class ModifyAppointmentController implements Initializable {
@@ -130,32 +131,54 @@ public class ModifyAppointmentController implements Initializable {
     }
 
     //AppointmentID, CustomerID, ContactID, UserID, StartDate, EndDate, Title, Description, Location, Type, StartTime, EndTime
-    public void saveButtonOnAction(ActionEvent actionEvent) {
+    public void saveButtonOnAction(ActionEvent actionEvent) throws IOException {
         if (AppointmentSingleton.getInstance().getAppointment() == null) {
-            DBAppointment.insertAppointment(
-                    title_textfield.getText(),
-                    description_textfield.getText(),
-                    ((Location) location_combo.getValue()),
-                    ((Type) type_combo.getValue()),
-                    LocalDateTime.of(start_date_picker.getValue(), (LocalTime) start_combo.getSelectionModel().getSelectedItem()),
-                    LocalDateTime.of(end_date_picker.getValue(), (LocalTime) end_combo.getSelectionModel().getSelectedItem()),
-                    ((Customer) customer_combo.getValue()),
-                    ((User) user_combo.getValue()),
-                    ((Contact) contact_combo.getValue())
-            );
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Create new appointment?");
+            alert.setTitle("Create new appointment?");
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                DBAppointment.insertAppointment(
+                        title_textfield.getText(),
+                        description_textfield.getText(),
+                        ((Location) location_combo.getValue()),
+                        ((Type) type_combo.getValue()),
+                        LocalDateTime.of(start_date_picker.getValue(), (LocalTime) start_combo.getSelectionModel().getSelectedItem()),
+                        LocalDateTime.of(end_date_picker.getValue(), (LocalTime) end_combo.getSelectionModel().getSelectedItem()),
+                        ((Customer) customer_combo.getValue()),
+                        ((User) user_combo.getValue()),
+                        ((Contact) contact_combo.getValue())
+                );
+
+                Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
+                Parent scene = FXMLLoader.load(getClass().getResource("/view/Appointments.fxml"));
+                stage.setTitle(null);
+                stage.setScene(new Scene(scene));
+                stage.show();
+            }
         } else {
-            DBAppointment.updateAppointment(
-                    AppointmentSingleton.getInstance().getAppointment().getAppointmentId(),
-                    title_textfield.getText(),
-                    description_textfield.getText(),
-                    ((Location) location_combo.getValue()),
-                    ((Type) type_combo.getValue()),
-                    LocalDateTime.of(start_date_picker.getValue(), (LocalTime) start_combo.getSelectionModel().getSelectedItem()),
-                    LocalDateTime.of(end_date_picker.getValue(), (LocalTime) end_combo.getSelectionModel().getSelectedItem()),
-                    ((Customer) customer_combo.getValue()),
-                    ((User) user_combo.getValue()),
-                    ((Contact) contact_combo.getValue())
-            );
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Save changes?");
+            alert.setTitle("Save changes?");
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                DBAppointment.updateAppointment(
+                        AppointmentSingleton.getInstance().getAppointment().getAppointmentId(),
+                        title_textfield.getText(),
+                        description_textfield.getText(),
+                        ((Location) location_combo.getValue()),
+                        ((Type) type_combo.getValue()),
+                        LocalDateTime.of(start_date_picker.getValue(), (LocalTime) start_combo.getSelectionModel().getSelectedItem()),
+                        LocalDateTime.of(end_date_picker.getValue(), (LocalTime) end_combo.getSelectionModel().getSelectedItem()),
+                        ((Customer) customer_combo.getValue()),
+                        ((User) user_combo.getValue()),
+                        ((Contact) contact_combo.getValue())
+                );
+
+                Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
+                Parent scene = FXMLLoader.load(getClass().getResource("/view/Appointments.fxml"));
+                stage.setTitle(null);
+                stage.setScene(new Scene(scene));
+                stage.show();
+            }
         }
         new Test("saveButtonOnAction() called");
     }
