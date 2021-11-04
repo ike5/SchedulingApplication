@@ -1,8 +1,6 @@
 package controller;
 
 import data.*;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -128,7 +126,7 @@ public class ModifyAppointmentController implements Initializable {
     public void saveButtonOnAction(ActionEvent actionEvent) throws IOException {
         if (AppointmentSingleton.getInstance().getAppointment() == null) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Create new appointment?");
-            alert.setTitle("Create new appointment?");
+            alert.setTitle("New Appointment");
             Optional<ButtonType> result = alert.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.OK) {
                 DBAppointment.insertAppointment(
@@ -151,7 +149,7 @@ public class ModifyAppointmentController implements Initializable {
             }
         } else {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Save changes?");
-            alert.setTitle("Save changes?");
+            alert.setTitle("Update Appointment");
             Optional<ButtonType> result = alert.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.OK) {
                 DBAppointment.updateAppointment(
