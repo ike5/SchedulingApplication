@@ -326,6 +326,25 @@ public class DBAppointment {
         }
         return null; //FIXME - return an Appointment object
     }
+
+    /**
+     *
+     * @param appointmentId
+     * @return Returns true if delete is successful.
+     */
+    public static boolean deleteAppointment(int appointmentId) {
+        boolean flag = false;
+        String sql = "DELETE FROM appointments WHERE Appointment_ID = ?";
+        try {
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ps.setInt(1, appointmentId);
+            ps.executeUpdate();
+            flag = true;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return flag;
+    }
 }
 
 

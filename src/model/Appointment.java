@@ -19,6 +19,7 @@ public class Appointment {
     private Customer customer;
     private User user;
     private Contact contact;
+    private String contactName;
     private int customerId;
     private int userId;
     private int contactId;
@@ -75,6 +76,15 @@ public class Appointment {
         this.customerId = customer.getId();
         this.userId = user.getUserId();
         this.contactId = contact.getContactId();
+        this.contactName = contact.getContactName();
+    }
+
+    public String getContactName() {
+        return contactName;
+    }
+
+    public void setContactName(String contactName) {
+        this.contactName = contactName;
     }
 
 

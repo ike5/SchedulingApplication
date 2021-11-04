@@ -16,7 +16,7 @@ public final class TypeSingleton {
         return INSTANCE;
     }
 
-    public void setTypeObservableList() {
+    private void setTypeObservableList() {
         typeObservableList = FXCollections.observableArrayList(
                 "Debrief",
                 "Urgent",

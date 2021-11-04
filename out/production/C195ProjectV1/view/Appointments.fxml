@@ -45,8 +45,9 @@
                         <RadioButton fx:id="week_view_radio_button" mnemonicParsing="false" onAction="#weekViewRadioButtonOnAction" text="Week View" toggleGroup="$appointmentToggleGroup" />
                      </children>
                   </VBox>
-                  <Button mnemonicParsing="false" onAction="#newAppointmentButtonOnAction" text="New Appointment" />
-                  <Button mnemonicParsing="false" onAction="#updateAppointmentButtonOnAction" text="Update Appointment" />
+                  <Button fx:id="new_button" mnemonicParsing="false" onAction="#newAppointmentButtonOnAction" text="New Appointment" />
+                  <Button fx:id="update_button" mnemonicParsing="false" onAction="#updateAppointmentButtonOnAction" text="Update Appointment" />
+                  <Button fx:id="delete_button" mnemonicParsing="false" onAction="#deleteAppointmentButtonOnAction" text="Delete Appointment" />
                         <Button mnemonicParsing="false" onAction="#backButtonOnAction" text="Back" />
                     </children>
                     <opaqueInsets>

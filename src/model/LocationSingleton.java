@@ -14,7 +14,7 @@ public final class LocationSingleton {
 
     public static LocationSingleton getInstance(){ return INSTANCE; }
 
-    public void setLocationObservableList(){
+    private void setLocationObservableList(){
         locationObservableList = FXCollections.observableArrayList(
                 "Main Office",
                 "Online",

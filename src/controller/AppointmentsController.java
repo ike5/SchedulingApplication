@@ -15,6 +15,7 @@ import model.AppointmentSingleton;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class AppointmentsController implements Initializable {
@@ -36,6 +37,8 @@ public class AppointmentsController implements Initializable {
     public RadioButton all_appointments_radio_button;
     public ObservableList<Appointment> appointmentObservableList;
     public ToggleGroup appointmentToggleGroup;
+    public Button delete_button;
+    public Button update_button;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -46,19 +49,26 @@ public class AppointmentsController implements Initializable {
         title_tablecolumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("AppointmentTitle"));
         description_tablecolumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("AppointmentDescription"));
         location_tablecolumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("AppointmentLocation"));
+        contact_tablecolumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("ContactName"));
         type_tablecolumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("AppointmentType"));
         start_date_time_tablecolumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("StartString"));
         end_date_time_tablecolumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("EndString"));
         customer_id_tablecolumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("CustomerId"));
         user_id_tablecolumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("UserId"));
-        contact_tablecolumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("ContactId"));
 
 
         table_view_id.getSelectionModel().selectedItemProperty().addListener((observable, oldSelection, newSelection) -> {
             if (newSelection != null) {
+                // Enable buttons if row selected
+                delete_button.setDisable(false);
+                update_button.setDisable(false);
                 AppointmentSingleton.getInstance().setAppointment((Appointment) newSelection);
             }
         });
+
+        // Disable buttons if no row selected
+        delete_button.setDisable(table_view_id.getSelectionModel().isEmpty());
+        update_button.setDisable(table_view_id.getSelectionModel().isEmpty());
     }
 
     public void backButtonOnAction(ActionEvent actionEvent) throws IOException {
@@ -107,5 +117,18 @@ public class AppointmentsController implements Initializable {
             alert.setTitle("Nothing selected");
             alert.showAndWait();
         }
+    }
+
+    public void deleteAppointmentButtonOnAction(ActionEvent actionEvent) {
+        AppointmentSingleton.getInstance().setAppointment((Appointment) table_view_id.getSelectionModel().getSelectedItem());
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure?");
+        alert.setTitle("Delete appointment?");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            DBAppointment.deleteAppointment(AppointmentSingleton.getInstance().getAppointment().getAppointmentId());
+        }
+        delete_button.setDisable(true);
+        table_view_id.setItems(DBAppointment.getAllAppointments());
     }
 }
