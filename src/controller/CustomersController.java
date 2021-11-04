@@ -283,7 +283,7 @@ public class CustomersController implements Initializable {
         //TODO Alert user if any changes were made to Fields
         Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
         Parent scene = FXMLLoader.load(getClass().getResource("/view/Appointments.fxml"));
-        stage.setTitle("Hello ");
+        stage.setTitle("Appointments");
         stage.setScene(new Scene(scene));
         stage.show();
     }
@@ -321,6 +321,15 @@ public class CustomersController implements Initializable {
         address_id.setText(customer.getAddress());
         postal_code_id.setText(customer.getPostalCode());
         phone_number_id.setText(customer.getPhone());
+    }
+
+    public void reportsButtonOnAction(ActionEvent actionEvent) throws IOException {
+        //TODO Alert user if any changes were made to Fields
+        Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
+        Parent scene = FXMLLoader.load(getClass().getResource("/view/Reports.fxml"));
+        stage.setTitle("Reports");
+        stage.setScene(new Scene(scene));
+        stage.show();
     }
 }
 
