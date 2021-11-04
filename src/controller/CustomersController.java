@@ -127,7 +127,6 @@ public class CustomersController implements Initializable {
         postal_code_id.clear();
         phone_number_id.clear();
         resetComboBoxes();
-        new Test("clearFormButtonOnAction() called");
     }
 
     //FIXME - When resetting the combo boxes, this invalidates the logic used to set the country and division in the below methods.
@@ -152,7 +151,6 @@ public class CustomersController implements Initializable {
         } else {
             isValuesChanged = false;
         }
-        new Test("isValuesChanged() called");
         return isValuesChanged;
     }
 
@@ -197,7 +195,6 @@ public class CustomersController implements Initializable {
                 }
             }
         }
-        new Test("saveButtonOnAction() called");
     }
 
     public void repopulateTaleView() {
@@ -219,8 +216,6 @@ public class CustomersController implements Initializable {
             alert.setTitle("Select an item to delete!");
             alert.showAndWait();
         }
-
-        new Test("deleteCustomerButtonOnAction() called");
     }
 
     public void logoutButtonOnAction(ActionEvent actionEvent) throws IOException {
@@ -237,7 +232,6 @@ public class CustomersController implements Initializable {
             stage.setScene(new Scene(scene));
             stage.show();
         }
-        new Test("logoutButtonOnAction() called");
     }
 
     private boolean isValidTextField(TextField textField) {
@@ -256,7 +250,6 @@ public class CustomersController implements Initializable {
         } else {
             customer_name_id.setStyle("-fx-background-color: pink");
         }
-        new Test("customerNameOnKeyTyped() called");
     }
 
     public void addressOnKeyTyped(KeyEvent keyEvent) {
@@ -266,7 +259,6 @@ public class CustomersController implements Initializable {
         } else {
             address_id.setStyle("-fx-background-color: pink");
         }
-        new Test("addressOnKeyTyped() called");
     }
 
     public void postalCodeOnKeyTyped(KeyEvent keyEvent) {
@@ -276,7 +268,6 @@ public class CustomersController implements Initializable {
         } else {
             postal_code_id.setStyle("-fx-background-color: pink");
         }
-        new Test("postalCodeOnKeyTyped() called");
     }
 
     public void phoneNumberOnKeyTyped(KeyEvent keyEvent) {
@@ -286,7 +277,6 @@ public class CustomersController implements Initializable {
         } else {
             phone_number_id.setStyle("-fx-background-color: pink");
         }
-        new Test("phoneNUmberOnKeyTyped() called");
     }
 
     public void viewAppointmentsButtonOnAction(ActionEvent actionEvent) throws IOException {

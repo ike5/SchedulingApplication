@@ -11,7 +11,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import model.*;
-import test.Test;
 
 import java.io.IOException;
 import java.net.URL;
@@ -113,7 +112,6 @@ public class ModifyAppointmentController implements Initializable {
         appointment_id_textfield.clear();
         title_textfield.clear();
         description_textfield.clear();
-        new Test("onClear() called");
     }
 
     public void cancelButtonOnAction(ActionEvent actionEvent) throws IOException {
@@ -122,15 +120,12 @@ public class ModifyAppointmentController implements Initializable {
         stage.setTitle("Appointments");
         stage.setScene(new Scene(scene));
         stage.show();
-        new Test("cancelButtonOnAction() called");
     }
 
     public void clearButtonOnAction(ActionEvent actionEvent) {
         onClear(actionEvent);
-        new Test("clearbuttonOnAction() called");
     }
 
-    //AppointmentID, CustomerID, ContactID, UserID, StartDate, EndDate, Title, Description, Location, Type, StartTime, EndTime
     public void saveButtonOnAction(ActionEvent actionEvent) throws IOException {
         if (AppointmentSingleton.getInstance().getAppointment() == null) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Create new appointment?");
@@ -180,6 +175,5 @@ public class ModifyAppointmentController implements Initializable {
                 stage.show();
             }
         }
-        new Test("saveButtonOnAction() called");
     }
 }

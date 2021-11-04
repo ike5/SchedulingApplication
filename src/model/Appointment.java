@@ -237,49 +237,5 @@ public class Appointment {
                 ", contact=" + contact +
                 '}';
     }
-
-    //                ApptFactory.getAppt(ApptType.PLAN).getAppointmentTypeDescription()
 }
 
-interface Appt {
-    String getAppointmentTypeDescription();
-}
-
-class PlanningAppt implements Appt {
-    static final String DESCRIPTION = "Planning Session";
-
-    @Override
-    public String getAppointmentTypeDescription() {
-        return DESCRIPTION;
-    }
-}
-
-class DebriefingAppt implements Appt {
-    static final String DESCRIPTION = "De-Briefing";
-
-    @Override
-    public String getAppointmentTypeDescription() {
-        return DESCRIPTION;
-    }
-}
-
-enum ApptType {
-    PLAN(PlanningAppt::new),
-    DEBRIEF(DebriefingAppt::new);
-
-    private final Supplier<Appt> constructor;
-
-    ApptType(Supplier<Appt> constructor) {
-        this.constructor = constructor;
-    }
-
-    public Supplier<Appt> getConstructor() {
-        return constructor;
-    }
-}
-
-class ApptFactory {
-    public static Appt getAppt(ApptType type) {
-        return type.getConstructor().get();
-    }
-}
