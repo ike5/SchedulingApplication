@@ -86,10 +86,10 @@ public class DBAppointment {
             ResultSet resultSet = ps.executeQuery();
 
             while (resultSet.next()) {
-                Timestamp ts_start = resultSet.getTimestamp("Start");
-                Timestamp ts_end = resultSet.getTimestamp("End");
-                LocalDateTime ldt_start = ts_start.toLocalDateTime();
-                LocalDateTime ldt_end = ts_end.toLocalDateTime();
+                Timestamp timestampStart = resultSet.getTimestamp("Start");
+                Timestamp timestampEnd = resultSet.getTimestamp("End");
+                LocalDateTime localDateTimeStart = timestampStart.toLocalDateTime();
+                LocalDateTime localDateTimeEnd = timestampEnd.toLocalDateTime();
 
 
                 appointment = new Appointment(
@@ -98,8 +98,8 @@ public class DBAppointment {
                         resultSet.getString("Description"),
                         resultSet.getString("Location"),
                         resultSet.getString("Type"),
-                        ldt_start,
-                        ldt_end,
+                        localDateTimeStart,
+                        localDateTimeEnd,
                         resultSet.getInt("Customer_ID"),
                         resultSet.getInt("User_ID"),
                         resultSet.getInt("Contact_ID")

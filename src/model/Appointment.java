@@ -84,6 +84,7 @@ public class Appointment {
         this.user = user;
         this.contact = contact;
         setIds();
+        setLocationAndTypeStrings();
     }
 
     private void setIds() {
@@ -91,6 +92,16 @@ public class Appointment {
         this.userId = user.getUserId();
         this.contactId = contact.getContactId();
     }
+
+    private void setLocationAndTypeStrings(){
+        this.appointmentLocation = locationEnum.name();
+        this.type = typeEnum.name();
+    }
+
+//    private void setLocationAndTypeEnums(String location, String type){
+//        this.locationEnum = new Location(location);
+//        this.typeEnum = new Type(type);
+//    }
 
     public Location getLocationEnum() {
         return locationEnum;

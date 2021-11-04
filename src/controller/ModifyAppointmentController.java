@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import model.*;
+import test.Test;
 
 import java.io.IOException;
 import java.net.URL;
@@ -63,6 +64,7 @@ public class ModifyAppointmentController implements Initializable {
         start_combo.setItems(PossibleTimes.localTimeList());
         end_combo.setItems(PossibleTimes.localTimeList());
 
+        //FIXME - Location and Type combos don't pull info on update
 
         // If coming to view from Updating appointments, populate fields and combo
         if (AppointmentSingleton.getInstance().getAppointment() != null) {
@@ -75,10 +77,10 @@ public class ModifyAppointmentController implements Initializable {
             user_combo.setValue(AppointmentSingleton.getInstance().getAppointment().getUser());
             user_combo.setVisibleRowCount(5);
 
-            location_combo.setValue(AppointmentSingleton.getInstance().getAppointment().getLocationEnum());
+            location_combo.setValue(AppointmentSingleton.getInstance().getAppointment().getAppointmentLocation());
             location_combo.setVisibleRowCount(5);
 
-            type_combo.setValue(AppointmentSingleton.getInstance().getAppointment().getTypeEnum());
+            type_combo.setValue(AppointmentSingleton.getInstance().getAppointment().getType());
             type_combo.setVisibleRowCount(5);
 
             appointment_id_textfield.setText(Integer.toString(AppointmentSingleton.getInstance().getAppointment().getAppointmentId()));
