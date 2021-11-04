@@ -11,7 +11,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import model.*;
-import test.Test;
 
 import java.io.IOException;
 import java.net.URL;
@@ -54,11 +53,9 @@ public class ModifyAppointmentController implements Initializable {
         UserSingleton.getInstance().setUserObservableList(DBUsers.getAllUsers());
         user_combo.setItems(UserSingleton.getInstance().getUserObservableList());
 
-        ObservableList<Location> locationObservableList = FXCollections.observableArrayList(Location.values());
-        location_combo.setItems(locationObservableList);
+        location_combo.setItems(LocationSingleton.getInstance().getLocationObservableList());
 
-        ObservableList<Type> typeObservableList = FXCollections.observableArrayList(Type.values());
-        type_combo.setItems(typeObservableList);
+        type_combo.setItems(TypeSingleton.getInstance().getTypeObservableList());
 
 
         start_combo.setItems(PossibleTimes.localTimeList());
@@ -80,7 +77,7 @@ public class ModifyAppointmentController implements Initializable {
             location_combo.setValue(AppointmentSingleton.getInstance().getAppointment().getAppointmentLocation());
             location_combo.setVisibleRowCount(5);
 
-            type_combo.setValue(AppointmentSingleton.getInstance().getAppointment().getType());
+            type_combo.setValue(AppointmentSingleton.getInstance().getAppointment().getAppointmentType());
             type_combo.setVisibleRowCount(5);
 
             appointment_id_textfield.setText(Integer.toString(AppointmentSingleton.getInstance().getAppointment().getAppointmentId()));
@@ -137,8 +134,8 @@ public class ModifyAppointmentController implements Initializable {
                 DBAppointment.insertAppointment(
                         title_textfield.getText(),
                         description_textfield.getText(),
-                        ((Location) location_combo.getValue()),
-                        ((Type) type_combo.getValue()),
+                        (String) location_combo.getValue(),
+                        (String) type_combo.getValue(),
                         LocalDateTime.of(start_date_picker.getValue(), (LocalTime) start_combo.getSelectionModel().getSelectedItem()),
                         LocalDateTime.of(end_date_picker.getValue(), (LocalTime) end_combo.getSelectionModel().getSelectedItem()),
                         ((Customer) customer_combo.getValue()),
@@ -161,8 +158,8 @@ public class ModifyAppointmentController implements Initializable {
                         AppointmentSingleton.getInstance().getAppointment().getAppointmentId(),
                         title_textfield.getText(),
                         description_textfield.getText(),
-                        ((Location) location_combo.getValue()),
-                        ((Type) type_combo.getValue()),
+                        (String) location_combo.getValue(),
+                        (String) type_combo.getValue(),
                         LocalDateTime.of(start_date_picker.getValue(), (LocalTime) start_combo.getSelectionModel().getSelectedItem()),
                         LocalDateTime.of(end_date_picker.getValue(), (LocalTime) end_combo.getSelectionModel().getSelectedItem()),
                         ((Customer) customer_combo.getValue()),

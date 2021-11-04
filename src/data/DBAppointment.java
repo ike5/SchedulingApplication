@@ -112,7 +112,7 @@ public class DBAppointment {
     }
 
 
-    public static void insertAppointment(String appointmentTitle, String appointmentDescription, Location locationEnum, Type typeEnum, LocalDateTime start, LocalDateTime end, Customer customer, User user, Contact contact) {
+    public static void insertAppointment(String appointmentTitle, String appointmentDescription, String appointmentLocation, String appointmentType, LocalDateTime start, LocalDateTime end, Customer customer, User user, Contact contact) {
         try {
 //            // Insert into the contacts database table (works)
 //            String sql_contact = "INSERT INTO client_schedule.contacts VALUES (NULL, ?, ?)";
@@ -146,8 +146,8 @@ public class DBAppointment {
             PreparedStatement preparedStatement = JDBC.getConnection().prepareStatement(sql_appointment, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, appointmentTitle);
             preparedStatement.setString(2, appointmentDescription);
-            preparedStatement.setString(3, locationEnum.name());
-            preparedStatement.setString(4, typeEnum.name());
+            preparedStatement.setString(3, appointmentLocation);
+            preparedStatement.setString(4, appointmentType);
             preparedStatement.setTimestamp(5, Timestamp.valueOf(start));
             preparedStatement.setTimestamp(6, Timestamp.valueOf(end));
             preparedStatement.setString(7, Main.user.getUsername());
@@ -303,14 +303,14 @@ public class DBAppointment {
     }
 
     // Works
-    public static Appointment updateAppointment(int appointmentId, String appointmentTitle, String appointmentDescription, Location locationEnum, Type typeEnum, LocalDateTime start, LocalDateTime end, Customer customer, User user, Contact contact) {
+    public static Appointment updateAppointment(int appointmentId, String appointmentTitle, String appointmentDescription, String appointmentLocation, String appointmentType, LocalDateTime start, LocalDateTime end, Customer customer, User user, Contact contact) {
         String sql = "UPDATE appointments Set Title = ?, Description = ?, Location = ?, Type = ?, Start = ?, End = ?, Last_Update = CURRENT_TIMESTAMP, Last_Updated_By = ?, Customer_ID = ?, User_ID = ?, Contact_ID = ? WHERE Appointment_ID = ?";
         try {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ps.setString(1, appointmentTitle);
             ps.setString(2, appointmentDescription);
-            ps.setString(3, locationEnum.name());
-            ps.setString(4, typeEnum.name());
+            ps.setString(3, appointmentLocation);
+            ps.setString(4, appointmentType);
             ps.setTimestamp(5, Timestamp.valueOf(start));
             ps.setTimestamp(6, Timestamp.valueOf(end));
             ps.setString(7, Main.user.getUsername());

@@ -216,7 +216,6 @@ public class DBCustomers {
                         )
                 );
             }
-            new Test("getCustomer() called");
             return customer;
         } catch (SQLException e) {
             e.printStackTrace();
