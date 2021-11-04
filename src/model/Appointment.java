@@ -5,7 +5,6 @@ import data.DBCustomers;
 import data.DBUsers;
 
 import java.time.LocalDateTime;
-import java.util.function.Supplier;
 
 /**
  * Rules: An appointment cannot be made without a customer, user, and contact
@@ -27,13 +26,8 @@ public class Appointment {
     private LocalDateTime end;
     private String startString;
     private String endString;
-
     private Location locationEnum;
-
     private Type typeEnum;
-
-
-    // An appointment has a Contact, User, and Customer in addition to the fields that make up its body
 
     public Appointment(int appointmentId, String appointmentTitle, String appointmentDescription, String appointmentLocation, String type, Customer customer_customerId, User user_userId, Contact contact_contactId) {
         this.appointmentId = appointmentId;
@@ -44,6 +38,7 @@ public class Appointment {
         this.customer = customer_customerId;
         this.user = user_userId;
         this.contact = contact_contactId;
+        setIds();
     }
     // Used for the retrieval from database
 
@@ -58,7 +53,9 @@ public class Appointment {
         this.customer = customer_customerId;
         this.user = user_userId;
         this.contact = contact_contactId;
+        setIds();
     }
+
     public Appointment(int appointmentId, String appointmentTitle, String appointmentDescription, String appointmentLocation, String type, LocalDateTime start, LocalDateTime end, int customerId, int userId, int contactId) {
         this.appointmentId = appointmentId;
         this.appointmentTitle = appointmentTitle;
@@ -72,6 +69,7 @@ public class Appointment {
         this.customer = DBCustomers.getCustomer(customerId);
         this.user = DBUsers.getUser(userId);
         this.contact = DBContacts.getContact(contactId);
+        setIds();
     }
 
     public Appointment(int appointmentId, String appointmentTitle, String appointmentDescription, Location locationEnum, Type typeEnum, LocalDateTime start, LocalDateTime end, Customer customer, User user, Contact contact) {
@@ -85,6 +83,13 @@ public class Appointment {
         this.customer = customer;
         this.user = user;
         this.contact = contact;
+        setIds();
+    }
+
+    private void setIds() {
+        this.customerId = customer.getId();
+        this.userId = user.getUserId();
+        this.contactId = contact.getContactId();
     }
 
     public Location getLocationEnum() {

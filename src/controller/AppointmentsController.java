@@ -1,9 +1,6 @@
 package controller;
 
 import data.DBAppointment;
-import data.DBDivisions;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -15,11 +12,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Appointment;
 import model.AppointmentSingleton;
-import test.Test;
 
 import java.io.IOException;
 import java.net.URL;
-import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
 public class AppointmentsController implements Initializable {
@@ -45,8 +40,7 @@ public class AppointmentsController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        appointmentObservableList = DBAppointment.getAllAppointments();
-        table_view_id.setItems(appointmentObservableList);
+        table_view_id.setItems(DBAppointment.getAllAppointments());
 
         appointment_id_tablecolumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("AppointmentId"));
         title_tablecolumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("AppointmentTitle"));
@@ -60,22 +54,11 @@ public class AppointmentsController implements Initializable {
         contact_tablecolumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("ContactId"));
 
 
-        // TableView listener
         table_view_id.getSelectionModel().selectedItemProperty().addListener((observable, oldSelection, newSelection) -> {
             if (newSelection != null) {
-                Appointment appointment = (Appointment) newSelection;
-                AppointmentSingleton.getInstance().setAppointment(appointment);
-                new Test("Created Appointment Singleton");
+                AppointmentSingleton.getInstance().setAppointment((Appointment) newSelection);
             }
         });
-
-        // Set listener for radio buttons
-//        toggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
-//            @Override
-//            public void changed(ObservableValue<? extends Toggle> observableValue, Toggle oldToggle, Toggle newToggle) {
-//
-//            }
-//        });
     }
 
     public void backButtonOnAction(ActionEvent actionEvent) throws IOException {
@@ -87,18 +70,15 @@ public class AppointmentsController implements Initializable {
     }
 
     public void monthViewRadioButtonOnAction(ActionEvent actionEvent) {
-        appointmentObservableList = DBAppointment.getAllAppointmentsInMonth();
-        table_view_id.setItems(appointmentObservableList);
+        table_view_id.setItems(DBAppointment.getAllAppointmentsInMonth());
     }
 
     public void weekViewRadioButtonOnAction(ActionEvent actionEvent) {
-        appointmentObservableList = DBAppointment.getAllAppointmentsInWeek();
-        table_view_id.setItems(appointmentObservableList);
+        table_view_id.setItems(DBAppointment.getAllAppointmentsInWeek());
     }
 
     public void allAppointmentsRadioButtonOnAction(ActionEvent actionEvent) {
-        appointmentObservableList = DBAppointment.getAllAppointments();
-        table_view_id.setItems(appointmentObservableList);
+        table_view_id.setItems(DBAppointment.getAllAppointments());
     }
 
 
@@ -114,7 +94,6 @@ public class AppointmentsController implements Initializable {
     }
 
     public void updateAppointmentButtonOnAction(ActionEvent actionEvent) throws IOException {
-        // Alert user if nothing is selected.
         if (table_view_id.getSelectionModel().selectedItemProperty() != null) {
             AppointmentSingleton.getInstance().setAppointment((Appointment) table_view_id.getSelectionModel().getSelectedItem());
 
@@ -124,8 +103,8 @@ public class AppointmentsController implements Initializable {
             stage.setScene(new Scene(scene));
             stage.show();
         } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Nothing selected");
-            alert.setTitle("Nothing is selected!");
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Please select an appointment");
+            alert.setTitle("Nothing selected");
             alert.showAndWait();
         }
     }
