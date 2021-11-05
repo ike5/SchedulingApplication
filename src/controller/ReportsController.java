@@ -38,10 +38,13 @@ public class ReportsController implements Initializable {
     public static final String MONTH_MAP_KEY = "C";
     public static final String NUM_APPOINTMENT_BY_MONTH_MAP_KEY = "D";
 
+    private ObservableList<Map> mapObservableListTypesValues;
+    private ObservableList<Map> mapObservableListMonthValues;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        ObservableList<Map> mapObservableListTypesValues = DBAppointment.getMapOfTypesAndValue();
-        ObservableList<Map> mapObservableListMonthValues = DBAppointment.getMapOfAppointmentsByMonth();
+        mapObservableListTypesValues = DBAppointment.getMapOfTypesAndValue();
+        mapObservableListMonthValues = DBAppointment.getMapOfAppointmentsByMonth();
 
         type_column.setCellValueFactory(new MapValueFactory<>(TYPE_MAP_KEY));
         num_appointments_column.setCellValueFactory(new MapValueFactory<>(NUM_APPOINTMENT_MAP_KEY));
@@ -49,7 +52,13 @@ public class ReportsController implements Initializable {
         month_column.setCellValueFactory(new MapValueFactory<>(MONTH_MAP_KEY));
         total_appointments_column2.setCellValueFactory(new MapValueFactory<>(NUM_APPOINTMENT_BY_MONTH_MAP_KEY));
 
-        customer_table_view.setItems(mapObservableListMonthValues);
+        if (type_radio_button.isSelected()) {
+
+            customer_table_view.setItems(mapObservableListTypesValues);
+        } else {
+            customer_table_view.setItems(mapObservableListMonthValues);
+        }
+
         customer_table_view.getColumns().setAll(type_column, num_appointments_column, month_column, total_appointments_column2);
     }
 
@@ -66,8 +75,10 @@ public class ReportsController implements Initializable {
     }
 
     public void typeRadioButtonOnAction(ActionEvent actionEvent) {
+        customer_table_view.setItems(mapObservableListTypesValues);
     }
 
     public void monthRadioButtonOnAction(ActionEvent actionEvent) {
+        customer_table_view.setItems(mapObservableListMonthValues);
     }
 }
