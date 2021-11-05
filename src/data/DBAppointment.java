@@ -1,15 +1,14 @@
 package data;
 
-import com.mysql.cj.xdevapi.DbDoc;
 import controller.ReportsController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.ObservableMap;
 import main.Main;
 import model.*;
 
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -198,12 +197,16 @@ public class DBAppointment {
         }
     }
 
-    // Helper method
-    public static int getTotalNumberOfAppointments(String type){
-        // Get total number of appointments by type and by month
-        // Get all types distinct, then for each type retrieve number of appointments
+    /**
+     * Gets total number of appointments by type. Selects all types distinctly, then for each
+     * type retrieves number of appointments.
+     *
+     * @param type
+     * @return
+     */
+    private static int getTotalNumberOfAppointmentsByType(String type) {
         String sql = "SELECT COUNT(Appointment_ID) AS NumberOfAppointments FROM appointments WHERE Type = ?";
-        try{
+        try {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ps.setString(1, type);
             ResultSet resultSet = ps.executeQuery();
@@ -216,31 +219,93 @@ public class DBAppointment {
         return -1;
     }
 
-    // Helper method
-    public static List<String> getAllTypes(){
-        // Get a list of all types of appointments
-        List<String> typeList = new ArrayList<>();
-        String sql = "SELECT DISTINCT Type FROM appointments";
-        try{
+    private static int getTotalNumberOfAppointmentsByMonth(java.time.Month month) {
+        String sql = "SELECT COUNT(Appointment_ID) AS NumberOfAppointments FROM appointments WHERE MONTH(Start) = ?";
+        try {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+
+            ps.setInt(1, month.getValue());
+
+//            switch (month) {
+//                case JANUARY:
+//                    ps.setInt(1, 1);
+//                    break;
+//                case FEBRUARY:
+//                    ps.setInt(1, 2);
+//                    break;
+//                case MARCH:
+//                    ps.setInt(1, 3);
+//                    break;
+//                case APRIL:
+//                    ps.setInt(1, 4);
+//                    break;
+//                case MAY:
+//                    ps.setInt(1, 5);
+//                    break;
+//                case JUNE:
+//                    ps.setInt(1, 6);
+//                    break;
+//                case JULY:
+//                    ps.setInt(1, 7);
+//                    break;
+//                case AUGUST:
+//                    ps.setInt(1, 8);
+//                    break;
+//                case SEPTEMBER:
+//                    ps.setInt(1, 9);
+//                    break;
+//                case OCTOBER:
+//                    ps.setInt(1, 10);
+//                    break;
+//                case NOVEMBER:
+//                    ps.setInt(1, 11);
+//                    break;
+//                case DECEMBER:
+//                    ps.setInt(1, 12);
+//                    break;
+//                default:
+//                    System.out.println("Error...in ENUM for getting number of appointments by month");
+//
+//            }
+
             ResultSet resultSet = ps.executeQuery();
-            while(resultSet.next()){
-                typeList.add(resultSet.getString(1));
-            }
+            resultSet.next();
+            return resultSet.getInt("NumberOfAppointments");
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+        }
+        return -1;
+    }
+
+    /**
+     * Gets a list of all distinct types of appointments from the appointments database.
+     *
+     * @return
+     */
+    private static List<String> getAllTypes() {
+        List<String> typeList = new ArrayList<>();
+
+        String sql = "SELECT DISTINCT Type FROM appointments";
+        try {
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ResultSet resultSet = ps.executeQuery();
+            while (resultSet.next()) {
+                typeList.add(resultSet.getString(1));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return typeList;
     }
 
-    public static ObservableList<Map> getMapOfTypesAndValue(){
+    public static ObservableList<Map> getMapOfTypesAndValue() {
         ObservableList<Map> mapObservableList = FXCollections.observableArrayList();
 
-        for (String type : getAllTypes()){
+        for (String type : getAllTypes()) {
             Map<String, String> mapDataRow = new HashMap<>();
             //FIXME - dependency on ReportsController
             mapDataRow.put(ReportsController.TYPE_MAP_KEY, type);
-            mapDataRow.put(ReportsController.NUM_APPOINTMENT_MAP_KEY, Integer.toString(getTotalNumberOfAppointments(type)));
+            mapDataRow.put(ReportsController.NUM_APPOINTMENT_MAP_KEY, Integer.toString(getTotalNumberOfAppointmentsByType(type)));
             mapObservableList.add(mapDataRow);
         }
         System.out.println(mapObservableList);
@@ -383,7 +448,6 @@ public class DBAppointment {
     }
 
     /**
-     *
      * @param appointmentId
      * @return Returns true if delete is successful.
      */
