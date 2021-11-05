@@ -277,7 +277,6 @@ public class DBAppointment {
             mapDataRow.put(ReportsController.NUM_APPOINTMENT_MAP_KEY, Integer.toString(getTotalNumberOfAppointmentsByType(type)));
             mapObservableList.add(mapDataRow);
         }
-        System.out.println(mapObservableList);
         return mapObservableList;
     }
 
