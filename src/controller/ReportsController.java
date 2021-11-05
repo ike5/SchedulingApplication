@@ -29,9 +29,7 @@ public class ReportsController implements Initializable {
     public RadioButton type_radio_button;
     public RadioButton month_radio_button;
     public TableColumn<Map, Integer> num_appointments_column;
-    public TableColumn<Map, String> month_column;
-    public TableColumn<Map, Integer> total_appointments_column2;
-    public TableColumn<Map, String> type_column;
+    public TableColumn<Map, String> basic_column;
 
     public static final String TYPE_MAP_KEY = "A";
     public static final String NUM_APPOINTMENT_MAP_KEY = "B";
@@ -46,20 +44,14 @@ public class ReportsController implements Initializable {
         mapObservableListTypesValues = DBAppointment.getMapOfTypesAndValue();
         mapObservableListMonthValues = DBAppointment.getMapOfAppointmentsByMonth();
 
-        type_column.setCellValueFactory(new MapValueFactory<>(TYPE_MAP_KEY));
-        num_appointments_column.setCellValueFactory(new MapValueFactory<>(NUM_APPOINTMENT_MAP_KEY));
-
-        month_column.setCellValueFactory(new MapValueFactory<>(MONTH_MAP_KEY));
-        total_appointments_column2.setCellValueFactory(new MapValueFactory<>(NUM_APPOINTMENT_BY_MONTH_MAP_KEY));
-
+        // initialize data
         if (type_radio_button.isSelected()) {
-
+            basic_column.setText("Type of Appointment");
+            basic_column.setCellValueFactory(new MapValueFactory<>(TYPE_MAP_KEY));
+            num_appointments_column.setCellValueFactory(new MapValueFactory<>(NUM_APPOINTMENT_MAP_KEY));
             customer_table_view.setItems(mapObservableListTypesValues);
-        } else {
-            customer_table_view.setItems(mapObservableListMonthValues);
         }
-
-        customer_table_view.getColumns().setAll(type_column, num_appointments_column, month_column, total_appointments_column2);
+        customer_table_view.getColumns().setAll(basic_column, num_appointments_column);
     }
 
     public void userTabOnSelectionChanged(Event event) {
@@ -75,10 +67,16 @@ public class ReportsController implements Initializable {
     }
 
     public void typeRadioButtonOnAction(ActionEvent actionEvent) {
+        basic_column.setText("Type of Appointment");
+        basic_column.setCellValueFactory(new MapValueFactory<>(TYPE_MAP_KEY));
+        num_appointments_column.setCellValueFactory(new MapValueFactory<>(NUM_APPOINTMENT_MAP_KEY));
         customer_table_view.setItems(mapObservableListTypesValues);
     }
 
     public void monthRadioButtonOnAction(ActionEvent actionEvent) {
+        basic_column.setText("Month of Appointment");
+        basic_column.setCellValueFactory(new MapValueFactory<>(MONTH_MAP_KEY));
+        num_appointments_column.setCellValueFactory(new MapValueFactory<>(NUM_APPOINTMENT_BY_MONTH_MAP_KEY));
         customer_table_view.setItems(mapObservableListMonthValues);
     }
 }
