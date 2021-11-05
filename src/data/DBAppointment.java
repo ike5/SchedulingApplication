@@ -226,48 +226,6 @@ public class DBAppointment {
 
             ps.setInt(1, month.getValue());
 
-//            switch (month) {
-//                case JANUARY:
-//                    ps.setInt(1, 1);
-//                    break;
-//                case FEBRUARY:
-//                    ps.setInt(1, 2);
-//                    break;
-//                case MARCH:
-//                    ps.setInt(1, 3);
-//                    break;
-//                case APRIL:
-//                    ps.setInt(1, 4);
-//                    break;
-//                case MAY:
-//                    ps.setInt(1, 5);
-//                    break;
-//                case JUNE:
-//                    ps.setInt(1, 6);
-//                    break;
-//                case JULY:
-//                    ps.setInt(1, 7);
-//                    break;
-//                case AUGUST:
-//                    ps.setInt(1, 8);
-//                    break;
-//                case SEPTEMBER:
-//                    ps.setInt(1, 9);
-//                    break;
-//                case OCTOBER:
-//                    ps.setInt(1, 10);
-//                    break;
-//                case NOVEMBER:
-//                    ps.setInt(1, 11);
-//                    break;
-//                case DECEMBER:
-//                    ps.setInt(1, 12);
-//                    break;
-//                default:
-//                    System.out.println("Error...in ENUM for getting number of appointments by month");
-//
-//            }
-
             ResultSet resultSet = ps.executeQuery();
             resultSet.next();
             return resultSet.getInt("NumberOfAppointments");
@@ -275,6 +233,17 @@ public class DBAppointment {
             throwables.printStackTrace();
         }
         return -1;
+    }
+
+    public static ObservableList<Map> getMapOfAppointmentsByMonth(){
+        ObservableList<Map> mapObservableList = FXCollections.observableArrayList();
+        for (Month month : Month.values()){
+            Map<String, String> mapDataRow = new HashMap<>();
+            mapDataRow.put(ReportsController.MONTH_MAP_KEY, month.name());
+            mapDataRow.put(ReportsController.NUM_APPOINTMENT_BY_MONTH_MAP_KEY, Integer.toString(getTotalNumberOfAppointmentsByMonth(month)));
+            mapObservableList.add(mapDataRow);
+        }
+        return mapObservableList;
     }
 
     /**
