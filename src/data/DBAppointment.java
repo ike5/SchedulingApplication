@@ -1,6 +1,7 @@
 package data;
 
 import com.mysql.cj.xdevapi.DbDoc;
+import controller.ReportsController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
@@ -232,14 +233,15 @@ public class DBAppointment {
         return typeList;
     }
 
-    public static ObservableList<Map<String, Integer>> getMapOfTypesAndValue(){
-        ObservableList<Map<String, Integer>> mapObservableList = FXCollections.observableArrayList();
+    public static ObservableList<Map> getMapOfTypesAndValue(){
+        ObservableList<Map> mapObservableList = FXCollections.observableArrayList();
 
         for (String type : getAllTypes()){
-            Map<String, Integer> map = new HashMap<>();
-            Integer totalAppointmentsOfType = getTotalNumberOfAppointments(type);
-            map.put(type, totalAppointmentsOfType);
-            mapObservableList.add(map);
+            Map<String, String> mapDataRow = new HashMap<>();
+            //FIXME - dependency on ReportsController
+            mapDataRow.put(ReportsController.TYPE_MAP_KEY, type);
+            mapDataRow.put(ReportsController.NUM_APPOINTMENT_MAP_KEY, Integer.toString(getTotalNumberOfAppointments(type)));
+            mapObservableList.add(mapDataRow);
         }
         System.out.println(mapObservableList);
         return mapObservableList;

@@ -25,25 +25,26 @@ public class ReportsController implements Initializable {
     public TableView customer_table_view;
     public TableView contact_table_view;
     public TableView additional_table_view;
-    public TableColumn label_column;
     public ToggleGroup radioButtonToggleGroup;
     public RadioButton type_radio_button;
     public RadioButton month_radio_button;
+    public TableColumn<Map, Integer> num_appointments_column;
+    public TableColumn<Map, String> month_column;
+    public TableColumn<Map, Integer> total_appointments_column2;
+    public TableColumn<Map, String> type_column;
+
+    public static final String TYPE_MAP_KEY = "T";
+    public static final String NUM_APPOINTMENT_MAP_KEY = "N";
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        TableColumn<Map, String> typeColumn = new TableColumn<>("Type");
-        typeColumn.setCellValueFactory(new MapValueFactory<>("Type"));
+        ObservableList<Map> mapObservableList = DBAppointment.getMapOfTypesAndValue();
 
-        TableColumn<Map, Integer> numCustomers = new TableColumn<>("Number of Customers");
-        numCustomers.setCellValueFactory(new MapValueFactory<>("Number of Customers"));
+        type_column.setCellValueFactory(new MapValueFactory<>(TYPE_MAP_KEY));
+        num_appointments_column.setCellValueFactory(new MapValueFactory<>(NUM_APPOINTMENT_MAP_KEY));
 
-        customer_table_view.getColumns().add(typeColumn);
-        customer_table_view.getColumns().add(numCustomers);
-
-        ObservableList<Map<String, Integer>> mapObservableList = DBAppointment.getMapOfTypesAndValue();
-
-        customer_table_view.getItems().addAll(mapObservableList);
+        customer_table_view.setItems(mapObservableList);
+        customer_table_view.getColumns().setAll(type_column, num_appointments_column);
     }
 
     public void userTabOnSelectionChanged(Event event) {

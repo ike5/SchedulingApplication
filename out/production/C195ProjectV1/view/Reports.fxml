@@ -39,8 +39,10 @@
                                  <children>
                                     <TableView fx:id="customer_table_view" prefWidth="1000.0">
                                       <columns>
-                                        <TableColumn fx:id="label_column" prefWidth="174.0" />
-                                        <TableColumn prefWidth="122.0" text="# of Appointments" />
+                                        <TableColumn fx:id="type_column" prefWidth="174.0" text="Appointment Type" />
+                                        <TableColumn fx:id="num_appointments_column" prefWidth="122.0" text="Total Appointments" />
+                                          <TableColumn fx:id="month_column" prefWidth="174.0" text="Month" />
+                                          <TableColumn fx:id="total_appointments_column2" prefWidth="174.0" text="Total Appointments" />
                                       </columns>
                                     </TableView>
                                     <HBox prefHeight="100.0" prefWidth="200.0">
