@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
 <AnchorPane prefHeight="500.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ReportsController">
@@ -32,12 +35,28 @@
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <TableView fx:id="customer_table_view" prefWidth="1000.0">
-                                <columns>
-                                  <TableColumn prefWidth="75.0" text="C1" />
-                                  <TableColumn prefWidth="75.0" text="C2" />
-                                </columns>
-                              </TableView>
+                              <VBox prefHeight="400.0" prefWidth="1000.0">
+                                 <children>
+                                    <TableView fx:id="customer_table_view" prefWidth="1000.0">
+                                      <columns>
+                                        <TableColumn fx:id="type_column" prefWidth="174.0" text="Appointment Type" />
+                                        <TableColumn fx:id="num_appointments_column" prefWidth="122.0" text="Total Appointments" />
+                                          <TableColumn fx:id="month_column" prefWidth="174.0" text="Month" />
+                                          <TableColumn fx:id="total_appointments_column2" prefWidth="174.0" text="Total Appointments" />
+                                      </columns>
+                                    </TableView>
+                                    <HBox prefHeight="100.0" prefWidth="200.0">
+                                       <children>
+                                          <RadioButton fx:id="type_radio_button" mnemonicParsing="false" onAction="#typeRadioButtonOnAction" selected="true" text="By Type">
+                                             <toggleGroup>
+                                                <ToggleGroup fx:id="radioButtonToggleGroup" />
+                                             </toggleGroup>
+                                          </RadioButton>
+                                          <RadioButton fx:id="month_radio_button" mnemonicParsing="false" onAction="#monthRadioButtonOnAction" text="By Month" toggleGroup="$radioButtonToggleGroup" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
                            </children>
                         </AnchorPane>
                   </content>
@@ -46,7 +65,7 @@
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <TableView prefWidth="1000.0">
+                              <TableView fx:id="contact_table_view" prefWidth="1000.0">
                                 <columns>
                                   <TableColumn prefWidth="75.0" text="C1" />
                                   <TableColumn prefWidth="75.0" text="C2" />
@@ -60,7 +79,7 @@
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <TableView prefWidth="1000.0">
+                              <TableView fx:id="additional_table_view" prefWidth="1000.0">
                                 <columns>
                                   <TableColumn prefWidth="75.0" text="C1" />
                                   <TableColumn prefWidth="75.0" text="C2" />

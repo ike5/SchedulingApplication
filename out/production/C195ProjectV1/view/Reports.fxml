@@ -1,15 +1,95 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ReportsController">
+<AnchorPane prefHeight="500.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ReportsController">
    <children>
-      <VBox prefHeight="600.0" prefWidth="1000.0">
+      <VBox alignment="TOP_CENTER" prefHeight="500.0" prefWidth="1000.0">
          <children>
-            <HBox fx:id="h_box" />
+            <TabPane prefHeight="400.0" prefWidth="1000.0" tabClosingPolicy="UNAVAILABLE">
+              <tabs>
+                <Tab fx:id="user_tab" onSelectionChanged="#userTabOnSelectionChanged" text="User Logins">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <TableView fx:id="user_table_view" prefWidth="1000.0">
+                                <columns>
+                                  <TableColumn prefWidth="75.0" text="C1" />
+                                  <TableColumn prefWidth="75.0" text="C2" />
+                                </columns>
+                              </TableView>
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </Tab>
+                <Tab fx:id="customer_tab" onSelectionChanged="#customerTabOnSelectionChanged" text="Customer Appointments">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <VBox prefHeight="400.0" prefWidth="1000.0">
+                                 <children>
+                                    <TableView fx:id="customer_table_view" prefWidth="1000.0">
+                                      <columns>
+                                        <TableColumn fx:id="label_column" prefWidth="174.0" />
+                                        <TableColumn prefWidth="122.0" text="# of Appointments" />
+                                      </columns>
+                                    </TableView>
+                                    <HBox prefHeight="100.0" prefWidth="200.0">
+                                       <children>
+                                          <RadioButton fx:id="type_radio_button" mnemonicParsing="false" onAction="#typeRadioButtonOnAction" selected="true" text="By Type">
+                                             <toggleGroup>
+                                                <ToggleGroup fx:id="radioButtonToggleGroup" />
+                                             </toggleGroup>
+                                          </RadioButton>
+                                          <RadioButton fx:id="month_radio_button" mnemonicParsing="false" onAction="#monthRadioButtonOnAction" text="By Month" toggleGroup="$radioButtonToggleGroup" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </Tab>
+                  <Tab fx:id="contact_tab" onSelectionChanged="#contactTabOnSelectionChanged" text="Contact Schedule">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <TableView fx:id="contact_table_view" prefWidth="1000.0">
+                                <columns>
+                                  <TableColumn prefWidth="75.0" text="C1" />
+                                  <TableColumn prefWidth="75.0" text="C2" />
+                                </columns>
+                              </TableView>
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </Tab>
+                  <Tab fx:id="additional_tab" onSelectionChanged="#additionalTabOnSelectionChanged" text="Additional Report">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <TableView fx:id="additional_table_view" prefWidth="1000.0">
+                                <columns>
+                                  <TableColumn prefWidth="75.0" text="C1" />
+                                  <TableColumn prefWidth="75.0" text="C2" />
+                                </columns>
+                              </TableView>
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </Tab>
+              </tabs>
+            </TabPane>
+            <Button alignment="CENTER" mnemonicParsing="false" text="Back" />
          </children>
       </VBox>
    </children>

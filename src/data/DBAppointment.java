@@ -3,11 +3,16 @@ package data;
 import com.mysql.cj.xdevapi.DbDoc;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
 import main.Main;
 import model.*;
 
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 //TODO
 // - Need a DELETE method
@@ -190,6 +195,54 @@ public class DBAppointment {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    // Helper method
+    public static int getTotalNumberOfAppointments(String type){
+        // Get total number of appointments by type and by month
+        // Get all types distinct, then for each type retrieve number of appointments
+        String sql = "SELECT COUNT(Appointment_ID) AS NumberOfAppointments FROM appointments WHERE Type = ?";
+        try{
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ps.setString(1, type);
+            ResultSet resultSet = ps.executeQuery();
+
+            resultSet.next();
+            return resultSet.getInt("NumberOfAppointments");
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return -1;
+    }
+
+    // Helper method
+    public static List<String> getAllTypes(){
+        // Get a list of all types of appointments
+        List<String> typeList = new ArrayList<>();
+        String sql = "SELECT DISTINCT Type FROM appointments";
+        try{
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ResultSet resultSet = ps.executeQuery();
+            while(resultSet.next()){
+                typeList.add(resultSet.getString(1));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return typeList;
+    }
+
+    public static ObservableList<Map<String, Integer>> getMapOfTypesAndValue(){
+        ObservableList<Map<String, Integer>> mapObservableList = FXCollections.observableArrayList();
+
+        for (String type : getAllTypes()){
+            Map<String, Integer> map = new HashMap<>();
+            Integer totalAppointmentsOfType = getTotalNumberOfAppointments(type);
+            map.put(type, totalAppointmentsOfType);
+            mapObservableList.add(map);
+        }
+        System.out.println(mapObservableList);
+        return mapObservableList;
     }
 
     public static ObservableList<Appointment> getAllAppointmentsInMonth() {
