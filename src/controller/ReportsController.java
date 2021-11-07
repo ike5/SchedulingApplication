@@ -5,10 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.Initializable;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.MapValueFactory;
 
 import java.net.URL;
@@ -31,6 +28,20 @@ public class ReportsController implements Initializable {
     public static final String NUM_APPOINTMENT_MAP_KEY = "B";
     public static final String MONTH_MAP_KEY = "C";
     public static final String NUM_APPOINTMENT_BY_MONTH_MAP_KEY = "D";
+    public Tab customer_tab;
+    public Tab contact_tab;
+    public Tab user_tab;
+    public Tab additional_report_tab;
+    public TableColumn contact_appointment_id_column;
+    public TableColumn contact_title_column;
+    public TableColumn contact_type_column;
+    public TableColumn contact_description_column;
+    public TableColumn contact_start_column;
+    public TableColumn contact_end_column;
+    public TableColumn contact_customer_id_column;
+    public TableColumn user_user_column;
+    public TableColumn user_timestamp_column;
+    public TableColumn user_success_column;
 
     private ObservableList<Map> mapObservableListTypesValues;
     private ObservableList<Map> mapObservableListMonthValues;
@@ -40,7 +51,7 @@ public class ReportsController implements Initializable {
         mapObservableListTypesValues = DBAppointment.getMapOfTypesAndValue();
         mapObservableListMonthValues = DBAppointment.getMapOfAppointmentsByMonth();
 
-        // initialize data
+        // initialize customer tab data
         if (type_radio_button.isSelected()) {
             basic_column.setText("Type of Appointment");
             basic_column.setCellValueFactory(new MapValueFactory<>(TYPE_MAP_KEY));
@@ -48,6 +59,8 @@ public class ReportsController implements Initializable {
             customer_table_view.setItems(mapObservableListTypesValues);
         }
         customer_table_view.getColumns().setAll(basic_column, num_appointments_column);
+
+
     }
 
     public void userTabOnSelectionChanged(Event event) {
@@ -74,5 +87,8 @@ public class ReportsController implements Initializable {
         basic_column.setCellValueFactory(new MapValueFactory<>(MONTH_MAP_KEY));
         num_appointments_column.setCellValueFactory(new MapValueFactory<>(NUM_APPOINTMENT_BY_MONTH_MAP_KEY));
         customer_table_view.setItems(mapObservableListMonthValues);
+    }
+
+    public void additionalReportTabOnSelectionChanged(Event event) {
     }
 }

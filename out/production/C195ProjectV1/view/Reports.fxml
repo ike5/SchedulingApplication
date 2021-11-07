@@ -39,7 +39,7 @@
                                  <children>
                                     <TableView fx:id="customer_table_view" prefWidth="1000.0">
                                       <columns>
-                                        <TableColumn fx:id="basic_column" prefWidth="174.0"  />
+                                        <TableColumn fx:id="basic_column" prefWidth="174.0" />
                                         <TableColumn fx:id="num_appointments_column" prefWidth="122.0" text="Total Appointments" />
                                       </columns>
                                     </TableView>
@@ -65,8 +65,13 @@
                            <children>
                               <TableView fx:id="contact_table_view" prefWidth="1000.0">
                                 <columns>
-                                  <TableColumn prefWidth="75.0" text="C1" />
-                                  <TableColumn prefWidth="75.0" text="C2" />
+                                  <TableColumn fx:id="contact_appointment_id_column" prefWidth="75.0" text="Appointment ID" />
+                                  <TableColumn fx:id="contact_title_column" prefWidth="75.0" text="Title" />
+                                    <TableColumn fx:id="contact_description_column" prefWidth="75.0" text="Description" />
+                                    <TableColumn prefWidth="75.0" text="C1" />
+                                    <TableColumn prefWidth="75.0" text="C1" />
+                                    <TableColumn prefWidth="75.0" text="C1" />
+                                    <TableColumn prefWidth="75.0" text="C1" />
                                 </columns>
                               </TableView>
                            </children>

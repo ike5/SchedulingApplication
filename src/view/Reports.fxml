@@ -17,20 +17,6 @@
          <children>
             <TabPane prefHeight="400.0" prefWidth="1000.0" tabClosingPolicy="UNAVAILABLE">
               <tabs>
-                <Tab fx:id="user_tab" onSelectionChanged="#userTabOnSelectionChanged" text="User Logins">
-                  <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                           <children>
-                              <TableView fx:id="user_table_view" prefWidth="1000.0">
-                                <columns>
-                                  <TableColumn prefWidth="75.0" text="C1" />
-                                  <TableColumn prefWidth="75.0" text="C2" />
-                                </columns>
-                              </TableView>
-                           </children>
-                        </AnchorPane>
-                  </content>
-                </Tab>
                 <Tab fx:id="customer_tab" onSelectionChanged="#customerTabOnSelectionChanged" text="Customer Appointments">
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
@@ -39,7 +25,7 @@
                                  <children>
                                     <TableView fx:id="customer_table_view" prefWidth="1000.0">
                                       <columns>
-                                        <TableColumn fx:id="basic_column" prefWidth="174.0"  />
+                                        <TableColumn fx:id="basic_column" prefWidth="174.0" />
                                         <TableColumn fx:id="num_appointments_column" prefWidth="122.0" text="Total Appointments" />
                                       </columns>
                                     </TableView>
@@ -65,23 +51,43 @@
                            <children>
                               <TableView fx:id="contact_table_view" prefWidth="1000.0">
                                 <columns>
-                                  <TableColumn prefWidth="75.0" text="C1" />
-                                  <TableColumn prefWidth="75.0" text="C2" />
+                                  <TableColumn fx:id="contact_appointment_id_column" prefWidth="100.0" text="Appointment ID" />
+                                  <TableColumn fx:id="contact_title_column" prefWidth="150.0" text="Title" />
+                                    <TableColumn fx:id="contact_type_column" prefWidth="150.0" text="Type" />
+                                    <TableColumn fx:id="contact_description_column" prefWidth="200.0" text="Description" />
+                                    <TableColumn fx:id="contact_start_column" prefWidth="150.0" text="Start Date/Time" />
+                                    <TableColumn fx:id="contact_end_column" prefWidth="150.0" text="End Date/Time" />
+                                    <TableColumn fx:id="contact_customer_id_column" prefWidth="100.0" text="Customer ID" />
                                 </columns>
                               </TableView>
                            </children>
                         </AnchorPane>
                      </content>
                   </Tab>
-                  <Tab fx:id="additional_tab" onSelectionChanged="#additionalTabOnSelectionChanged" text="Additional Report">
+                <Tab fx:id="user_tab" onSelectionChanged="#userTabOnSelectionChanged" text="User Logins (requirement)">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <TableView fx:id="user_table_view" prefWidth="1000.0">
+                                <columns>
+                                  <TableColumn fx:id="user_user_column" prefWidth="75.0" text="User" />
+                                  <TableColumn fx:id="user_timestamp_column" prefWidth="141.0" text="Timestamp" />
+                                    <TableColumn fx:id="user_success_column" prefWidth="195.0" text="Success" />
+                                </columns>
+                              </TableView>
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </Tab>
+                  <Tab fx:id="additional_report_tab" onSelectionChanged="#additionalReportTabOnSelectionChanged" text="Additional Report">
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <TableView fx:id="additional_table_view" prefWidth="1000.0">
-                                <columns>
-                                  <TableColumn prefWidth="75.0" text="C1" />
-                                  <TableColumn prefWidth="75.0" text="C2" />
-                                </columns>
+                              <TableView fx:id="user_table_view1" prefWidth="1000.0">
+                                 <columns>
+                                    <TableColumn prefWidth="75.0" text="C1" />
+                                    <TableColumn prefWidth="75.0" text="C2" />
+                                 </columns>
                               </TableView>
                            </children>
                         </AnchorPane>
