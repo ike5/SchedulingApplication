@@ -4,10 +4,15 @@ import data.DBAppointment;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.MapValueFactory;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -42,16 +47,20 @@ public class ReportsController implements Initializable {
     public TableColumn user_user_column;
     public TableColumn user_timestamp_column;
     public TableColumn user_success_column;
+    public ListView contact_listview;
 
     private ObservableList<Map> mapObservableListTypesValues;
     private ObservableList<Map> mapObservableListMonthValues;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        // Initialize contacts tab data
+
+
+        // Initialize customer tab data
         mapObservableListTypesValues = DBAppointment.getMapOfTypesAndValue();
         mapObservableListMonthValues = DBAppointment.getMapOfAppointmentsByMonth();
-
-        // initialize customer tab data
         if (type_radio_button.isSelected()) {
             basic_column.setText("Type of Appointment");
             basic_column.setCellValueFactory(new MapValueFactory<>(TYPE_MAP_KEY));
@@ -90,5 +99,13 @@ public class ReportsController implements Initializable {
     }
 
     public void additionalReportTabOnSelectionChanged(Event event) {
+    }
+
+    public void backButtonOnAction(ActionEvent actionEvent) throws IOException {
+        Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
+        Parent scene = FXMLLoader.load(getClass().getResource("/view/Customers.fxml"));
+        stage.setTitle("Customers");
+        stage.setScene(new Scene(scene));
+        stage.show();
     }
 }
