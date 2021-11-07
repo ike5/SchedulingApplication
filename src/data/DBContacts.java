@@ -2,6 +2,7 @@ package data;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import model.Appointment;
 import model.Contact;
 
 import java.sql.PreparedStatement;
@@ -11,6 +12,8 @@ import java.sql.SQLException;
 
 // Completed CRUD
 public class DBContacts {
+
+
 
     /**
      * Create method. Updates the contacts database table to add a new contact.

@@ -235,9 +235,9 @@ public class DBAppointment {
         return -1;
     }
 
-    public static ObservableList<Map> getMapOfAppointmentsByMonth(){
+    public static ObservableList<Map> getMapOfAppointmentsByMonth() {
         ObservableList<Map> mapObservableList = FXCollections.observableArrayList();
-        for (Month month : Month.values()){
+        for (Month month : Month.values()) {
             Map<String, String> mapDataRow = new HashMap<>();
             mapDataRow.put(ReportsController.MONTH_MAP_KEY, month.name());
             mapDataRow.put(ReportsController.NUM_APPOINTMENT_BY_MONTH_MAP_KEY, Integer.toString(getTotalNumberOfAppointmentsByMonth(month)));
@@ -431,6 +431,43 @@ public class DBAppointment {
             throwables.printStackTrace();
         }
         return flag;
+    }
+
+
+    public static ObservableList<Appointment> getAppointmentListFromContact(Contact contact) {
+        ObservableList<Appointment> appointmentObservableList = FXCollections.observableArrayList();
+        String sql = "SELECT * FROM appointments WHERE Contact_ID = ?";
+        try {
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ps.setInt(1, contact.getContactId());
+            ResultSet resultSet = ps.executeQuery();
+
+            while (resultSet.next()) {
+                Timestamp ts_start = resultSet.getTimestamp("Start");
+                Timestamp ts_end = resultSet.getTimestamp("End");
+                LocalDateTime ldt_start = ts_start.toLocalDateTime();
+                LocalDateTime ldt_end = ts_end.toLocalDateTime();
+
+
+                Appointment appointment = new Appointment(
+                        resultSet.getInt("Appointment_ID"),
+                        resultSet.getString("Title"),
+                        resultSet.getString("Description"),
+                        resultSet.getString("Location"),
+                        resultSet.getString("Type"),
+                        ldt_start,
+                        ldt_end,
+                        resultSet.getInt("Customer_ID"),
+                        resultSet.getInt("User_ID"),
+                        resultSet.getInt("Contact_ID")
+                );
+
+                appointmentObservableList.add(appointment);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return appointmentObservableList;
     }
 }
 

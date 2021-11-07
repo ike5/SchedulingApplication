@@ -1,6 +1,9 @@
 package controller;
 
 import data.DBAppointment;
+import data.DBContacts;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -10,7 +13,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.MapValueFactory;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import model.Appointment;
+import model.Contact;
 
 import java.io.IOException;
 import java.net.URL;
@@ -56,7 +62,16 @@ public class ReportsController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         // Initialize contacts tab data
+        contact_listview.setItems(DBContacts.getAllContacts());
+        contact_appointment_id_column.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("AppointmentId"));
+        contact_title_column.setCellValueFactory(new PropertyValueFactory<Appointment, String>("AppointmentTitle"));
+        contact_type_column.setCellValueFactory(new PropertyValueFactory<Appointment, String>("AppointmentType"));
+        contact_description_column.setCellValueFactory(new PropertyValueFactory<Appointment, String>("AppointmentDescription"));
+        contact_start_column.setCellValueFactory(new PropertyValueFactory<Appointment, String>("StartString"));
+        contact_end_column.setCellValueFactory(new PropertyValueFactory<Appointment, String>("EndString"));
+        contact_customer_id_column.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("CustomerId"));
 
+        // Initialize
 
         // Initialize customer tab data
         mapObservableListTypesValues = DBAppointment.getMapOfTypesAndValue();
@@ -69,6 +84,11 @@ public class ReportsController implements Initializable {
         }
         customer_table_view.getColumns().setAll(basic_column, num_appointments_column);
 
+
+        // Listeners
+        contact_listview.getSelectionModel().selectedItemProperty().addListener((observableValue, oldSelection, newSelection) -> {
+            contact_table_view.setItems(DBAppointment.getAppointmentListFromContact((Contact) newSelection));
+        });
 
     }
 
