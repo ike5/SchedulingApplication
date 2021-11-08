@@ -2,6 +2,9 @@ package model;
 
 import javafx.collections.ObservableList;
 
+/**
+ * This class is used for holding a list of all users.
+ */
 public final class UserSingleton {
     private ObservableList<User> userObservableList;
 

@@ -2,6 +2,9 @@ package model;
 
 import javafx.collections.ObservableList;
 
+/**
+ * This class is used for holding an all listed customers in the database.
+ */
 public final class CustomerSingleton {
     private ObservableList<Customer> customerObservableList;
 

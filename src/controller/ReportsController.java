@@ -84,7 +84,6 @@ public class ReportsController implements Initializable {
         }
         customer_table_view.getColumns().setAll(basic_column, num_appointments_column);
 
-
         // Listeners
         contact_listview.getSelectionModel().selectedItemProperty().addListener((observableValue, oldSelection, newSelection) -> {
             contact_table_view.setItems(DBAppointment.getAppointmentListFromContact((Contact) newSelection));

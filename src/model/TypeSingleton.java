@@ -3,6 +3,9 @@ package model;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+/**
+ * This class is used for holding a list of all types.
+ */
 public final class TypeSingleton {
     private ObservableList<String> typeObservableList;
 
