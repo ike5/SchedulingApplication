@@ -18,7 +18,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -57,12 +57,16 @@ public class LoginController implements Initializable {
 
     private void textFieldLogin(ActionEvent actionEvent) throws IOException {
         dbUsers = new DBUsers(username_field_id.getText(), password_field_id.getText());
+
+
         ChangeScreen.changeScreen(
                 actionEvent,
                 dbUsers,
                 FXMLLoader.load(getClass().getResource("/view/Customers.fxml")),
                 aEvent -> (Stage) ((TextField) aEvent.getSource()).getScene().getWindow());
     }
+
+
 
 
     /**
@@ -77,6 +81,10 @@ public class LoginController implements Initializable {
         //FIXME (med) - pressing ENTER when button is highlighted doesn't work
 
         dbUsers = new DBUsers(username_field_id.getText(), password_field_id.getText());
+
+        try(var fis = new FileInputStream(new File("/data/login_tracker.txt"))){
+            System.out.println(fis.read());
+        }
 
         ChangeScreen.changeScreen(
                 actionEvent,
