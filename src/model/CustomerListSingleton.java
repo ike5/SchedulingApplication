@@ -5,14 +5,14 @@ import javafx.collections.ObservableList;
 /**
  * This class is used for holding an all listed customers in the database.
  */
-public final class CustomerSingleton {
+public final class CustomerListSingleton {
     private ObservableList<Customer> customerObservableList;
 
-    private final static CustomerSingleton INSTANCE = new CustomerSingleton();
+    private final static CustomerListSingleton INSTANCE = new CustomerListSingleton();
 
-    private CustomerSingleton() {}
+    private CustomerListSingleton() {}
 
-    public static CustomerSingleton getInstance(){
+    public static CustomerListSingleton getInstance(){
         return INSTANCE;
     }
 

@@ -42,18 +42,18 @@ public class ModifyAppointmentController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        CustomerSingleton.getInstance().setCustomerObservableList(DBCustomers.getAllCustomers());
-        customer_combo.setItems(CustomerSingleton.getInstance().getCustomerObservableList());
+        CustomerListSingleton.getInstance().setCustomerObservableList(DBCustomers.getAllCustomers());
+        customer_combo.setItems(CustomerListSingleton.getInstance().getCustomerObservableList());
 
-        ContactsSingleton.getInstance().setContactObservableList(DBContacts.getAllContacts());
-        contact_combo.setItems(ContactsSingleton.getInstance().getContactObservableList());
+        ContactsListSingleton.getInstance().setContactObservableList(DBContacts.getAllContacts());
+        contact_combo.setItems(ContactsListSingleton.getInstance().getContactObservableList());
 
-        UserSingleton.getInstance().setUserObservableList(DBUsers.getAllUsers());
-        user_combo.setItems(UserSingleton.getInstance().getUserObservableList());
+        UserListSingleton.getInstance().setUserObservableList(DBUsers.getAllUsers());
+        user_combo.setItems(UserListSingleton.getInstance().getUserObservableList());
 
-        location_combo.setItems(LocationSingleton.getInstance().getLocationObservableList());
+        location_combo.setItems(LocationListSingleton.getInstance().getLocationObservableList());
 
-        type_combo.setItems(TypeSingleton.getInstance().getTypeObservableList());
+        type_combo.setItems(TypeListSingleton.getInstance().getTypeObservableList());
 
 
         start_combo.setItems(PossibleTimes.localTimeList());

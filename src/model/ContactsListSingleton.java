@@ -2,15 +2,15 @@ package model;
 
 import javafx.collections.ObservableList;
 
-public final class ContactsSingleton {
+public final class ContactsListSingleton {
     private ObservableList<Contact> contactObservableList;
 
-    private static final ContactsSingleton INSTANCE = new ContactsSingleton();
+    private static final ContactsListSingleton INSTANCE = new ContactsListSingleton();
 
-    private ContactsSingleton() {
+    private ContactsListSingleton() {
     }
 
-    public static ContactsSingleton getInstance() {
+    public static ContactsListSingleton getInstance() {
         return INSTANCE;
     }
 

@@ -8,8 +8,8 @@ public class CountryCombo implements ComboInterface {
 
     @Override
     public void setComboBox(Customer customer, ComboBox country_combo_id) {
-        CountrySingleton.getInstance().setCountryObservableList(DBCountries.getAllCountries());
-        country_combo_id.setItems(CountrySingleton.getInstance().getCountryObservableList());
+        CountryListSingleton.getInstance().setCountryObservableList(DBCountries.getAllCountries());
+        country_combo_id.setItems(CountryListSingleton.getInstance().getCountryObservableList());
         country_combo_id.setValue(customer.getCountry());
     }
 }

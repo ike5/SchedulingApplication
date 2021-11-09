@@ -1,9 +1,6 @@
 package controller;
 
 import data.DBDivisions;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.event.EventType;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -11,7 +8,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import data.DBCountries;
 import data.DBCustomers;
@@ -70,8 +66,8 @@ public class CustomersController implements Initializable {
         customer_id_id.setDisable(true);
 
         // Populate table with Customers
-        CustomerSingleton.getInstance().setCustomerObservableList(DBCustomers.getAllCustomers());
-        table_view_id.setItems(CustomerSingleton.getInstance().getCustomerObservableList());
+        CustomerListSingleton.getInstance().setCustomerObservableList(DBCustomers.getAllCustomers());
+        table_view_id.setItems(CustomerListSingleton.getInstance().getCustomerObservableList());
 
         // Bind table cell values to class getter methods
         // Tied to getter in the Customer class --> getDivisionId()
@@ -84,12 +80,12 @@ public class CustomersController implements Initializable {
         country_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<Customer, Country>("Country"));
 
         // Initialize Country ComboBox
-        CountrySingleton.getInstance().setCountryObservableList(DBCountries.getAllCountries());
-        country_combo_id.setItems(CountrySingleton.getInstance().getCountryObservableList());
+        CountryListSingleton.getInstance().setCountryObservableList(DBCountries.getAllCountries());
+        country_combo_id.setItems(CountryListSingleton.getInstance().getCountryObservableList());
 
         // Initialize Province/State (Division) ComboBox
-        DivisionSingleton.getInstance().setDivisionObservableList(DBDivisions.getAllFirstLevelDivisions());
-        division_combo_id.setItems(DivisionSingleton.getInstance().getDivisionObservableList());
+        DivisionListSingleton.getInstance().setDivisionObservableList(DBDivisions.getAllFirstLevelDivisions());
+        division_combo_id.setItems(DivisionListSingleton.getInstance().getDivisionObservableList());
 
         // TableView listener
         table_view_id.getSelectionModel().selectedItemProperty().addListener((observableValue, oldSelection, newSelection) -> {

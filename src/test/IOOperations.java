@@ -64,26 +64,6 @@ public File(String parent, String child)
         }
     }
 
-    public static void main(String[] args) throws IOException, ClassNotFoundException {
-//        File fileName = new File("src/data/login_tracker.txt");
-//        File fileName2 = new File("src/data/another.txt");
-//
-//        new IOOperations().copyTextWithBuffer(fileName, fileName2);
-//
-        IOOperations o = new IOOperations();
-//
-//        Cat cat = new IOOperations().new Cat();
-
-        var cats = new ArrayList<Cat>();
-        cats.add(o.new Cat("Josephine", 12, false));
-        cats.add(o.new Cat("Franky", 3, true));
-        cats.add(o.new Cat("Lucy", 23, false));
-        File dataFile = new File("src/data/cat.data");
-
-        o.saveToFile(cats, dataFile);
-        var catsFromDisk = o.readFromFile(dataFile);
-        System.out.print(catsFromDisk);
-    }
 
 
     //**************************************************
@@ -127,4 +107,17 @@ public File(String parent, String child)
         return cats;
     }
 
+   //**************************************************
+
+
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
+        try(PrintWriter out = new PrintWriter("src/data/zoo.log")){
+//            out.write(String.valueOf(5));
+//            out.print(5);
+
+            var a = new IOOperations().new Cat("Fluffy", 12, true);
+//            out.write(a == null ? "null" : a.toString());
+            out.print(a);
+        }
+    }
 }

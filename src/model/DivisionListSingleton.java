@@ -2,14 +2,14 @@ package model;
 
 import javafx.collections.ObservableList;
 
-public final class DivisionSingleton {
+public final class DivisionListSingleton {
     private ObservableList<Division> divisionObservableList;
 
-    private final static DivisionSingleton INSTANCE = new DivisionSingleton();
+    private final static DivisionListSingleton INSTANCE = new DivisionListSingleton();
 
-    private DivisionSingleton(){}
+    private DivisionListSingleton(){}
 
-    public static DivisionSingleton getInstance(){
+    public static DivisionListSingleton getInstance(){
         return INSTANCE;
     }
 

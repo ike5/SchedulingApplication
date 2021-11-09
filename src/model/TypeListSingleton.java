@@ -6,16 +6,16 @@ import javafx.collections.ObservableList;
 /**
  * This class is used for holding a list of all types.
  */
-public final class TypeSingleton {
+public final class TypeListSingleton {
     private ObservableList<String> typeObservableList;
 
-    private final static TypeSingleton INSTANCE = new TypeSingleton();
+    private final static TypeListSingleton INSTANCE = new TypeListSingleton();
 
-    private TypeSingleton() {
+    private TypeListSingleton() {
         setTypeObservableList();
     }
 
-    public static TypeSingleton getInstance() {
+    public static TypeListSingleton getInstance() {
         return INSTANCE;
     }
 

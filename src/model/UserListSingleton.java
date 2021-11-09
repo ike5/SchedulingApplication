@@ -5,15 +5,15 @@ import javafx.collections.ObservableList;
 /**
  * This class is used for holding a list of all users.
  */
-public final class UserSingleton {
+public final class UserListSingleton {
     private ObservableList<User> userObservableList;
 
-    private static final UserSingleton INSTANCE = new UserSingleton();
+    private static final UserListSingleton INSTANCE = new UserListSingleton();
 
-    private UserSingleton() {
+    private UserListSingleton() {
     }
 
-    public static UserSingleton getInstance() {
+    public static UserListSingleton getInstance() {
         return INSTANCE;
     }
 

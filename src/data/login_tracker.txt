@@ -1,5 +1,0 @@
-This is an
-Example of a text
-with multiple
-lines
-!

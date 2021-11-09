@@ -2,14 +2,14 @@ package model;
 
 import javafx.collections.ObservableList;
 
-public final class CountrySingleton {
+public final class CountryListSingleton {
     private ObservableList<Country> countryObservableList;
 
-    private final static CountrySingleton INSTANCE = new CountrySingleton();
+    private final static CountryListSingleton INSTANCE = new CountryListSingleton();
 
-    private CountrySingleton(){}
+    private CountryListSingleton(){}
 
-    public static CountrySingleton getInstance(){
+    public static CountryListSingleton getInstance(){
         return INSTANCE;
     }
 

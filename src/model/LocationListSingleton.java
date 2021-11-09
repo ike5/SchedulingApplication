@@ -3,16 +3,16 @@ package model;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-public final class LocationSingleton {
+public final class LocationListSingleton {
     private ObservableList<String> locationObservableList;
 
-    private final static LocationSingleton INSTANCE = new LocationSingleton();
+    private final static LocationListSingleton INSTANCE = new LocationListSingleton();
 
-    private LocationSingleton(){
+    private LocationListSingleton(){
         setLocationObservableList();
     }
 
-    public static LocationSingleton getInstance(){ return INSTANCE; }
+    public static LocationListSingleton getInstance(){ return INSTANCE; }
 
     private void setLocationObservableList(){
         locationObservableList = FXCollections.observableArrayList(

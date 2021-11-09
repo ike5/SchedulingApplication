@@ -6,6 +6,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import main.Main;
+import model.User;
 import test.Test;
 import utils.ChangeScreen;
 import data.DBUsers;
@@ -58,6 +59,7 @@ public class LoginController implements Initializable {
     private void textFieldLogin(ActionEvent actionEvent) throws IOException {
         dbUsers = new DBUsers(username_field_id.getText(), password_field_id.getText());
 
+        makeLogEntry(dbUsers.getUser());
 
         ChangeScreen.changeScreen(
                 actionEvent,
@@ -82,9 +84,7 @@ public class LoginController implements Initializable {
 
         dbUsers = new DBUsers(username_field_id.getText(), password_field_id.getText());
 
-        try(var fis = new FileInputStream(new File("/data/login_tracker.txt"))){
-            System.out.println(fis.read());
-        }
+        makeLogEntry(dbUsers.getUser());
 
         ChangeScreen.changeScreen(
                 actionEvent,
@@ -92,6 +92,13 @@ public class LoginController implements Initializable {
                 FXMLLoader.load(getClass().getResource("/view/Customers.fxml")),
                 aEvent -> (Stage) ((Button) aEvent.getSource()).getScene().getWindow()
         );
+    }
+
+    void makeLogEntry(User user) throws FileNotFoundException {
+        File fileName = new File("src/data/login_tracker.log");
+        try(PrintWriter out = new PrintWriter(fileName)){
+            out.write(user == null ? "Null" : user.toString());
+        }
     }
 
     /**
