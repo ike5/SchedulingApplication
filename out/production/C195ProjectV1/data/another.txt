@@ -1,5 +1,5 @@
-This is an
-Example of a text
-with multiple
-lines
+THIS IS AN
+EXAMPLE OF A TEXT
+WITH MULTIPLE
+LINES
 !
