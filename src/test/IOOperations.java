@@ -2,6 +2,11 @@ package test;
 
 import java.io.*;
 import java.io.Reader;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.file.FileSystems;
+import java.nio.file.FileSystem;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -110,13 +115,11 @@ public File(String parent, String child)
    //**************************************************
 
 
-    public static void main(String[] args) throws IOException, ClassNotFoundException {
-        Console console = System.console();
-        if(console != null){
-            String userInput = console.readLine();
-            console.writer().println("You entered: " + userInput);
-        } else {
-            System.err.println("Console not available");
-        }
+    public static void main(String[] args) throws URISyntaxException {
+         Path path = FileSystems.getDefault().getPath("src/data/login_tracker.log");
+         FileSystem fileSystem = FileSystems.getFileSystem(new URI("http://www.selikoff.net"));
+         Path path2 = fileSystem.getPath("duck.txt");
+
+        System.out.println(path.toString());
     }
 }
