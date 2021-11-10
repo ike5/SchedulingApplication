@@ -111,13 +111,12 @@ public File(String parent, String child)
 
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
-        try(PrintWriter out = new PrintWriter("src/data/zoo.log")){
-//            out.write(String.valueOf(5));
-//            out.print(5);
-
-            var a = new IOOperations().new Cat("Fluffy", 12, true);
-//            out.write(a == null ? "null" : a.toString());
-            out.print(a);
+        Console console = System.console();
+        if(console != null){
+            String userInput = console.readLine();
+            console.writer().println("You entered: " + userInput);
+        } else {
+            System.err.println("Console not available");
         }
     }
 }
