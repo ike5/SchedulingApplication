@@ -332,39 +332,39 @@ public File(String parent, String child)
         }
     }
 
-    class CopyPath{
+    class CopyPath {
         //Makes a deep copy
         // will not follow symbolic links
-        void copyPath(Path source, Path target){
-            try{
+        void copyPath(Path source, Path target) {
+            try {
                 Files.copy(source, target);
-                if(Files.isDirectory(source)){
-                    try (Stream<Path> s = Files.list(source)){
+                if (Files.isDirectory(source)) {
+                    try (Stream<Path> s = Files.list(source)) {
                         s.forEach(p -> copyPath(p, target.resolve(p.getFileName())));
                     }
                 }
-            } catch (IOException e){
+            } catch (IOException e) {
                 // Handle exception
             }
         }
 
-        CopyPath(){
+        CopyPath() {
             copyPath(Paths.get("src/data/login_tracker.log"), Path.of("src/test/login.log"));
         }
     }
 
     // helper method for method below
-    long getSize(Path p ){
-        try{
+    long getSize(Path p) {
+        try {
             return Files.size(p);
-        }catch (IOException e){
+        } catch (IOException e) {
             //
         }
         return 0L;
     }
 
     long getPathSize(Path source) throws IOException {
-        try(var s = Files.walk(source)){
+        try (var s = Files.walk(source)) {
             return s.parallel()
                     .filter(p -> !Files.isDirectory(p))
                     .mapToLong(this::getSize) // uses helper method
@@ -372,18 +372,61 @@ public File(String parent, String child)
         }
     }
 
-    void printData(){
+    void printData() {
         try {
             var size = getPathSize(Path.of("src"));
-            System.out.format("Total size: %.2f megabytes", (size/1000000.0));
-        } catch (IOException e){
+            System.out.format("Total size: %.2f megabytes", (size / 1000000.0));
+        } catch (IOException e) {
             //
+        }
+    }
+
+    long applyingDepthLimit(Path source) throws IOException {
+        try (var s = Files.walk(source, 5)) {
+            return s.parallel()
+                    .filter(p -> !Files.isDirectory(p))
+                    .mapToLong(this::getSize) // uses helper method
+                    .sum();
+        }
+    }
+
+    long walkFollowSymbolicLinksGetPath(Path source) throws IOException {
+        try (var s = Files.walk(source, FileVisitOption.FOLLOW_LINKS)) {
+            return s.parallel()
+                    .filter(p -> !Files.isDirectory(p))
+                    .mapToLong(this::getSize) // uses helper method
+                    .sum();
+        }
+    }
+
+    void searchingADirectory() {
+        Path path = Paths.get("src/test");
+        long minSize = 1_000;
+        try (var s = Files.find(path, 10,
+                (p, a) -> a.isRegularFile() &&
+                        p.toString().endsWith(".log") &&
+                        a.size() > minSize)) {
+            s.forEach(System.out::println);
+        } catch (IOException e) {
+            System.err.println("Didn't find anything");
+        }
+    }
+
+    void readingAFileWithLines() {
+        // good for memory because uses a Stream
+        Path path = Paths.get("src/test/login.log");
+        try (var s = Files.lines(path)) {
+            s.filter(f -> f.startsWith("WARN:")) // searches log lines with WARN
+                    .map(f -> f.substring(5))
+                    .forEach(System.out::println);
+        } catch (IOException e){
+            System.err.println("Something went wrong");
         }
     }
 
 
     public static void main(String[] args) throws IOException {
-        new NIO2().printData();
+        new NIO2().readingAFileWithLines();
     }
 
 

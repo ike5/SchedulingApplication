@@ -1,2 +1,5 @@
-package model;public enum LogMessages {
+package model;
+
+public enum LogMessage {
+    SUCCESS, FAILURE, ALL
 }
