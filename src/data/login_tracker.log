@@ -1,1 +1,29 @@
-2 admin admin
+Smokey
+Yogi
+        new IOOperations().readingAFile();
+
+
+
+    void bufferedReader() throws IOException {
+        var path = Path.of("src/data/login_tracker.log");
+        try (var reader = Files.newBufferedReader(path)) {
+            String currentLine = null;
+            while ((currentLine = reader.readLine()) != null) {
+                System.out.println(currentLine);
+            }
+        }
+    }
+
+    void bufferedWriter() throws IOException {
+        var list = new ArrayList<String>();
+        list.add("Smokey");
+        list.add("Yogi");
+
+        var path = Path.of("src/data/login_tracker.log");
+        try (var writer = Files.newBufferedWriter(path)) {
+            for(var line : list){
+                writer.write(line);
+                writer.newLine();
+            }
+        }
+    }
