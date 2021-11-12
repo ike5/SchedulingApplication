@@ -2,14 +2,16 @@ package test;
 
 import java.io.*;
 import java.io.Reader;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributeView;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.nio.file.attribute.FileTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 
-public class IOOperations implements Serializable {
+public class NIO2 implements Serializable {
     /*
 3 File constructors:
 
@@ -121,7 +123,7 @@ public File(String parent, String child)
     }
 
     void pathInfoTest() {
-        IOOperations o = new IOOperations();
+        NIO2 o = new NIO2();
         o.printPathInformation(Path.of("zoo"));
         o.printPathInformation(Path.of("/zoo/armadillo/shells.txt"));
         o.printPathInformation(Path.of("./armadillo/../shells.txt"));
@@ -236,9 +238,152 @@ public File(String parent, String child)
         }
     }
 
+    void commonFileAttributes() {
+        System.out.println(Files.isDirectory(Paths.get("/canine/fur.jpg")));
+        System.out.println(Files.isSymbolicLink(Paths.get("src/data/login_tracker.log")));
+        System.out.println(Files.isRegularFile(Paths.get("src/data/login_tracker.log")));
+
+        System.out.println(Files.isReadable(Paths.get("src/data/login_tracker.log")));
+        System.out.println(Files.isWritable(Paths.get("src/data/login_tracker.log")));
+        System.out.println(Files.isExecutable(Paths.get("src/data/login_tracker.log")));
+
+        try {
+            System.out.println(Files.isHidden(Paths.get("src/data/login_tracker.log"))); // throws exception
+        } catch (IOException e) {
+            System.err.println("Doesn't work");
+        } finally {
+            System.err.println("Processed... ");
+        }
+    }
+
+    void readingFileSize() {
+        // Returns in bytes
+        // Only  defined in files, not directories
+        // Walk a directory to get the size of a directory
+        try {
+            System.out.println(Files.size(Paths.get("src/data/login_tracker.log")));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    void checkingForFileChanges() {
+        // returns a FileTime object
+        final Path path = Paths.get("src/data/login_tracker.log");
+
+        try {
+            System.out.println(Files.getLastModifiedTime(path));
+            System.out.println(Files.getLastModifiedTime(path).toMillis());
+        } catch (IOException e) {
+            ///
+        }
+    }
+
+    void retrievingAttributes() {
+        //read only using readAttributes()
+        var path = Paths.get("src/data/login_tracker.log");
+
+        try {
+            BasicFileAttributes data = Files.readAttributes(path, BasicFileAttributes.class);
+
+            System.out.println("Is a directory? " + data.isDirectory());
+            System.out.println("Is regular file? " + data.isRegularFile());
+            System.out.println("Is symbolic link? " + data.isSymbolicLink());
+            System.out.println("Size (in bytes): " + data.size());
+            System.out.println("Last modified: " + data.lastModifiedTime());
+
+        } catch (IOException e) {
+            //
+        }
+    }
+
+    void modifyingAttributes() {
+        //updatable with getFileAttributeView()
+        var path = Paths.get("src/data/login_tracker.log");
+
+        BasicFileAttributeView view = Files.getFileAttributeView(path, BasicFileAttributeView.class);
+
+        try {
+            BasicFileAttributes attributes = view.readAttributes();
+            System.out.println(attributes.lastModifiedTime()); // original time
+
+            // add 10k milliseconds
+            FileTime lastModifiedTime = FileTime.fromMillis(attributes.lastModifiedTime().toMillis() + 10_000);
+            view.setTimes(lastModifiedTime, null, null);
+
+            System.out.println(view.readAttributes().lastModifiedTime()); // modified time
+        } catch (IOException e) {
+            // reading attributes
+        }
+
+    }
+
+    void listingDirectoryContents() {
+        try (Stream<Path> dataPath = Files.list(Path.of("src/data"));
+             Stream<Path> srcPath = Files.list(Path.of("src"));
+             Stream<Path> allPath = Files.list(Path.of("/"))) {
+            dataPath.forEach(System.out::println);
+            srcPath.forEach(System.out::println);
+            allPath.forEach(System.out::println);
+        } catch (NoSuchFileException e) {
+            System.err.println("No such file");
+        } catch (IOException e) {
+            System.err.println("Regular io exception");
+        }
+    }
+
+    class CopyPath{
+        //Makes a deep copy
+        // will not follow symbolic links
+        void copyPath(Path source, Path target){
+            try{
+                Files.copy(source, target);
+                if(Files.isDirectory(source)){
+                    try (Stream<Path> s = Files.list(source)){
+                        s.forEach(p -> copyPath(p, target.resolve(p.getFileName())));
+                    }
+                }
+            } catch (IOException e){
+                // Handle exception
+            }
+        }
+
+        CopyPath(){
+            copyPath(Paths.get("src/data/login_tracker.log"), Path.of("src/test/login.log"));
+        }
+    }
+
+    // helper method for method below
+    long getSize(Path p ){
+        try{
+            return Files.size(p);
+        }catch (IOException e){
+            //
+        }
+        return 0L;
+    }
+
+    long getPathSize(Path source) throws IOException {
+        try(var s = Files.walk(source)){
+            return s.parallel()
+                    .filter(p -> !Files.isDirectory(p))
+                    .mapToLong(this::getSize) // uses helper method
+                    .sum();
+        }
+    }
+
+    void printData(){
+        try {
+            var size = getPathSize(Path.of("src"));
+            System.out.format("Total size: %.2f megabytes", (size/1000000.0));
+        } catch (IOException e){
+            //
+        }
+    }
+
 
     public static void main(String[] args) throws IOException {
-        new IOOperations().tryCatchSyntax();
+        new NIO2().printData();
     }
 
 
