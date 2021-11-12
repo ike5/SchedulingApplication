@@ -1,12 +1,17 @@
 package data;
 
+import main.Main;
+import model.Log;
 import model.LogType;
+import model.User;
 
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -15,6 +20,9 @@ public class LoginTracker {
 
     // Create lines in the log with appropriate messages
     // Read lines in the log
+
+    // Helper method
+
 
     public static void readLogMessages(Path path, LogType logType) {
         // good for memory because uses a Stream
@@ -28,7 +36,6 @@ public class LoginTracker {
     }
 
     public static void addToLog(Path path, LogType logType, String logMessage) {
-
         try(var writer = Files.newBufferedWriter(path, StandardOpenOption.APPEND)){
             writer
                     .append(logType.name())
@@ -38,7 +45,6 @@ public class LoginTracker {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     public static void readAllMessages(Path path) {
@@ -51,6 +57,24 @@ public class LoginTracker {
     }
 
     public static void main(String[] args) {
-        addToLog(Path.of("src/data/login.log"), LogType.ALL, "S: Test");
+        readLogMessages(Path.of("src/data/login.log"), LogType.FAILURE);
+    }
+
+    public static void addToObjectLog(User user){
+        Log log = new Log(
+                user,
+                Timestamp.valueOf(LocalDateTime.now()),
+                (user.isValidUsername() && user.isValidPassword())
+        );
+
+        try(var obj = new ObjectOutputStream(new FileOutputStream("src/data/login.data"))){
+            obj.writeObject(log);
+            System.out.println("Object successfully written");
+        } catch (FileNotFoundException e){
+            System.err.println("File not found");
+        } catch (IOException e){
+            System.err.println("IO exception");
+            e.printStackTrace();
+        }
     }
 }

@@ -1,14 +1,25 @@
 package utils;
 
 import data.DBUsers;
+import data.LoginTracker;
 import javafx.event.ActionEvent;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import main.Main;
+import model.Log;
+import model.LogType;
+import model.User;
 import test.Test;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.nio.file.Path;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -19,6 +30,9 @@ public class ChangeScreen {
         new Test("changeScreen() lambda called");
         ResourceBundle rb = ResourceBundle.getBundle("RBundle", Locale.getDefault());
         Main.user = userLogin.getUser();
+
+        //FIXME - Not serializable
+        LoginTracker.addToObjectLog(Main.user);
 
         if (userLogin.getUser().isValidUsername()) {
             if (userLogin.getUser().isValidPassword()) {

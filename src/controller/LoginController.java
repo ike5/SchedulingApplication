@@ -1,11 +1,14 @@
 package controller;
 
+import data.LoginTracker;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.util.Pair;
 import main.Main;
+import model.LogType;
 import model.User;
 import test.Test;
 import utils.ChangeScreen;
@@ -21,6 +24,8 @@ import javafx.stage.Stage;
 
 import java.io.*;
 import java.net.URL;
+import java.nio.file.Path;
+import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
@@ -59,7 +64,8 @@ public class LoginController implements Initializable {
     private void textFieldLogin(ActionEvent actionEvent) throws IOException {
         dbUsers = new DBUsers(username_field_id.getText(), password_field_id.getText());
 
-        makeLogEntry(dbUsers.getUser());
+        Pair<String, String> usernamePasswordReceived = new Pair<>(username_field_id.getText(), password_field_id.getText());
+        makeLogEntry(usernamePasswordReceived);
 
         ChangeScreen.changeScreen(
                 actionEvent,
@@ -84,7 +90,8 @@ public class LoginController implements Initializable {
 
         dbUsers = new DBUsers(username_field_id.getText(), password_field_id.getText());
 
-        makeLogEntry(dbUsers.getUser());
+        Pair<String, String> usernamePasswordReceived = new Pair<>(username_field_id.getText(), password_field_id.getText());
+        makeLogEntry(usernamePasswordReceived);
 
         ChangeScreen.changeScreen(
                 actionEvent,
@@ -94,12 +101,25 @@ public class LoginController implements Initializable {
         );
     }
 
-    void makeLogEntry(User user) throws FileNotFoundException {
-        File fileName = new File("src/data/login.log");
-        try(PrintWriter out = new PrintWriter(fileName)){
-            out.write(user == null ? "Null" : user.toString());
+    void makeLogEntry(Pair<String, String> usernamePasswordReceived)  {
+        if(dbUsers.getUser().isValidUsername() && dbUsers.getUser().isValidPassword()){
+            LoginTracker.addToLog(
+                    Path.of("src/data/login.log"),
+                    LogType.SUCCESS,
+                    "Username: " + usernamePasswordReceived.getKey() +
+                            "\tPassword: " + usernamePasswordReceived.getValue() +
+                            "\tLocalDateTime: " + LocalDateTime.now());
+        } else  {
+            LoginTracker.addToLog(
+                    Path.of("src/data/login.log"),
+                    LogType.FAILURE,
+                    "Username: " + usernamePasswordReceived.getKey() +
+                            "\tPassword: " + usernamePasswordReceived.getValue() +
+                            "\tLocalDateTime: " + LocalDateTime.now());
         }
     }
+
+
 
     /**
      * Validates a username by matching string values that begin with a number or letter, and contains
