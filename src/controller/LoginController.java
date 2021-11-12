@@ -95,7 +95,7 @@ public class LoginController implements Initializable {
     }
 
     void makeLogEntry(User user) throws FileNotFoundException {
-        File fileName = new File("src/data/login_tracker.log");
+        File fileName = new File("src/data/login.log");
         try(PrintWriter out = new PrintWriter(fileName)){
             out.write(user == null ? "Null" : user.toString());
         }

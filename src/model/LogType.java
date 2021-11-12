@@ -1,5 +1,5 @@
 package model;
 
-public enum LogMessage {
+public enum LogType {
     SUCCESS, FAILURE, ALL
 }
