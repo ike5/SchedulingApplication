@@ -102,14 +102,14 @@ public class LoginController implements Initializable {
     void makeLogEntry(Pair<String, String> usernamePasswordReceived) {
         if (dbUsers.getUser().isValidUsername() && dbUsers.getUser().isValidPassword()) {
             LoginTracker.addToLog(
-                    Path.of("src/login_activity.txt"),
+                    Path.of("login_activity.txt"),
                     LogType.SUCCESS,
                     "Username: " + usernamePasswordReceived.getKey() +
                             "\tPassword: " + usernamePasswordReceived.getValue() +
                             "\tLocalDateTime: " + LocalDateTime.now());
         } else {
             LoginTracker.addToLog(
-                    Path.of("src/login_activity.txt"),
+                    Path.of("login_activity.txt"),
                     LogType.FAILURE,
                     "Username: " + usernamePasswordReceived.getKey() +
                             "\tPassword: " + usernamePasswordReceived.getValue() +

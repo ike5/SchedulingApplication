@@ -93,7 +93,7 @@ public class CustomersController implements Initializable {
         // TableView listener
         table_view_id.getSelectionModel().selectedItemProperty().addListener((observableValue, oldSelection, newSelection) -> {
 
-            //FIXME Be able to update the Division combo without affecting the Country combo
+                    //FIXME Be able to update the Division combo without affecting the Country combo
 
                     if (newSelection != null) {
                         customer_id_id.setText(String.valueOf(((Customer) newSelection).getId()));
@@ -101,8 +101,22 @@ public class CustomersController implements Initializable {
                         address_id.setText(((Customer) newSelection).getAddress());
                         phone_number_id.setText(((Customer) newSelection).getPhone());
                         postal_code_id.setText(((Customer) newSelection).getPostalCode());
-                        division_combo_id.setValue(((Customer) newSelection).getDivision());
-                        country_combo_id.setValue(((Customer) newSelection).getCountry());
+
+                        for(Country c : country_combo_id.getItems()){
+                            if(c.getCountryId() == ((Customer) newSelection).getCountryId()){
+                                country_combo_id.setValue(c);
+                                break;
+                            }
+                        }
+
+
+                        for (Division d : division_combo_id.getItems()) {
+                            if (d.getDivisionId() == ((Customer) newSelection).getDivisionId()) {
+                                division_combo_id.setValue(d);
+                                break;
+                            }
+                        }
+
 
 //                        ComboInterface divisionCombo = new DivisionCombo();
 //                        ComboInterface countryCombo = new CountryCombo();
@@ -113,9 +127,7 @@ public class CustomersController implements Initializable {
         );
 
         country_combo_id.setOnAction(actionEvent -> {
-            if (division_combo_id.getValue() == null | country_combo_id.getValue() == null) {
-                division_combo_id.setItems(DBDivisions.getDivisions(country_combo_id.getValue().getCountryId()));
-            }
+            division_combo_id.setItems(DBDivisions.getDivisions(country_combo_id.getValue().getCountryId()));
         });
 
         // Alert User if any upcoming appointments for themselves
