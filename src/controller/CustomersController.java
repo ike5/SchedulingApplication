@@ -189,7 +189,7 @@ public class CustomersController implements Initializable {
         new Test("isEmptyTableView: " + isEmptyTableView);
 
         if (isEmptyTableView) {
-            if (isMissingTextFieldValues()) {
+            if (isMissingTextFieldValues() || isMissingComboBoxValues()) {
                 Alert alert = new Alert(Alert.AlertType.WARNING, "Invalid/Missing fields");
                 alert.showAndWait();
             } else {
@@ -206,9 +206,10 @@ public class CustomersController implements Initializable {
             }
         } else {
             // Update selected Customer
-            if (isMissingTextFieldValues()) {
+            if (isMissingTextFieldValues() || isMissingComboBoxValues()) {
                 new Test("isMissingTextFieldValues(): " + isMissingTextFieldValues());
-                Alert alert = new Alert(Alert.AlertType.WARNING, "Missing TextField values");
+                new Test("isMissingComboBoxValues(): " + isMissingComboBoxValues());
+                Alert alert = new Alert(Alert.AlertType.WARNING, "Missing filed or combo values");
                 alert.showAndWait();
             } else if (isFieldValuesChanged()) {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Save changes?");
@@ -287,7 +288,8 @@ public class CustomersController implements Initializable {
         );
     }
 
-    private boolean isMissingComboBoxValues(){
+    private boolean isMissingComboBoxValues() {
+        return division_combo_id.getSelectionModel().isEmpty() || country_combo_id.getSelectionModel().isEmpty();
     }
 
     public void customerNameOnKeyTyped(KeyEvent keyEvent) {
