@@ -1,6 +1,5 @@
 package controller;
 
-import data.DBAppointment;
 import data.DBDivisions;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -22,7 +21,6 @@ import test.Test;
 
 import java.io.IOException;
 import java.net.URL;
-import java.time.LocalDate;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -99,8 +97,8 @@ public class CustomersController implements Initializable {
                         phone_number_id.setText(((Customer) newSelection).getPhone());
                         postal_code_id.setText(((Customer) newSelection).getPostalCode());
 
-                        for(Country c : country_combo_id.getItems()){
-                            if(c.getCountryId() == ((Customer) newSelection).getCountryId()){
+                        for (Country c : country_combo_id.getItems()) {
+                            if (c.getCountryId() == ((Customer) newSelection).getCountryId()) {
                                 country_combo_id.setValue(c);
                                 break;
                             }
@@ -131,50 +129,71 @@ public class CustomersController implements Initializable {
 //        }
     }
 
+    /**
+     * Clears all fields
+     *
+     * @param actionEvent
+     */
     public void clearFormButtonOnAction(ActionEvent actionEvent) {
-        // Clear all fields and set ComboBoxes to first item
         table_view_id.getSelectionModel().clearSelection();
         customer_id_id.clear();
         customer_name_id.clear();
         address_id.clear();
         postal_code_id.clear();
         phone_number_id.clear();
-        resetComboBoxes();
     }
 
-    //FIXME - When resetting the combo boxes, this invalidates the logic used to set the country and division in the below methods.
-    private void resetComboBoxes() {
-    }
+    /**
+     * Checks to see if any field values or ComboBoxes have changed after a TableView row has been selected.
+     * Use when updating a Customer.
+     *
+     * @return Returns true if any fields or ComboBoxes have been changed.
+     */
+    private boolean isFieldValuesChanged() {
+        boolean isEmptyTableView = table_view_id.getSelectionModel().isEmpty();
 
-    private boolean isValuesChanged() {
-        if (!table_view_id.getSelectionModel().isEmpty()) {
-            isValuesChanged = !(((Customer) table_view_id.getSelectionModel().getSelectedItem()).getName().equals(customer_name_id.getText()) &
-                    ((Customer) table_view_id.getSelectionModel().getSelectedItem()).getAddress().equals(address_id.getText()) &
-                    ((Customer) table_view_id.getSelectionModel().getSelectedItem()).getPhone().equals(phone_number_id.getText()) &
-                    ((Customer) table_view_id.getSelectionModel().getSelectedItem()).getPostalCode().equals(postal_code_id.getText()) &
-                    ((Customer) table_view_id.getSelectionModel().getSelectedItem()).getCountry().equals(country_combo_id.getValue()) &
-                    ((Customer) table_view_id.getSelectionModel().getSelectedItem()).getDivision().equals(division_combo_id.getValue())
+//        Country actualCountryObjectInComboBox = null;
+//        for (Country c : country_combo_id.getItems()) {
+//            if (c.getCountryId() == ((Customer) table_view_id.getSelectionModel().getSelectedItem()).getCountryId()) {
+//                // get actual object
+//                actualCountryObjectInComboBox = c;
+//                break;
+//            }
+//        }
+//
+//        Division actualDivisionObjInComboBox = null;
+//        for (Division d : division_combo_id.getItems()) {
+//            if (d.getDivisionId() == ((Customer) table_view_id.getSelectionModel().getSelectedItem()).getDivisionId()) {
+//                // get actual object
+//                actualDivisionObjInComboBox = d;
+//                break;
+//            }
+//        }
+
+        if (!isEmptyTableView) {
+            isValuesChanged = !(((Customer) table_view_id.getSelectionModel().getSelectedItem()).getName().equals(customer_name_id.getText()) &&
+                    ((Customer) table_view_id.getSelectionModel().getSelectedItem()).getAddress().equals(address_id.getText()) &&
+                    ((Customer) table_view_id.getSelectionModel().getSelectedItem()).getPhone().equals(phone_number_id.getText()) &&
+                    ((Customer) table_view_id.getSelectionModel().getSelectedItem()).getPostalCode().equals(postal_code_id.getText())
             );
-            new Test("Name matches: " + ((Customer) table_view_id.getSelectionModel().getSelectedItem()).getName().equals(customer_name_id.getText()));
-            new Test("Address matches: " + ((Customer) table_view_id.getSelectionModel().getSelectedItem()).getAddress().equals(address_id.getText()));
-            new Test("Phone matches: " + ((Customer) table_view_id.getSelectionModel().getSelectedItem()).getPhone().equals(phone_number_id.getText()));
-            new Test("Postal matches: " + ((Customer) table_view_id.getSelectionModel().getSelectedItem()).getPostalCode().equals(postal_code_id.getText()));
-            new Test("Country matches: " + ((Customer) table_view_id.getSelectionModel().getSelectedItem()).getCountry().equals(country_combo_id.getValue()));
-            new Test("Division matches: " + ((Customer) table_view_id.getSelectionModel().getSelectedItem()).getDivision().equals(division_combo_id.getValue()));
+
         } else {
             isValuesChanged = false;
         }
         return isValuesChanged;
     }
 
-    //FIXME
-    // - after saving, repopulate the textfields from the database so that you can get the customer ID value
+
     public void saveButtonOnAction(ActionEvent actionEvent) {
-        if (table_view_id.getSelectionModel().isEmpty()) {// Make a new Customer
-            if (isMissingTextFieldValues()) { // Alert user of missing fields
-                Alert alert = new Alert(Alert.AlertType.WARNING, "Invalid/Missing values provided");
+        boolean isEmptyTableView = table_view_id.getSelectionModel().isEmpty();
+        new Test("isEmptyTableView: " + isEmptyTableView);
+
+        if (isEmptyTableView) {
+            if (isMissingTextFieldValues()) {
+                Alert alert = new Alert(Alert.AlertType.WARNING, "Invalid/Missing fields");
                 alert.showAndWait();
-            } else { // Save new customer information
+            } else {
+                // Save new Customer
                 DBCustomers.insertCustomer(
                         customer_name_id.getText().trim(),
                         address_id.getText().trim(),
@@ -183,13 +202,15 @@ public class CustomersController implements Initializable {
                         division_combo_id.getSelectionModel().getSelectedItem().getDivisionId(),
                         Main.user
                 );
-                repopulateTaleView();
+                populateTableView();
             }
-        } else { // Update an existing Customer
-            if (isMissingTextFieldValues()) { // Alert user of missing fields
+        } else {
+            // Update selected Customer
+            if (isMissingTextFieldValues()) {
+                new Test("isMissingTextFieldValues(): " + isMissingTextFieldValues());
                 Alert alert = new Alert(Alert.AlertType.WARNING, "Missing TextField values");
                 alert.showAndWait();
-            } else if (isValuesChanged()) { // If any changes made to field, alert user before updating
+            } else if (isFieldValuesChanged()) {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Save changes?");
                 alert.setTitle("Save or Discard");
                 Optional<ButtonType> result = alert.showAndWait();
@@ -204,13 +225,19 @@ public class CustomersController implements Initializable {
                                     division_combo_id.getSelectionModel().getSelectedItem()
                             )
                     );
-                    repopulateTaleView();
+                    populateTableView();
                 }
+            } else {
+                Alert alert = new Alert(Alert.AlertType.WARNING, "No changes made.");
+                alert.showAndWait();
             }
         }
     }
 
-    public void repopulateTaleView() {
+    /**
+     * Helper method that repopulates the Customers TableView.
+     */
+    private void populateTableView() {
         customerObservableList = DBCustomers.getAllCustomers();
         table_view_id.setItems(customerObservableList);
         table_view_id.refresh(); // not necessary?
@@ -253,7 +280,14 @@ public class CustomersController implements Initializable {
     }
 
     private boolean isMissingTextFieldValues() {
-        return !(isValidTextField(customer_name_id) & isValidTextField(address_id) & isValidTextField(postal_code_id) & isValidTextField(phone_number_id));
+        return !(isValidTextField(customer_name_id) &&
+                isValidTextField(address_id) &&
+                isValidTextField(postal_code_id) &&
+                isValidTextField(phone_number_id)
+        );
+    }
+
+    private boolean isMissingComboBoxValues(){
     }
 
     public void customerNameOnKeyTyped(KeyEvent keyEvent) {
