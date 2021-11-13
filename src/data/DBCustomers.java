@@ -279,6 +279,9 @@ public class DBCustomers {
      * @return Returns -1 if unsuccessful and > 1 if successful
      */
     public static void deleteCustomerById(int customerId) {
+
+        //FIXME -delete from appointments instead of updating. Just delete all the appointments related
+        // to that customer
         String sql_update = "UPDATE appointments SET Customer_ID = NULL WHERE Customer_ID = ?";
         String sql_delete = "DELETE FROM customers WHERE Customer_ID = ?";
 

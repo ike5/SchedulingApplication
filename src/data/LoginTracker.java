@@ -29,7 +29,7 @@ public class LoginTracker {
     }
 
     public static void addToLog(Path path, LogType logType, String logMessage) {
-        try (var writer = Files.newBufferedWriter(path, StandardOpenOption.APPEND)) {
+        try (var writer = Files.newBufferedWriter(path, StandardOpenOption.CREATE, StandardOpenOption.APPEND)) {
             writer
                     .append(logType.name())
                     .append("\t")

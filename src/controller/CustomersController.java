@@ -92,9 +92,6 @@ public class CustomersController implements Initializable {
 
         // TableView listener
         table_view_id.getSelectionModel().selectedItemProperty().addListener((observableValue, oldSelection, newSelection) -> {
-
-                    //FIXME Be able to update the Division combo without affecting the Country combo
-
                     if (newSelection != null) {
                         customer_id_id.setText(String.valueOf(((Customer) newSelection).getId()));
                         customer_name_id.setText(((Customer) newSelection).getName());
@@ -109,19 +106,12 @@ public class CustomersController implements Initializable {
                             }
                         }
 
-
                         for (Division d : division_combo_id.getItems()) {
                             if (d.getDivisionId() == ((Customer) newSelection).getDivisionId()) {
                                 division_combo_id.setValue(d);
                                 break;
                             }
                         }
-
-
-//                        ComboInterface divisionCombo = new DivisionCombo();
-//                        ComboInterface countryCombo = new CountryCombo();
-//                        divisionCombo.setComboBox((Customer) newSelection, division_combo_id);
-//                        countryCombo.setComboBox((Customer) newSelection, country_combo_id);
                     }
                 }
         );
