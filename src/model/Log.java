@@ -1,37 +1,44 @@
 package model;
 
+import javafx.util.Pair;
+
 import java.io.Serializable;
 import java.sql.Timestamp;
 
 public class Log implements Serializable {
-    private static final long serialVersionID = 1L;
-
-    transient private User user;
+    private static final long serialVersionUID = -8038516943656318192L;
+    private Pair<String, String> usernameAndPasswordReceived;
+    private String user;
     private Timestamp timestamp;
-    private boolean isSuccessful;
+    private Boolean isSuccessful;
 
-    public Log(User user, Timestamp timestamp, boolean isSuccessful) {
-        this.user = user;
+    public Log(Pair<String, String> usernameAndPasswordReceived, Timestamp timestamp, Boolean isSuccessful) {
+        this.usernameAndPasswordReceived = usernameAndPasswordReceived;
         this.timestamp = timestamp;
         this.isSuccessful = isSuccessful;
+        this.user = usernameAndPasswordReceived.getKey();
     }
 
-    public User getUser() {
+    public String getUser() {
         return user;
+    }
+
+    public Pair<String, String> getUsernameAndPasswordReceived() {
+        return usernameAndPasswordReceived;
     }
 
     public Timestamp getTimestamp() {
         return timestamp;
     }
 
-    public boolean isSuccessful() {
+    public Boolean getIsSuccessful() {
         return isSuccessful;
     }
 
     @Override
     public String toString() {
         return "Log{" +
-                "user=" + user +
+                "usernameAndPasswordReceived=" + usernameAndPasswordReceived +
                 ", timestamp=" + timestamp +
                 ", isSuccessful=" + isSuccessful +
                 '}';

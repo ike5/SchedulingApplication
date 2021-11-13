@@ -1,9 +1,11 @@
 package data;
 
+import javafx.util.Pair;
 import main.Main;
 import model.Log;
 import model.LogType;
 import model.User;
+import test.Test;
 
 import java.io.*;
 import java.nio.file.*;
@@ -47,29 +49,12 @@ public class LoginTracker {
         }
     }
 
-    public static void addToObjectLog(User user) {
+    public static void addToObjectLog(Pair<String, String> usernameAndPasswordReceived) {
         Log log = new Log(
-                user,
+                usernameAndPasswordReceived,
                 Timestamp.valueOf(LocalDateTime.now()),
-                (user.isValidUsername() && user.isValidPassword())
+                (Main.user.isValidUsername() && Main.user.isValidPassword())
         );
-
-        var b = Files.exists(Paths.get("src/data/login.data"));
-        if (b) {
-            try (var obj = new ObjectOutputStream(
-                    new BufferedOutputStream(
-                            new FileOutputStream("src/data/login.data")))) {
-                obj.writeObject(log);
-                System.out.println("Object successfully written");
-            } catch (FileNotFoundException e) {
-                System.err.println("File not found");
-            } catch (IOException e) {
-                System.err.println("IO exception");
-                e.printStackTrace();
-            }
-        } else {
-            System.err.println("File does not exist");
-        }
     }
 
     public static void serializeLog(List<Log> logs, File file) throws IOException {
@@ -78,6 +63,7 @@ public class LoginTracker {
                         new FileOutputStream(file)))) {
             for (Log log : logs) {
                 out.writeObject(log);
+                new Test();
             }
         }
     }

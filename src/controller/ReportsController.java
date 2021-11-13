@@ -2,8 +2,10 @@ package controller;
 
 import data.DBAppointment;
 import data.DBContacts;
+import data.LoginTracker;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -15,11 +17,17 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.MapValueFactory;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import javafx.util.Callback;
+import javafx.util.Pair;
 import model.Appointment;
 import model.Contact;
+import model.Log;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Timestamp;
+import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
@@ -71,7 +79,22 @@ public class ReportsController implements Initializable {
         contact_end_column.setCellValueFactory(new PropertyValueFactory<Appointment, String>("EndString"));
         contact_customer_id_column.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("CustomerId"));
 
-        // Initialize
+        // Initialize Login report
+        // Deserialize log
+        File file = new File("src/data/login.data");
+        List<Log> logList = null;
+        try {
+            logList = LoginTracker.deserializeLog(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        user_table_view.setItems(FXCollections.observableArrayList(logList));
+        user_user_column.setCellValueFactory(new PropertyValueFactory<Log, String>("User"));
+        user_timestamp_column.setCellValueFactory(new PropertyValueFactory<Log, Timestamp>("Timestamp"));
+        user_success_column.setCellValueFactory(new PropertyValueFactory<Log, Boolean>("IsSuccessful"));
+
+
+
 
         // Initialize customer tab data
         mapObservableListTypesValues = DBAppointment.getMapOfTypesAndValue();

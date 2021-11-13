@@ -8,6 +8,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.util.Pair;
 import main.Main;
+import model.Log;
 import model.LogType;
 import model.User;
 import test.Test;
@@ -26,6 +27,7 @@ import java.io.*;
 import java.net.URL;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
@@ -63,19 +65,15 @@ public class LoginController implements Initializable {
 
     private void textFieldLogin(ActionEvent actionEvent) throws IOException {
         dbUsers = new DBUsers(username_field_id.getText(), password_field_id.getText());
-
         Pair<String, String> usernamePasswordReceived = new Pair<>(username_field_id.getText(), password_field_id.getText());
-        makeLogEntry(usernamePasswordReceived);
 
         ChangeScreen.changeScreen(
                 actionEvent,
                 dbUsers,
+                usernamePasswordReceived,
                 FXMLLoader.load(getClass().getResource("/view/Customers.fxml")),
                 aEvent -> (Stage) ((TextField) aEvent.getSource()).getScene().getWindow());
     }
-
-
-
 
     /**
      * This method is triggered when the Login Button is clicked.
@@ -87,37 +85,37 @@ public class LoginController implements Initializable {
     public void onLoginAction(ActionEvent actionEvent) throws IOException {
 
         //FIXME (med) - pressing ENTER when button is highlighted doesn't work
-
         dbUsers = new DBUsers(username_field_id.getText(), password_field_id.getText());
-
         Pair<String, String> usernamePasswordReceived = new Pair<>(username_field_id.getText(), password_field_id.getText());
-        makeLogEntry(usernamePasswordReceived);
+
+
 
         ChangeScreen.changeScreen(
                 actionEvent,
                 dbUsers,
+                usernamePasswordReceived,
                 FXMLLoader.load(getClass().getResource("/view/Customers.fxml")),
                 aEvent -> (Stage) ((Button) aEvent.getSource()).getScene().getWindow()
         );
     }
 
-    void makeLogEntry(Pair<String, String> usernamePasswordReceived)  {
-        if(dbUsers.getUser().isValidUsername() && dbUsers.getUser().isValidPassword()){
-            LoginTracker.addToLog(
-                    Path.of("src/data/login.log"),
-                    LogType.SUCCESS,
-                    "Username: " + usernamePasswordReceived.getKey() +
-                            "\tPassword: " + usernamePasswordReceived.getValue() +
-                            "\tLocalDateTime: " + LocalDateTime.now());
-        } else  {
-            LoginTracker.addToLog(
-                    Path.of("src/data/login.log"),
-                    LogType.FAILURE,
-                    "Username: " + usernamePasswordReceived.getKey() +
-                            "\tPassword: " + usernamePasswordReceived.getValue() +
-                            "\tLocalDateTime: " + LocalDateTime.now());
-        }
-    }
+//    void makeLogEntry(Pair<String, String> usernamePasswordReceived)  {
+//        if(dbUsers.getUser().isValidUsername() && dbUsers.getUser().isValidPassword()){
+//            LoginTracker.addToLog(
+//                    Path.of("src/data/login.log"),
+//                    LogType.SUCCESS,
+//                    "Username: " + usernamePasswordReceived.getKey() +
+//                            "\tPassword: " + usernamePasswordReceived.getValue() +
+//                            "\tLocalDateTime: " + LocalDateTime.now());
+//        } else  {
+//            LoginTracker.addToLog(
+//                    Path.of("src/data/login.log"),
+//                    LogType.FAILURE,
+//                    "Username: " + usernamePasswordReceived.getKey() +
+//                            "\tPassword: " + usernamePasswordReceived.getValue() +
+//                            "\tLocalDateTime: " + LocalDateTime.now());
+//        }
+//    }
 
 
 
