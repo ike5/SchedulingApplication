@@ -5,6 +5,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import main.Main;
 import model.*;
+import test.Test;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -463,6 +464,48 @@ public class DBAppointment {
             throwables.printStackTrace();
         }
         return appointmentObservableList;
+    }
+
+    public static Appointment getAppointmentByUser(){
+        Appointment appointment = null;
+        LocalDateTime localDateTime = LocalDateTime.now();
+        LocalDateTime minus15Minutes = localDateTime.minusMinutes(15);
+
+        // if appointment.after(minus15Minutes) alert the user
+        String sql = "SELECT Appointment_ID, Start FROM appointments WHERE User_ID = ?";
+        try{
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            new Test(Main.user.getUserId());
+            ps.setInt(1, Main.user.getUserId());
+            ResultSet resultSet = ps.executeQuery();
+
+            while(resultSet.next()){
+                LocalDateTime localDateRetrieved = resultSet.getTimestamp(2).toLocalDateTime();
+
+                Timestamp ts_start = resultSet.getTimestamp("Start");
+                Timestamp ts_end = resultSet.getTimestamp("End");
+                LocalDateTime ldt_start = ts_start.toLocalDateTime();
+                LocalDateTime ldt_end = ts_end.toLocalDateTime();
+
+                if(localDateRetrieved.isAfter(minus15Minutes)){
+                    appointment = new Appointment(
+                            resultSet.getInt("Appointment_ID"),
+                            resultSet.getString("Title"),
+                            resultSet.getString("Description"),
+                            resultSet.getString("Location"),
+                            resultSet.getString("Type"),
+                            ldt_start,
+                            ldt_end,
+                            resultSet.getInt("Customer_ID"),
+                            resultSet.getInt("User_ID"),
+                            resultSet.getInt("Contact_ID")
+                    );
+                }
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return appointment;
     }
 }
 

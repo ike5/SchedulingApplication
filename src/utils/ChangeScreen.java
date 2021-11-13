@@ -1,5 +1,6 @@
 package utils;
 
+import data.DBAppointment;
 import data.DBUsers;
 import data.LoginTracker;
 import javafx.event.ActionEvent;

@@ -1,5 +1,6 @@
 package controller;
 
+import data.DBAppointment;
 import data.DBDivisions;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -21,6 +22,7 @@ import test.Test;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -116,6 +118,15 @@ public class CustomersController implements Initializable {
             }
         });
 
+        // Alert User if any upcoming appointments for themselves
+//        Appointment appointment = DBAppointment.getAppointmentByUser();
+//        if(appointment != null){
+//            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Upcoming Appointment");
+//            alert.setTitle("Appointment ID: " + appointment.getAppointmentId() +
+//                    "\nAppointment Title: " + appointment.getAppointmentTitle() +
+//                    "\nDate: " + appointment.getStartString());
+//            alert.showAndWait();
+//        }
     }
 
     public void clearFormButtonOnAction(ActionEvent actionEvent) {

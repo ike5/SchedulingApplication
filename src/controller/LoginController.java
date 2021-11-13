@@ -1,5 +1,6 @@
 package controller;
 
+import data.DBAppointment;
 import data.LoginTracker;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -186,6 +187,4 @@ public class LoginController implements Initializable {
             }
         }
     }
-
-
 }
