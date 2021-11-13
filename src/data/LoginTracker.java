@@ -6,10 +6,7 @@ import model.LogType;
 import model.User;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.OpenOption;
-import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
+import java.nio.file.*;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -17,12 +14,6 @@ import java.util.List;
 import java.util.Optional;
 
 public class LoginTracker {
-
-    // Create lines in the log with appropriate messages
-    // Read lines in the log
-
-    // Helper method
-
 
     public static void readLogMessages(Path path, LogType logType) {
         // good for memory because uses a Stream
@@ -36,7 +27,7 @@ public class LoginTracker {
     }
 
     public static void addToLog(Path path, LogType logType, String logMessage) {
-        try(var writer = Files.newBufferedWriter(path, StandardOpenOption.APPEND)){
+        try (var writer = Files.newBufferedWriter(path, StandardOpenOption.APPEND)) {
             writer
                     .append(logType.name())
                     .append("\t")
@@ -56,25 +47,57 @@ public class LoginTracker {
         }
     }
 
-    public static void main(String[] args) {
-        readLogMessages(Path.of("src/data/login.log"), LogType.FAILURE);
-    }
-
-    public static void addToObjectLog(User user){
+    public static void addToObjectLog(User user) {
         Log log = new Log(
                 user,
                 Timestamp.valueOf(LocalDateTime.now()),
                 (user.isValidUsername() && user.isValidPassword())
         );
 
-        try(var obj = new ObjectOutputStream(new FileOutputStream("src/data/login.data"))){
-            obj.writeObject(log);
-            System.out.println("Object successfully written");
-        } catch (FileNotFoundException e){
-            System.err.println("File not found");
-        } catch (IOException e){
-            System.err.println("IO exception");
-            e.printStackTrace();
+        var b = Files.exists(Paths.get("src/data/login.data"));
+        if (b) {
+            try (var obj = new ObjectOutputStream(
+                    new BufferedOutputStream(
+                            new FileOutputStream("src/data/login.data")))) {
+                obj.writeObject(log);
+                System.out.println("Object successfully written");
+            } catch (FileNotFoundException e) {
+                System.err.println("File not found");
+            } catch (IOException e) {
+                System.err.println("IO exception");
+                e.printStackTrace();
+            }
+        } else {
+            System.err.println("File does not exist");
         }
+    }
+
+    public static void serializeLog(List<Log> logs, File file) throws IOException {
+        try (var out = new ObjectOutputStream(
+                new BufferedOutputStream(
+                        new FileOutputStream(file)))) {
+            for (Log log : logs) {
+                out.writeObject(log);
+            }
+        }
+    }
+
+    public static List<Log> deserializeLog(File file) throws IOException {
+        var logs = new ArrayList<Log>();
+        try (var in = new ObjectInputStream(
+                new BufferedInputStream(
+                        new FileInputStream(file)))) {
+            while (true) {
+                var object = in.readObject();
+                if (object instanceof Log) {
+                    logs.add((Log) object);
+                }
+            }
+        } catch (EOFException e) {
+            System.err.println("End of file reached");
+        } catch (ClassNotFoundException e) {
+            System.err.println("Class not found exception: ");
+        }
+        return logs;
     }
 }

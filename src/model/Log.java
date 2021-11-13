@@ -6,7 +6,7 @@ import java.sql.Timestamp;
 public class Log implements Serializable {
     private static final long serialVersionID = 1L;
 
-    private User user;
+    transient private User user;
     private Timestamp timestamp;
     private boolean isSuccessful;
 
