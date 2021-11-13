@@ -51,7 +51,6 @@ public class DBDivisions {
         return divisionObservableList;
     }
 
-
     /**
      * Returns a list of all Division objects.
      *

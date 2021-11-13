@@ -13,10 +13,10 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class LoginTracker {
 
+    @Deprecated
     public static void readLogMessages(Path path, LogType logType) {
         // good for memory because uses a Stream
         try (var s = Files.lines(path)) {
@@ -40,6 +40,7 @@ public class LoginTracker {
         }
     }
 
+    @Deprecated
     public static void readAllMessages(Path path) {
         try {
             final List<String> lines = Files.readAllLines(path.normalize());
@@ -49,6 +50,7 @@ public class LoginTracker {
         }
     }
 
+    @Deprecated
     public static void addToObjectLog(Pair<String, String> usernameAndPasswordReceived) {
         Log log = new Log(
                 usernameAndPasswordReceived,
@@ -63,7 +65,6 @@ public class LoginTracker {
                         new FileOutputStream(file)))) {
             for (Log log : logs) {
                 out.writeObject(log);
-                new Test();
             }
         }
     }
@@ -80,7 +81,7 @@ public class LoginTracker {
                 }
             }
         } catch (EOFException e) {
-            System.err.println("End of file reached");
+            System.err.println("End of file reached in deserializeLog()");
         } catch (ClassNotFoundException e) {
             System.err.println("Class not found exception: ");
         }

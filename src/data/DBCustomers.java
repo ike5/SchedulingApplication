@@ -11,8 +11,6 @@ import test.Test;
 
 import java.sql.*;
 
-
-// Completed CRUD functions
 public class DBCustomers {
 
     /**
@@ -58,7 +56,6 @@ public class DBCustomers {
         }
         return customer;
     }
-
 
     /**
      * Inserts a customer into the customers database table provided a Customer object.
@@ -107,7 +104,6 @@ public class DBCustomers {
         return null;
     }
 
-
     public static ResultSet getCustomerResultSet(int customerId) {
         String sql = "SELECT * FROM customers WHERE Customer_ID = " + customerId;
         try {
@@ -118,7 +114,6 @@ public class DBCustomers {
         }
         return null;
     }
-
 
     /**
      * Returns an ObservableList<Customer> object of all customers in the customer database table.
@@ -223,7 +218,6 @@ public class DBCustomers {
         return customer;
     }
 
-
     /**
      * Updates a customer entry in the customers database table provided a Customer object.
      *
@@ -253,7 +247,6 @@ public class DBCustomers {
         }
         return null; // if unsuccessful
     }
-
 
     /**
      * Deletes customer from database table provided a Customer object.

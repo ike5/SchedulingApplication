@@ -66,6 +66,7 @@ public class LoginController implements Initializable {
     private void textFieldLogin(ActionEvent actionEvent) throws IOException {
         dbUsers = new DBUsers(username_field_id.getText(), password_field_id.getText());
         Pair<String, String> usernamePasswordReceived = new Pair<>(username_field_id.getText(), password_field_id.getText());
+        makeLogEntry(usernamePasswordReceived);
 
         ChangeScreen.changeScreen(
                 actionEvent,
@@ -83,12 +84,10 @@ public class LoginController implements Initializable {
      */
     @FXML
     public void onLoginAction(ActionEvent actionEvent) throws IOException {
-
         //FIXME (med) - pressing ENTER when button is highlighted doesn't work
         dbUsers = new DBUsers(username_field_id.getText(), password_field_id.getText());
         Pair<String, String> usernamePasswordReceived = new Pair<>(username_field_id.getText(), password_field_id.getText());
-
-
+        makeLogEntry(usernamePasswordReceived);
 
         ChangeScreen.changeScreen(
                 actionEvent,
@@ -99,25 +98,23 @@ public class LoginController implements Initializable {
         );
     }
 
-//    void makeLogEntry(Pair<String, String> usernamePasswordReceived)  {
-//        if(dbUsers.getUser().isValidUsername() && dbUsers.getUser().isValidPassword()){
-//            LoginTracker.addToLog(
-//                    Path.of("src/data/login.log"),
-//                    LogType.SUCCESS,
-//                    "Username: " + usernamePasswordReceived.getKey() +
-//                            "\tPassword: " + usernamePasswordReceived.getValue() +
-//                            "\tLocalDateTime: " + LocalDateTime.now());
-//        } else  {
-//            LoginTracker.addToLog(
-//                    Path.of("src/data/login.log"),
-//                    LogType.FAILURE,
-//                    "Username: " + usernamePasswordReceived.getKey() +
-//                            "\tPassword: " + usernamePasswordReceived.getValue() +
-//                            "\tLocalDateTime: " + LocalDateTime.now());
-//        }
-//    }
-
-
+    void makeLogEntry(Pair<String, String> usernamePasswordReceived) {
+        if (dbUsers.getUser().isValidUsername() && dbUsers.getUser().isValidPassword()) {
+            LoginTracker.addToLog(
+                    Path.of("src/login_activity.txt"),
+                    LogType.SUCCESS,
+                    "Username: " + usernamePasswordReceived.getKey() +
+                            "\tPassword: " + usernamePasswordReceived.getValue() +
+                            "\tLocalDateTime: " + LocalDateTime.now());
+        } else {
+            LoginTracker.addToLog(
+                    Path.of("src/login_activity.txt"),
+                    LogType.FAILURE,
+                    "Username: " + usernamePasswordReceived.getKey() +
+                            "\tPassword: " + usernamePasswordReceived.getValue() +
+                            "\tLocalDateTime: " + LocalDateTime.now());
+        }
+    }
 
     /**
      * Validates a username by matching string values that begin with a number or letter, and contains

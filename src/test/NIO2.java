@@ -133,7 +133,7 @@ public File(String parent, String child)
         String curWorkingDirectory = System.getProperty("user.dir");
         System.out.println(curWorkingDirectory);
 
-        var path = Paths.get("src/data/login.log");
+        var path = Paths.get("src/login_activity.txt");
         System.out.println("Absolute path: " + path.toAbsolutePath());
     }
 
@@ -185,7 +185,7 @@ public File(String parent, String child)
     }
 
     void bufferedReader() throws IOException {
-        var path = Path.of("src/data/login.log");
+        var path = Path.of("src/login_activity.txt");
         try (var reader = Files.newBufferedReader(path)) {
             String currentLine = null;
             while ((currentLine = reader.readLine()) != null) {
@@ -199,7 +199,7 @@ public File(String parent, String child)
         list.add("Smokey");
         list.add("Yogi");
 
-        var path = Path.of("src/data/login.log");
+        var path = Path.of("src/data/login_activity.txt");
         try (var writer = Files.newBufferedWriter(path)) {
             for (var line : list) {
                 writer.write(line);
@@ -214,7 +214,7 @@ public File(String parent, String child)
 
     //Reading a File
     void readingAFile() throws IOException {
-        var path = Path.of("src/data/login.log");
+        var path = Path.of("src/data/login_activity.txt");
         final List<String> lines = Files.readAllLines(path);
         lines.forEach(System.out::println);
     }
@@ -244,15 +244,15 @@ public File(String parent, String child)
 
     void commonFileAttributes() {
         System.out.println(Files.isDirectory(Paths.get("/canine/fur.jpg")));
-        System.out.println(Files.isSymbolicLink(Paths.get("src/data/login.log")));
-        System.out.println(Files.isRegularFile(Paths.get("src/data/login.log")));
+        System.out.println(Files.isSymbolicLink(Paths.get("src/data/login_activity.txt")));
+        System.out.println(Files.isRegularFile(Paths.get("src/data/login_activity.txt")));
 
-        System.out.println(Files.isReadable(Paths.get("src/data/login.log")));
-        System.out.println(Files.isWritable(Paths.get("src/data/login.log")));
-        System.out.println(Files.isExecutable(Paths.get("src/data/login.log")));
+        System.out.println(Files.isReadable(Paths.get("src/data/login_activity.txt")));
+        System.out.println(Files.isWritable(Paths.get("src/data/login_activity.txt")));
+        System.out.println(Files.isExecutable(Paths.get("src/data/login_activity.txt")));
 
         try {
-            System.out.println(Files.isHidden(Paths.get("src/data/login.log"))); // throws exception
+            System.out.println(Files.isHidden(Paths.get("src/data/login_activity.txt"))); // throws exception
         } catch (IOException e) {
             System.err.println("Doesn't work");
         } finally {
@@ -265,7 +265,7 @@ public File(String parent, String child)
         // Only  defined in files, not directories
         // Walk a directory to get the size of a directory
         try {
-            System.out.println(Files.size(Paths.get("src/data/login.log")));
+            System.out.println(Files.size(Paths.get("src/data/login_activity.txt")));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -273,7 +273,7 @@ public File(String parent, String child)
 
     void checkingForFileChanges() {
         // returns a FileTime object
-        final Path path = Paths.get("src/data/login.log");
+        final Path path = Paths.get("src/data/login_activity.txt");
 
         try {
             System.out.println(Files.getLastModifiedTime(path));
@@ -285,7 +285,7 @@ public File(String parent, String child)
 
     void retrievingAttributes() {
         //read only using readAttributes()
-        var path = Paths.get("src/data/login.log");
+        var path = Paths.get("src/data/login_activity.txt");
 
         try {
             BasicFileAttributes data = Files.readAttributes(path, BasicFileAttributes.class);
@@ -303,7 +303,7 @@ public File(String parent, String child)
 
     void modifyingAttributes() {
         //updatable with getFileAttributeView()
-        var path = Paths.get("src/data/login.log");
+        var path = Paths.get("src/data/login_activity.txt");
 
         BasicFileAttributeView view = Files.getFileAttributeView(path, BasicFileAttributeView.class);
 
@@ -353,7 +353,7 @@ public File(String parent, String child)
         }
 
         CopyPath() {
-            copyPath(Paths.get("src/data/login.log"), Path.of("src/test/login.log"));
+            copyPath(Paths.get("src/data/login_activity.txt"), Path.of("src/test/login_activity.txt"));
         }
     }
 
@@ -418,7 +418,7 @@ public File(String parent, String child)
 
     void readingAFileWithLines() {
         // good for memory because uses a Stream
-        Path path = Paths.get("src/test/login.log");
+        Path path = Paths.get("src/test/login_activity.txt");
         try (var s = Files.lines(path)) {
             s.filter(f -> f.startsWith("WARN:")) // searches log lines with WARN
                     .map(f -> f.substring(5))

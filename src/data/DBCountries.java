@@ -10,7 +10,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
-// Completed CRUD functionality
 
 /**
  * This class doesn't have any constraints.
@@ -59,7 +58,6 @@ public class DBCountries {
         }
         return countryObservableList;
     }
-
 
     /**
      * This method is unnecessary for CRUD constraint restrictions. Should be getting country id from a division object.

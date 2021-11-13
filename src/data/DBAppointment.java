@@ -53,7 +53,6 @@ public class DBAppointment {
         return appointmentObservableList;
     }
 
-
     /*
     MySQL converts TIMESTAMP values from the current time zone to UTC for storage, and back from UTC to the current time zone for retrieval.
     (This does not occur for other types such as DATETIME.
@@ -78,7 +77,6 @@ public class DBAppointment {
 | 2020-01-01 18:10:10 | 2020-01-01 23:10:10 |
 +---------------------+---------------------+
      */
-
 
     public static Appointment getAppointment(int appointmentId) {
         String sql = "SELECT Appointment_ID, Title, Description, Location, Type, Start, End, Customer_ID, User_ID, Contact_ID " +
@@ -115,7 +113,6 @@ public class DBAppointment {
         }
         return appointment;
     }
-
 
     public static void insertAppointment(String appointmentTitle, String appointmentDescription, String appointmentLocation, String appointmentType, LocalDateTime start, LocalDateTime end, Customer customer, User user, Contact contact) {
         try {
@@ -390,7 +387,6 @@ public class DBAppointment {
         }
     }
 
-    // Works
     public static Appointment updateAppointment(int appointmentId, String appointmentTitle, String appointmentDescription, String appointmentLocation, String appointmentType, LocalDateTime start, LocalDateTime end, Customer customer, User user, Contact contact) {
         String sql = "UPDATE appointments Set Title = ?, Description = ?, Location = ?, Type = ?, Start = ?, End = ?, Last_Update = CURRENT_TIMESTAMP, Last_Updated_By = ?, Customer_ID = ?, User_ID = ?, Contact_ID = ? WHERE Appointment_ID = ?";
         try {
@@ -432,7 +428,6 @@ public class DBAppointment {
         }
         return flag;
     }
-
 
     public static ObservableList<Appointment> getAppointmentListFromContact(Contact contact) {
         ObservableList<Appointment> appointmentObservableList = FXCollections.observableArrayList();
