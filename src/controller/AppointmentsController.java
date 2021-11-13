@@ -105,6 +105,7 @@ public class AppointmentsController implements Initializable {
 
     public void updateAppointmentButtonOnAction(ActionEvent actionEvent) throws IOException {
         if (table_view_id.getSelectionModel().selectedItemProperty() != null) {
+            // Use a Singleton to act as an '@ObservableObject'
             AppointmentSingleton.getInstance().setAppointment((Appointment) table_view_id.getSelectionModel().getSelectedItem());
 
             Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();

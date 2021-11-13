@@ -87,4 +87,8 @@ public class LoginTracker {
         }
         return logs;
     }
+
+    public static void checkAppointmentsUponLogin(){
+        //TODO Add functionality to alert user if any appointments are within 15 minutes
+    }
 }

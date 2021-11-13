@@ -70,7 +70,7 @@ public class CustomersController implements Initializable {
         table_view_id.setItems(CustomerListSingleton.getInstance().getCustomerObservableList());
 
         // Bind table cell values to class getter methods
-        // Tied to getter in the Customer class --> getDivisionId()
+        // Tied to getter methods in the Customer class --> getDivisionId()
         id_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("Id"));
         name_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<Customer, String>("Name"));
         address_tablecolumn_id.setCellValueFactory(new PropertyValueFactory<Customer, String>("Address"));
@@ -84,11 +84,15 @@ public class CustomersController implements Initializable {
         country_combo_id.setItems(CountryListSingleton.getInstance().getCountryObservableList());
 
         // Initialize Province/State (Division) ComboBox
+        // Use a Singleton in order to have only one copy of the observable list
         DivisionListSingleton.getInstance().setDivisionObservableList(DBDivisions.getAllFirstLevelDivisions());
         division_combo_id.setItems(DivisionListSingleton.getInstance().getDivisionObservableList());
 
         // TableView listener
         table_view_id.getSelectionModel().selectedItemProperty().addListener((observableValue, oldSelection, newSelection) -> {
+
+            //FIXME Be able to update the Division combo without affecting the Country combo
+
                     if (newSelection != null) {
                         customer_id_id.setText(String.valueOf(((Customer) newSelection).getId()));
                         customer_name_id.setText(((Customer) newSelection).getName());
@@ -284,6 +288,15 @@ public class CustomersController implements Initializable {
         stage.show();
     }
 
+    public void reportsButtonOnAction(ActionEvent actionEvent) throws IOException {
+        //TODO Alert user if any changes were made to Fields
+        Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
+        Parent scene = FXMLLoader.load(getClass().getResource("/view/Reports.fxml"));
+        stage.setTitle("Reports");
+        stage.setScene(new Scene(scene));
+        stage.show();
+    }
+
     @Deprecated
     public void customerNameOnAction(ActionEvent actionEvent) {
     }
@@ -317,15 +330,6 @@ public class CustomersController implements Initializable {
         address_id.setText(customer.getAddress());
         postal_code_id.setText(customer.getPostalCode());
         phone_number_id.setText(customer.getPhone());
-    }
-
-    public void reportsButtonOnAction(ActionEvent actionEvent) throws IOException {
-        //TODO Alert user if any changes were made to Fields
-        Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
-        Parent scene = FXMLLoader.load(getClass().getResource("/view/Reports.fxml"));
-        stage.setTitle("Reports");
-        stage.setScene(new Scene(scene));
-        stage.show();
     }
 }
 

@@ -19,9 +19,10 @@ import java.time.LocalTime;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+/**
+ * This class is used to modify existing appointments as well as create new appointments.
+ */
 public class ModifyAppointmentController implements Initializable {
-
-
     public Label error_message_label;
     public Label error_messages_label2;
     public ComboBox type_combo;
@@ -42,20 +43,17 @@ public class ModifyAppointmentController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        // Initialize singleton default values
         CustomerListSingleton.getInstance().setCustomerObservableList(DBCustomers.getAllCustomers());
-        customer_combo.setItems(CustomerListSingleton.getInstance().getCustomerObservableList());
-
         ContactsListSingleton.getInstance().setContactObservableList(DBContacts.getAllContacts());
-        contact_combo.setItems(ContactsListSingleton.getInstance().getContactObservableList());
-
         UserListSingleton.getInstance().setUserObservableList(DBUsers.getAllUsers());
+
+        // Set ComboBox to default values
+        customer_combo.setItems(CustomerListSingleton.getInstance().getCustomerObservableList());
+        contact_combo.setItems(ContactsListSingleton.getInstance().getContactObservableList());
         user_combo.setItems(UserListSingleton.getInstance().getUserObservableList());
-
         location_combo.setItems(LocationListSingleton.getInstance().getLocationObservableList());
-
         type_combo.setItems(TypeListSingleton.getInstance().getTypeObservableList());
-
-
         start_combo.setItems(PossibleTimes.localTimeList());
         end_combo.setItems(PossibleTimes.localTimeList());
 

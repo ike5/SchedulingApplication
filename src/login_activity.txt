@@ -1,1 +1,11 @@
 SUCCESS	Username: test	Password: test	LocalDateTime: 2021-11-13T05:16:37.490069
+SUCCESS	Username: test	Password: test	LocalDateTime: 2021-11-13T05:35:03.319646
+SUCCESS	Username: admin	Password: admin	LocalDateTime: 2021-11-13T05:35:23.861468
+FAILURE	Username: admin	Password: test	LocalDateTime: 2021-11-13T05:37:42.077812
+SUCCESS	Username: admin	Password: admin	LocalDateTime: 2021-11-13T05:37:45.413765
+FAILURE	Username: wrongusername	Password: wrong	LocalDateTime: 2021-11-13T05:37:54.053181
+SUCCESS	Username: test	Password: test	LocalDateTime: 2021-11-13T06:01:17.915544
+SUCCESS	Username: test	Password: test	LocalDateTime: 2021-11-13T06:01:42.650014
+SUCCESS	Username: test	Password: test	LocalDateTime: 2021-11-13T06:29:23.011914
+SUCCESS	Username: admin	Password: admin	LocalDateTime: 2021-11-13T06:31:19.825519
+SUCCESS	Username: test	Password: test	LocalDateTime: 2021-11-13T06:32:30.379299

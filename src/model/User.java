@@ -73,6 +73,6 @@ public class User {
 
     @Override
     public String toString() {
-        return userId + " " + username + " " + password;
+        return username;
     }
 }

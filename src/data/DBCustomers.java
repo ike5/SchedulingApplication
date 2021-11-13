@@ -156,12 +156,9 @@ public class DBCustomers {
                 );
                 customerList.add(customer);
             }
-
-            new Test("getAllCustomers() called");
-
             return customerList;
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return null;
     }
