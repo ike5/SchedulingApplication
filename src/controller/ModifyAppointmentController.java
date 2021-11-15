@@ -18,6 +18,7 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZonedDateTime;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -64,6 +65,7 @@ public class ModifyAppointmentController implements Initializable {
             start_combo.getItems().add(start);
             start = start.plusMinutes(15);
         }
+        //FIXME - End combobox allows conflicting time with first option
 
         // set end time combobox conditional on start time
         start_combo.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
@@ -78,8 +80,9 @@ public class ModifyAppointmentController implements Initializable {
             }
         });
 
+        // Set datepicker to today
+        start_date_picker.setValue(LocalDate.from(ZonedDateTime.now()));
 
-        //FIXME - Location and Type combos don't pull info on update
 
         // If coming to view from Updating appointments, populate fields and combo
         if (AppointmentSingleton.getInstance().getAppointment() != null) {
@@ -104,7 +107,6 @@ public class ModifyAppointmentController implements Initializable {
 
             LocalDate localStartDate = AppointmentSingleton.getInstance().getAppointment().getStart().toLocalDate();
             start_date_picker.setValue(localStartDate);
-
 
             LocalTime localStartTime = AppointmentSingleton.getInstance().getAppointment().getStart().toLocalTime();
             start_combo.setValue(localStartTime);
@@ -141,11 +143,13 @@ public class ModifyAppointmentController implements Initializable {
     }
 
     public void saveButtonOnAction(ActionEvent actionEvent) throws IOException {
+        validate().show();
+
+        // If user clicked 'New Appointment' inside the AppointmentsController,
+        // this option will be executed when Save is clicked.
         if (AppointmentSingleton.getInstance().getAppointment() == null) {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Create new appointment?");
-            alert.setTitle("New Appointment");
-            Optional<ButtonType> result = alert.showAndWait();
-            if (result.isPresent() && result.get() == ButtonType.OK) {
+            Optional<ButtonType> result = getAlert("Create new appointment?");
+            if (result.isPresent() && (result.get() == ButtonType.OK)) {
                 DBAppointment.insertAppointment(
                         title_textfield.getText(),
                         description_textfield.getText(),
@@ -158,17 +162,11 @@ public class ModifyAppointmentController implements Initializable {
                         ((Contact) contact_combo.getValue())
                 );
 
-                Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
-                Parent scene = FXMLLoader.load(getClass().getResource("/view/Appointments.fxml"));
-                stage.setTitle(null);
-                stage.setScene(new Scene(scene));
-                stage.show();
+                toAppointmentsView(actionEvent);
             }
         } else {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Save changes?");
-            alert.setTitle("Update Appointment");
-            Optional<ButtonType> result = alert.showAndWait();
-            if (result.isPresent() && result.get() == ButtonType.OK) {
+            Optional<ButtonType> result = getAlert("Save changes?");
+            if (result.isPresent() && (result.get() == ButtonType.OK)) {
                 DBAppointment.updateAppointment(
                         AppointmentSingleton.getInstance().getAppointment().getAppointmentId(),
                         title_textfield.getText(),
@@ -182,12 +180,59 @@ public class ModifyAppointmentController implements Initializable {
                         ((Contact) contact_combo.getValue())
                 );
 
-                Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
-                Parent scene = FXMLLoader.load(getClass().getResource("/view/Appointments.fxml"));
-                stage.setTitle(null);
-                stage.setScene(new Scene(scene));
-                stage.show();
+                toAppointmentsView(actionEvent);
             }
         }
+    }
+
+    private void toAppointmentsView(ActionEvent actionEvent) throws IOException {
+        Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
+        Parent scene = FXMLLoader.load(getClass().getResource("/view/Appointments.fxml"));
+        stage.setTitle("Appointments");
+        stage.setScene(new Scene(scene));
+        stage.show();
+    }
+
+    private Optional<ButtonType> getAlert(String s) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, s);
+        alert.setTitle("Confirm");
+        return alert.showAndWait();
+    }
+
+    private Alert validate() {
+        String errorMessage = null;
+        Alert alert = null;
+
+        if (customer_combo.getSelectionModel().isEmpty()) {
+            errorMessage = "Select a customer";
+            alert = new Alert(Alert.AlertType.WARNING, errorMessage);
+        } else if (contact_combo.getSelectionModel().isEmpty()) {
+            errorMessage = "Select a contact";
+            alert = new Alert(Alert.AlertType.WARNING, errorMessage);
+        } else if (user_combo.getSelectionModel().isEmpty()) {
+            errorMessage = "Select a user";
+            alert = new Alert(Alert.AlertType.WARNING, errorMessage);
+        } else if (location_combo.getSelectionModel().isEmpty()) {
+            errorMessage = "Select a location";
+            alert = new Alert(Alert.AlertType.WARNING, errorMessage);
+        } else if (type_combo.getSelectionModel().isEmpty()) {
+            errorMessage = "Select and appointment type";
+            alert = new Alert(Alert.AlertType.WARNING, errorMessage);
+        } else if (title_textfield.getText().isBlank()) {
+            errorMessage = "Set a title";
+            alert = new Alert(Alert.AlertType.WARNING, errorMessage);
+        } else if (description_textfield.getText().isBlank()) {
+            errorMessage = "Set a description";
+            alert = new Alert(Alert.AlertType.WARNING, errorMessage);
+        } else if (start_combo.getSelectionModel().isEmpty()) {
+            errorMessage = "Select a start time";
+            alert = new Alert(Alert.AlertType.WARNING, errorMessage);
+        } else if (end_combo.getSelectionModel().isEmpty()) {
+            errorMessage = "Select an end time";
+            alert = new Alert(Alert.AlertType.WARNING, errorMessage);
+        } else {
+            System.out.println("No errors");
+        }
+        return alert;
     }
 }
