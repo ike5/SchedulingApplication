@@ -65,7 +65,7 @@ public class ModifyAppointmentController implements Initializable {
             start_combo.getItems().add(start);
             start = start.plusMinutes(15);
         }
-        //FIXME - End combobox allows conflicting time with first option
+        //FIXME - Fix End combobox allowing conflicting time with first option
 
         // set end time combobox conditional on start time
         start_combo.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
