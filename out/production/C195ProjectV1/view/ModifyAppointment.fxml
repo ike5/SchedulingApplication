@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ModifyAppointmentController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ModifyAppointmentController">
     <children>
         <VBox prefHeight="400.0" prefWidth="600.0">
             <children>
@@ -53,9 +53,7 @@
                                 <Label text="Contact ID" GridPane.rowIndex="2" />
                                 <Label text="User ID" GridPane.rowIndex="3" />
                                 <DatePicker fx:id="start_date_picker" prefHeight="26.0" prefWidth="187.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                                <Label text="End Date" GridPane.rowIndex="6" />
                                 <Label text="End Time" GridPane.columnIndex="2" GridPane.rowIndex="6" />
-                                <DatePicker fx:id="end_date_picker" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                                 <ComboBox fx:id="customer_combo" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                 <ComboBox fx:id="contact_combo" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                 <ComboBox fx:id="user_combo" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />

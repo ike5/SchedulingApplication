@@ -1,6 +1,8 @@
 package controller;
 
 import data.*;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -30,7 +32,6 @@ public class ModifyAppointmentController implements Initializable {
     public TextField title_textfield;
     public TextField description_textfield;
     public DatePicker start_date_picker;
-    public DatePicker end_date_picker;
     public ComboBox customer_combo;
     public ComboBox contact_combo;
     public ComboBox user_combo;
@@ -54,8 +55,29 @@ public class ModifyAppointmentController implements Initializable {
         user_combo.setItems(UserListSingleton.getInstance().getUserObservableList());
         location_combo.setItems(LocationListSingleton.getInstance().getLocationObservableList());
         type_combo.setItems(TypeListSingleton.getInstance().getTypeObservableList());
-        start_combo.setItems(PossibleTimes.localTimeList());
-        end_combo.setItems(PossibleTimes.localTimeList());
+
+
+        // Set start time combobox
+        LocalTime start = LocalTime.of(8, 0);
+        LocalTime end = LocalTime.of(22, 0);
+        while (start.isBefore(end.plusSeconds(1))) {
+            start_combo.getItems().add(start);
+            start = start.plusMinutes(15);
+        }
+
+        // set end time combobox conditional on start time
+        start_combo.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
+            for (Object o : start_combo.getItems()) {
+                if (o.equals(newValue)) {
+                    while (((LocalTime) o).isBefore(end.plusSeconds(1))) {
+                        end_combo.getItems().add(o);
+                        o = ((LocalTime) o).plusMinutes(15);
+                    }
+                    break;
+                }
+            }
+        });
+
 
         //FIXME - Location and Type combos don't pull info on update
 
@@ -83,8 +105,6 @@ public class ModifyAppointmentController implements Initializable {
             LocalDate localStartDate = AppointmentSingleton.getInstance().getAppointment().getStart().toLocalDate();
             start_date_picker.setValue(localStartDate);
 
-            LocalDate localEndDate = AppointmentSingleton.getInstance().getAppointment().getEnd().toLocalDate();
-            end_date_picker.setValue(localEndDate);
 
             LocalTime localStartTime = AppointmentSingleton.getInstance().getAppointment().getStart().toLocalTime();
             start_combo.setValue(localStartTime);
@@ -92,9 +112,8 @@ public class ModifyAppointmentController implements Initializable {
             LocalTime localEndTime = AppointmentSingleton.getInstance().getAppointment().getEnd().toLocalTime();
             end_combo.setValue(localEndTime);
         }
-
-
     }
+
 
     //FIXME - still can't figure out why when clicking clear it doesn't turn all the comboboxes to empty. Maybe I need
     // to use a listener or a callback?
@@ -133,7 +152,7 @@ public class ModifyAppointmentController implements Initializable {
                         (String) location_combo.getValue(),
                         (String) type_combo.getValue(),
                         LocalDateTime.of(start_date_picker.getValue(), (LocalTime) start_combo.getSelectionModel().getSelectedItem()),
-                        LocalDateTime.of(end_date_picker.getValue(), (LocalTime) end_combo.getSelectionModel().getSelectedItem()),
+                        LocalDateTime.of(start_date_picker.getValue(), (LocalTime) end_combo.getSelectionModel().getSelectedItem()),
                         ((Customer) customer_combo.getValue()),
                         ((User) user_combo.getValue()),
                         ((Contact) contact_combo.getValue())
@@ -157,7 +176,7 @@ public class ModifyAppointmentController implements Initializable {
                         (String) location_combo.getValue(),
                         (String) type_combo.getValue(),
                         LocalDateTime.of(start_date_picker.getValue(), (LocalTime) start_combo.getSelectionModel().getSelectedItem()),
-                        LocalDateTime.of(end_date_picker.getValue(), (LocalTime) end_combo.getSelectionModel().getSelectedItem()),
+                        LocalDateTime.of(start_date_picker.getValue(), (LocalTime) end_combo.getSelectionModel().getSelectedItem()),
                         ((Customer) customer_combo.getValue()),
                         ((User) user_combo.getValue()),
                         ((Contact) contact_combo.getValue())
