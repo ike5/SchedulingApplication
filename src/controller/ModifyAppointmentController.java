@@ -143,44 +143,47 @@ public class ModifyAppointmentController implements Initializable {
     }
 
     public void saveButtonOnAction(ActionEvent actionEvent) throws IOException {
-        validate().show();
-
-        // If user clicked 'New Appointment' inside the AppointmentsController,
-        // this option will be executed when Save is clicked.
-        if (AppointmentSingleton.getInstance().getAppointment() == null) {
-            Optional<ButtonType> result = getAlert("Create new appointment?");
-            if (result.isPresent() && (result.get() == ButtonType.OK)) {
-                DBAppointment.insertAppointment(
-                        title_textfield.getText(),
-                        description_textfield.getText(),
-                        (String) location_combo.getValue(),
-                        (String) type_combo.getValue(),
-                        LocalDateTime.of(start_date_picker.getValue(), (LocalTime) start_combo.getSelectionModel().getSelectedItem()),
-                        LocalDateTime.of(start_date_picker.getValue(), (LocalTime) end_combo.getSelectionModel().getSelectedItem()),
-                        ((Customer) customer_combo.getValue()),
-                        ((User) user_combo.getValue()),
-                        ((Contact) contact_combo.getValue())
-                );
-
-                toAppointmentsView(actionEvent);
-            }
+        if (isMissingValue()) {
+            getAlert(String.valueOf(errorMessage()));
         } else {
-            Optional<ButtonType> result = getAlert("Save changes?");
-            if (result.isPresent() && (result.get() == ButtonType.OK)) {
-                DBAppointment.updateAppointment(
-                        AppointmentSingleton.getInstance().getAppointment().getAppointmentId(),
-                        title_textfield.getText(),
-                        description_textfield.getText(),
-                        (String) location_combo.getValue(),
-                        (String) type_combo.getValue(),
-                        LocalDateTime.of(start_date_picker.getValue(), (LocalTime) start_combo.getSelectionModel().getSelectedItem()),
-                        LocalDateTime.of(start_date_picker.getValue(), (LocalTime) end_combo.getSelectionModel().getSelectedItem()),
-                        ((Customer) customer_combo.getValue()),
-                        ((User) user_combo.getValue()),
-                        ((Contact) contact_combo.getValue())
-                );
 
-                toAppointmentsView(actionEvent);
+            // If user clicked 'New Appointment' inside the AppointmentsController,
+            // this option will be executed when Save is clicked.
+            if (AppointmentSingleton.getInstance().getAppointment() == null) {
+                Optional<ButtonType> result = getAlert("Create new appointment?");
+                if (result.isPresent() && (result.get() == ButtonType.OK)) {
+                    DBAppointment.insertAppointment(
+                            title_textfield.getText(),
+                            description_textfield.getText(),
+                            (String) location_combo.getValue(),
+                            (String) type_combo.getValue(),
+                            LocalDateTime.of(start_date_picker.getValue(), (LocalTime) start_combo.getSelectionModel().getSelectedItem()),
+                            LocalDateTime.of(start_date_picker.getValue(), (LocalTime) end_combo.getSelectionModel().getSelectedItem()),
+                            ((Customer) customer_combo.getValue()),
+                            ((User) user_combo.getValue()),
+                            ((Contact) contact_combo.getValue())
+                    );
+
+                    toAppointmentsView(actionEvent);
+                }
+            } else {
+                Optional<ButtonType> result = getAlert("Save changes?");
+                if (result.isPresent() && (result.get() == ButtonType.OK)) {
+                    DBAppointment.updateAppointment(
+                            AppointmentSingleton.getInstance().getAppointment().getAppointmentId(),
+                            title_textfield.getText(),
+                            description_textfield.getText(),
+                            (String) location_combo.getValue(),
+                            (String) type_combo.getValue(),
+                            LocalDateTime.of(start_date_picker.getValue(), (LocalTime) start_combo.getSelectionModel().getSelectedItem()),
+                            LocalDateTime.of(start_date_picker.getValue(), (LocalTime) end_combo.getSelectionModel().getSelectedItem()),
+                            ((Customer) customer_combo.getValue()),
+                            ((User) user_combo.getValue()),
+                            ((Contact) contact_combo.getValue())
+                    );
+
+                    toAppointmentsView(actionEvent);
+                }
             }
         }
     }
@@ -199,40 +202,47 @@ public class ModifyAppointmentController implements Initializable {
         return alert.showAndWait();
     }
 
-    private Alert validate() {
-        String errorMessage = null;
-        Alert alert = null;
+    private boolean isMissingValue() {
+        boolean isEmpty = false;
+
+        if (customer_combo.getSelectionModel().isEmpty() ||
+                contact_combo.getSelectionModel().isEmpty() ||
+                user_combo.getSelectionModel().isEmpty() ||
+                location_combo.getSelectionModel().isEmpty() ||
+                type_combo.getSelectionModel().isEmpty() ||
+                title_textfield.getText().isBlank() ||
+                description_textfield.getText().isBlank() ||
+                start_combo.getSelectionModel().isEmpty() ||
+                end_combo.getSelectionModel().isEmpty()) {
+            isEmpty = true;
+        }
+        return isEmpty;
+    }
+
+    private StringBuilder errorMessage() {
+        StringBuilder errorMessage = new StringBuilder();
 
         if (customer_combo.getSelectionModel().isEmpty()) {
-            errorMessage = "Select a customer";
-            alert = new Alert(Alert.AlertType.WARNING, errorMessage);
+            errorMessage.append("Select a customer\n");
         } else if (contact_combo.getSelectionModel().isEmpty()) {
-            errorMessage = "Select a contact";
-            alert = new Alert(Alert.AlertType.WARNING, errorMessage);
+            errorMessage.append("Select a contact\n");
         } else if (user_combo.getSelectionModel().isEmpty()) {
-            errorMessage = "Select a user";
-            alert = new Alert(Alert.AlertType.WARNING, errorMessage);
+            errorMessage.append("Select a user\n");
         } else if (location_combo.getSelectionModel().isEmpty()) {
-            errorMessage = "Select a location";
-            alert = new Alert(Alert.AlertType.WARNING, errorMessage);
+            errorMessage.append("Select a location\n");
         } else if (type_combo.getSelectionModel().isEmpty()) {
-            errorMessage = "Select and appointment type";
-            alert = new Alert(Alert.AlertType.WARNING, errorMessage);
+            errorMessage.append("Select and appointment type\n");
         } else if (title_textfield.getText().isBlank()) {
-            errorMessage = "Set a title";
-            alert = new Alert(Alert.AlertType.WARNING, errorMessage);
+            errorMessage.append("Set a title\n");
         } else if (description_textfield.getText().isBlank()) {
-            errorMessage = "Set a description";
-            alert = new Alert(Alert.AlertType.WARNING, errorMessage);
+            errorMessage.append("Set a description\n");
         } else if (start_combo.getSelectionModel().isEmpty()) {
-            errorMessage = "Select a start time";
-            alert = new Alert(Alert.AlertType.WARNING, errorMessage);
+            errorMessage.append("Select a start time\n");
         } else if (end_combo.getSelectionModel().isEmpty()) {
-            errorMessage = "Select an end time";
-            alert = new Alert(Alert.AlertType.WARNING, errorMessage);
+            errorMessage.append("Select an end time\n");
         } else {
             System.out.println("No errors");
         }
-        return alert;
+        return errorMessage;
     }
 }
