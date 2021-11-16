@@ -379,9 +379,9 @@ public class DBAppointment {
         return appointmentObservableList;
     }
 
-    public static Appointment checkUpcomingAppointments() {
-        Appointment appointment = null;
+    public static Pair<Boolean, Pair<LocalDateTime, Integer>> checkUpcomingAppointments() {
         List<Pair<LocalDateTime, Integer>> localDateTimeList = new ArrayList<>();
+        Pair<Boolean, Pair<LocalDateTime, Integer>> upcomingAppt = null;
 
         String sql = "SELECT Appointment_ID, Start FROM appointments WHERE User_ID = ?";
         try {
@@ -405,17 +405,13 @@ public class DBAppointment {
 
                 if (zonedDateTime.isAfter(currentTime) &&
                         zonedDateTime.isBefore(currentTime.plusMinutes(duration.toMinutes()))) {
-                    Messages.warningMessage("Upcoming appointment ID: \n" + l.getValue(), "Appointment alert");
-                    break;
-                } else {
-                    System.out.println("no upcoming appoitnments");
+                    upcomingAppt = new Pair<>(Boolean.TRUE, l);
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        System.out.println(System.getProperties());
-        return appointment;
+        return upcomingAppt;
     }
 }
 

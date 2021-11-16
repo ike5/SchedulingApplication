@@ -1,19 +1,14 @@
 package controller;
 
-import data.DBAppointment;
 import data.LoginTracker;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.util.Pair;
 import main.Main;
-import model.Log;
 import model.LogType;
 import model.Messages;
-import model.User;
-import test.Test;
 import utils.ChangeScreen;
 import data.DBUsers;
 import javafx.event.ActionEvent;
@@ -29,7 +24,6 @@ import java.io.*;
 import java.net.URL;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
@@ -55,44 +49,41 @@ public class LoginController implements Initializable {
     }
 
     public void onUsernameKeyTyped(KeyEvent keyEvent) {
-        if (validateUsernameString()) {
-            username_label_id.setVisible(false);
-            username_field_id.setStyle("-fx-background-color: white");
-        } else {
-            username_label_id.setVisible(true);
-            username_label_id.setText(Main.resourceBundle.getString("invalid_username_format"));
-            username_field_id.setStyle("-fx-background-color: pink");
-        }
+        stringValidation(validateUsernameString(), username_label_id, username_field_id, "invalid_username_format");
     }
 
     public void onPasswordKeyTyped(KeyEvent keyEvent) {
-        if (validatePasswordString()) {
-            password_label_id.setVisible(false);
-            password_field_id.setStyle("-fx-background-color: white");
-        } else {
-            password_label_id.setVisible(true);
-            password_label_id.setText(Main.resourceBundle.getString("invalid_password_format"));
-            password_field_id.setStyle("-fx-background-color: pink");
-        }
+       stringValidation(validatePasswordString(), password_label_id, password_field_id, "invalid_password_format");
 
+    }
+
+    private void stringValidation(boolean isInvalid, Label label, TextField field, String invalidFormatMessage) {
+        if (isInvalid) {
+            label.setVisible(false);
+            field.setStyle("-fx-background-color: white");
+        } else {
+            label.setVisible(true);
+            label.setText(Main.resourceBundle.getString(invalidFormatMessage));
+            field.setStyle("-fx-background-color: pink");
+        }
     }
 
     //FIXME (low) - The red password error happens because of a TAB keystroke when entering the password TextField.
     public void onLoginKeyPressed(KeyEvent keyEvent) throws IOException {
-        if (keyEvent.getCode().equals(KeyCode.ENTER)) {
-            dbUsers = new DBUsers(username_field_id.getText(), password_field_id.getText());
-
-            if (dbUsers.getUser().isValidUsername()) {
-                if (dbUsers.getUser().isValidPassword()) {
-                    Main.user = dbUsers.getUser();
-                    switchView(keyEvent, "/view/Customers.fxml", "Welcome " + dbUsers.getUser().getUsername() + "!");
-                } else {
-                    Messages.errorMessage(Main.resourceBundle.getString("incorrect_password"), Main.resourceBundle.getString("password_alert_title"));
-                }
-            } else {
-                Messages.errorMessage(Main.resourceBundle.getString("incorrect_username"), Main.resourceBundle.getString("username_alert_title"));
-            }
-        }
+//        if (keyEvent.getCode().equals(KeyCode.ENTER)) {
+//            dbUsers = new DBUsers(username_field_id.getText(), password_field_id.getText());
+//
+//            if (dbUsers.getUser().isValidUsername()) {
+//                if (dbUsers.getUser().isValidPassword()) {
+//                    Main.user = dbUsers.getUser();
+//                    switchView(keyEvent, "/view/Customers.fxml", "Welcome " + dbUsers.getUser().getUsername() + "!");
+//                } else {
+//                    Messages.errorMessage(Main.resourceBundle.getString("incorrect_password"), Main.resourceBundle.getString("password_alert_title"));
+//                }
+//            } else {
+//                Messages.errorMessage(Main.resourceBundle.getString("incorrect_username"), Main.resourceBundle.getString("username_alert_title"));
+//            }
+//        }
     }
 
     /**
@@ -125,7 +116,7 @@ public class LoginController implements Initializable {
      */
     @FXML
     public void usernameOnAction(ActionEvent actionEvent) throws IOException {
-        textFieldLogin(actionEvent);
+//        textFieldLogin(actionEvent);
     }
 
     /**
@@ -136,7 +127,7 @@ public class LoginController implements Initializable {
      */
     @FXML
     public void passwordOnAction(ActionEvent actionEvent) throws IOException {
-        textFieldLogin(actionEvent);
+//        textFieldLogin(actionEvent);
     }
 
     /**

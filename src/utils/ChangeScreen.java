@@ -22,6 +22,8 @@ import java.nio.file.Path;
 import java.sql.Array;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
@@ -41,8 +43,17 @@ public class ChangeScreen {
         if (userLogin.getUser().isValidUsername()) {
             if (userLogin.getUser().isValidPassword()) {
                 Main.user = userLogin.getUser();
-                new Test();
-                DBAppointment.checkUpcomingAppointments();
+
+
+                Pair<Boolean, Pair<LocalDateTime, Integer>> upcomingAppointment = DBAppointment.checkUpcomingAppointments();
+                if (upcomingAppointment.getKey()) {
+                    Messages.warningMessage("Upcoming appointment: " +
+                                    upcomingAppointment.getValue().getValue() + "\n" +
+                                    "Time: " + ZonedDateTime.of(upcomingAppointment.getValue().getKey(), ZoneId.systemDefault()),
+                            "Upcoming appointment");
+                }
+
+
                 /*
                 Note the event source is either a Button or a TextField:
                 stage = (Stage) ((TextField) actionEvent.getSource()).getScene().getWindow();
