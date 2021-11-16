@@ -11,6 +11,7 @@ import javafx.util.Pair;
 import main.Main;
 import model.Log;
 import model.LogType;
+import model.Messages;
 import model.User;
 import test.Test;
 import utils.ChangeScreen;
@@ -86,10 +87,10 @@ public class LoginController implements Initializable {
                     Main.user = dbUsers.getUser();
                     switchView(keyEvent, "/view/Customers.fxml", "Welcome " + dbUsers.getUser().getUsername() + "!");
                 } else {
-                    errorMessage(Main.resourceBundle.getString("incorrect_password"), Main.resourceBundle.getString("password_alert_title"));
+                    Messages.errorMessage(Main.resourceBundle.getString("incorrect_password"), Main.resourceBundle.getString("password_alert_title"));
                 }
             } else {
-                errorMessage(Main.resourceBundle.getString("incorrect_username"), Main.resourceBundle.getString("username_alert_title"));
+                Messages.errorMessage(Main.resourceBundle.getString("incorrect_username"), Main.resourceBundle.getString("username_alert_title"));
             }
         }
     }
@@ -158,18 +159,8 @@ public class LoginController implements Initializable {
     }
 
     /**
-     * Alert
-     * @param message
-     * @param title
-     */
-    private void errorMessage(String message, String title) {
-        Alert alert = new Alert(Alert.AlertType.ERROR, message);
-        alert.setTitle(title);
-        alert.showAndWait();
-    }
-
-    /**
      * Helper
+     *
      * @param keyEvent
      * @param path
      * @param title

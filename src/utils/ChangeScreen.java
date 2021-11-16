@@ -1,5 +1,6 @@
 package utils;
 
+import controller.LoginController;
 import data.DBAppointment;
 import data.DBUsers;
 import data.LoginTracker;
@@ -12,6 +13,7 @@ import javafx.util.Pair;
 import main.Main;
 import model.Log;
 import model.LogType;
+import model.Messages;
 import model.User;
 import test.Test;
 
@@ -58,26 +60,21 @@ public class ChangeScreen {
         // Check if username and password are valid, switch views or present appropriate alerts
         if (userLogin.getUser().isValidUsername()) {
             if (userLogin.getUser().isValidPassword()) {
-
+                Main.user = userLogin.getUser();
                 /*
                 Note the event source is either a Button or a TextField:
                 stage = (Stage) ((TextField) actionEvent.getSource()).getScene().getWindow();
                 stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
                  */
-
                 Stage stage = o.eventSource(actionEvent);
                 stage.setTitle("Welcome " + userLogin.getUser().getUsername() + "!");
                 stage.setScene(new Scene(scene));
                 stage.show();
             } else {
-                Alert alert = new Alert(Alert.AlertType.ERROR, Main.resourceBundle.getString("incorrect_password"));
-                alert.setTitle(Main.resourceBundle.getString("password_alert_title"));
-                alert.showAndWait();
+                Messages.errorMessage(Main.resourceBundle.getString("incorrect_password"), Main.resourceBundle.getString("password_alert_title"));
             }
         } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR, Main.resourceBundle.getString("incorrect_username"));
-            alert.setTitle(Main.resourceBundle.getString("username_alert_title"));
-            alert.showAndWait();
+            Messages.errorMessage(Main.resourceBundle.getString("incorrect_username"), Main.resourceBundle.getString("username_alert_title"));
         }
     }
 }

@@ -3,13 +3,13 @@ package data;
 import controller.ReportsController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert;
 import main.Main;
 import model.*;
 import test.Test;
 
 import java.sql.*;
-import java.time.LocalDateTime;
-import java.time.Month;
+import java.time.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -381,39 +381,25 @@ public class DBAppointment {
         return appointmentObservableList;
     }
 
-    public static Appointment getAppointmentByUser(){
+    public static Appointment checkUpcomingAppointments() {
         Appointment appointment = null;
         LocalDateTime localDateTime = LocalDateTime.now();
         LocalDateTime minus15Minutes = localDateTime.minusMinutes(15);
 
         // if appointment.after(minus15Minutes) alert the user
         String sql = "SELECT Appointment_ID, Start FROM appointments WHERE User_ID = ?";
-        try{
+        try {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ps.setInt(1, Main.user.getUserId());
             ResultSet resultSet = ps.executeQuery();
 
-            while(resultSet.next()){
+            while (resultSet.next()) {
                 LocalDateTime localDateRetrieved = resultSet.getTimestamp(2).toLocalDateTime();
 
-                Timestamp ts_start = resultSet.getTimestamp("Start");
-                Timestamp ts_end = resultSet.getTimestamp("End");
-                LocalDateTime ldt_start = ts_start.toLocalDateTime();
-                LocalDateTime ldt_end = ts_end.toLocalDateTime();
-
-                if(localDateRetrieved.isAfter(minus15Minutes)){
-                    appointment = new Appointment(
-                            resultSet.getInt("Appointment_ID"),
-                            resultSet.getString("Title"),
-                            resultSet.getString("Description"),
-                            resultSet.getString("Location"),
-                            resultSet.getString("Type"),
-                            ldt_start,
-                            ldt_end,
-                            resultSet.getInt("Customer_ID"),
-                            resultSet.getInt("User_ID"),
-                            resultSet.getInt("Contact_ID")
-                    );
+                ZonedDateTime zonedDateTime = ZonedDateTime.now();
+                if (localDateRetrieved.isAfter(zonedDateTime.toLocalDateTime()) &&
+                        localDateRetrieved.isBefore(zonedDateTime.toLocalDateTime().plusMinutes(15))) {
+                    Messages.warningMessage("Appointment coming up!", "Appointment alert");
                 }
             }
         } catch (SQLException throwables) {

@@ -124,14 +124,8 @@ public class CustomersController implements Initializable {
 
         //TODO
         // Alert User if any upcoming appointments for themselves
-//        Appointment appointment = DBAppointment.getAppointmentByUser();
-//        if(appointment != null){
-//            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Upcoming Appointment");
-//            alert.setTitle("Appointment ID: " + appointment.getAppointmentId() +
-//                    "\nAppointment Title: " + appointment.getAppointmentTitle() +
-//                    "\nDate: " + appointment.getStartString());
-//            alert.showAndWait();
-//        }
+        System.out.println(Main.user);
+//        DBAppointment.checkUpcomingAppointments();
     }
 
     public void customerNameOnKeyTyped(KeyEvent keyEvent) {
@@ -184,7 +178,7 @@ public class CustomersController implements Initializable {
             customerObservableList = DBCustomers.getAllCustomers();
             table_view_id.setItems(customerObservableList);
         } else {
-            errorMessage("Nothing to delete!", "Select an item to delete");
+            Messages.errorMessage("Nothing to delete!", "Select an item to delete");
         }
     }
 
@@ -195,7 +189,7 @@ public class CustomersController implements Initializable {
      * @throws IOException
      */
     public void logoutButtonOnAction(ActionEvent actionEvent) throws IOException {
-        Optional<ButtonType> result = confirmationMessage("Logout?", "Confirm logout?");
+        Optional<ButtonType> result = Messages.confirmationMessage("Logout?", "Confirm logout?");
         if (result.isPresent() && result.get() == ButtonType.OK) {
             logout(actionEvent);
         }
@@ -235,7 +229,7 @@ public class CustomersController implements Initializable {
         if (isEmptyTableView) {
             // Save new Customer
             if (isMissingComboBoxValues) {
-                warningMessage("Select a Country and State/Province", "Missing selection");
+                Messages.warningMessage("Select a Country and State/Province", "Missing selection");
             } else {
                 DBCustomers.insertCustomer(
                         customer_name_id.getText().trim(),
@@ -250,9 +244,9 @@ public class CustomersController implements Initializable {
         } else {
             // Update selected Customer
             if (isMissingComboBoxValues) {
-                warningMessage("Select a Country and State/Province", "Missing selection");
+                Messages.warningMessage("Select a Country and State/Province", "Missing selection");
             } else {
-                Optional<ButtonType> result = confirmationMessage("Save changes?", "Save or Discard");
+                Optional<ButtonType> result = Messages.confirmationMessage("Save changes?", "Save or Discard");
                 if (result.isPresent() && result.get() == ButtonType.OK) {
                     DBCustomers.updateCustomer(
                             new Customer(
@@ -359,43 +353,6 @@ public class CustomersController implements Initializable {
             textFieldId.setBackground(new Background(new BackgroundFill(Color.LIGHTPINK, CornerRadii.EMPTY, Insets.EMPTY)));
             textFieldId.setStyle("-fx-background-color: pink");
         }
-    }
-
-    /**
-     * Alert
-     *
-     * @param message
-     * @param title
-     */
-    private void warningMessage(String message, String title) {
-        Alert alert = new Alert(Alert.AlertType.WARNING, message);
-        alert.setTitle(title);
-        alert.show();
-    }
-
-    /**
-     * Alert
-     *
-     * @param message
-     * @param title
-     */
-    private void errorMessage(String message, String title) {
-        Alert alert = new Alert(Alert.AlertType.ERROR, message);
-        alert.setTitle(title);
-        alert.showAndWait();
-    }
-
-    /**
-     * Alert
-     *
-     * @param message
-     * @param title
-     * @return
-     */
-    private Optional<ButtonType> confirmationMessage(String message, String title) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, message);
-        alert.setTitle(title);
-        return alert.showAndWait();
     }
 
     /**
