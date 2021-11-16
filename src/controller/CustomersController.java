@@ -121,7 +121,6 @@ public class CustomersController implements Initializable {
         country_combo_id.setOnAction(actionEvent -> {
             division_combo_id.setItems(DBDivisions.getDivisions(country_combo_id.getValue().getCountryId()));
         });
-
     }
 
     public void customerNameOnKeyTyped(KeyEvent keyEvent) {

@@ -140,7 +140,7 @@ public class LoginController implements Initializable {
     }
 
     /**
-     * Typing ENTER
+     * Helper
      *
      * @param actionEvent
      * @throws IOException

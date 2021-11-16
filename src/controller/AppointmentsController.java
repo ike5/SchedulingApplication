@@ -103,6 +103,8 @@ public class AppointmentsController implements Initializable {
         stage.show();
     }
 
+    //FIXME When updating appointment, the fields are thought of as blank for some reason. Issus happens
+    // if immediately try to save without changing anything.
     public void updateAppointmentButtonOnAction(ActionEvent actionEvent) throws IOException {
         if (table_view_id.getSelectionModel().selectedItemProperty() != null) {
             // Use a Singleton to act as an '@ObservableObject'

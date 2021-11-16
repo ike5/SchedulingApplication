@@ -41,8 +41,7 @@ public class ChangeScreen {
         if (userLogin.getUser().isValidUsername()) {
             if (userLogin.getUser().isValidPassword()) {
                 Main.user = userLogin.getUser();
-                System.out.println("User: " + Main.user.getUsername());
-                System.out.println("Pass: " + Main.user.getPassword());
+                new Test();
                 DBAppointment.checkUpcomingAppointments();
                 /*
                 Note the event source is either a Button or a TextField:

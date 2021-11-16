@@ -4,16 +4,14 @@ import controller.ReportsController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
+import javafx.util.Pair;
 import main.Main;
 import model.*;
 import test.Test;
 
 import java.sql.*;
 import java.time.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class DBAppointment {
     public static ObservableList<Appointment> getAllAppointments() {
@@ -383,10 +381,8 @@ public class DBAppointment {
 
     public static Appointment checkUpcomingAppointments() {
         Appointment appointment = null;
-        LocalDateTime localDateTime = LocalDateTime.now();
-        LocalDateTime minus15Minutes = localDateTime.minusMinutes(15);
+        List<Pair<LocalDateTime, Integer>> localDateTimeList = new ArrayList<>();
 
-        // if appointment.after(minus15Minutes) alert the user
         String sql = "SELECT Appointment_ID, Start FROM appointments WHERE User_ID = ?";
         try {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
@@ -394,20 +390,35 @@ public class DBAppointment {
             ResultSet resultSet = ps.executeQuery();
 
             while (resultSet.next()) {
-                LocalDateTime localDateRetrieved = resultSet.getTimestamp(2).toLocalDateTime();
+                // Retrieve appointment start time from database
+                localDateTimeList.add(new Pair(resultSet.getTimestamp(2).toLocalDateTime(), resultSet.getInt(1)));
+            }
 
-                ZonedDateTime zonedDateTime = ZonedDateTime.now();
-                if (localDateRetrieved.isAfter(zonedDateTime.toLocalDateTime()) &&
-                        localDateRetrieved.isBefore(zonedDateTime.toLocalDateTime().plusMinutes(15))) {
-                    Messages.warningMessage("Appointment coming up!", "Appointment alert");
+            // Create a duration of 15 minutes
+            Duration duration = Duration.ofMinutes(15);
+            // Get current time
+            ZonedDateTime currentTime = ZonedDateTime.now();
+
+            for (Pair<LocalDateTime, Integer> l : localDateTimeList) {
+                // Convert to zoned datetime matching user zone
+                ZonedDateTime zonedDateTime = ZonedDateTime.of(l.getKey(), ZoneId.systemDefault());
+
+                if (zonedDateTime.isAfter(currentTime) &&
+                        zonedDateTime.isBefore(currentTime.plusMinutes(duration.toMinutes()))) {
+                    Messages.warningMessage("Upcoming appointment ID: \n" + l.getValue(), "Appointment alert");
+                    break;
+                } else {
+                    System.out.println("no upcoming appoitnments");
                 }
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+        System.out.println(System.getProperties());
         return appointment;
     }
 }
+
 
 
     /*
