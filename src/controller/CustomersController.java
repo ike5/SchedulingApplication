@@ -294,25 +294,21 @@ public class CustomersController implements Initializable {
 
     public void customerNameOnKeyTyped(KeyEvent keyEvent) {
         isCustomerNameFieldValid = isValidTextField((TextField) keyEvent.getSource());
-        textFieldValidationColor(isCustomerNameFieldValid, customer_name_id);
         disableButtonsLogic();
     }
 
     public void addressOnKeyTyped(KeyEvent keyEvent) {
         isAddressFieldValid = isValidTextField((TextField) keyEvent.getSource());
-        textFieldValidationColor(isAddressFieldValid, address_id);
         disableButtonsLogic();
     }
 
     public void postalCodeOnKeyTyped(KeyEvent keyEvent) {
         isPostalCodeFieldValid = isValidTextField((TextField) keyEvent.getSource());
-        textFieldValidationColor(isPostalCodeFieldValid, postal_code_id);
         disableButtonsLogic();
     }
 
     public void phoneNumberOnKeyTyped(KeyEvent keyEvent) {
         isPhoneNumberFieldValid = isValidTextField((TextField) keyEvent.getSource());
-        textFieldValidationColor(isPhoneNumberFieldValid, phone_number_id);
         disableButtonsLogic();
     }
 
