@@ -152,7 +152,7 @@ public class CustomersController implements Initializable {
         postal_code_id.clear();
         phone_number_id.clear();
         disableButtons(true, true, true);
-        invalidateAllTextFields(false);
+        invalidateAllTextFields();
     }
 
 
@@ -253,8 +253,8 @@ public class CustomersController implements Initializable {
     }
 
     private boolean isValidTextField(TextField textField) {
-        // Can't start with a whitespace and matches 1 or more characters and can't end with a whitespace
-        String regex = "^[^\\s].*\\S";
+        // Can't start with a whitespace and matches 1 or more characters
+        String regex = "^[^\\s].*";
         return textField.getText().matches(regex);
     }
 
@@ -281,16 +281,13 @@ public class CustomersController implements Initializable {
                 isPhoneNumberFieldValid;
     }
 
-    private void invalidateAllTextFields(boolean isValid) {
+    private void invalidateAllTextFields() {
+        boolean isValid = false;
         isCustomerNameFieldValid = isValid;
         isAddressFieldValid = isValid;
         isPostalCodeFieldValid = isValid;
         isPhoneNumberFieldValid = isValid;
     }
-
-    //TODO If textfields are either invalid, or empty, disable save button.
-    // If at least one textfield is declared invalid/valid, enable clear button
-    // If at least one textfield is declared invalid/valid, prompt message on logout or switch screens
 
     public void customerNameOnKeyTyped(KeyEvent keyEvent) {
         isCustomerNameFieldValid = isValidTextField((TextField) keyEvent.getSource());
