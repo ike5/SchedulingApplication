@@ -2,12 +2,17 @@ package controller;
 
 import data.DBDivisions;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import data.DBCountries;
 import data.DBCustomers;
@@ -17,6 +22,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.cell.PropertyValueFactory;
 import main.Main;
 import model.*;
+import org.w3c.dom.Text;
 import test.Test;
 
 import java.io.IOException;
@@ -139,13 +145,14 @@ public class CustomersController implements Initializable {
      * @param actionEvent
      */
     public void clearFormButtonOnAction(ActionEvent actionEvent) {
-        disableButtons(true, true, true);
         table_view_id.getSelectionModel().clearSelection();
         customer_id_id.clear();
         customer_name_id.clear();
         address_id.clear();
         postal_code_id.clear();
         phone_number_id.clear();
+        disableButtons(true, true, true);
+        invalidateAllTextFields(false);
     }
 
 
@@ -199,7 +206,8 @@ public class CustomersController implements Initializable {
     }
 
     private boolean isMissingComboBoxValues() {
-        return country_combo_id.getSelectionModel().isEmpty() || division_combo_id.getSelectionModel().isEmpty();
+        return country_combo_id.getSelectionModel().isEmpty() ||
+                division_combo_id.getSelectionModel().isEmpty();
     }
 
     /**
@@ -250,35 +258,70 @@ public class CustomersController implements Initializable {
         return textField.getText().matches(regex);
     }
 
-    private void validateAllTextFields(){
-
+    private void disableButtonsLogic() {
+        if (table_view_id.getSelectionModel().isEmpty()) {
+            if (allTextFieldsValid()) {
+                disableButtons(false, false, true);
+            }
+        } else { // if tableview is selected
+            if (allTextFieldsValid()) {
+                disableButtons(true, true, true);
+            }
+        }
     }
+
+    /**
+     * Checks whether all TextFields are valid.
+     * @return Returns true if valid, false if one or more fields is invalid.
+     */
+    private boolean allTextFieldsValid() {
+        return isCustomerNameFieldValid &&
+                isAddressFieldValid &&
+                isPostalCodeFieldValid &&
+                isPhoneNumberFieldValid;
+    }
+
+    private void invalidateAllTextFields(boolean isValid) {
+        isCustomerNameFieldValid = isValid;
+        isAddressFieldValid = isValid;
+        isPostalCodeFieldValid = isValid;
+        isPhoneNumberFieldValid = isValid;
+    }
+
+    //TODO If textfields are either invalid, or empty, disable save button.
+    // If at least one textfield is declared invalid/valid, enable clear button
+    // If at least one textfield is declared invalid/valid, prompt message on logout or switch screens
 
     public void customerNameOnKeyTyped(KeyEvent keyEvent) {
         isCustomerNameFieldValid = isValidTextField((TextField) keyEvent.getSource());
         textFieldValidationColor(isCustomerNameFieldValid, customer_name_id);
+        disableButtonsLogic();
     }
 
     public void addressOnKeyTyped(KeyEvent keyEvent) {
         isAddressFieldValid = isValidTextField((TextField) keyEvent.getSource());
         textFieldValidationColor(isAddressFieldValid, address_id);
+        disableButtonsLogic();
     }
 
     public void postalCodeOnKeyTyped(KeyEvent keyEvent) {
         isPostalCodeFieldValid = isValidTextField((TextField) keyEvent.getSource());
         textFieldValidationColor(isPostalCodeFieldValid, postal_code_id);
+        disableButtonsLogic();
     }
 
     public void phoneNumberOnKeyTyped(KeyEvent keyEvent) {
         isPhoneNumberFieldValid = isValidTextField((TextField) keyEvent.getSource());
         textFieldValidationColor(isPhoneNumberFieldValid, phone_number_id);
+        disableButtonsLogic();
     }
 
-    private void textFieldValidationColor(boolean isCustomerNameFieldValid, TextField customer_name_id) {
-        if (isCustomerNameFieldValid) {
-            customer_name_id.setStyle("-fx-background-color: white");
+    private void textFieldValidationColor(boolean isFieldValid, TextField textFieldId) {
+        if (isFieldValid) {
+            new Test(isFieldValid);
+            textFieldId.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, CornerRadii.EMPTY, Insets.EMPTY)));
         } else {
-            customer_name_id.setStyle("-fx-background-color: pink");
+            textFieldId.setBackground(new Background(new BackgroundFill(Color.LIGHTPINK, CornerRadii.EMPTY, Insets.EMPTY)));  textFieldId.setStyle("-fx-background-color: pink");
         }
     }
 
