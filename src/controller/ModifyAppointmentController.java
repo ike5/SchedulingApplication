@@ -116,9 +116,6 @@ public class ModifyAppointmentController implements Initializable {
         }
     }
 
-
-    //FIXME - still can't figure out why when clicking clear it doesn't turn all the comboboxes to empty. Maybe I need
-    // to use a listener or a callback?
     private void onClear(ActionEvent actionEvent) {
         customer_combo.valueProperty().set(null);
         contact_combo.valueProperty().set(null);

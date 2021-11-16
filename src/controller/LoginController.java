@@ -124,8 +124,6 @@ public class LoginController implements Initializable {
      * @return
      */
     private boolean validateUsernameString() {
-        //FIXME (low) - Allow underscores
-
         String regexUsername = "^[0-z]+";
         return username_field_id.getText().matches(regexUsername);
     }

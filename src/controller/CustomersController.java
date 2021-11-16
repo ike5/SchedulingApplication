@@ -174,9 +174,7 @@ public class CustomersController implements Initializable {
                 alert.setTitle("Missing ComboBox");
                 alert.show();
             } else {
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Save changes?");
-                alert.setTitle("Save or Discard");
-                Optional<ButtonType> result = alert.showAndWait();
+                Optional<ButtonType> result = getAlertAndWait("Save changes?", "Save or Discard");
                 if (result.isPresent() && result.get() == ButtonType.OK) {
                     DBCustomers.updateCustomer(
                             new Customer(
@@ -224,28 +222,51 @@ public class CustomersController implements Initializable {
     }
 
     public void logoutButtonOnAction(ActionEvent actionEvent) throws IOException {
-        //FIXME
-        // - if logout button pressed and table row was selected and if field was changed, prompt alert that something was changed
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Logout?");
-        alert.setTitle("Confirm logout?");
-        Optional<ButtonType> result = alert.showAndWait();
+        //FIXME If logout button pressed and table row was selected and if field was changed, prompt alert that something was changed
+        Optional<ButtonType> result = getAlertAndWait("Logout?", "Confirm logout?");
 
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
-            Parent scene = FXMLLoader.load(getClass().getResource("/view/LoginScreen.fxml"));
-            stage.setTitle(null);
-            stage.setScene(new Scene(scene));
-            stage.show();
+            logout(actionEvent);
         }
     }
 
+    private void logout(ActionEvent actionEvent) throws IOException {
+        switchView(actionEvent, "/view/LoginScreen.fxml", "login");
+    }
+
+    private Optional<ButtonType> getAlertAndWait(String s, String s2) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, s);
+        alert.setTitle(s2);
+        return alert.showAndWait();
+    }
+
     private boolean isValidTextField(TextField textField) {
-        String regex = "^[^\\s].*\\S"; // Can't start with a whitespace and matches 1 or more characters and can't end with a whitespace
+        // Can't start with a whitespace and matches 1 or more characters and can't end with a whitespace
+        String regex = "^[^\\s].*\\S";
         return textField.getText().matches(regex);
     }
 
     public void customerNameOnKeyTyped(KeyEvent keyEvent) {
         isCustomerNameFieldValid = isValidTextField((TextField) keyEvent.getSource());
+        textFieldValidationColor(isCustomerNameFieldValid, customer_name_id);
+    }
+
+    public void addressOnKeyTyped(KeyEvent keyEvent) {
+        isAddressFieldValid = isValidTextField((TextField) keyEvent.getSource());
+        textFieldValidationColor(isAddressFieldValid, address_id);
+    }
+
+    public void postalCodeOnKeyTyped(KeyEvent keyEvent) {
+        isPostalCodeFieldValid = isValidTextField((TextField) keyEvent.getSource());
+        textFieldValidationColor(isPostalCodeFieldValid, postal_code_id);
+    }
+
+    public void phoneNumberOnKeyTyped(KeyEvent keyEvent) {
+        isPhoneNumberFieldValid = isValidTextField((TextField) keyEvent.getSource());
+        textFieldValidationColor(isPhoneNumberFieldValid, phone_number_id);
+    }
+
+    private void textFieldValidationColor(boolean isCustomerNameFieldValid, TextField customer_name_id) {
         if (isCustomerNameFieldValid) {
             customer_name_id.setStyle("-fx-background-color: white");
         } else {
@@ -253,47 +274,20 @@ public class CustomersController implements Initializable {
         }
     }
 
-    public void addressOnKeyTyped(KeyEvent keyEvent) {
-        isAddressFieldValid = isValidTextField((TextField) keyEvent.getSource());
-        if (isAddressFieldValid) {
-            address_id.setStyle("-fx-background-color: white");
-        } else {
-            address_id.setStyle("-fx-background-color: pink");
-        }
-    }
-
-    public void postalCodeOnKeyTyped(KeyEvent keyEvent) {
-        isPostalCodeFieldValid = isValidTextField((TextField) keyEvent.getSource());
-        if (isPostalCodeFieldValid) {
-            postal_code_id.setStyle("-fx-background-color: white");
-        } else {
-            postal_code_id.setStyle("-fx-background-color: pink");
-        }
-    }
-
-    public void phoneNumberOnKeyTyped(KeyEvent keyEvent) {
-        isPhoneNumberFieldValid = isValidTextField((TextField) keyEvent.getSource());
-        if (isPhoneNumberFieldValid) {
-            phone_number_id.setStyle("-fx-background-color: white");
-        } else {
-            phone_number_id.setStyle("-fx-background-color: pink");
-        }
-    }
-
     public void viewAppointmentsButtonOnAction(ActionEvent actionEvent) throws IOException {
         //TODO Alert user if any changes were made to Fields
-        Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
-        Parent scene = FXMLLoader.load(getClass().getResource("/view/Appointments.fxml"));
-        stage.setTitle("Appointments");
-        stage.setScene(new Scene(scene));
-        stage.show();
+        switchView(actionEvent, "/view/Appointments.fxml", "Appointments");
     }
 
     public void reportsButtonOnAction(ActionEvent actionEvent) throws IOException {
         //TODO Alert user if any changes were made to Fields
+        switchView(actionEvent, "/view/Reports.fxml", "Reports");
+    }
+
+    private void switchView(ActionEvent actionEvent, String path, String title) throws IOException {
         Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
-        Parent scene = FXMLLoader.load(getClass().getResource("/view/Reports.fxml"));
-        stage.setTitle("Reports");
+        Parent scene = FXMLLoader.load(getClass().getResource(path));
+        stage.setTitle(title);
         stage.setScene(new Scene(scene));
         stage.show();
     }

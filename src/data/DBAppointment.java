@@ -15,10 +15,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-//TODO
-// - Need a DELETE method
-// - Need an UPDATE method
-
 public class DBAppointment {
     public static ObservableList<Appointment> getAllAppointments() {
         ObservableList<Appointment> appointmentObservableList = FXCollections.observableArrayList();
@@ -53,31 +49,6 @@ public class DBAppointment {
         }
         return appointmentObservableList;
     }
-
-    /*
-    MySQL converts TIMESTAMP values from the current time zone to UTC for storage, and back from UTC to the current time zone for retrieval.
-    (This does not occur for other types such as DATETIME.
-
-    In MySQL 8.0.19 and later, you can specify a time zone offset when inserting a TIMESTAMP or DATETIME value into a table.
-    See Section 9.1.3, “Date and Time Literals”, for more information and examples.
-
-    In MySQL 8.0.22 and later, you can convert TIMESTAMP values to UTC DATETIME values when retrieving them using CAST()
-    with the AT TIME ZONE operator, as shown here:
-
-    mysql> SELECT col,
-     >     CAST(col AT TIME ZONE INTERVAL '+00:00' AS DATETIME) AS ut
-     >     FROM ts ORDER BY id;
-+---------------------+---------------------+
-| col                 | ut                  |
-+---------------------+---------------------+
-| 2020-01-01 10:10:10 | 2020-01-01 15:10:10 |
-| 2019-12-31 23:40:10 | 2020-01-01 04:40:10 |
-| 2020-01-01 13:10:10 | 2020-01-01 18:10:10 |
-| 2020-01-01 10:10:10 | 2020-01-01 15:10:10 |
-| 2020-01-01 04:40:10 | 2020-01-01 09:40:10 |
-| 2020-01-01 18:10:10 | 2020-01-01 23:10:10 |
-+---------------------+---------------------+
-     */
 
     public static Appointment getAppointment(int appointmentId) {
         String sql = "SELECT Appointment_ID, Title, Description, Location, Type, Start, End, Customer_ID, User_ID, Contact_ID " +
@@ -117,33 +88,6 @@ public class DBAppointment {
 
     public static void insertAppointment(String appointmentTitle, String appointmentDescription, String appointmentLocation, String appointmentType, LocalDateTime start, LocalDateTime end, Customer customer, User user, Contact contact) {
         try {
-//            // Insert into the contacts database table (works)
-//            String sql_contact = "INSERT INTO client_schedule.contacts VALUES (NULL, ?, ?)";
-//            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql_contact, Statement.RETURN_GENERATED_KEYS);
-//            ps.setString(1, contact.getContactName());
-//            ps.setString(2, contact.getContactEmail());
-//            ps.execute();
-//            // The following ResultSet has only one column: key (works)
-//            ResultSet resultSet = ps.getGeneratedKeys();    // Cannot use this result set for anything else
-//            resultSet.next();
-//            int contactIdKey = resultSet.getInt(1);
-//
-//            // Create the Contact object (You need a new query) (works)
-//            String sql_getContact = "SELECT * FROM contacts WHERE Contact_ID = ?";
-//            PreparedStatement preparedStatementContact = JDBC.getConnection().prepareStatement(sql_getContact, Statement.NO_GENERATED_KEYS);
-//            preparedStatementContact.setInt(1, contactIdKey);
-//            ResultSet resultSetGetContact = preparedStatementContact.executeQuery();
-//
-//            Contact contactObject = null;
-//            // Create a Contact object
-//            while (resultSetGetContact.next()) {
-//                contactObject = new Contact(
-//                        resultSetGetContact.getInt(1),
-//                        resultSetGetContact.getString(2),
-//                        resultSetGetContact.getString(3)
-//                );
-//            }
-
             // Insert new appointment into appointments database table
             String sql_appointment = "INSERT INTO client_schedule.appointments VALUES(NULL, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, ?, CURRENT_TIMESTAMP, ?, ?, ?, ?)";
             PreparedStatement preparedStatement = JDBC.getConnection().prepareStatement(sql_appointment, Statement.RETURN_GENERATED_KEYS);
@@ -160,35 +104,6 @@ public class DBAppointment {
             preparedStatement.setInt(11, contact.getContactId());
 
             preparedStatement.execute();
-
-//            // Get key for generated appointment
-//            ResultSet resultSetAppointment = preparedStatement.getGeneratedKeys();
-//            resultSetAppointment.next();
-//            int appointmentKey = resultSetAppointment.getInt(1);
-//
-//            // Retrieve appointment row from database
-//            String sql_get_appointment = "SELECT Appointment_ID, Title, Description, Location, Type, Customer_ID, User_ID, Contact_ID FROM appointments WHERE Appointment_ID = ?";
-//            PreparedStatement preparedStatementGetAppointment = JDBC.getConnection().prepareStatement(sql_get_appointment, Statement.NO_GENERATED_KEYS);
-//            preparedStatementGetAppointment.setInt(1, appointmentKey);
-//            ResultSet resultSetGetAppointment = preparedStatementGetAppointment.executeQuery();
-//            Appointment appointment = null;
-//
-//            // Create an Appointment object
-//            while (resultSetGetAppointment.next()) {
-//                System.out.println(resultSetGetAppointment.getInt(1) +
-//                        "\t" + resultSetGetAppointment.getString(2));
-//                appointment = new Appointment(
-//                        resultSetGetAppointment.getInt(1),
-//                        resultSetGetAppointment.getString(2),
-//                        resultSetGetAppointment.getString(3),
-//                        resultSetGetAppointment.getString(4),
-//                        resultSetGetAppointment.getString(5),
-//                        customerObj_customerId,
-//                        userObj_userId,
-//                        contactObject);
-//            }
-//
-//            return appointment;
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -270,7 +185,9 @@ public class DBAppointment {
 
         for (String type : getAllTypes()) {
             Map<String, String> mapDataRow = new HashMap<>();
-            //FIXME - dependency on ReportsController
+
+            //FIXME - The following Type and Map depend on the ReportsController.TYPE_MAP_KEY and .NUM_APPOINTMENT_MAP_KEY values
+            // First eliminating them can help with plagerims if you didn't get this from the Javafx documentation.
             mapDataRow.put(ReportsController.TYPE_MAP_KEY, type);
             mapDataRow.put(ReportsController.NUM_APPOINTMENT_MAP_KEY, Integer.toString(getTotalNumberOfAppointmentsByType(type)));
             mapObservableList.add(mapDataRow);
@@ -388,7 +305,7 @@ public class DBAppointment {
         }
     }
 
-    public static Appointment updateAppointment(int appointmentId, String appointmentTitle, String appointmentDescription, String appointmentLocation, String appointmentType, LocalDateTime start, LocalDateTime end, Customer customer, User user, Contact contact) {
+    public static void updateAppointment(int appointmentId, String appointmentTitle, String appointmentDescription, String appointmentLocation, String appointmentType, LocalDateTime start, LocalDateTime end, Customer customer, User user, Contact contact) {
         String sql = "UPDATE appointments Set Title = ?, Description = ?, Location = ?, Type = ?, Start = ?, End = ?, Last_Update = CURRENT_TIMESTAMP, Last_Updated_By = ?, Customer_ID = ?, User_ID = ?, Contact_ID = ? WHERE Appointment_ID = ?";
         try {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
@@ -405,11 +322,9 @@ public class DBAppointment {
             ps.setInt(11, appointmentId);
 
             ps.executeUpdate();
-
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        return null; //FIXME - return an Appointment object
     }
 
     /**
@@ -510,3 +425,27 @@ public class DBAppointment {
 }
 
 
+    /*
+    MySQL converts TIMESTAMP values from the current time zone to UTC for storage, and back from UTC to the current time zone for retrieval.
+    (This does not occur for other types such as DATETIME.
+
+    In MySQL 8.0.19 and later, you can specify a time zone offset when inserting a TIMESTAMP or DATETIME value into a table.
+    See Section 9.1.3, “Date and Time Literals”, for more information and examples.
+
+    In MySQL 8.0.22 and later, you can convert TIMESTAMP values to UTC DATETIME values when retrieving them using CAST()
+    with the AT TIME ZONE operator, as shown here:
+
+    mysql> SELECT col,
+     >     CAST(col AT TIME ZONE INTERVAL '+00:00' AS DATETIME) AS ut
+     >     FROM ts ORDER BY id;
++---------------------+---------------------+
+| col                 | ut                  |
++---------------------+---------------------+
+| 2020-01-01 10:10:10 | 2020-01-01 15:10:10 |
+| 2019-12-31 23:40:10 | 2020-01-01 04:40:10 |
+| 2020-01-01 13:10:10 | 2020-01-01 18:10:10 |
+| 2020-01-01 10:10:10 | 2020-01-01 15:10:10 |
+| 2020-01-01 04:40:10 | 2020-01-01 09:40:10 |
+| 2020-01-01 18:10:10 | 2020-01-01 23:10:10 |
++---------------------+---------------------+
+     */
