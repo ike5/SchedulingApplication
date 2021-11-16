@@ -36,17 +36,17 @@
                             </rowConstraints>
                             <children>
                                 <Label text="Customer ID" />
-                                <TextField fx:id="customer_id_id" editable="false" onAction="#customerIdOnAction" GridPane.columnIndex="1" />
+                                <TextField fx:id="customer_id_id" editable="false"  GridPane.columnIndex="1" />
                                 <Label text="Customer Name" GridPane.rowIndex="1" />
-                                <TextField fx:id="customer_name_id" onAction="#customerNameOnAction" onKeyTyped="#customerNameOnKeyTyped" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                <TextField fx:id="customer_name_id"  onKeyTyped="#customerNameOnKeyTyped" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                 <ComboBox fx:id="country_combo_id" prefWidth="150.0" GridPane.rowIndex="2" />
-                                <ComboBox fx:id="division_combo_id" onAction="#divisionComboBoxOnAction" prefHeight="26.0" prefWidth="129.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                <ComboBox fx:id="division_combo_id"  prefHeight="26.0" prefWidth="129.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                 <Label text="Address" GridPane.rowIndex="3" />
-                                <TextField fx:id="address_id" onAction="#addressOnAction" onKeyTyped="#addressOnKeyTyped" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                <TextField fx:id="address_id"  onKeyTyped="#addressOnKeyTyped" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                 <Label text="Postal Code" GridPane.rowIndex="4" />
-                                <TextField fx:id="postal_code_id" onAction="#postalCodeOnAction" onKeyTyped="#postalCodeOnKeyTyped" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                <TextField fx:id="postal_code_id"  onKeyTyped="#postalCodeOnKeyTyped" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                                 <Label text="Phone Number" GridPane.rowIndex="5" />
-                                <TextField fx:id="phone_number_id" onAction="#phoneNumberOnAction" onKeyTyped="#phoneNumberOnKeyTyped" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                <TextField fx:id="phone_number_id"  onKeyTyped="#phoneNumberOnKeyTyped" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                                 <Button fx:id="save_button" mnemonicParsing="false" onAction="#saveButtonOnAction" prefHeight="26.0" prefWidth="67.0" text="Save" GridPane.rowIndex="6" />
                                 <Button fx:id="clear_form_button" mnemonicParsing="false" onAction="#clearFormButtonOnAction" text="Clear Form" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                             </children>

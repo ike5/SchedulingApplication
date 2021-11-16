@@ -291,40 +291,5 @@ public class CustomersController implements Initializable {
         stage.setScene(new Scene(scene));
         stage.show();
     }
-
-    @Deprecated
-    public void customerNameOnAction(ActionEvent actionEvent) {
-    }
-
-    @Deprecated
-    public void addressOnAction(ActionEvent actionEvent) {
-    }
-
-    @Deprecated
-    public void postalCodeOnAction(ActionEvent actionEvent) {
-    }
-
-    @Deprecated
-    public void phoneNumberOnAction(ActionEvent actionEvent) {
-    }
-
-    @Deprecated
-    public void divisionComboBoxOnAction(ActionEvent actionEvent) {
-        // Not sure what to do here.
-    }
-
-    @Deprecated
-    public void customerIdOnAction(ActionEvent actionEvent) {
-    }
-
-    @Deprecated
-    public void onPull(ActionEvent actionEvent) {
-        Customer customer = (Customer) table_view_id.getSelectionModel().getSelectedItem();
-        customer_id_id.setText(Integer.toString(customer.getId()));
-        customer_name_id.setText(customer.getName());
-        address_id.setText(customer.getAddress());
-        postal_code_id.setText(customer.getPostalCode());
-        phone_number_id.setText(customer.getPhone());
-    }
 }
 
