@@ -54,90 +54,6 @@ public class LoginController implements Initializable {
 //        username_field_id.setText(Main.resourceBundle.getString("username_field"));
     }
 
-    @FXML
-    public void usernameOnAction(ActionEvent actionEvent) throws IOException {
-        textFieldLogin(actionEvent);
-    }
-
-    @FXML
-    public void passwordOnAction(ActionEvent actionEvent) throws IOException {
-        textFieldLogin(actionEvent);
-    }
-
-    private void textFieldLogin(ActionEvent actionEvent) throws IOException {
-        dbUsers = new DBUsers(username_field_id.getText(), password_field_id.getText());
-        Pair<String, String> usernamePasswordReceived = new Pair<>(username_field_id.getText(), password_field_id.getText());
-        makeLogEntry(usernamePasswordReceived);
-
-        ChangeScreen.changeScreen(
-                actionEvent,
-                dbUsers,
-                usernamePasswordReceived,
-                FXMLLoader.load(getClass().getResource("/view/Customers.fxml")),
-                aEvent -> (Stage) ((TextField) aEvent.getSource()).getScene().getWindow());
-    }
-
-    /**
-     * This method is triggered when the Login Button is clicked.
-     *
-     * @param actionEvent
-     * @throws IOException
-     */
-    @FXML
-    public void onLoginAction(ActionEvent actionEvent) throws IOException {
-        //FIXME (med) - pressing ENTER when button is highlighted doesn't work
-        dbUsers = new DBUsers(username_field_id.getText(), password_field_id.getText());
-        Pair<String, String> usernamePasswordReceived = new Pair<>(username_field_id.getText(), password_field_id.getText());
-        makeLogEntry(usernamePasswordReceived);
-
-        ChangeScreen.changeScreen(
-                actionEvent,
-                dbUsers,
-                usernamePasswordReceived,
-                FXMLLoader.load(getClass().getResource("/view/Customers.fxml")),
-                aEvent -> (Stage) ((Button) aEvent.getSource()).getScene().getWindow()
-        );
-    }
-
-    void makeLogEntry(Pair<String, String> usernamePasswordReceived) {
-        if (dbUsers.getUser().isValidUsername() && dbUsers.getUser().isValidPassword()) {
-            LoginTracker.addToLog(
-                    Path.of("login_activity.txt"),
-                    LogType.SUCCESS,
-                    "Username: " + usernamePasswordReceived.getKey() +
-                            "\tPassword: " + usernamePasswordReceived.getValue() +
-                            "\tLocalDateTime: " + LocalDateTime.now());
-        } else {
-            LoginTracker.addToLog(
-                    Path.of("login_activity.txt"),
-                    LogType.FAILURE,
-                    "Username: " + usernamePasswordReceived.getKey() +
-                            "\tPassword: " + usernamePasswordReceived.getValue() +
-                            "\tLocalDateTime: " + LocalDateTime.now());
-        }
-    }
-
-    /**
-     * Validates a username by matching string values that begin with a number or letter, and contains
-     * only numbers and letters.
-     *
-     * @return
-     */
-    private boolean validateUsernameString() {
-        String regexUsername = "^[0-z]+";
-        return username_field_id.getText().matches(regexUsername);
-    }
-
-    /**
-     * Validates password by matching all string values except whitespaces
-     *
-     * @return Returns true if password field complies with regex
-     */
-    private boolean validatePasswordString() {
-        String regexPassword = "^[\\S]+";
-        return password_field_id.getText().matches(regexPassword);
-    }
-
     public void onUsernameKeyTyped(KeyEvent keyEvent) {
         if (validateUsernameString()) {
             username_label_id.setVisible(false);
@@ -149,7 +65,6 @@ public class LoginController implements Initializable {
         }
     }
 
-    //FIXME (low) - The red password error happens because of a TAB keystroke when entering the password TextField.
     public void onPasswordKeyTyped(KeyEvent keyEvent) {
         if (validatePasswordString()) {
             password_label_id.setVisible(false);
@@ -162,6 +77,7 @@ public class LoginController implements Initializable {
 
     }
 
+    //FIXME (low) - The red password error happens because of a TAB keystroke when entering the password TextField.
     public void onLoginKeyPressed(KeyEvent keyEvent) throws IOException {
         if (keyEvent.getCode().equals(KeyCode.ENTER)) {
             dbUsers = new DBUsers(username_field_id.getText(), password_field_id.getText());
@@ -185,4 +101,116 @@ public class LoginController implements Initializable {
             }
         }
     }
+
+    /**
+     * Typing ENTER
+     *
+     * @param actionEvent
+     * @throws IOException
+     */
+    @FXML
+    public void usernameOnAction(ActionEvent actionEvent) throws IOException {
+        textFieldLogin(actionEvent);
+    }
+
+    /**
+     * Typing ENTER
+     *
+     * @param actionEvent
+     * @throws IOException
+     */
+    @FXML
+    public void passwordOnAction(ActionEvent actionEvent) throws IOException {
+        textFieldLogin(actionEvent);
+    }
+
+    /**
+     * Typing ENTER
+     *
+     * @param actionEvent
+     * @throws IOException
+     */
+    private void textFieldLogin(ActionEvent actionEvent) throws IOException {
+        dbUsers = new DBUsers(username_field_id.getText(), password_field_id.getText());
+        Pair<String, String> usernamePasswordReceived = new Pair<>(username_field_id.getText(), password_field_id.getText());
+        makeLogEntry(usernamePasswordReceived);
+
+        ChangeScreen.changeScreen(
+                actionEvent,
+                dbUsers,
+                usernamePasswordReceived,
+                FXMLLoader.load(getClass().getResource("/view/Customers.fxml")),
+                aEvent -> (Stage) ((TextField) aEvent.getSource()).getScene().getWindow());
+    }
+
+    /**
+     * Button
+     *
+     * @param actionEvent
+     * @throws IOException
+     */
+    @FXML
+    public void onLoginAction(ActionEvent actionEvent) throws IOException {
+        //FIXME (med) - pressing ENTER when button is highlighted doesn't work
+        dbUsers = new DBUsers(username_field_id.getText(), password_field_id.getText());
+        Pair<String, String> usernamePasswordReceived = new Pair<>(username_field_id.getText(), password_field_id.getText());
+        makeLogEntry(usernamePasswordReceived);
+
+        ChangeScreen.changeScreen(
+                actionEvent,
+                dbUsers,
+                usernamePasswordReceived,
+                FXMLLoader.load(getClass().getResource("/view/Customers.fxml")),
+                aEvent -> (Stage) ((Button) aEvent.getSource()).getScene().getWindow()
+        );
+    }
+
+    /**
+     * Helper
+     *
+     * @param usernamePasswordReceived
+     */
+    void makeLogEntry(Pair<String, String> usernamePasswordReceived) {
+        if (dbUsers.getUser().isValidUsername() && dbUsers.getUser().isValidPassword()) {
+            LoginTracker.addToLog(
+                    Path.of("login_activity.txt"),
+                    LogType.SUCCESS,
+                    "Username: " + usernamePasswordReceived.getKey() +
+                            "\tPassword: " + usernamePasswordReceived.getValue() +
+                            "\tLocalDateTime: " + LocalDateTime.now());
+        } else {
+            LoginTracker.addToLog(
+                    Path.of("login_activity.txt"),
+                    LogType.FAILURE,
+                    "Username: " + usernamePasswordReceived.getKey() +
+                            "\tPassword: " + usernamePasswordReceived.getValue() +
+                            "\tLocalDateTime: " + LocalDateTime.now());
+        }
+    }
+
+    /**
+     * Validation
+     * <p>
+     * Validates a username by matching string values that begin with a number or letter, and contains
+     * only numbers and letters.
+     *
+     * @return
+     */
+    private boolean validateUsernameString() {
+        String regexUsername = "^[0-z]+";
+        return username_field_id.getText().matches(regexUsername);
+    }
+
+    /**
+     * Validation
+     * <p>
+     * Validates password by matching all string values except whitespaces
+     *
+     * @return Returns true if password field complies with regex
+     */
+    private boolean validatePasswordString() {
+        String regexPassword = "^[\\S]+";
+        return password_field_id.getText().matches(regexPassword);
+    }
+
 }

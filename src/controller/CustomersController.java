@@ -22,7 +22,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.cell.PropertyValueFactory;
 import main.Main;
 import model.*;
-import org.w3c.dom.Text;
 import test.Test;
 
 import java.io.IOException;
@@ -122,6 +121,7 @@ public class CustomersController implements Initializable {
             division_combo_id.setItems(DBDivisions.getDivisions(country_combo_id.getValue().getCountryId()));
         });
 
+        //TODO
         // Alert User if any upcoming appointments for themselves
 //        Appointment appointment = DBAppointment.getAppointmentByUser();
 //        if(appointment != null){
@@ -131,162 +131,6 @@ public class CustomersController implements Initializable {
 //                    "\nDate: " + appointment.getStartString());
 //            alert.showAndWait();
 //        }
-    }
-
-    private void disableButtons(boolean isSaveButtonDisabled, boolean isClearFormButtonDisabled, boolean isDeleteCustomerButtonDisabled) {
-        save_button.setDisable(isSaveButtonDisabled);
-        clear_form_button.setDisable(isClearFormButtonDisabled);
-        delete_customer_button.setDisable(isDeleteCustomerButtonDisabled);
-    }
-
-    /**
-     * Clears all fields
-     *
-     * @param actionEvent
-     */
-    public void clearFormButtonOnAction(ActionEvent actionEvent) {
-        table_view_id.getSelectionModel().clearSelection();
-        customer_id_id.clear();
-        customer_name_id.clear();
-        address_id.clear();
-        postal_code_id.clear();
-        phone_number_id.clear();
-        disableButtons(true, true, true);
-        invalidateAllTextFields();
-    }
-
-
-    public void saveButtonOnAction(ActionEvent actionEvent) {
-        boolean isEmptyTableView = table_view_id.getSelectionModel().isEmpty();
-        boolean isMissingComboBoxValues = isMissingComboBoxValues();
-        new Test("isEmptyTableView: " + isEmptyTableView);
-        new Test("isMissingComboBoxValues: " + isMissingComboBoxValues);
-
-        if (isEmptyTableView) {
-            // Save new Customer
-            if (isMissingComboBoxValues) {
-                Alert alert = new Alert(Alert.AlertType.WARNING, "Select a Country and State/Province");
-                alert.setTitle("Missing ComboBox");
-                alert.show();
-            } else {
-                DBCustomers.insertCustomer(
-                        customer_name_id.getText().trim(),
-                        address_id.getText().trim(),
-                        postal_code_id.getText().trim(),
-                        phone_number_id.getText().trim(),
-                        division_combo_id.getSelectionModel().getSelectedItem().getDivisionId(),
-                        Main.user
-                );
-                populateTableView();
-            }
-        } else {
-            // Update selected Customer
-            if (isMissingComboBoxValues) {
-                Alert alert = new Alert(Alert.AlertType.WARNING, "Select a Country and State/Province");
-                alert.setTitle("Missing ComboBox");
-                alert.show();
-            } else {
-                Optional<ButtonType> result = getAlertAndWait("Save changes?", "Save or Discard");
-                if (result.isPresent() && result.get() == ButtonType.OK) {
-                    DBCustomers.updateCustomer(
-                            new Customer(
-                                    Integer.parseInt(customer_id_id.getText().trim()),
-                                    customer_name_id.getText().trim(),
-                                    address_id.getText().trim(),
-                                    postal_code_id.getText().trim(),
-                                    phone_number_id.getText().trim(),
-                                    division_combo_id.getSelectionModel().getSelectedItem()
-                            )
-                    );
-                    populateTableView();
-                    clearFormButtonOnAction(actionEvent);
-                }
-            }
-        }
-    }
-
-    private boolean isMissingComboBoxValues() {
-        return country_combo_id.getSelectionModel().isEmpty() ||
-                division_combo_id.getSelectionModel().isEmpty();
-    }
-
-    /**
-     * Helper method that repopulates the Customers TableView.
-     */
-    private void populateTableView() {
-        customerObservableList = DBCustomers.getAllCustomers();
-        table_view_id.setItems(customerObservableList);
-        table_view_id.refresh(); // not necessary?
-    }
-
-    public void deleteCustomerButtonOnAction(ActionEvent actionEvent) {
-        if (!table_view_id.getSelectionModel().isEmpty()) {
-            DBCustomers.deleteCustomerById(((Customer) table_view_id.getSelectionModel().getSelectedItem()).getId());
-            table_view_id.getSelectionModel().clearSelection();
-
-            // Repopulate the table
-            customerObservableList = DBCustomers.getAllCustomers();
-            table_view_id.setItems(customerObservableList);
-        } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Nothing to delete!");
-            alert.setTitle("Select an item to delete!");
-            alert.showAndWait();
-        }
-    }
-
-    public void logoutButtonOnAction(ActionEvent actionEvent) throws IOException {
-        //FIXME If logout button pressed and table row was selected and if field was changed, prompt alert that something was changed
-        Optional<ButtonType> result = getAlertAndWait("Logout?", "Confirm logout?");
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-            logout(actionEvent);
-        }
-    }
-
-    private void logout(ActionEvent actionEvent) throws IOException {
-        switchView(actionEvent, "/view/LoginScreen.fxml", "login");
-    }
-
-    private Optional<ButtonType> getAlertAndWait(String alertMessage, String title) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, alertMessage);
-        alert.setTitle(title);
-        return alert.showAndWait();
-    }
-
-    private boolean isValidTextField(TextField textField) {
-        // Can't start with a whitespace and matches 1 or more characters
-        String regex = "^[^\\s].*";
-        return textField.getText().matches(regex);
-    }
-
-    private void disableButtonsLogic() {
-        if (table_view_id.getSelectionModel().isEmpty()) {
-            if (allTextFieldsValid()) {
-                disableButtons(false, false, true);
-            }
-        } else { // if tableview is selected
-            if (allTextFieldsValid()) {
-                disableButtons(true, true, true);
-            }
-        }
-    }
-
-    /**
-     * Checks whether all TextFields are valid.
-     * @return Returns true if valid, false if one or more fields is invalid.
-     */
-    private boolean allTextFieldsValid() {
-        return isCustomerNameFieldValid &&
-                isAddressFieldValid &&
-                isPostalCodeFieldValid &&
-                isPhoneNumberFieldValid;
-    }
-
-    private void invalidateAllTextFields() {
-        boolean isValid = false;
-        isCustomerNameFieldValid = isValid;
-        isAddressFieldValid = isValid;
-        isPostalCodeFieldValid = isValid;
-        isPhoneNumberFieldValid = isValid;
     }
 
     public void customerNameOnKeyTyped(KeyEvent keyEvent) {
@@ -309,31 +153,282 @@ public class CustomersController implements Initializable {
         disableButtonsLogic();
     }
 
-    private void textFieldValidationColor(boolean isFieldValid, TextField textFieldId) {
-        if (isFieldValid) {
-            new Test(isFieldValid);
-            textFieldId.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, CornerRadii.EMPTY, Insets.EMPTY)));
+    /**
+     * Button
+     *
+     * @param actionEvent
+     */
+    public void clearFormButtonOnAction(ActionEvent actionEvent) {
+        table_view_id.getSelectionModel().clearSelection();
+        customer_id_id.clear();
+        customer_name_id.clear();
+        address_id.clear();
+        postal_code_id.clear();
+        phone_number_id.clear();
+        disableButtons(true, true, true);
+        invalidateAllTextFields();
+    }
+
+    /**
+     * Button
+     *
+     * @param actionEvent
+     */
+    public void deleteCustomerButtonOnAction(ActionEvent actionEvent) {
+        if (!table_view_id.getSelectionModel().isEmpty()) {
+            DBCustomers.deleteCustomerById(((Customer) table_view_id.getSelectionModel().getSelectedItem()).getId());
+            table_view_id.getSelectionModel().clearSelection();
+
+            // Repopulate the table
+            customerObservableList = DBCustomers.getAllCustomers();
+            table_view_id.setItems(customerObservableList);
         } else {
-            textFieldId.setBackground(new Background(new BackgroundFill(Color.LIGHTPINK, CornerRadii.EMPTY, Insets.EMPTY)));  textFieldId.setStyle("-fx-background-color: pink");
+            errorMessage("Nothing to delete!", "Select an item to delete");
         }
     }
 
+    /**
+     * Button
+     *
+     * @param actionEvent
+     * @throws IOException
+     */
+    public void logoutButtonOnAction(ActionEvent actionEvent) throws IOException {
+        Optional<ButtonType> result = confirmationMessage("Logout?", "Confirm logout?");
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            logout(actionEvent);
+        }
+    }
+
+    /**
+     * Button
+     *
+     * @param actionEvent
+     * @throws IOException
+     */
     public void viewAppointmentsButtonOnAction(ActionEvent actionEvent) throws IOException {
-        //TODO Alert user if any changes were made to Fields
         switchView(actionEvent, "/view/Appointments.fxml", "Appointments");
     }
 
+    /**
+     * Button
+     *
+     * @param actionEvent
+     * @throws IOException
+     */
     public void reportsButtonOnAction(ActionEvent actionEvent) throws IOException {
-        //TODO Alert user if any changes were made to Fields
         switchView(actionEvent, "/view/Reports.fxml", "Reports");
     }
 
+    /**
+     * Button
+     *
+     * @param actionEvent
+     */
+    public void saveButtonOnAction(ActionEvent actionEvent) {
+        boolean isEmptyTableView = table_view_id.getSelectionModel().isEmpty();
+        boolean isMissingComboBoxValues = isMissingComboBoxValues();
+        new Test("isEmptyTableView: " + isEmptyTableView);
+        new Test("isMissingComboBoxValues: " + isMissingComboBoxValues);
+
+        if (isEmptyTableView) {
+            // Save new Customer
+            if (isMissingComboBoxValues) {
+                warningMessage("Select a Country and State/Province", "Missing selection");
+            } else {
+                DBCustomers.insertCustomer(
+                        customer_name_id.getText().trim(),
+                        address_id.getText().trim(),
+                        postal_code_id.getText().trim(),
+                        phone_number_id.getText().trim(),
+                        division_combo_id.getSelectionModel().getSelectedItem().getDivisionId(),
+                        Main.user
+                );
+                populateTableView();
+            }
+        } else {
+            // Update selected Customer
+            if (isMissingComboBoxValues) {
+                warningMessage("Select a Country and State/Province", "Missing selection");
+            } else {
+                Optional<ButtonType> result = confirmationMessage("Save changes?", "Save or Discard");
+                if (result.isPresent() && result.get() == ButtonType.OK) {
+                    DBCustomers.updateCustomer(
+                            new Customer(
+                                    Integer.parseInt(customer_id_id.getText().trim()),
+                                    customer_name_id.getText().trim(),
+                                    address_id.getText().trim(),
+                                    postal_code_id.getText().trim(),
+                                    phone_number_id.getText().trim(),
+                                    division_combo_id.getSelectionModel().getSelectedItem()
+                            )
+                    );
+                    populateTableView();
+                    clearFormButtonOnAction(actionEvent);
+                }
+            }
+        }
+    }
+
+    /**
+     * Helper
+     *
+     * @param isSaveButtonDisabled
+     * @param isClearFormButtonDisabled
+     * @param isDeleteCustomerButtonDisabled
+     */
+    private void disableButtons(boolean isSaveButtonDisabled, boolean isClearFormButtonDisabled, boolean isDeleteCustomerButtonDisabled) {
+        save_button.setDisable(isSaveButtonDisabled);
+        clear_form_button.setDisable(isClearFormButtonDisabled);
+        delete_customer_button.setDisable(isDeleteCustomerButtonDisabled);
+    }
+
+    /**
+     * Helper
+     */
+    private void populateTableView() {
+        customerObservableList = DBCustomers.getAllCustomers();
+        table_view_id.setItems(customerObservableList);
+        table_view_id.refresh(); // not necessary?
+    }
+
+    /**
+     * Helper
+     *
+     * @param actionEvent
+     * @throws IOException
+     */
+    private void logout(ActionEvent actionEvent) throws IOException {
+        switchView(actionEvent, "/view/LoginScreen.fxml", "login");
+    }
+
+    /**
+     * Helper
+     */
+    private void disableButtonsLogic() {
+        if (table_view_id.getSelectionModel().isEmpty()) {
+            if (allTextFieldsValid()) {
+                disableButtons(false, false, true);
+            }
+        } else { // if tableview is selected
+            if (allTextFieldsValid()) {
+                disableButtons(true, true, true);
+            }
+        }
+    }
+
+    /**
+     * Helper
+     */
+    private void invalidateAllTextFields() {
+        boolean isValid = false;
+        isCustomerNameFieldValid = isValid;
+        isAddressFieldValid = isValid;
+        isPostalCodeFieldValid = isValid;
+        isPhoneNumberFieldValid = isValid;
+    }
+
+    /**
+     * Helper
+     *
+     * @param actionEvent
+     * @param path
+     * @param title
+     * @throws IOException
+     */
     private void switchView(ActionEvent actionEvent, String path, String title) throws IOException {
         Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
         Parent scene = FXMLLoader.load(getClass().getResource(path));
         stage.setTitle(title);
         stage.setScene(new Scene(scene));
         stage.show();
+    }
+
+    /**
+     * Helper
+     *
+     * @param isFieldValid
+     * @param textFieldId
+     */
+    private void textFieldValidationColor(boolean isFieldValid, TextField textFieldId) {
+        if (isFieldValid) {
+            new Test(isFieldValid);
+            textFieldId.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, CornerRadii.EMPTY, Insets.EMPTY)));
+        } else {
+            textFieldId.setBackground(new Background(new BackgroundFill(Color.LIGHTPINK, CornerRadii.EMPTY, Insets.EMPTY)));
+            textFieldId.setStyle("-fx-background-color: pink");
+        }
+    }
+
+    /**
+     * Alert
+     *
+     * @param message
+     * @param title
+     */
+    private void warningMessage(String message, String title) {
+        Alert alert = new Alert(Alert.AlertType.WARNING, message);
+        alert.setTitle(title);
+        alert.show();
+    }
+
+    /**
+     * Alert
+     *
+     * @param message
+     * @param title
+     */
+    private void errorMessage(String message, String title) {
+        Alert alert = new Alert(Alert.AlertType.ERROR, message);
+        alert.setTitle(title);
+        alert.showAndWait();
+    }
+
+    /**
+     * Alert
+     *
+     * @param message
+     * @param title
+     * @return
+     */
+    private Optional<ButtonType> confirmationMessage(String message, String title) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, message);
+        alert.setTitle(title);
+        return alert.showAndWait();
+    }
+
+    /**
+     * Validation
+     *
+     * @return
+     */
+    private boolean isMissingComboBoxValues() {
+        return country_combo_id.getSelectionModel().isEmpty() ||
+                division_combo_id.getSelectionModel().isEmpty();
+    }
+
+    /**
+     * Validation
+     *
+     * @param textField
+     * @return
+     */
+    private boolean isValidTextField(TextField textField) {
+        // Can't start with a whitespace and matches 1 or more characters
+        String regex = "^[^\\s].*";
+        return textField.getText().matches(regex);
+    }
+
+    /**
+     * Validation
+     *
+     * @return Returns true if valid, false if one or more fields is invalid.
+     */
+    private boolean allTextFieldsValid() {
+        return isCustomerNameFieldValid &&
+                isAddressFieldValid &&
+                isPostalCodeFieldValid &&
+                isPhoneNumberFieldValid;
     }
 }
 
