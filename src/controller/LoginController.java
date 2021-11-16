@@ -51,7 +51,6 @@ public class LoginController implements Initializable {
         username_id.setText(Main.resourceBundle.getString("username"));
         password_id.setText(Main.resourceBundle.getString("password"));
         login_id.setText(Main.resourceBundle.getString("login_button"));
-//        username_field_id.setText(Main.resourceBundle.getString("username_field"));
     }
 
     public void onUsernameKeyTyped(KeyEvent keyEvent) {
@@ -84,22 +83,37 @@ public class LoginController implements Initializable {
 
             if (dbUsers.getUser().isValidUsername()) {
                 if (dbUsers.getUser().isValidPassword()) {
-                    Stage stage = (Stage) ((Button) keyEvent.getSource()).getScene().getWindow();
-                    Parent scene = FXMLLoader.load(getClass().getResource("/view/Customers.fxml"));
-                    stage.setTitle("Welcome " + dbUsers.getUser().getUsername() + "!");
-                    stage.setScene(new Scene(scene));
-                    stage.show();
+                    Main.user = dbUsers.getUser();
+                    switchView(keyEvent, "/view/Customers.fxml", "Welcome " + dbUsers.getUser().getUsername() + "!");
                 } else {
-                    Alert alert = new Alert(Alert.AlertType.ERROR, Main.resourceBundle.getString("incorrect_password"));
-                    alert.setTitle(Main.resourceBundle.getString("password_alert_title"));
-                    alert.showAndWait();
+                    errorMessage(Main.resourceBundle.getString("incorrect_password"), Main.resourceBundle.getString("password_alert_title"));
                 }
             } else {
-                Alert alert = new Alert(Alert.AlertType.ERROR, Main.resourceBundle.getString("incorrect_username"));
-                alert.setTitle(Main.resourceBundle.getString("username_alert_title"));
-                alert.showAndWait();
+                errorMessage(Main.resourceBundle.getString("incorrect_username"), Main.resourceBundle.getString("username_alert_title"));
             }
         }
+    }
+
+    /**
+     * Button
+     *
+     * @param actionEvent
+     * @throws IOException
+     */
+    @FXML
+    public void onLoginAction(ActionEvent actionEvent) throws IOException {
+        //FIXME (med) - pressing ENTER when button is highlighted doesn't work
+        dbUsers = new DBUsers(username_field_id.getText(), password_field_id.getText());
+        Pair<String, String> usernamePasswordReceived = new Pair<>(username_field_id.getText(), password_field_id.getText());
+        makeLogEntry(usernamePasswordReceived);
+
+        ChangeScreen.changeScreen(
+                actionEvent,
+                dbUsers,
+                usernamePasswordReceived,
+                FXMLLoader.load(getClass().getResource("/view/Customers.fxml")),
+                aEvent -> (Stage) ((Button) aEvent.getSource()).getScene().getWindow()
+        );
     }
 
     /**
@@ -144,25 +158,29 @@ public class LoginController implements Initializable {
     }
 
     /**
-     * Button
-     *
-     * @param actionEvent
+     * Alert
+     * @param message
+     * @param title
+     */
+    private void errorMessage(String message, String title) {
+        Alert alert = new Alert(Alert.AlertType.ERROR, message);
+        alert.setTitle(title);
+        alert.showAndWait();
+    }
+
+    /**
+     * Helper
+     * @param keyEvent
+     * @param path
+     * @param title
      * @throws IOException
      */
-    @FXML
-    public void onLoginAction(ActionEvent actionEvent) throws IOException {
-        //FIXME (med) - pressing ENTER when button is highlighted doesn't work
-        dbUsers = new DBUsers(username_field_id.getText(), password_field_id.getText());
-        Pair<String, String> usernamePasswordReceived = new Pair<>(username_field_id.getText(), password_field_id.getText());
-        makeLogEntry(usernamePasswordReceived);
-
-        ChangeScreen.changeScreen(
-                actionEvent,
-                dbUsers,
-                usernamePasswordReceived,
-                FXMLLoader.load(getClass().getResource("/view/Customers.fxml")),
-                aEvent -> (Stage) ((Button) aEvent.getSource()).getScene().getWindow()
-        );
+    private void switchView(KeyEvent keyEvent, String path, String title) throws IOException {
+        Stage stage = (Stage) ((Button) keyEvent.getSource()).getScene().getWindow();
+        Parent scene = FXMLLoader.load(getClass().getResource(path));
+        stage.setTitle(title);
+        stage.setScene(new Scene(scene));
+        stage.show();
     }
 
     /**

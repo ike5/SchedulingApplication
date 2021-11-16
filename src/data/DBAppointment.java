@@ -390,7 +390,6 @@ public class DBAppointment {
         String sql = "SELECT Appointment_ID, Start FROM appointments WHERE User_ID = ?";
         try{
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
-            new Test(Main.user.getUserId());
             ps.setInt(1, Main.user.getUserId());
             ResultSet resultSet = ps.executeQuery();
 

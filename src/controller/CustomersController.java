@@ -1,5 +1,6 @@
 package controller;
 
+import data.DBAppointment;
 import data.DBDivisions;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
