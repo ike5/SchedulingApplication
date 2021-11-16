@@ -54,13 +54,10 @@ public class CustomersController implements Initializable {
     private static boolean isPhoneNumberFieldValid;
     ObservableList<Customer> customerObservableList;
 
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Set focus options on buttons
-        save_button.setDisable(isSaveButtonDisabled);
-        clear_form_button.setDisable(isClearFormButtonDisabled);
-        delete_customer_button.setDisable(isDeleteCustomerButtonDisabled);
+        disableButtons(true, true, true);
 
         // Prevent users from changing touching customer id value
         customer_id_id.setDisable(true);
@@ -91,6 +88,7 @@ public class CustomersController implements Initializable {
         // TableView listener
         table_view_id.getSelectionModel().selectedItemProperty().addListener((observableValue, oldSelection, newSelection) -> {
                     if (newSelection != null) {
+                        disableButtons(false, false, false);
                         customer_id_id.setText(String.valueOf(((Customer) newSelection).getId()));
                         customer_name_id.setText(((Customer) newSelection).getName());
                         address_id.setText(((Customer) newSelection).getAddress());
@@ -129,12 +127,19 @@ public class CustomersController implements Initializable {
 //        }
     }
 
+    private void disableButtons(boolean isSaveButtonDisabled, boolean isClearFormButtonDisabled, boolean isDeleteCustomerButtonDisabled) {
+        save_button.setDisable(isSaveButtonDisabled);
+        clear_form_button.setDisable(isClearFormButtonDisabled);
+        delete_customer_button.setDisable(isDeleteCustomerButtonDisabled);
+    }
+
     /**
      * Clears all fields
      *
      * @param actionEvent
      */
     public void clearFormButtonOnAction(ActionEvent actionEvent) {
+        disableButtons(true, true, true);
         table_view_id.getSelectionModel().clearSelection();
         customer_id_id.clear();
         customer_name_id.clear();
@@ -224,7 +229,6 @@ public class CustomersController implements Initializable {
     public void logoutButtonOnAction(ActionEvent actionEvent) throws IOException {
         //FIXME If logout button pressed and table row was selected and if field was changed, prompt alert that something was changed
         Optional<ButtonType> result = getAlertAndWait("Logout?", "Confirm logout?");
-
         if (result.isPresent() && result.get() == ButtonType.OK) {
             logout(actionEvent);
         }
@@ -234,9 +238,9 @@ public class CustomersController implements Initializable {
         switchView(actionEvent, "/view/LoginScreen.fxml", "login");
     }
 
-    private Optional<ButtonType> getAlertAndWait(String s, String s2) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, s);
-        alert.setTitle(s2);
+    private Optional<ButtonType> getAlertAndWait(String alertMessage, String title) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, alertMessage);
+        alert.setTitle(title);
         return alert.showAndWait();
     }
 
@@ -244,6 +248,10 @@ public class CustomersController implements Initializable {
         // Can't start with a whitespace and matches 1 or more characters and can't end with a whitespace
         String regex = "^[^\\s].*\\S";
         return textField.getText().matches(regex);
+    }
+
+    private void validateAllTextFields(){
+
     }
 
     public void customerNameOnKeyTyped(KeyEvent keyEvent) {
