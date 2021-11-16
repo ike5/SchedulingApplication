@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="500.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ReportsController">
+<AnchorPane prefHeight="500.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ReportsController">
    <children>
       <VBox alignment="TOP_CENTER" prefHeight="500.0" prefWidth="1000.0">
          <children>
@@ -76,21 +76,6 @@
                         </AnchorPane>
                      </content>
                   </Tab>
-                <Tab fx:id="user_tab" onSelectionChanged="#userTabOnSelectionChanged" text="User Logins (requirement)">
-                  <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                           <children>
-                              <TableView fx:id="user_table_view" prefWidth="1000.0">
-                                <columns>
-                                  <TableColumn fx:id="user_user_column" prefWidth="75.0" text="User" />
-                                  <TableColumn fx:id="user_timestamp_column" prefWidth="141.0" text="Timestamp" />
-                                    <TableColumn fx:id="user_success_column" prefWidth="195.0" text="Success" />
-                                </columns>
-                              </TableView>
-                           </children>
-                        </AnchorPane>
-                  </content>
-                </Tab>
                   <Tab fx:id="additional_report_tab" onSelectionChanged="#additionalReportTabOnSelectionChanged" text="Additional Report">
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">

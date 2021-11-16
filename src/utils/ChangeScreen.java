@@ -36,31 +36,14 @@ public class ChangeScreen {
                                     Parent scene,
                                     UtilityInterfaces.FunctionalChangeScreenInterface o) {
         Main.resourceBundle = ResourceBundle.getBundle("RBundle", Locale.getDefault());
-        Main.user = userLogin.getUser();
-
-        try {
-            // Deserialize log, add login info, then re-serialize it
-            File file = new File("src/data/login.data");
-            List<Log> logList = LoginTracker.deserializeLog(file);
-            logList.add(
-                    new Log(usernameAndPasswordReceived,
-                            Timestamp.valueOf(LocalDateTime.now()),
-                            (Main.user.isValidUsername() & Main.user.isValidPassword())
-                    )
-            );
-            LoginTracker.serializeLog(logList, file);
-        } catch (FileNotFoundException e) {
-            System.err.println("File not found");
-        } catch (NullPointerException e) {
-            System.err.println("NullPointerException: " + e);
-        } catch (IOException e) {
-            System.err.println("IOException here: " + e);
-        }
 
         // Check if username and password are valid, switch views or present appropriate alerts
         if (userLogin.getUser().isValidUsername()) {
             if (userLogin.getUser().isValidPassword()) {
                 Main.user = userLogin.getUser();
+                System.out.println("User: " + Main.user.getUsername());
+                System.out.println("Pass: " + Main.user.getPassword());
+                DBAppointment.checkUpcomingAppointments();
                 /*
                 Note the event source is either a Button or a TextField:
                 stage = (Stage) ((TextField) actionEvent.getSource()).getScene().getWindow();

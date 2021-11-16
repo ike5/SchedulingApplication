@@ -1,8 +1,6 @@
 package controller;
 
 import data.*;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -116,17 +114,12 @@ public class ModifyAppointmentController implements Initializable {
         }
     }
 
-    private void onClear(ActionEvent actionEvent) {
-        customer_combo.valueProperty().set(null);
-        contact_combo.valueProperty().set(null);
-        user_combo.valueProperty().set(null);
-        location_combo.getSelectionModel().clearAndSelect(0);
-        type_combo.getSelectionModel().clearAndSelect(0);
-        appointment_id_textfield.clear();
-        title_textfield.clear();
-        description_textfield.clear();
-    }
-
+    /**
+     * Button
+     *
+     * @param actionEvent
+     * @throws IOException
+     */
     public void cancelButtonOnAction(ActionEvent actionEvent) throws IOException {
         Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
         Parent scene = FXMLLoader.load(getClass().getResource("/view/Appointments.fxml"));
@@ -135,19 +128,30 @@ public class ModifyAppointmentController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Button
+     *
+     * @param actionEvent
+     */
     public void clearButtonOnAction(ActionEvent actionEvent) {
         onClear(actionEvent);
     }
 
+    /**
+     * Button
+     *
+     * @param actionEvent
+     * @throws IOException
+     */
     public void saveButtonOnAction(ActionEvent actionEvent) throws IOException {
         if (isMissingValue()) {
-            getAlert(String.valueOf(errorMessage()));
+            Messages.confirmationMessage(String.valueOf(errorMessage()), "Missing value");
         } else {
 
             // If user clicked 'New Appointment' inside the AppointmentsController,
             // this option will be executed when Save is clicked.
             if (AppointmentSingleton.getInstance().getAppointment() == null) {
-                Optional<ButtonType> result = getAlert("Create new appointment?");
+                Optional<ButtonType> result = Messages.confirmationMessage("Create new appointment?", "Confirm");
                 if (result.isPresent() && (result.get() == ButtonType.OK)) {
                     DBAppointment.insertAppointment(
                             title_textfield.getText(),
@@ -161,10 +165,10 @@ public class ModifyAppointmentController implements Initializable {
                             ((Contact) contact_combo.getValue())
                     );
 
-                    toAppointmentsView(actionEvent);
+                    switchView(actionEvent, "/view/Appointments.fxml", "Appointments");
                 }
             } else {
-                Optional<ButtonType> result = getAlert("Save changes?");
+                Optional<ButtonType> result = Messages.confirmationMessage("Save changes?", "Confirm");
                 if (result.isPresent() && (result.get() == ButtonType.OK)) {
                     DBAppointment.updateAppointment(
                             AppointmentSingleton.getInstance().getAppointment().getAppointmentId(),
@@ -179,26 +183,50 @@ public class ModifyAppointmentController implements Initializable {
                             ((Contact) contact_combo.getValue())
                     );
 
-                    toAppointmentsView(actionEvent);
+                    switchView(actionEvent, "/view/Appointments.fxml", "Appointments");
+                    ;
                 }
             }
         }
     }
 
-    private void toAppointmentsView(ActionEvent actionEvent) throws IOException {
+    /**
+     * Helper
+     *
+     * @param actionEvent
+     */
+    private void onClear(ActionEvent actionEvent) {
+        customer_combo.valueProperty().set(null);
+        contact_combo.valueProperty().set(null);
+        user_combo.valueProperty().set(null);
+        location_combo.getSelectionModel().clearAndSelect(0);
+        type_combo.getSelectionModel().clearAndSelect(0);
+        appointment_id_textfield.clear();
+        title_textfield.clear();
+        description_textfield.clear();
+    }
+
+    /**
+     * Helper
+     *
+     * @param actionEvent
+     * @param path
+     * @param title
+     * @throws IOException
+     */
+    private void switchView(ActionEvent actionEvent, String path, String title) throws IOException {
         Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
-        Parent scene = FXMLLoader.load(getClass().getResource("/view/Appointments.fxml"));
-        stage.setTitle("Appointments");
+        Parent scene = FXMLLoader.load(getClass().getResource(path));
+        stage.setTitle(title);
         stage.setScene(new Scene(scene));
         stage.show();
     }
 
-    private Optional<ButtonType> getAlert(String s) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, s);
-        alert.setTitle("Confirm");
-        return alert.showAndWait();
-    }
-
+    /**
+     * Validation
+     *
+     * @return
+     */
     private boolean isMissingValue() {
         boolean isEmpty = false;
 
@@ -216,6 +244,11 @@ public class ModifyAppointmentController implements Initializable {
         return isEmpty;
     }
 
+    /**
+     * Validation
+     *
+     * @return
+     */
     private StringBuilder errorMessage() {
         StringBuilder errorMessage = new StringBuilder();
 

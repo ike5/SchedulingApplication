@@ -49,7 +49,6 @@ public class ReportsController implements Initializable {
     public static final String NUM_APPOINTMENT_BY_MONTH_MAP_KEY = "D";
     public Tab customer_tab;
     public Tab contact_tab;
-    public Tab user_tab;
     public Tab additional_report_tab;
     public TableColumn contact_appointment_id_column;
     public TableColumn contact_title_column;
@@ -58,9 +57,6 @@ public class ReportsController implements Initializable {
     public TableColumn contact_start_column;
     public TableColumn contact_end_column;
     public TableColumn contact_customer_id_column;
-    public TableColumn user_user_column;
-    public TableColumn user_timestamp_column;
-    public TableColumn user_success_column;
     public ListView contact_listview;
 
     private ObservableList<Map> mapObservableListTypesValues;
@@ -78,23 +74,6 @@ public class ReportsController implements Initializable {
         contact_start_column.setCellValueFactory(new PropertyValueFactory<Appointment, String>("StartString"));
         contact_end_column.setCellValueFactory(new PropertyValueFactory<Appointment, String>("EndString"));
         contact_customer_id_column.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("CustomerId"));
-
-        // Initialize Login report
-        // Deserialize log
-        File file = new File("src/data/login.data");
-        List<Log> logList = null;
-        try {
-            logList = LoginTracker.deserializeLog(file);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        user_table_view.setItems(FXCollections.observableArrayList(logList));
-        user_user_column.setCellValueFactory(new PropertyValueFactory<Log, String>("User"));
-        user_timestamp_column.setCellValueFactory(new PropertyValueFactory<Log, Timestamp>("Timestamp"));
-        user_success_column.setCellValueFactory(new PropertyValueFactory<Log, Boolean>("IsSuccessful"));
-
-
-
 
         // Initialize customer tab data
         mapObservableListTypesValues = DBAppointment.getMapOfTypesAndValue();

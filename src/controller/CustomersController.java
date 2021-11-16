@@ -122,10 +122,6 @@ public class CustomersController implements Initializable {
             division_combo_id.setItems(DBDivisions.getDivisions(country_combo_id.getValue().getCountryId()));
         });
 
-        //TODO
-        // Alert User if any upcoming appointments for themselves
-        System.out.println(Main.user);
-//        DBAppointment.checkUpcomingAppointments();
     }
 
     public void customerNameOnKeyTyped(KeyEvent keyEvent) {
