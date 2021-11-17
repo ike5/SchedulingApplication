@@ -45,15 +45,19 @@ public class ChangeScreen {
                 Main.user = userLogin.getUser();
 
 
+                //FIXME  Fix bug where a clicking sound is made
                 Pair<Boolean, Pair<LocalDateTime, Integer>> upcomingAppointment = DBAppointment.checkUpcomingAppointments();
-                if (upcomingAppointment.getKey()) {
+
+//                assert upcomingAppointment != null : "UpcomingAppointment is null";
+
+                if(upcomingAppointment != null) {
                     Messages.warningMessage("Upcoming appointment: " +
                                     upcomingAppointment.getValue().getValue() + "\n" +
                                     "Time: " + ZonedDateTime.of(upcomingAppointment.getValue().getKey(), ZoneId.systemDefault()),
                             "Upcoming appointment");
+                } else {
+                    Messages.warningMessage("No upcoming appointments", "Upcoming appointment");
                 }
-
-
                 /*
                 Note the event source is either a Button or a TextField:
                 stage = (Stage) ((TextField) actionEvent.getSource()).getScene().getWindow();

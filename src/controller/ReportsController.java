@@ -91,6 +91,10 @@ public class ReportsController implements Initializable {
             contact_table_view.setItems(DBAppointment.getAppointmentListFromContact((Contact) newSelection));
         });
 
+        //TODO
+        // Additional report: count Appointments, users, contacts, and number of logins
+
+
     }
 
     public void userTabOnSelectionChanged(Event event) {
