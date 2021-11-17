@@ -19,14 +19,13 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.Pair;
-import model.Appointment;
-import model.Contact;
-import model.Log;
+import model.*;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Timestamp;
+import java.time.Month;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -58,6 +57,9 @@ public class ReportsController implements Initializable {
     public TableColumn contact_end_column;
     public TableColumn contact_customer_id_column;
     public ListView contact_listview;
+    public ComboBox month_combo;
+    public ComboBox type_combo;
+    public Label number_of_appointments_id;
 
     private ObservableList<Map> mapObservableListTypesValues;
     private ObservableList<Map> mapObservableListMonthValues;
@@ -76,20 +78,41 @@ public class ReportsController implements Initializable {
         contact_customer_id_column.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("CustomerId"));
 
         // Initialize customer tab data
-        mapObservableListTypesValues = DBAppointment.getMapOfTypesAndValue();
-        mapObservableListMonthValues = DBAppointment.getMapOfAppointmentsByMonth();
-        if (type_radio_button.isSelected()) {
-            basic_column.setText("Type of Appointment");
-            basic_column.setCellValueFactory(new MapValueFactory<>(TYPE_MAP_KEY));
-            num_appointments_column.setCellValueFactory(new MapValueFactory<>(NUM_APPOINTMENT_MAP_KEY));
-            customer_table_view.setItems(mapObservableListTypesValues);
-        }
-        customer_table_view.getColumns().setAll(basic_column, num_appointments_column);
+//        mapObservableListTypesValues = DBAppointment.getMapOfTypesAndValue();
+//        mapObservableListMonthValues = DBAppointment.getMapOfAppointmentsByMonth();
+//        if (type_radio_button.isSelected()) {
+//            basic_column.setText("Type of Appointment");
+//            basic_column.setCellValueFactory(new MapValueFactory<>(TYPE_MAP_KEY));
+//            num_appointments_column.setCellValueFactory(new MapValueFactory<>(NUM_APPOINTMENT_MAP_KEY));
+//            customer_table_view.setItems(mapObservableListTypesValues);
+//        }
+//        customer_table_view.getColumns().setAll(basic_column, num_appointments_column);
+
+        // Initilize customer tab data
+        // Need Month combo, type combo, label
+        ObservableList<java.time.Month> monthObservableList = FXCollections.observableArrayList(java.time.Month.values());
+        ObservableList<String> logTypeObservableList = FXCollections.observableArrayList(TypeListSingleton.getInstance().getTypeObservableList());
+        month_combo.setItems(monthObservableList);
+        type_combo.setItems(logTypeObservableList);
+
+        // FIXME - use combination of combos to calculate how many appointments exist
+        month_combo.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
+            // set list of types available
+            // get types based on month
+            number_of_appointments_id.setText(DBAppointment.getTotalNumberOfAppointmentsByMonth((Month) newValue).toString());
+        });
+
+        type_combo.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
+            Integer num = DBAppointment.getNumberOfAppointmentsByType((String) newValue);
+            number_of_appointments_id.setText(String.valueOf(num));
+        });
+
 
         // Listeners
         contact_listview.getSelectionModel().selectedItemProperty().addListener((observableValue, oldSelection, newSelection) -> {
             contact_table_view.setItems(DBAppointment.getAppointmentListFromContact((Contact) newSelection));
         });
+
 
         //TODO
         // Additional report: count Appointments, users, contacts, and number of logins
@@ -97,8 +120,8 @@ public class ReportsController implements Initializable {
 
     }
 
-    public void userTabOnSelectionChanged(Event event) {
-    }
+//    public void userTabOnSelectionChanged(Event event) {
+//    }
 
     public void customerTabOnSelectionChanged(Event event) {
     }
@@ -106,22 +129,22 @@ public class ReportsController implements Initializable {
     public void contactTabOnSelectionChanged(Event event) {
     }
 
-    public void additionalTabOnSelectionChanged(Event event) {
-    }
+//    public void additionalTabOnSelectionChanged(Event event) {
+//    }
 
-    public void typeRadioButtonOnAction(ActionEvent actionEvent) {
-        basic_column.setText("Type of Appointment");
-        basic_column.setCellValueFactory(new MapValueFactory<>(TYPE_MAP_KEY));
-        num_appointments_column.setCellValueFactory(new MapValueFactory<>(NUM_APPOINTMENT_MAP_KEY));
-        customer_table_view.setItems(mapObservableListTypesValues);
-    }
+//    public void typeRadioButtonOnAction(ActionEvent actionEvent) {
+//        basic_column.setText("Type of Appointment");
+//        basic_column.setCellValueFactory(new MapValueFactory<>(TYPE_MAP_KEY));
+//        num_appointments_column.setCellValueFactory(new MapValueFactory<>(NUM_APPOINTMENT_MAP_KEY));
+//        customer_table_view.setItems(mapObservableListTypesValues);
+//    }
 
-    public void monthRadioButtonOnAction(ActionEvent actionEvent) {
-        basic_column.setText("Month of Appointment");
-        basic_column.setCellValueFactory(new MapValueFactory<>(MONTH_MAP_KEY));
-        num_appointments_column.setCellValueFactory(new MapValueFactory<>(NUM_APPOINTMENT_BY_MONTH_MAP_KEY));
-        customer_table_view.setItems(mapObservableListMonthValues);
-    }
+//    public void monthRadioButtonOnAction(ActionEvent actionEvent) {
+//        basic_column.setText("Month of Appointment");
+//        basic_column.setCellValueFactory(new MapValueFactory<>(MONTH_MAP_KEY));
+//        num_appointments_column.setCellValueFactory(new MapValueFactory<>(NUM_APPOINTMENT_BY_MONTH_MAP_KEY));
+//        customer_table_view.setItems(mapObservableListMonthValues);
+//    }
 
     public void additionalReportTabOnSelectionChanged(Event event) {
     }

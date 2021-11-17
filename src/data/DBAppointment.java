@@ -124,13 +124,13 @@ public class DBAppointment {
 
             resultSet.next();
             return resultSet.getInt("NumberOfAppointments");
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return -1;
     }
 
-    private static int getTotalNumberOfAppointmentsByMonth(java.time.Month month) {
+    public static Integer getTotalNumberOfAppointmentsByMonth(java.time.Month month) {
         String sql = "SELECT COUNT(Appointment_ID) AS NumberOfAppointments FROM appointments WHERE MONTH(Start) = ?";
         try {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
@@ -140,10 +140,26 @@ public class DBAppointment {
             ResultSet resultSet = ps.executeQuery();
             resultSet.next();
             return resultSet.getInt("NumberOfAppointments");
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return -1;
+    }
+
+    public static Integer getNumberOfAppointmentsByType(String type) {
+        Integer numberOfAppointments = 0;
+        String sql = "SELECT COUNT(Appointment_ID) AS NumberOfAppointments FROM appointments WHERE Type = ?";
+        try {
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ps.setString(1, type);
+
+            ResultSet resultSet = ps.executeQuery();
+            resultSet.next();
+            numberOfAppointments = resultSet.getInt(1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return numberOfAppointments;
     }
 
     public static ObservableList<Map> getMapOfAppointmentsByMonth() {
