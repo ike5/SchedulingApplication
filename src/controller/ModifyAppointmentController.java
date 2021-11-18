@@ -63,15 +63,16 @@ public class ModifyAppointmentController implements Initializable {
             start_combo.getItems().add(start);
             start = start.plusMinutes(15);
         }
-        //FIXME - Fix End combobox allowing conflicting time with first option
 
-        // set end time combobox conditional on start time
+        // Set end time combobox to begin no earlier than the start time
         start_combo.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
+
+            // Find the time selected in start_combo
             for (Object o : start_combo.getItems()) {
                 if (o.equals(newValue)) {
                     while (((LocalTime) o).isBefore(end.plusSeconds(1))) {
-                        end_combo.getItems().add(o);
                         o = ((LocalTime) o).plusMinutes(15);
+                        end_combo.getItems().add(o);
                     }
                     break;
                 }
@@ -112,6 +113,7 @@ public class ModifyAppointmentController implements Initializable {
             LocalTime localEndTime = AppointmentSingleton.getInstance().getAppointment().getEnd().toLocalTime();
             end_combo.setValue(localEndTime);
         }
+        //TODO Validate whether appointment times overlap, start earlier, or etc.
     }
 
     /**
@@ -184,7 +186,6 @@ public class ModifyAppointmentController implements Initializable {
                     );
 
                     switchView(actionEvent, "/view/Appointments.fxml", "Appointments");
-                    ;
                 }
             }
         }
