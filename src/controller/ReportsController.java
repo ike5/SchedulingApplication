@@ -99,7 +99,9 @@ public class ReportsController implements Initializable {
         month_combo.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
             // set list of types available
             // get types based on month
-            number_of_appointments_id.setText(DBAppointment.getTotalNumberOfAppointmentsByMonth((Month) newValue).toString());
+            if(DBAppointment.getTotalNumberOfAppointmentsByMonth((Month) newValue) >= 1){
+                // If there is more than one appointment in that month, create a list
+            }
         });
 
         type_combo.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
