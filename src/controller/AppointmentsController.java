@@ -12,6 +12,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Appointment;
 import model.AppointmentSingleton;
+import model.Messages;
 
 import java.io.IOException;
 import java.net.URL;
@@ -56,7 +57,6 @@ public class AppointmentsController implements Initializable {
         customer_id_tablecolumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("CustomerId"));
         user_id_tablecolumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("UserId"));
 
-
         table_view_id.getSelectionModel().selectedItemProperty().addListener((observable, oldSelection, newSelection) -> {
             if (newSelection != null) {
                 // Enable buttons if row selected
@@ -72,11 +72,7 @@ public class AppointmentsController implements Initializable {
     }
 
     public void backButtonOnAction(ActionEvent actionEvent) throws IOException {
-        Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
-        Parent scene = FXMLLoader.load(getClass().getResource("/view/Customers.fxml"));
-        stage.setTitle("Hello");
-        stage.setScene(new Scene(scene));
-        stage.show();
+        switchView(actionEvent, "/view/Customers.fxml", "Hello");
     }
 
     public void monthViewRadioButtonOnAction(ActionEvent actionEvent) {
@@ -91,47 +87,39 @@ public class AppointmentsController implements Initializable {
         table_view_id.setItems(DBAppointment.getAllAppointments());
     }
 
-
     public void newAppointmentButtonOnAction(ActionEvent actionEvent) throws IOException {
         AppointmentSingleton.getInstance().setAppointment(null);
-
-        // No need to alert user, since it doesn't matter if anything is selected or not.
-        Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
-        Parent scene = FXMLLoader.load(getClass().getResource("/view/ModifyAppointment.fxml"));
-        stage.setTitle("New Appointment");
-        stage.setScene(new Scene(scene));
-        stage.show();
+        switchView(actionEvent, "/view/ModifyAppointment.fxml", "New Appointment");
     }
 
     //FIXME When updating appointment, the fields are thought of as blank for some reason. Issus happens
     // if immediately try to save without changing anything.
     public void updateAppointmentButtonOnAction(ActionEvent actionEvent) throws IOException {
         if (table_view_id.getSelectionModel().selectedItemProperty() != null) {
-            // Use a Singleton to act as an '@ObservableObject'
             AppointmentSingleton.getInstance().setAppointment((Appointment) table_view_id.getSelectionModel().getSelectedItem());
-
-            Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
-            Parent scene = FXMLLoader.load(getClass().getResource("/view/ModifyAppointment.fxml"));
-            stage.setTitle("Modify Appointment");
-            stage.setScene(new Scene(scene));
-            stage.show();
+            switchView(actionEvent, "/view/ModifyAppointment.fxml", "Modify Appointment");
         } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Please select an appointment");
-            alert.setTitle("Nothing selected");
-            alert.showAndWait();
+            Messages.errorMessage("Please select an appointment", "Nothing selected");
         }
     }
+
 
     public void deleteAppointmentButtonOnAction(ActionEvent actionEvent) {
         AppointmentSingleton.getInstance().setAppointment((Appointment) table_view_id.getSelectionModel().getSelectedItem());
 
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure?");
-        alert.setTitle("Delete appointment?");
-        Optional<ButtonType> result = alert.showAndWait();
+        Optional<ButtonType> result = Messages.confirmationMessage("Are you sure?", "Delete appointment");
         if (result.isPresent() && result.get() == ButtonType.OK) {
             DBAppointment.deleteAppointment(AppointmentSingleton.getInstance().getAppointment().getAppointmentId());
         }
         delete_button.setDisable(true);
         table_view_id.setItems(DBAppointment.getAllAppointments());
+    }
+
+    private void switchView(ActionEvent actionEvent, String path, String title) throws IOException {
+        Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
+        Parent scene = FXMLLoader.load(getClass().getResource(path));
+        stage.setTitle(title);
+        stage.setScene(new Scene(scene));
+        stage.show();
     }
 }
