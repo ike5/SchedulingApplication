@@ -32,46 +32,56 @@ import java.util.ResourceBundle;
 
 @UtilityInterfaces
 public class ChangeScreen {
-    public static void changeScreen(ActionEvent actionEvent,
-                                    DBUsers userLogin,
-                                    Pair<String, String> usernameAndPasswordReceived,
-                                    Parent scene,
-                                    UtilityInterfaces.FunctionalChangeScreenInterface o) {
+
+    /**
+     * Note the event source is either a Button or a TextField:
+     * stage = (Stage) ((TextField) actionEvent.getSource()).getScene().getWindow();
+     * stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
+     *
+     * @param actionEvent
+     * @param userLogin
+     * @param usernameAndPasswordReceived
+     * @param scene
+     * @param o
+     */
+    public static void changeScreen(ActionEvent actionEvent, DBUsers userLogin, Pair<String, String> usernameAndPasswordReceived, Parent scene, UtilityInterfaces.FunctionalChangeScreenInterface o) {
+
         Main.resourceBundle = ResourceBundle.getBundle("RBundle", Locale.getDefault());
 
         // Check if username and password are valid, switch views or present appropriate alerts
         if (userLogin.getUser().isValidUsername()) {
             if (userLogin.getUser().isValidPassword()) {
                 Main.user = userLogin.getUser();
-
-
-                //FIXME  Fix bug where a clicking sound is made
                 Pair<Boolean, Pair<LocalDateTime, Integer>> upcomingAppointment = DBAppointment.checkUpcomingAppointments();
-
-//                assert upcomingAppointment != null : "UpcomingAppointment is null";
-
-                if(upcomingAppointment != null) {
-                    Messages.warningMessage("Upcoming appointment: " +
-                                    upcomingAppointment.getValue().getValue() + "\n" +
-                                    "Time: " + ZonedDateTime.of(upcomingAppointment.getValue().getKey(), ZoneId.systemDefault()),
-                            "Upcoming appointment");
+                if (upcomingAppointment != null) {
+                    Messages.warningMessage(
+                            "Upcoming appointment: " + upcomingAppointment.getValue().getValue() +
+                                    "\nTime: " + ZonedDateTime.of(upcomingAppointment.getValue().getKey(), ZoneId.systemDefault()),
+                            "Upcoming appointment"
+                    );
                 } else {
                     Messages.warningMessage("No upcoming appointments", "Upcoming appointment");
                 }
-                /*
-                Note the event source is either a Button or a TextField:
-                stage = (Stage) ((TextField) actionEvent.getSource()).getScene().getWindow();
-                stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
-                 */
-                Stage stage = o.eventSource(actionEvent);
-                stage.setTitle("Welcome " + userLogin.getUser().getUsername() + "!");
-                stage.setScene(new Scene(scene));
-                stage.show();
+                switchView(actionEvent, userLogin, scene, o);
             } else {
                 Messages.errorMessage(Main.resourceBundle.getString("incorrect_password"), Main.resourceBundle.getString("password_alert_title"));
             }
         } else {
             Messages.errorMessage(Main.resourceBundle.getString("incorrect_username"), Main.resourceBundle.getString("username_alert_title"));
         }
+    }
+
+    /**
+     * Helper
+     * @param actionEvent
+     * @param userLogin
+     * @param scene
+     * @param o
+     */
+    private static void switchView(ActionEvent actionEvent, DBUsers userLogin, Parent scene, UtilityInterfaces.FunctionalChangeScreenInterface o) {
+        Stage stage = o.eventSource(actionEvent);
+        stage.setTitle("Welcome " + userLogin.getUser().getUsername() + "!");
+        stage.setScene(new Scene(scene));
+        stage.show();
     }
 }

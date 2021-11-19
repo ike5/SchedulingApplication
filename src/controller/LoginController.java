@@ -95,9 +95,7 @@ public class LoginController implements Initializable {
     @FXML
     public void onLoginAction(ActionEvent actionEvent) throws IOException {
         //FIXME (med) - pressing ENTER when button is highlighted doesn't work
-        dbUsers = new DBUsers(username_field_id.getText(), password_field_id.getText());
-        Pair<String, String> usernamePasswordReceived = new Pair<>(username_field_id.getText(), password_field_id.getText());
-        makeLogEntry(usernamePasswordReceived);
+        Pair<String, String> usernamePasswordReceived = getUsernamePasswordReceived();
 
         ChangeScreen.changeScreen(
                 actionEvent,
@@ -108,6 +106,13 @@ public class LoginController implements Initializable {
         );
     }
 
+    private Pair<String, String> getUsernamePasswordReceived() {
+        dbUsers = new DBUsers(username_field_id.getText(), password_field_id.getText());
+        Pair<String, String> usernamePasswordReceived = new Pair<>(username_field_id.getText(), password_field_id.getText());
+        makeLogEntry(usernamePasswordReceived);
+        return usernamePasswordReceived;
+    }
+
     /**
      * Typing ENTER
      *
@@ -116,7 +121,7 @@ public class LoginController implements Initializable {
      */
     @FXML
     public void usernameOnAction(ActionEvent actionEvent) throws IOException {
-//        textFieldLogin(actionEvent);
+        textFieldLogin(actionEvent);
     }
 
     /**
@@ -127,7 +132,7 @@ public class LoginController implements Initializable {
      */
     @FXML
     public void passwordOnAction(ActionEvent actionEvent) throws IOException {
-//        textFieldLogin(actionEvent);
+        textFieldLogin(actionEvent);
     }
 
     /**
@@ -137,9 +142,7 @@ public class LoginController implements Initializable {
      * @throws IOException
      */
     private void textFieldLogin(ActionEvent actionEvent) throws IOException {
-        dbUsers = new DBUsers(username_field_id.getText(), password_field_id.getText());
-        Pair<String, String> usernamePasswordReceived = new Pair<>(username_field_id.getText(), password_field_id.getText());
-        makeLogEntry(usernamePasswordReceived);
+        Pair<String, String> usernamePasswordReceived = getUsernamePasswordReceived();
 
         ChangeScreen.changeScreen(
                 actionEvent,
@@ -172,20 +175,24 @@ public class LoginController implements Initializable {
      */
     void makeLogEntry(Pair<String, String> usernamePasswordReceived) {
         if (dbUsers.getUser().isValidUsername() && dbUsers.getUser().isValidPassword()) {
-            LoginTracker.addToLog(
-                    Path.of("login_activity.txt"),
-                    LogType.SUCCESS,
-                    "Username: " + usernamePasswordReceived.getKey() +
-                            "\tPassword: " + usernamePasswordReceived.getValue() +
-                            "\tLocalDateTime: " + LocalDateTime.now());
+            addToLog(usernamePasswordReceived, LogType.SUCCESS);
         } else {
-            LoginTracker.addToLog(
-                    Path.of("login_activity.txt"),
-                    LogType.FAILURE,
-                    "Username: " + usernamePasswordReceived.getKey() +
-                            "\tPassword: " + usernamePasswordReceived.getValue() +
-                            "\tLocalDateTime: " + LocalDateTime.now());
+            addToLog(usernamePasswordReceived, LogType.FAILURE);
         }
+    }
+
+    /**
+     * Helper
+     * @param usernamePasswordReceived
+     * @param logTypeStatus
+     */
+    private void addToLog(Pair<String, String> usernamePasswordReceived, LogType logTypeStatus) {
+        LoginTracker.addToLog(
+                Path.of("login_activity.txt"),
+                logTypeStatus,
+                "Username: " + usernamePasswordReceived.getKey() +
+                        "\tPassword: " + usernamePasswordReceived.getValue() +
+                        "\tLocalDateTime: " + LocalDateTime.now());
     }
 
     /**
