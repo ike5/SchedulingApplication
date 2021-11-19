@@ -40,11 +40,10 @@ public class ChangeScreen {
      *
      * @param actionEvent
      * @param userLogin
-     * @param usernameAndPasswordReceived
      * @param scene
      * @param o
      */
-    public static void changeScreen(ActionEvent actionEvent, DBUsers userLogin, Pair<String, String> usernameAndPasswordReceived, Parent scene, UtilityInterfaces.FunctionalChangeScreenInterface o) {
+    public static void changeScreen(ActionEvent actionEvent, DBUsers userLogin, Parent scene, UtilityInterfaces.FunctionalChangeScreenInterface o) {
 
         Main.resourceBundle = ResourceBundle.getBundle("RBundle", Locale.getDefault());
 

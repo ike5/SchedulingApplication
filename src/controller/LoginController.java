@@ -100,7 +100,6 @@ public class LoginController implements Initializable {
         ChangeScreen.changeScreen(
                 actionEvent,
                 dbUsers,
-                usernamePasswordReceived,
                 FXMLLoader.load(getClass().getResource("/view/Customers.fxml")),
                 aEvent -> (Stage) ((Button) aEvent.getSource()).getScene().getWindow()
         );
@@ -147,7 +146,6 @@ public class LoginController implements Initializable {
         ChangeScreen.changeScreen(
                 actionEvent,
                 dbUsers,
-                usernamePasswordReceived,
                 FXMLLoader.load(getClass().getResource("/view/Customers.fxml")),
                 aEvent -> (Stage) ((TextField) aEvent.getSource()).getScene().getWindow());
     }
