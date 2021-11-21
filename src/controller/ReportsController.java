@@ -94,24 +94,22 @@ public class ReportsController implements Initializable {
         month_combo.setItems(monthObservableList);
         type_combo.setItems(logTypeObservableList);
 
-        // FIXME - use combination of combos to calculate how many appointments exist
+        // Customer Tab Month ComboBox Listener
         month_combo.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
-            // TODO - What am I trying to accomplish?
-            // After selecting month combo and type combo:
-            // If month combo is selected, ask database for COUNT of just month
-            // If type and month selected, query database for COUNT of month AND type
-
+            // If only month combo is selected, ask database for COUNT of just month
+            // If both type and month selected, query database for COUNT of month AND type
             if (type_combo.getSelectionModel().isEmpty()) {
                 number_of_appointments_id.setText(String.valueOf(DBAppointment.getTotalNumberOfAppointmentsByMonth((Month) newValue)));
             } else {
                 Integer num = DBAppointment.getNumberOfAppointmentsByMonthAndType((Month) newValue, (String) type_combo.getSelectionModel().getSelectedItem());
                 number_of_appointments_id.setText(String.valueOf(num));
             }
-
         });
 
+        // Customer Tab Type ComboBox Listener
         type_combo.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
             // If just type combo is selected, query database for COUNT of just type
+            // If both type and month selected, query database for COUNT of month AND type
             if (month_combo.getSelectionModel().isEmpty()) {
                 Integer num = DBAppointment.getNumberOfAppointmentsByType((String) newValue);
                 number_of_appointments_id.setText(String.valueOf(num));
@@ -121,7 +119,6 @@ public class ReportsController implements Initializable {
             }
         });
 
-
         // Contact Tab Listener
         contact_listview.getSelectionModel().selectedItemProperty().addListener((observableValue, oldSelection, newSelection) -> {
             contact_table_view.setItems(DBAppointment.getAppointmentListFromContact((Contact) newSelection));
@@ -129,10 +126,6 @@ public class ReportsController implements Initializable {
 
         //TODO
         // Additional report: count Appointments, users, contacts, and number of logins
-    }
-
-    private void givenMonthComboList_obtainFilteredTypeCombo() {
-
     }
 
     public void customerTabOnSelectionChanged(Event event) {
