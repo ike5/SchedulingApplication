@@ -194,6 +194,25 @@ public class DBAppointment {
         return typeList;
     }
 
+    public static Integer getNumberOfAppointmentsByMonthAndType(Month month, String type) {
+        Integer numberOfAppointments = 0;
+
+        String sql = "SELECT COUNT(Appointment_ID) AS NumberOfAppointments FROM appointments WHERE MONTH(Start) = ? AND Type = ?";
+        try {
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ps.setInt(1, month.getValue());
+            ps.setString(2, type);
+            ResultSet resultSet = ps.executeQuery();
+
+            resultSet.next();
+            numberOfAppointments = resultSet.getInt(1);
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return numberOfAppointments;
+    }
+
     public static ObservableList<Map> getMapOfTypesAndValue() {
         ObservableList<Map> mapObservableList = FXCollections.observableArrayList();
 

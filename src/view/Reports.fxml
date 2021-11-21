@@ -28,8 +28,8 @@
                                        <children>
                                           <ComboBox fx:id="month_combo" prefWidth="150.0" />
                                           <ComboBox fx:id="type_combo" prefWidth="150.0" />
-                                          <Label text="Total # of Appointments:" />
-                                          <Label fx:id="number_of_appointments_id" text="Label" />
+                                          <Label text="Total Appointments: " />
+                                          <Label fx:id="number_of_appointments_id" />
                                        </children>
                                     </HBox>
                                  </children>

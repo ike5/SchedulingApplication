@@ -88,8 +88,7 @@ public class ReportsController implements Initializable {
 //        }
 //        customer_table_view.getColumns().setAll(basic_column, num_appointments_column);
 
-        // Initilize customer tab data
-        // Need Month combo, type combo, label
+        // Initialize Month, Type ComboBoxes in Customer tab
         ObservableList<java.time.Month> monthObservableList = FXCollections.observableArrayList(java.time.Month.values());
         ObservableList<String> logTypeObservableList = FXCollections.observableArrayList(TypeListSingleton.getInstance().getTypeObservableList());
         month_combo.setItems(monthObservableList);
@@ -97,33 +96,44 @@ public class ReportsController implements Initializable {
 
         // FIXME - use combination of combos to calculate how many appointments exist
         month_combo.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
-            // set list of types available
-            // get types based on month
-            if(DBAppointment.getTotalNumberOfAppointmentsByMonth((Month) newValue) >= 1){
-                // If there is more than one appointment in that month, create a list
+            // TODO - What am I trying to accomplish?
+            // After selecting month combo and type combo:
+            // If month combo is selected, ask database for COUNT of just month
+            // If type and month selected, query database for COUNT of month AND type
+
+            if (type_combo.getSelectionModel().isEmpty()) {
+                number_of_appointments_id.setText(String.valueOf(DBAppointment.getTotalNumberOfAppointmentsByMonth((Month) newValue)));
+            } else {
+                Integer num = DBAppointment.getNumberOfAppointmentsByMonthAndType((Month) newValue, (String) type_combo.getSelectionModel().getSelectedItem());
+                number_of_appointments_id.setText(String.valueOf(num));
             }
+
         });
 
         type_combo.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
-            Integer num = DBAppointment.getNumberOfAppointmentsByType((String) newValue);
-            number_of_appointments_id.setText(String.valueOf(num));
+            // If just type combo is selected, query database for COUNT of just type
+            if (month_combo.getSelectionModel().isEmpty()) {
+                Integer num = DBAppointment.getNumberOfAppointmentsByType((String) newValue);
+                number_of_appointments_id.setText(String.valueOf(num));
+            } else {
+                Integer num = DBAppointment.getNumberOfAppointmentsByMonthAndType((Month) month_combo.getSelectionModel().getSelectedItem(), (String) newValue);
+                number_of_appointments_id.setText(String.valueOf(num));
+            }
         });
 
 
-        // Listeners
+        // Contact Tab Listener
         contact_listview.getSelectionModel().selectedItemProperty().addListener((observableValue, oldSelection, newSelection) -> {
             contact_table_view.setItems(DBAppointment.getAppointmentListFromContact((Contact) newSelection));
         });
 
-
         //TODO
         // Additional report: count Appointments, users, contacts, and number of logins
-
-
     }
 
-//    public void userTabOnSelectionChanged(Event event) {
-//    }
+    private void givenMonthComboList_obtainFilteredTypeCombo() {
+
+    }
 
     public void customerTabOnSelectionChanged(Event event) {
     }
