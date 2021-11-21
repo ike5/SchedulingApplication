@@ -44,7 +44,6 @@ public class ChangeScreen {
      * @param o
      */
     public static void changeScreen(ActionEvent actionEvent, DBUsers userLogin, Parent scene, UtilityInterfaces.FunctionalChangeScreenInterface o) {
-
         Main.resourceBundle = ResourceBundle.getBundle("RBundle", Locale.getDefault());
 
         // Check if username and password are valid, switch views or present appropriate alerts
@@ -61,6 +60,7 @@ public class ChangeScreen {
                 } else {
                     Messages.warningMessage("No upcoming appointments", "Upcoming appointment");
                 }
+
                 switchView(actionEvent, userLogin, scene, o);
             } else {
                 Messages.errorMessage(Main.resourceBundle.getString("incorrect_password"), Main.resourceBundle.getString("password_alert_title"));
