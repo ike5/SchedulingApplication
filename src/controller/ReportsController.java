@@ -2,9 +2,7 @@ package controller;
 
 import data.DBAppointment;
 import data.DBContacts;
-import data.LoginTracker;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import data.DBCustomers;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -17,16 +15,12 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.MapValueFactory;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import javafx.util.Callback;
-import javafx.util.Pair;
 import model.*;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Timestamp;
 import java.time.Month;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 
@@ -46,6 +40,14 @@ public class ReportsController implements Initializable {
     public static final String NUM_APPOINTMENT_MAP_KEY = "B";
     public static final String MONTH_MAP_KEY = "C";
     public static final String NUM_APPOINTMENT_BY_MONTH_MAP_KEY = "D";
+
+    public static final String NUMBER_OF_APPOINTMENTS_MAP_KEY = "E";
+    public static final String NUMBER_OF_APPOINTMENTS_MAP_VALUE = "F";
+    public static final String NUMBER_OF_CUSTOMERS_MAP_KEY = "G";
+    public static final String NUMBER_OF_CUSTOMERS_MAP_VALUE = "H";
+    public static final String NUMBER_OF_CONTACTS_MAP_KEY = "I";
+    public static final String NUMBER_OF_CLIENTS_MAP_VALUE = "J";
+
     public Tab customer_tab;
     public Tab contact_tab;
     public Tab additional_report_tab;
@@ -60,6 +62,8 @@ public class ReportsController implements Initializable {
     public ComboBox month_combo;
     public ComboBox type_combo;
     public Label number_of_appointments_id;
+    public ListView label_list;
+    public ListView values_list;
 
     private ObservableList<Map> mapObservableListTypesValues;
     private ObservableList<Map> mapObservableListMonthValues;
@@ -67,32 +71,9 @@ public class ReportsController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        // Initialize contacts tab data
-        contact_listview.setItems(DBContacts.getAllContacts());
-        contact_appointment_id_column.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("AppointmentId"));
-        contact_title_column.setCellValueFactory(new PropertyValueFactory<Appointment, String>("AppointmentTitle"));
-        contact_type_column.setCellValueFactory(new PropertyValueFactory<Appointment, String>("AppointmentType"));
-        contact_description_column.setCellValueFactory(new PropertyValueFactory<Appointment, String>("AppointmentDescription"));
-        contact_start_column.setCellValueFactory(new PropertyValueFactory<Appointment, String>("StartString"));
-        contact_end_column.setCellValueFactory(new PropertyValueFactory<Appointment, String>("EndString"));
-        contact_customer_id_column.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("CustomerId"));
-
-        // Initialize customer tab data
-//        mapObservableListTypesValues = DBAppointment.getMapOfTypesAndValue();
-//        mapObservableListMonthValues = DBAppointment.getMapOfAppointmentsByMonth();
-//        if (type_radio_button.isSelected()) {
-//            basic_column.setText("Type of Appointment");
-//            basic_column.setCellValueFactory(new MapValueFactory<>(TYPE_MAP_KEY));
-//            num_appointments_column.setCellValueFactory(new MapValueFactory<>(NUM_APPOINTMENT_MAP_KEY));
-//            customer_table_view.setItems(mapObservableListTypesValues);
-//        }
-//        customer_table_view.getColumns().setAll(basic_column, num_appointments_column);
-
-        // Initialize Month, Type ComboBoxes in Customer tab
-        ObservableList<java.time.Month> monthObservableList = FXCollections.observableArrayList(java.time.Month.values());
-        ObservableList<String> logTypeObservableList = FXCollections.observableArrayList(TypeListSingleton.getInstance().getTypeObservableList());
-        month_combo.setItems(monthObservableList);
-        type_combo.setItems(logTypeObservableList);
+        initializeContactsTab();
+        initializeAdditionalReportsTab();
+        initializeCustomersTab();
 
         // Customer Tab Month ComboBox Listener
         month_combo.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
@@ -123,9 +104,58 @@ public class ReportsController implements Initializable {
         contact_listview.getSelectionModel().selectedItemProperty().addListener((observableValue, oldSelection, newSelection) -> {
             contact_table_view.setItems(DBAppointment.getAppointmentListFromContact((Contact) newSelection));
         });
+    }
 
-        //TODO
-        // Additional report: count Appointments, users, contacts, and number of logins
+    private void initializeAdditionalReportsTab() {
+        Map<String, Integer> reportsValuesMap = new HashMap<>();
+        reportsValuesMap.put(NUMBER_OF_APPOINTMENTS_MAP_VALUE, DBAppointment.getTotalNumberOfAppointments());
+        reportsValuesMap.put(NUMBER_OF_CUSTOMERS_MAP_VALUE, DBCustomers.getTotalNumberOfCustomers());
+        reportsValuesMap.put(NUMBER_OF_CLIENTS_MAP_VALUE, DBContacts.getTotalNumberOfContacts());
+
+        Map<String, String> reportsKeyMap = new HashMap<>();
+        reportsKeyMap.put(NUMBER_OF_APPOINTMENTS_MAP_KEY, "Number of Appointments");
+        reportsKeyMap.put(NUMBER_OF_CUSTOMERS_MAP_KEY, "Number of Customers");
+        reportsKeyMap.put(NUMBER_OF_CONTACTS_MAP_KEY, "Number of Contacts");
+
+        ObservableList<Integer> valuesList = FXCollections.observableArrayList(reportsValuesMap.values());
+        ObservableList<String> keyList = FXCollections.observableArrayList(reportsKeyMap.values());
+
+
+        //todo count number of logins
+    }
+
+    private void initializeContactsTab() {
+        contact_listview.setItems(DBContacts.getAllContacts());
+        contact_appointment_id_column.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("AppointmentId"));
+        contact_title_column.setCellValueFactory(new PropertyValueFactory<Appointment, String>("AppointmentTitle"));
+        contact_type_column.setCellValueFactory(new PropertyValueFactory<Appointment, String>("AppointmentType"));
+        contact_description_column.setCellValueFactory(new PropertyValueFactory<Appointment, String>("AppointmentDescription"));
+        contact_start_column.setCellValueFactory(new PropertyValueFactory<Appointment, String>("StartString"));
+        contact_end_column.setCellValueFactory(new PropertyValueFactory<Appointment, String>("EndString"));
+        contact_customer_id_column.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("CustomerId"));
+    }
+
+    /**
+     * @deprecated Use initializeCustomersTab() instead
+     */
+    @Deprecated(since = "1", forRemoval = true)
+    private void initializeCustomerTab() {
+        mapObservableListTypesValues = DBAppointment.getMapOfTypesAndValue();
+        mapObservableListMonthValues = DBAppointment.getMapOfAppointmentsByMonth();
+        if (type_radio_button.isSelected()) {
+            basic_column.setText("Type of Appointment");
+            basic_column.setCellValueFactory(new MapValueFactory<>(TYPE_MAP_KEY));
+            num_appointments_column.setCellValueFactory(new MapValueFactory<>(NUM_APPOINTMENT_MAP_KEY));
+            customer_table_view.setItems(mapObservableListTypesValues);
+        }
+        customer_table_view.getColumns().setAll(basic_column, num_appointments_column);
+    }
+
+    private void initializeCustomersTab() {
+        ObservableList<Month> monthObservableList = FXCollections.observableArrayList(Month.values());
+        ObservableList<String> logTypeObservableList = FXCollections.observableArrayList(TypeListSingleton.getInstance().getTypeObservableList());
+        month_combo.setItems(monthObservableList);
+        type_combo.setItems(logTypeObservableList);
     }
 
     public void customerTabOnSelectionChanged(Event event) {

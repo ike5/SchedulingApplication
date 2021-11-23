@@ -163,6 +163,14 @@ public class DBCustomers {
         return null;
     }
 
+    public static Integer getTotalNumberOfCustomers() {
+        Integer counter = 0;
+        for (Customer c : getAllCustomers()) {
+            counter++;
+        }
+        return counter;
+    }
+
     /**
      * Returns a Customer object provided a customer ID.
      *

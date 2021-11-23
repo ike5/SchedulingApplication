@@ -48,6 +48,16 @@ public class DBAppointment {
         return appointmentObservableList;
     }
 
+    public static Integer getTotalNumberOfAppointments() {
+        Integer counter = 0;
+
+        for (Appointment a : getAllAppointments()) {
+            counter++;
+        }
+
+        return counter;
+    }
+
     public static Appointment getAppointment(int appointmentId) {
         String sql = "SELECT Appointment_ID, Title, Description, Location, Type, Start, End, Customer_ID, User_ID, Contact_ID " +
                 "FROM appointments " +
@@ -172,6 +182,7 @@ public class DBAppointment {
         }
         return mapObservableList;
     }
+
 
     /**
      * Gets a list of all distinct types of appointments from the appointments database.

@@ -72,8 +72,16 @@ public class DBContacts {
         return contactObservableList;
     }
 
+    public static Integer getTotalNumberOfContacts() {
+        Integer counter = 0;
+        for (Contact c : getAllContacts()) {
+            counter++;
+        }
+
+        return counter;
+    }
+
     /**
-     *
      * @param contactId The contact ID
      * @return ResultSet object of the contact requested
      */

@@ -71,12 +71,12 @@
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <TableView fx:id="user_table_view1" prefWidth="1000.0">
-                                 <columns>
-                                    <TableColumn prefWidth="75.0" text="C1" />
-                                    <TableColumn prefWidth="75.0" text="C2" />
-                                 </columns>
-                              </TableView>
+                              <HBox alignment="TOP_CENTER" prefHeight="350.0" prefWidth="1000.0">
+                                 <children>
+                                    <ListView fx:id="label_list" focusTraversable="false" prefHeight="350.0" prefWidth="300.0" />
+                                    <ListView fx:id="values_list" focusTraversable="false" prefHeight="350.0" prefWidth="300.0" />
+                                 </children>
+                              </HBox>
                            </children>
                         </AnchorPane>
                      </content>
