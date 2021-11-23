@@ -2,7 +2,7 @@
 
 --- 
 ## High
-- [ ] Fix combo boxes that calculate how many appointments exist
+- [x] Fix combo boxes that calculate how many appointments exist
 - [ ] Make a report tab count number of Appointments, Users, Contacts, Logins
 - [ ] Validate time overlapping
 
