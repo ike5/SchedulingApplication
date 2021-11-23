@@ -28,6 +28,13 @@ public class LoginTracker {
         }
     }
 
+    /**
+     * Adds new line to log starting each line with an identifying logType value.
+     *
+     * @param path       The path to the log file
+     * @param logType    Identifies the login attempt as a SUCCESS or FAILURE
+     * @param logMessage The log message should include the success, the username, and the datetime information
+     */
     public static void addToLog(Path path, LogType logType, String logMessage) {
         try (var writer = Files.newBufferedWriter(path, StandardOpenOption.CREATE, StandardOpenOption.APPEND)) {
             writer
@@ -40,7 +47,7 @@ public class LoginTracker {
         }
     }
 
-    @Deprecated
+    @Deprecated(since = "1", forRemoval = false)
     public static void readAllMessages(Path path) {
         try {
             final List<String> lines = Files.readAllLines(path.normalize());
@@ -50,7 +57,26 @@ public class LoginTracker {
         }
     }
 
-    @Deprecated
+    /**
+     * This method counts the total number of lines in a file
+     *
+     * @param path the path of the file
+     * @return an integer representing the total number of lines in a file.
+     */
+    public static Integer getNumberOfLogMessages(Path path) {
+        Integer counter = 0;
+        try {
+            final List<String> lines = Files.readAllLines(path.normalize());
+            for (String l : lines) {
+                counter++;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return counter;
+    }
+
+    @Deprecated(since = "1", forRemoval = false)
     public static void addToObjectLog(Pair<String, String> usernameAndPasswordReceived) {
         Log log = new Log(
                 usernameAndPasswordReceived,
@@ -59,6 +85,7 @@ public class LoginTracker {
         );
     }
 
+    @Deprecated(since = "1", forRemoval = false)
     public static void serializeLog(List<Log> logs, File file) throws IOException {
         try (var out = new ObjectOutputStream(
                 new BufferedOutputStream(
@@ -69,6 +96,7 @@ public class LoginTracker {
         }
     }
 
+    @Deprecated(since = "1", forRemoval = false)
     public static List<Log> deserializeLog(File file) throws IOException {
         var logs = new ArrayList<Log>();
         try (var in = new ObjectInputStream(
@@ -86,9 +114,5 @@ public class LoginTracker {
             System.err.println("Class not found exception: ");
         }
         return logs;
-    }
-
-    public static void checkAppointmentsUponLogin(){
-        //TODO Add functionality to alert user if any appointments are within 15 minutes
     }
 }

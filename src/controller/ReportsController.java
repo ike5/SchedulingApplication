@@ -3,6 +3,7 @@ package controller;
 import data.DBAppointment;
 import data.DBContacts;
 import data.DBCustomers;
+import data.LoginTracker;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -19,6 +20,7 @@ import model.*;
 
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Path;
 import java.time.Month;
 import java.util.HashMap;
 import java.util.Map;
@@ -47,6 +49,8 @@ public class ReportsController implements Initializable {
     public static final String NUMBER_OF_CUSTOMERS_MAP_VALUE = "H";
     public static final String NUMBER_OF_CONTACTS_MAP_KEY = "I";
     public static final String NUMBER_OF_CLIENTS_MAP_VALUE = "J";
+    public static final String NUMBER_OF_LOGINS_MAP_KEY = "K";
+    public static final String NUMBER_OF_LOGINS_MAP_VALUE = "L";
 
     public Tab customer_tab;
     public Tab contact_tab;
@@ -108,18 +112,24 @@ public class ReportsController implements Initializable {
 
     private void initializeAdditionalReportsTab() {
         Map<String, Integer> reportsValuesMap = new HashMap<>();
+        Path path = Path.of("login_activity.txt");
+
         reportsValuesMap.put(NUMBER_OF_APPOINTMENTS_MAP_VALUE, DBAppointment.getTotalNumberOfAppointments());
         reportsValuesMap.put(NUMBER_OF_CUSTOMERS_MAP_VALUE, DBCustomers.getTotalNumberOfCustomers());
         reportsValuesMap.put(NUMBER_OF_CLIENTS_MAP_VALUE, DBContacts.getTotalNumberOfContacts());
+        reportsValuesMap.put(NUMBER_OF_LOGINS_MAP_VALUE, LoginTracker.getNumberOfLogMessages(path));
 
         Map<String, String> reportsKeyMap = new HashMap<>();
         reportsKeyMap.put(NUMBER_OF_APPOINTMENTS_MAP_KEY, "Number of Appointments");
         reportsKeyMap.put(NUMBER_OF_CUSTOMERS_MAP_KEY, "Number of Customers");
         reportsKeyMap.put(NUMBER_OF_CONTACTS_MAP_KEY, "Number of Contacts");
+        reportsKeyMap.put(NUMBER_OF_LOGINS_MAP_KEY, "Number of Logins");
 
         ObservableList<Integer> valuesList = FXCollections.observableArrayList(reportsValuesMap.values());
         ObservableList<String> keyList = FXCollections.observableArrayList(reportsKeyMap.values());
 
+        label_list.setItems(keyList);
+        values_list.setItems(valuesList);
 
         //todo count number of logins
     }
