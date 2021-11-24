@@ -12,7 +12,8 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ModifyAppointmentController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controller.ModifyAppointmentController">
     <children>
         <VBox prefHeight="400.0" prefWidth="600.0">
             <children>
@@ -20,56 +21,69 @@
                     <children>
                         <GridPane alignment="CENTER" prefHeight="400.0" prefWidth="600.0">
                             <columnConstraints>
-                                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="100.0" />
-                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="10.0" prefWidth="200.0" />
-                                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="100.0" />
-                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="10.0" prefWidth="200.0" />
+                                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="100.0"
+                                                   minWidth="10.0" prefWidth="100.0"/>
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="10.0"
+                                                   prefWidth="200.0"/>
+                                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="100.0"
+                                                   minWidth="10.0" prefWidth="100.0"/>
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="10.0"
+                                                   prefWidth="200.0"/>
                             </columnConstraints>
                             <rowConstraints>
-                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                <RowConstraints />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints/>
 
                             </rowConstraints>
                             <children>
-                                <Label text="Appointment ID" />
-                                <Label text="Title" GridPane.columnIndex="2" />
-                                <Label text="Description" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                                <Label text="Location" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                                <Label text="Type" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                                <ComboBox fx:id="customer_combo" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                <ComboBox fx:id="contact_combo" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                <ComboBox fx:id="user_combo" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                <ComboBox fx:id="location_combo" prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                                <ComboBox fx:id="type_combo" prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-                                <DatePicker fx:id="start_date_picker" prefHeight="26.0" prefWidth="187.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                                <TextField fx:id="title_textfield" GridPane.columnIndex="3" />
-                                <TextField fx:id="description_textfield" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                                <Label text="Start Date" GridPane.rowIndex="5" />
-                                <Label text="Start Time" GridPane.columnIndex="2" GridPane.rowIndex="5" />
-                                <Label text="Customer ID" GridPane.rowIndex="1" />
-                                <Label text="Contact ID" GridPane.rowIndex="2" />
-                                <Label text="User ID" GridPane.rowIndex="3" />
-                                <Label text="End Time" GridPane.columnIndex="2" GridPane.rowIndex="6" />
-                                <Label fx:id="error_message_label" text="Error Messages if any" textFill="#f30202" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-                        <Label fx:id="error_messages_label2" text="Error Messages if any" textFill="#f70303" GridPane.columnIndex="3" GridPane.rowIndex="7" />
-                        <TextField fx:id="appointment_id_textfield" disable="true" GridPane.columnIndex="1" />
-                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="5">
-                           <children>
-                              <ComboBox fx:id="start_combo" prefWidth="150.0" />
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="6">
-                           <children>
-                              <ComboBox fx:id="end_combo" prefWidth="150.0" />
-                           </children>
-                        </HBox>
+                                <Label text="Appointment ID"/>
+                                <Label text="Title" GridPane.rowIndex="1"/>
+                                <Label text="Description" GridPane.rowIndex="2"/>
+                                <Label text="Location" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+                                <Label text="Type" GridPane.columnIndex="2" GridPane.rowIndex="2"/>
+                                <TextField fx:id="title_textfield" prefWidth="196.0" GridPane.columnIndex="1"
+                                           GridPane.rowIndex="1"/>
+                                <TextField fx:id="description_textfield" GridPane.columnIndex="1"
+                                           GridPane.rowIndex="2"/>
+                                <ComboBox fx:id="customer_combo" prefWidth="150.0" GridPane.columnIndex="1"
+                                          GridPane.rowIndex="4"/>
+                                <ComboBox fx:id="contact_combo" prefWidth="150.0" GridPane.columnIndex="1"
+                                          GridPane.rowIndex="5"/>
+                                <ComboBox fx:id="user_combo" prefWidth="150.0" GridPane.columnIndex="1"
+                                          GridPane.rowIndex="6"/>
+                                <ComboBox fx:id="location_combo" prefWidth="150.0" GridPane.columnIndex="3"
+                                          GridPane.rowIndex="1"/>
+                                <Label text="Start Date" GridPane.columnIndex="2" GridPane.rowIndex="4"/>
+                                <Label text="Start Time" GridPane.columnIndex="2" GridPane.rowIndex="5"/>
+                                <Label text="Customer ID" GridPane.rowIndex="4"/>
+                                <Label text="Contact ID" GridPane.rowIndex="5"/>
+                                <Label text="User ID" GridPane.rowIndex="6"/>
+                                <Label text="End Time" GridPane.columnIndex="2" GridPane.rowIndex="6"/>
+                                <TextField fx:id="appointment_id_textfield" disable="true" prefWidth="222.0"
+                                           GridPane.columnIndex="1"/>
+                                <ComboBox fx:id="type_combo" prefWidth="150.0" GridPane.columnIndex="3"
+                                          GridPane.rowIndex="2"/>
+                                <DatePicker fx:id="start_date_picker" prefHeight="26.0" prefWidth="187.0"
+                                            GridPane.columnIndex="3" GridPane.rowIndex="4"/>
+                                <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0"
+                    GridPane.columnIndex="3" GridPane.rowIndex="5">
+                                    <children>
+                                        <ComboBox fx:id="start_combo" prefWidth="150.0"/>
+                                    </children>
+                                </HBox>
+                                <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0"
+                    GridPane.columnIndex="3" GridPane.rowIndex="6">
+                                    <children>
+                                        <ComboBox fx:id="end_combo" prefWidth="150.0"/>
+                                    </children>
+                                </HBox>
                             </children>
                         </GridPane>
                     </children>
@@ -78,18 +92,21 @@
                     <children>
                         <GridPane>
                             <columnConstraints>
-                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
                             </columnConstraints>
                             <rowConstraints>
-                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
                             </rowConstraints>
-                     <children>
-                                <Button fx:id="cancel_button" mnemonicParsing="false" onAction="#cancelButtonOnAction" text="Cancel" />
-                                <Button fx:id="clear_button" mnemonicParsing="false" onAction="#clearButtonOnAction" text="Clear" GridPane.columnIndex="1" />
-                                <Button fx:id="save_button" mnemonicParsing="false" onAction="#saveButtonOnAction" text="Save" GridPane.columnIndex="2" />
-                     </children>
+                            <children>
+                                <Button fx:id="cancel_button" mnemonicParsing="false" onAction="#cancelButtonOnAction"
+                                        text="Cancel"/>
+                                <Button fx:id="clear_button" mnemonicParsing="false" onAction="#clearButtonOnAction"
+                                        text="Clear" GridPane.columnIndex="1"/>
+                                <Button fx:id="save_button" mnemonicParsing="false" onAction="#saveButtonOnAction"
+                                        text="Save" GridPane.columnIndex="2"/>
+                            </children>
                         </GridPane>
                     </children>
                 </HBox>

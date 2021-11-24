@@ -4,7 +4,9 @@
 ## High
 - [x] Fix combo boxes that calculate how many appointments exist
 - [x] Make a report tab count number of Appointments, Users, Contacts, Logins
-- [ ] Validate time overlapping
+- [ ] Validate time overlapping with alert
+- [ ] When updating appointment, don't allow user to choose time earlier than start
+- [ ] Fix EST zonedDateTime
 
 
 ## Medium
