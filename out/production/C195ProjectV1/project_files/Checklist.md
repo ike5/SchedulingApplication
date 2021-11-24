@@ -4,7 +4,7 @@
 ## High
 - [x] Fix combo boxes that calculate how many appointments exist
 - [x] Make a report tab count number of Appointments, Users, Contacts, Logins
-- [ ] Validate time overlapping with alert
+- [x] Validate time overlapping ~~with alert~~
 - [x] When updating appointment, don't allow user to choose time earlier than start
 - [ ] Fix EST zonedDateTime
 
@@ -16,6 +16,7 @@
 ## Low
 - [ ] Eliminate Dependencies with DBAppoitnment class and ReportsController
 - [ ] Fix red password error
+- [ ] Fix clear button on ModifyAppointment to clear comboboxes using .clear() instead of null.
 - [ ] Fix pressing enter when button highlighted
 - [ ] Refactor ChangeScreen Util
 - [ ] Remove UtilityInterfaces

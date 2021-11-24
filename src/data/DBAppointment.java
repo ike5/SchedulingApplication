@@ -367,9 +367,6 @@ public class DBAppointment {
             ps.setInt(11, appointmentId);
 
             ps.executeUpdate();
-        }catch (MysqlDataTruncation e){
-            System.out.println("Too long data!");
-            e.printStackTrace();
         } catch (SQLException e) {
             e.printStackTrace();
         }

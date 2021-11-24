@@ -22,8 +22,6 @@ import java.util.ResourceBundle;
  * This class is used to modify existing appointments as well as create new appointments.
  */
 public class ModifyAppointmentController implements Initializable {
-    public Label error_message_label;
-    public Label error_messages_label2;
     public ComboBox type_combo;
     public ComboBox location_combo;
     public TextField title_textfield;
@@ -57,6 +55,8 @@ public class ModifyAppointmentController implements Initializable {
         // Set start time combobox
         LocalTime start = LocalTime.of(8, 0);
         LocalTime end = LocalTime.of(21, 45);
+
+
         while (start.isBefore(end.plusSeconds(1))) {
             start_combo.getItems().add(start);
             start = start.plusMinutes(15);
@@ -139,7 +139,6 @@ public class ModifyAppointmentController implements Initializable {
             start_combo.setValue(localStartTime);
             end_combo.setValue(localEndTime);
         }
-        //TODO Validate whether appointment times overlap, start earlier, or etc.
     }
 
     /**
@@ -223,6 +222,7 @@ public class ModifyAppointmentController implements Initializable {
      * @param actionEvent
      */
     private void onClear(ActionEvent actionEvent) {
+        //FIXME use .getItem().clear() instead of null?
         customer_combo.valueProperty().set(null);
         contact_combo.valueProperty().set(null);
         user_combo.valueProperty().set(null);

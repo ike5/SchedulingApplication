@@ -1,36 +1,23 @@
 package utils;
 
-import controller.LoginController;
 import data.DBAppointment;
 import data.DBUsers;
-import data.LoginTracker;
 import javafx.event.ActionEvent;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 import main.Main;
-import model.Log;
-import model.LogType;
 import model.Messages;
-import model.User;
-import test.Test;
 
-import java.io.*;
-import java.nio.file.Path;
-import java.sql.Array;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
 
-@UtilityInterfaces
+@Utility
 public class ChangeScreen {
 
     /**
@@ -43,7 +30,7 @@ public class ChangeScreen {
      * @param scene
      * @param o
      */
-    public static void changeScreen(ActionEvent actionEvent, DBUsers userLogin, Parent scene, UtilityInterfaces.FunctionalChangeScreenInterface o) {
+    public static void changeScreen(ActionEvent actionEvent, DBUsers userLogin, Parent scene, Utility.FunctionalChangeScreenInterface o) {
         Main.resourceBundle = ResourceBundle.getBundle("RBundle", Locale.getDefault());
 
         // Check if username and password are valid, switch views or present appropriate alerts
@@ -77,7 +64,7 @@ public class ChangeScreen {
      * @param scene
      * @param o
      */
-    private static void switchView(ActionEvent actionEvent, DBUsers userLogin, Parent scene, UtilityInterfaces.FunctionalChangeScreenInterface o) {
+    private static void switchView(ActionEvent actionEvent, DBUsers userLogin, Parent scene, Utility.FunctionalChangeScreenInterface o) {
         Stage stage = o.eventSource(actionEvent);
         stage.setTitle("Welcome " + userLogin.getUser().getUsername() + "!");
         stage.setScene(new Scene(scene));

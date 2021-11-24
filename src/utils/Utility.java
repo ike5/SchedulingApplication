@@ -4,12 +4,14 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Target;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.ZonedDateTime;
 import java.util.Locale;
 
-public @interface UtilityInterfaces {
+public @interface Utility {
     @FunctionalInterface
     interface FunctionalAlertInterface {
         Alert makeAlert();
@@ -23,6 +25,13 @@ public @interface UtilityInterfaces {
     @FunctionalInterface
     interface FunctionalResultSetInterface {
         void whileLogic(ResultSet resultSet) throws SQLException;
+    }
+
+    @Target(ElementType.TYPE_USE)
+    @interface StringLength {
+        public int min();
+
+        public int max();
     }
 
     interface AdjustTimeInterface extends TimeZoneInterface {
@@ -64,33 +73,36 @@ public @interface UtilityInterfaces {
     }
 
 
-
     interface CustomerInterface extends PersonInterface {
     }
 
     interface UserInterface extends PersonInterface {
     }
 
-    interface ValidateFieldsInterface extends FunctionalAlertInterface{
+    interface ValidateFieldsInterface extends FunctionalAlertInterface {
         boolean notAValidField();
     }
 
-    interface ValidateUserInterface extends ValidateFieldsInterface{
+    interface ValidateUserInterface extends ValidateFieldsInterface {
         boolean incorrectUsername();
+
         boolean incorrectPassword();
     }
 
-    interface ValidateAppointmentsInterface extends ValidateFieldsInterface{
+    interface ValidateAppointmentsInterface extends ValidateFieldsInterface {
         boolean apptOutsideBusinessHours();
+
         boolean apptOverlap();
     }
 
     interface UpcomingAppointmentsInterface extends FunctionalAlertInterface {
         boolean within15Minutes();
+
         boolean noAppointmentsAtTheMoment();
     }
 
 }
+
 
 
 
