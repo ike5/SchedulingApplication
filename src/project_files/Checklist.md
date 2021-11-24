@@ -21,6 +21,7 @@
 - [ ] Refactor ChangeScreen Util
 - [ ] Remove UtilityInterfaces
 - [ ] Fix UI size for each page
+- [x] Fix tabbing issues modify appointment
 - [ ] Add Javadocs annotations
 - [ ] Create UML diagram to insert into project
 - [ ] Delete all unnecessary files

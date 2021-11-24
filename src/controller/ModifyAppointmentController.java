@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import model.*;
+import test.Test;
 
 import java.io.IOException;
 import java.net.URL;
@@ -71,6 +72,8 @@ public class ModifyAppointmentController implements Initializable {
                         startComboItems = ((LocalTime) startComboItems).plusMinutes(15);
                         end_combo.getItems().add(startComboItems);
                     }
+                    new Test("old value: " + String.valueOf(oldValue));
+                    new Test("new value: " + String.valueOf(newValue));
                     break;
                 }
             }
