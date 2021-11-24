@@ -11,7 +11,7 @@
 
 ## Medium
 - [ ] Fix Alert within 15 minutes
-- [ ] Remove showing password on login_activity.txt
+- [x] Remove showing password on login_activity.txt
 
 ## Low
 - [ ] Eliminate Dependencies with DBAppoitnment class and ReportsController
@@ -32,3 +32,10 @@
 
 
 
+---
+
+# Essential Tests
+
+- [ ] Scheduling after hours (last appt @ 21:45)
+- [ ] Adding too much text to description
+- [ ] Adding too much text to title

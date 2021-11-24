@@ -1,5 +1,6 @@
 package data;
 
+import com.mysql.cj.jdbc.exceptions.MysqlDataTruncation;
 import controller.ReportsController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -366,6 +367,9 @@ public class DBAppointment {
             ps.setInt(11, appointmentId);
 
             ps.executeUpdate();
+        }catch (MysqlDataTruncation e){
+            System.out.println("Too long data!");
+            e.printStackTrace();
         } catch (SQLException e) {
             e.printStackTrace();
         }

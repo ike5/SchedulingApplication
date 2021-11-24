@@ -32,3 +32,10 @@
 
 
 
+---
+
+# Essential Tests
+
+- [ ] Scheduling after hours (last appt @ 21:45)
+- [ ] Adding too much text to description
+- [ ] Adding too much text to title
