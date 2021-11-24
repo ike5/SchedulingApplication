@@ -24,6 +24,7 @@
 - [ ] Delete all unnecessary files
 - [ ] Remove JavaFX error version 16 from pages
 - [ ] Create Javadocs
+- [ ] Can I use javax.validation API?
 - [ ] Add information to README
 - [ ] Fix README.md to a textfile instead of a .md file
 

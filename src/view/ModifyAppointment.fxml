@@ -43,8 +43,12 @@
                                 <Label text="Description" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                                 <Label text="Location" GridPane.columnIndex="2" GridPane.rowIndex="2" />
                                 <Label text="Type" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                                <ComboBox fx:id="type_combo" prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                                <ComboBox fx:id="customer_combo" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                <ComboBox fx:id="contact_combo" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                <ComboBox fx:id="user_combo" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                 <ComboBox fx:id="location_combo" prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                                <ComboBox fx:id="type_combo" prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                                <DatePicker fx:id="start_date_picker" prefHeight="26.0" prefWidth="187.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                                 <TextField fx:id="title_textfield" GridPane.columnIndex="3" />
                                 <TextField fx:id="description_textfield" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                                 <Label text="Start Date" GridPane.rowIndex="5" />
@@ -52,11 +56,7 @@
                                 <Label text="Customer ID" GridPane.rowIndex="1" />
                                 <Label text="Contact ID" GridPane.rowIndex="2" />
                                 <Label text="User ID" GridPane.rowIndex="3" />
-                                <DatePicker fx:id="start_date_picker" prefHeight="26.0" prefWidth="187.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                                 <Label text="End Time" GridPane.columnIndex="2" GridPane.rowIndex="6" />
-                                <ComboBox fx:id="customer_combo" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                <ComboBox fx:id="contact_combo" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                <ComboBox fx:id="user_combo" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                 <Label fx:id="error_message_label" text="Error Messages if any" textFill="#f30202" GridPane.columnIndex="1" GridPane.rowIndex="7" />
                         <Label fx:id="error_messages_label2" text="Error Messages if any" textFill="#f70303" GridPane.columnIndex="3" GridPane.rowIndex="7" />
                         <TextField fx:id="appointment_id_textfield" disable="true" GridPane.columnIndex="1" />

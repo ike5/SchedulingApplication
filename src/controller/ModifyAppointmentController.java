@@ -82,37 +82,34 @@ public class ModifyAppointmentController implements Initializable {
 
         // If coming to view from Updating appointments, populate fields and combo
         if (AppointmentSingleton.getInstance().getAppointment() != null) {
-            for(Object customer : customer_combo.getItems()){
-                if(((Customer) customer).getId() == AppointmentSingleton.getInstance().getAppointment().getCustomerId()){
+            // Populate ComboBoxes
+            for (Object customer : customer_combo.getItems()) {
+                if (((Customer) customer).getId() == AppointmentSingleton.getInstance().getAppointment().getCustomerId()) {
                     customer_combo.setValue(customer);
                 }
             }
-
-            for(Object contact : contact_combo.getItems()){
-                if(((Contact) contact).getContactId() == AppointmentSingleton.getInstance().getAppointment().getContactId()){
+            for (Object contact : contact_combo.getItems()) {
+                if (((Contact) contact).getContactId() == AppointmentSingleton.getInstance().getAppointment().getContactId()) {
                     contact_combo.setValue(contact);
                 }
             }
-
-            for(Object user : user_combo.getItems()){
-                if(((User) user).getUserId() == AppointmentSingleton.getInstance().getAppointment().getUserId()){
+            for (Object user : user_combo.getItems()) {
+                if (((User) user).getUserId() == AppointmentSingleton.getInstance().getAppointment().getUserId()) {
                     user_combo.setValue(user);
                 }
             }
-
-            for(Object location : location_combo.getItems()){
-                if(location.equals(AppointmentSingleton.getInstance().getAppointment().getAppointmentLocation())){
+            for (Object location : location_combo.getItems()) {
+                if (location.equals(AppointmentSingleton.getInstance().getAppointment().getAppointmentLocation())) {
                     location_combo.setValue(location);
                 }
             }
-
-            for(Object type : type_combo.getItems()){
-                if(type.equals(AppointmentSingleton.getInstance().getAppointment().getAppointmentType())){
+            for (Object type : type_combo.getItems()) {
+                if (type.equals(AppointmentSingleton.getInstance().getAppointment().getAppointmentType())) {
                     type_combo.setValue(type);
                 }
             }
 
-            // Set number of rows visible in ComboBox
+            // Set number of visible rows in ComboBoxes
             customer_combo.setVisibleRowCount(5);
             contact_combo.setVisibleRowCount(5);
             user_combo.setVisibleRowCount(5);
@@ -124,13 +121,13 @@ public class ModifyAppointmentController implements Initializable {
             title_textfield.setText(AppointmentSingleton.getInstance().getAppointment().getAppointmentTitle());
             description_textfield.setText(AppointmentSingleton.getInstance().getAppointment().getAppointmentDescription());
 
-            //
             LocalDate localStartDate = AppointmentSingleton.getInstance().getAppointment().getStart().toLocalDate();
             LocalTime localStartTime = AppointmentSingleton.getInstance().getAppointment().getStart().toLocalTime();
             LocalTime localEndTime = AppointmentSingleton.getInstance().getAppointment().getEnd().toLocalTime();
 
             //Todo - do I need to convert to zonedDateTime to use properly in EST?
             ZonedDateTime zonedStartDateTime = ZonedDateTime.of(localStartDate, localStartTime, ZoneId.systemDefault());
+            zonedStartDateTime.withZoneSameInstant(ZoneId.systemDefault());
 
             start_date_picker.setValue(localStartDate);
             start_combo.setValue(localStartTime);
