@@ -189,7 +189,7 @@ public class LoginController implements Initializable {
                 Path.of("login_activity.txt"),
                 logTypeStatus,
                 "Username: " + usernamePasswordReceived.getKey() +
-                        "\tPassword: " + usernamePasswordReceived.getValue() +
+//                        "\tPassword: " + usernamePasswordReceived.getValue() +
                         "\tLocalDateTime: " + LocalDateTime.now());
     }
 
