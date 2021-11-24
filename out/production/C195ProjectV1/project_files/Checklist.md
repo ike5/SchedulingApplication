@@ -7,6 +7,9 @@
 - [x] Validate time overlapping ~~with alert~~
 - [x] When updating appointment, don't allow user to choose time earlier than start
 - [ ] Fix EST zonedDateTime
+- [ ] If scheduled customer with overlapping appointments
+- [ ] If appointments are outside of business hours (Including weekends)
+- [ ] When customer deleted, show custom message alert of deleted customer
 
 
 ## Medium

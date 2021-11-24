@@ -7,7 +7,7 @@ import data.DBUsers;
 import java.time.LocalDateTime;
 
 /**
- * Rules: An appointment cannot be made without a customer, user, and contact
+ * Appointment objects are made with a LocalDateTime object that must be converted to a ZonedDateTime
  */
 public class Appointment {
     // Everything except title and location can be null

@@ -56,7 +56,6 @@ public class ModifyAppointmentController implements Initializable {
         LocalTime start = LocalTime.of(8, 0);
         LocalTime end = LocalTime.of(21, 45);
 
-
         while (start.isBefore(end.plusSeconds(1))) {
             start_combo.getItems().add(start);
             start = start.plusMinutes(15);
@@ -133,7 +132,18 @@ public class ModifyAppointmentController implements Initializable {
 
             //Todo - do I need to convert to zonedDateTime to use properly in EST?
             ZonedDateTime zonedStartDateTime = ZonedDateTime.of(localStartDate, localStartTime, ZoneId.systemDefault());
-            zonedStartDateTime.withZoneSameInstant(ZoneId.systemDefault());
+            zonedStartDateTime.withZoneSameInstant(ZoneId.of("US/Eastern"));
+
+            new Test(localStartDate.getDayOfWeek());
+            new Test(localStartTime.getHour());
+            new Test(localEndTime.getHour());
+            new Test(zonedStartDateTime.getHour());
+            new Test(zonedStartDateTime.getDayOfWeek());
+//            if(zonedStartDateTime.getDayOfWeek().equals(DayOfWeek.SATURDAY) ||
+//                    zonedStartDateTime.getDayOfWeek().equals(DayOfWeek.SUNDAY)){
+//                new Test("Falls on weekend ModifyAppointmentController");
+//            }
+
 
             start_date_picker.setValue(localStartDate);
             start_combo.setValue(localStartTime);
