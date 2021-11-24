@@ -68,12 +68,15 @@ public class ModifyAppointmentController implements Initializable {
             // Find the time selected in start_combo
             for (Object startComboItems : start_combo.getItems()) {
                 if (startComboItems.equals(newValue)) {
+
+                    // Clear all end times
+                    end_combo.getItems().clear();
+
+                    // Populate all end times that start after selected start time
                     while (((LocalTime) startComboItems).isBefore(end.plusSeconds(1))) {
                         startComboItems = ((LocalTime) startComboItems).plusMinutes(15);
                         end_combo.getItems().add(startComboItems);
                     }
-                    new Test("old value: " + String.valueOf(oldValue));
-                    new Test("new value: " + String.valueOf(newValue));
                     break;
                 }
             }
