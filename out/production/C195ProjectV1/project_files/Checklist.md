@@ -3,7 +3,7 @@
 --- 
 ## High
 - [x] Fix combo boxes that calculate how many appointments exist
-- [ ] Make a report tab count number of Appointments, Users, Contacts, Logins
+- [x] Make a report tab count number of Appointments, Users, Contacts, Logins
 - [ ] Validate time overlapping
 
 
@@ -19,10 +19,13 @@
 - [ ] Refactor ChangeScreen Util
 - [ ] Remove UtilityInterfaces
 - [ ] Fix UI size for each page
+- [ ] Add Javadocs annotations
 - [ ] Create UML diagram to insert into project
 - [ ] Delete all unnecessary files
 - [ ] Remove JavaFX error version 16 from pages
-
+- [ ] Create Javadocs
+- [ ] Add information to README
+- [ ] Fix README.md to a textfile instead of a .md file
 
 
 

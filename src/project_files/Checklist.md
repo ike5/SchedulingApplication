@@ -19,10 +19,13 @@
 - [ ] Refactor ChangeScreen Util
 - [ ] Remove UtilityInterfaces
 - [ ] Fix UI size for each page
+- [ ] Add Javadocs annotations
 - [ ] Create UML diagram to insert into project
 - [ ] Delete all unnecessary files
 - [ ] Remove JavaFX error version 16 from pages
-
+- [ ] Create Javadocs
+- [ ] Add information to README
+- [ ] Fix README.md to a textfile instead of a .md file
 
 
 
