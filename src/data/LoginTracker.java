@@ -16,18 +16,6 @@ import java.util.List;
 
 public class LoginTracker {
 
-    @Deprecated
-    public static void readLogMessages(Path path, LogType logType) {
-        // good for memory because uses a Stream
-        try (var s = Files.lines(path)) {
-            s.filter(f -> f.startsWith(logType.name())) // searches log lines with WARN
-                    .map(f -> f.substring(logType.name().length()))
-                    .forEach(System.out::println);
-        } catch (IOException e) {
-            System.err.println("Something went wrong");
-        }
-    }
-
     /**
      * Adds new line to log starting each line with an identifying logType value.
      *
@@ -44,16 +32,6 @@ public class LoginTracker {
             writer.newLine();
         } catch (IOException e) {
             e.printStackTrace();
-        }
-    }
-
-    @Deprecated(since = "1", forRemoval = false)
-    public static void readAllMessages(Path path) {
-        try {
-            final List<String> lines = Files.readAllLines(path.normalize());
-            lines.forEach(System.out::println);
-        } catch (IOException e) {
-            //
         }
     }
 
@@ -74,6 +52,28 @@ public class LoginTracker {
             e.printStackTrace();
         }
         return counter;
+    }
+
+    @Deprecated(since = "1", forRemoval = false)
+    public static void readLogMessages(Path path, LogType logType) {
+        // good for memory because uses a Stream
+        try (var s = Files.lines(path)) {
+            s.filter(f -> f.startsWith(logType.name())) // searches log lines with WARN
+                    .map(f -> f.substring(logType.name().length()))
+                    .forEach(System.out::println);
+        } catch (IOException e) {
+            System.err.println("Something went wrong");
+        }
+    }
+
+    @Deprecated(since = "1", forRemoval = false)
+    public static void readAllMessages(Path path) {
+        try {
+            final List<String> lines = Files.readAllLines(path.normalize());
+            lines.forEach(System.out::println);
+        } catch (IOException e) {
+            //
+        }
     }
 
     @Deprecated(since = "1", forRemoval = false)

@@ -145,6 +145,30 @@ public class ReportsController implements Initializable {
         contact_customer_id_column.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("CustomerId"));
     }
 
+    private void initializeCustomersTab() {
+        ObservableList<Month> monthObservableList = FXCollections.observableArrayList(Month.values());
+        ObservableList<String> logTypeObservableList = FXCollections.observableArrayList(TypeListSingleton.getInstance().getTypeObservableList());
+        month_combo.setItems(monthObservableList);
+        type_combo.setItems(logTypeObservableList);
+    }
+
+    public void customerTabOnSelectionChanged(Event event) {
+    }
+
+    public void contactTabOnSelectionChanged(Event event) {
+    }
+
+    public void additionalReportTabOnSelectionChanged(Event event) {
+    }
+
+    public void backButtonOnAction(ActionEvent actionEvent) throws IOException {
+        Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
+        Parent scene = FXMLLoader.load(getClass().getResource("/view/Customers.fxml"));
+        stage.setTitle("Customers");
+        stage.setScene(new Scene(scene));
+        stage.show();
+    }
+
     /**
      * @deprecated Use initializeCustomersTab() instead
      */
@@ -159,46 +183,5 @@ public class ReportsController implements Initializable {
             customer_table_view.setItems(mapObservableListTypesValues);
         }
         customer_table_view.getColumns().setAll(basic_column, num_appointments_column);
-    }
-
-    private void initializeCustomersTab() {
-        ObservableList<Month> monthObservableList = FXCollections.observableArrayList(Month.values());
-        ObservableList<String> logTypeObservableList = FXCollections.observableArrayList(TypeListSingleton.getInstance().getTypeObservableList());
-        month_combo.setItems(monthObservableList);
-        type_combo.setItems(logTypeObservableList);
-    }
-
-    public void customerTabOnSelectionChanged(Event event) {
-    }
-
-    public void contactTabOnSelectionChanged(Event event) {
-    }
-
-//    public void additionalTabOnSelectionChanged(Event event) {
-//    }
-
-//    public void typeRadioButtonOnAction(ActionEvent actionEvent) {
-//        basic_column.setText("Type of Appointment");
-//        basic_column.setCellValueFactory(new MapValueFactory<>(TYPE_MAP_KEY));
-//        num_appointments_column.setCellValueFactory(new MapValueFactory<>(NUM_APPOINTMENT_MAP_KEY));
-//        customer_table_view.setItems(mapObservableListTypesValues);
-//    }
-
-//    public void monthRadioButtonOnAction(ActionEvent actionEvent) {
-//        basic_column.setText("Month of Appointment");
-//        basic_column.setCellValueFactory(new MapValueFactory<>(MONTH_MAP_KEY));
-//        num_appointments_column.setCellValueFactory(new MapValueFactory<>(NUM_APPOINTMENT_BY_MONTH_MAP_KEY));
-//        customer_table_view.setItems(mapObservableListMonthValues);
-//    }
-
-    public void additionalReportTabOnSelectionChanged(Event event) {
-    }
-
-    public void backButtonOnAction(ActionEvent actionEvent) throws IOException {
-        Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
-        Parent scene = FXMLLoader.load(getClass().getResource("/view/Customers.fxml"));
-        stage.setTitle("Customers");
-        stage.setScene(new Scene(scene));
-        stage.show();
     }
 }

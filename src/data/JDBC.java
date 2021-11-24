@@ -12,8 +12,14 @@ public class JDBC {
     private static final String jdbc_url = protocol + vendor + location + database_name + "?connectionTimeZone = SERVER";
     private static final String username = "sqlUser";
     private static final String password = "Passw0rd!";
-    static Connection conn;
+    public static Connection conn;
 
+    /**
+     * Helper method that locates database driver, and opens a connection with credentials.
+     *
+     * @return Returns a single instance of a Connection object that can be reused elsewhere throughout the
+     * program.
+     */
     public static Connection openConnection() {
         try {
             Class.forName(driver); // Locate Driver
@@ -26,7 +32,7 @@ public class JDBC {
     }
 
     /**
-     * Closes Connection.
+     * Helper method to call close() on the Connection object.
      */
     public static void closeConnection() {
         try {
@@ -38,9 +44,10 @@ public class JDBC {
     }
 
     /**
-     * Gets the Connection object.
+     * Helper method to retrieve the static Connection object.
      *
-     * @return Connection object
+     * @return Returns the Connection object. It is advisable to call openConnection() first before getting the
+     * Connection object.
      */
     public static Connection getConnection() {
         return conn;
