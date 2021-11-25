@@ -166,12 +166,15 @@ public class CustomersController implements Initializable {
      */
     public void deleteCustomerButtonOnAction(ActionEvent actionEvent) {
         if (!table_view_id.getSelectionModel().isEmpty()) {
-            DBCustomers.deleteCustomerById(((Customer) table_view_id.getSelectionModel().getSelectedItem()).getId());
-            table_view_id.getSelectionModel().clearSelection();
+            Optional<ButtonType> result = Messages.confirmationMessage("Delete Customer?", "Delete");
+            if(result.isPresent() && result.get() == ButtonType.OK){
+                DBCustomers.deleteCustomerById(((Customer) table_view_id.getSelectionModel().getSelectedItem()).getId());
+                table_view_id.getSelectionModel().clearSelection();
 
-            // Repopulate the table
-            customerObservableList = DBCustomers.getAllCustomers();
-            table_view_id.setItems(customerObservableList);
+                // Repopulate the table
+                customerObservableList = DBCustomers.getAllCustomers();
+                table_view_id.setItems(customerObservableList);
+            }
         } else {
             Messages.errorMessage("Nothing to delete!", "Select an item to delete");
         }
