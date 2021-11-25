@@ -6,10 +6,10 @@
 - [x] Make a report tab count number of Appointments, Users, Contacts, Logins
 - [x] Validate time overlapping ~~with alert~~
 - [x] When updating appointment, don't allow user to choose time earlier than start
+- [x] When customer deleted, show custom message alert of deleted customer
 - [ ] Fix EST zonedDateTime
 - [ ] Validate Customer having overlapping appointments 
 - [ ] If appointments are outside of business hours (Including weekends)
-- [x] When customer deleted, show custom message alert of deleted customer
 
 
 ## Medium

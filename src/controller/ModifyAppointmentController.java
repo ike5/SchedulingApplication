@@ -134,11 +134,7 @@ public class ModifyAppointmentController implements Initializable {
             ZonedDateTime zonedStartDateTime = ZonedDateTime.of(localStartDate, localStartTime, ZoneId.systemDefault());
             zonedStartDateTime.withZoneSameInstant(ZoneId.of("US/Eastern"));
 
-            new Test(localStartDate.getDayOfWeek());
-            new Test(localStartTime.getHour());
-            new Test(localEndTime.getHour());
-            new Test(zonedStartDateTime.getHour());
-            new Test(zonedStartDateTime.getDayOfWeek());
+
 //            if(zonedStartDateTime.getDayOfWeek().equals(DayOfWeek.SATURDAY) ||
 //                    zonedStartDateTime.getDayOfWeek().equals(DayOfWeek.SUNDAY)){
 //                new Test("Falls on weekend ModifyAppointmentController");
