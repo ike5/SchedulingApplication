@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.net.URL;
 
 import java.time.*;
+import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -51,15 +52,35 @@ public class ModifyAppointmentController implements Initializable {
         location_combo.setItems(LocationListSingleton.getInstance().getLocationObservableList());
         type_combo.setItems(TypeListSingleton.getInstance().getTypeObservableList());
 
+        // Set datepicker to today
+        LocalDate localDate = LocalDate.from(ZonedDateTime.now());
+        start_date_picker.setValue(localDate);
 
-        // Set start time combobox to Eastern Time hours
-        LocalTime start = LocalTime.of(8, 0);
-        LocalTime end = LocalTime.of(21, 45);
+        // Restrict appointment hours
+        LocalTime startTime = LocalTime.of(8, 0); // 8:00AM
+        LocalTime endTime = LocalTime.of(21, 45); // 11:45, but last appointment is +15 min so, 12:00AM
 
+        // Set ZoneId for office
+        ZoneId zoneIdEST = ZoneId.of("America/New_York");
+
+        // Ensure ZonedDateTime is EST to begin with
+        ZonedDateTime zonedDateTimeStart = ZonedDateTime.of(localDate, startTime, zoneIdEST);
+        ZonedDateTime zonedDateTimeEnd = ZonedDateTime.of(localDate, endTime, zoneIdEST);
+
+        // Convert ZonedDateTime to SystemDefault
+        ZonedDateTime zonedDateTimeStartEST = ZonedDateTime.ofInstant(zonedDateTimeStart.toInstant(), ZoneId.systemDefault());
+        ZonedDateTime zonedDateTimeEndEST = ZonedDateTime.ofInstant(zonedDateTimeEnd.toInstant(), ZoneId.systemDefault());
+
+        // Get times for systemDefault
+        LocalTime start = zonedDateTimeStartEST.toLocalTime();
+        LocalTime end = zonedDateTimeEndEST.toLocalTime();
+
+        // Populate the Start time ComboBox
         while (start.isBefore(end.plusSeconds(1))) {
             start_combo.getItems().add(start);
             start = start.plusMinutes(15);
         }
+
 
         // Set end time combobox to begin no earlier than the start time
         start_combo.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
@@ -80,9 +101,6 @@ public class ModifyAppointmentController implements Initializable {
                 }
             }
         });
-
-        // Set datepicker to today
-        start_date_picker.setValue(LocalDate.from(ZonedDateTime.now()));
 
 
         // If coming to view from Updating appointments, populate fields and combo
@@ -141,17 +159,18 @@ public class ModifyAppointmentController implements Initializable {
             LocalTime localEndTime = zonedDateTime_end_EST.toLocalTime();
 
 
-//            if(zonedStartDateTime.getDayOfWeek().equals(DayOfWeek.SATURDAY) ||
-//                    zonedStartDateTime.getDayOfWeek().equals(DayOfWeek.SUNDAY)){
-//                new Test("Falls on weekend ModifyAppointmentController");
-//            }
-
-
             start_date_picker.setValue(localStartDate);
             start_combo.setValue(localStartTime);
             end_combo.setValue(localEndTime);
         }
     }
+
+//    private boolean isBusinessDay() {
+//        if (zonedStartDateTime.getDayOfWeek().equals(DayOfWeek.SATURDAY) ||
+//                zonedStartDateTime.getDayOfWeek().equals(DayOfWeek.SUNDAY)) {
+//            new Test("Falls on weekend ModifyAppointmentController");
+//        }
+//    }
 
     /**
      * Button
