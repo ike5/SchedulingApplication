@@ -5,6 +5,8 @@ import data.DBCustomers;
 import data.DBUsers;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 /**
  * Appointment objects are made with a LocalDateTime object that must be converted to a ZonedDateTime
@@ -49,8 +51,8 @@ public class Appointment {
         this.appointmentType = appointmentType;
         this.start = start;
         this.end = end;
-        this.startString = getStart().toString();
-        this.endString = getEnd().toString();
+        this.startString = getStart().atZone(ZoneId.systemDefault()).toString();
+        this.endString = getEnd().atZone(ZoneId.systemDefault()).toString();
         this.customer = DBCustomers.getCustomer(customerId);
         this.user = DBUsers.getUser(userId);
         this.contact = DBContacts.getContact(contactId);

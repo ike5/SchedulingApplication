@@ -20,8 +20,6 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class AppointmentsController implements Initializable {
-
-
     public TableView table_view_id;
     public TableColumn appointment_id_tablecolumn;
     public TableColumn title_tablecolumn;
@@ -92,8 +90,6 @@ public class AppointmentsController implements Initializable {
         switchView(actionEvent, "/view/ModifyAppointment.fxml", "New Appointment");
     }
 
-    //FIXME When updating appointment, the fields are thought of as blank for some reason. Issus happens
-    // if immediately try to save without changing anything.
     public void updateAppointmentButtonOnAction(ActionEvent actionEvent) throws IOException {
         if (table_view_id.getSelectionModel().selectedItemProperty() != null) {
             AppointmentSingleton.getInstance().setAppointment((Appointment) table_view_id.getSelectionModel().getSelectedItem());
@@ -102,7 +98,6 @@ public class AppointmentsController implements Initializable {
             Messages.errorMessage("Please select an appointment", "Nothing selected");
         }
     }
-
 
     public void deleteAppointmentButtonOnAction(ActionEvent actionEvent) {
         AppointmentSingleton.getInstance().setAppointment((Appointment) table_view_id.getSelectionModel().getSelectedItem());
