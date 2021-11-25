@@ -9,7 +9,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
 /**
- * Appointment objects are made with a LocalDateTime object that must be converted to a ZonedDateTime
+ *
  */
 public class Appointment {
     // Everything except title and location can be null

@@ -52,7 +52,7 @@ public class ModifyAppointmentController implements Initializable {
         type_combo.setItems(TypeListSingleton.getInstance().getTypeObservableList());
 
 
-        // Set start time combobox
+        // Set start time combobox to Eastern Time hours
         LocalTime start = LocalTime.of(8, 0);
         LocalTime end = LocalTime.of(21, 45);
 
@@ -126,13 +126,19 @@ public class ModifyAppointmentController implements Initializable {
             title_textfield.setText(AppointmentSingleton.getInstance().getAppointment().getAppointmentTitle());
             description_textfield.setText(AppointmentSingleton.getInstance().getAppointment().getAppointmentDescription());
 
-            LocalDate localStartDate = AppointmentSingleton.getInstance().getAppointment().getStart().toLocalDate();
-            LocalTime localStartTime = AppointmentSingleton.getInstance().getAppointment().getStart().toLocalTime();
-            LocalTime localEndTime = AppointmentSingleton.getInstance().getAppointment().getEnd().toLocalTime();
+            // ZoneId of office
+            ZoneId zoneId_EST = ZoneId.of("America/New_York");
 
-            //Todo - do I need to convert to zonedDateTime to use properly in EST?
-            ZonedDateTime zonedStartDateTime = ZonedDateTime.of(localStartDate, localStartTime, ZoneId.systemDefault());
-            zonedStartDateTime.withZoneSameInstant(ZoneId.of("US/Eastern"));
+            // Get ZonedDateTime of Appointment Start Date & Time
+            ZonedDateTime zonedDateTime_start = ZonedDateTime.of(AppointmentSingleton.getInstance().getAppointment().getStart(), ZoneId.systemDefault());
+            ZonedDateTime zonedDateTime_start_EST = ZonedDateTime.ofInstant(zonedDateTime_start.toInstant(), zoneId_EST);
+            LocalDate localStartDate = zonedDateTime_start_EST.toLocalDate();
+            LocalTime localStartTime = zonedDateTime_start_EST.toLocalTime();
+
+            // Get ZonedDateTime of Appointment End Time
+            ZonedDateTime zonedDateTime_end = ZonedDateTime.of(AppointmentSingleton.getInstance().getAppointment().getEnd(), ZoneId.systemDefault());
+            ZonedDateTime zonedDateTime_end_EST = ZonedDateTime.ofInstant(zonedDateTime_end.toInstant(), zoneId_EST);
+            LocalTime localEndTime = zonedDateTime_end_EST.toLocalTime();
 
 
 //            if(zonedStartDateTime.getDayOfWeek().equals(DayOfWeek.SATURDAY) ||
