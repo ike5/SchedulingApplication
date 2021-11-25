@@ -30,19 +30,6 @@ public class Appointment {
     private String startString;
     private String endString;
 
-    @Deprecated
-    public Appointment(int appointmentId, String appointmentTitle, String appointmentDescription, String appointmentLocation, String appointmentType, Customer customer_customerId, User user_userId, Contact contact_contactId) {
-        this.appointmentId = appointmentId;
-        this.appointmentTitle = appointmentTitle;
-        this.appointmentDescription = appointmentDescription;
-        this.appointmentLocation = appointmentLocation;
-        this.appointmentType = appointmentType;
-        this.customer = customer_customerId;
-        this.user = user_userId;
-        this.contact = contact_contactId;
-        setIds();
-    }
-
     public Appointment(int appointmentId, String appointmentTitle, String appointmentDescription, String appointmentLocation, String appointmentType, LocalDateTime start, LocalDateTime end, int customerId, int userId, int contactId) {
         this.appointmentId = appointmentId;
         this.appointmentTitle = appointmentTitle;
@@ -56,21 +43,6 @@ public class Appointment {
         this.customer = DBCustomers.getCustomer(customerId);
         this.user = DBUsers.getUser(userId);
         this.contact = DBContacts.getContact(contactId);
-        setIds();
-    }
-
-    // Used for the retrieval from database
-    public Appointment(int appointmentId, String appointmentTitle, String appointmentDescription, String appointmentLocation, String appointmentType, LocalDateTime start, LocalDateTime end, Customer customer, User user, Contact contact) {
-        this.appointmentId = appointmentId;
-        this.appointmentTitle = appointmentTitle;
-        this.appointmentDescription = appointmentDescription;
-        this.appointmentLocation = appointmentLocation;
-        this.appointmentType = appointmentType;
-        this.start = start;
-        this.end = end;
-        this.customer = customer;
-        this.user = user;
-        this.contact = contact;
         setIds();
     }
 
