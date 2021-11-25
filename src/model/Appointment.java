@@ -30,16 +30,23 @@ public class Appointment {
     private String startString;
     private String endString;
 
-    public Appointment(int appointmentId, String appointmentTitle, String appointmentDescription, String appointmentLocation, String appointmentType, LocalDateTime start, LocalDateTime end, int customerId, int userId, int contactId) {
+    public Appointment(int appointmentId, String appointmentTitle, String appointmentDescription, String appointmentLocation, String appointmentType, LocalDateTime localDateTime_start, LocalDateTime localDateTime_end, int customerId, int userId, int contactId) {
         this.appointmentId = appointmentId;
         this.appointmentTitle = appointmentTitle;
         this.appointmentDescription = appointmentDescription;
         this.appointmentLocation = appointmentLocation;
         this.appointmentType = appointmentType;
-        this.start = start;
-        this.end = end;
-        this.startString = getStart().atZone(ZoneId.systemDefault()).toString();
-        this.endString = getEnd().atZone(ZoneId.systemDefault()).toString();
+        this.start = localDateTime_start;
+        this.end = localDateTime_end;
+
+        ZonedDateTime zonedDateTime_start = ZonedDateTime.of(localDateTime_start, ZoneId.systemDefault());
+        ZonedDateTime zonedDateTime_end = ZonedDateTime.of(localDateTime_end, ZoneId.systemDefault());
+        ZoneId easternZoneId = ZoneId.of("America/New_York");
+        ZonedDateTime zonedDateTime_start_EST = ZonedDateTime.ofInstant(zonedDateTime_start.toInstant(), easternZoneId);
+        ZonedDateTime zonedDateTime_end_EST = ZonedDateTime.ofInstant(zonedDateTime_end.toInstant(), easternZoneId);
+
+        this.startString = zonedDateTime_start_EST.toString();
+        this.endString = zonedDateTime_end_EST.toString();
         this.customer = DBCustomers.getCustomer(customerId);
         this.user = DBUsers.getUser(userId);
         this.contact = DBContacts.getContact(contactId);
@@ -185,14 +192,16 @@ public class Appointment {
     @Override
     public String toString() {
         return "Appointment{" +
-                "appointmentId=" + appointmentId +
-                ", appointmentTitle='" + appointmentTitle + '\'' +
-                ", appointmentDescription='" + appointmentDescription + '\'' +
-                ", appointmentLocation='" + appointmentLocation + '\'' +
-                ", appointmentType='" + appointmentType + '\'' +
-                ", customer=" + customer +
-                ", user=" + user +
-                ", contact=" + contact +
+                "\nappointmentId=" + appointmentId +
+                "\nappointmentTitle='" + appointmentTitle + '\'' +
+                "\nappointmentDescription='" + appointmentDescription + '\'' +
+                "\nappointmentLocation='" + appointmentLocation + '\'' +
+                "\nappointmentType='" + appointmentType + '\'' +
+                "\ncustomer=" + customer +
+                "\nuser=" + user +
+                "\ncontact=" + contact +
+                "\nstartTime=" + startString +
+                "\nendtime=" + endString +
                 '}';
     }
 }

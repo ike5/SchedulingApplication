@@ -25,8 +25,8 @@ public class DBAppointment {
             while (resultSet.next()) {
                 Timestamp ts_start = resultSet.getTimestamp("Start");
                 Timestamp ts_end = resultSet.getTimestamp("End");
-                LocalDateTime ldt_start = ts_start.toLocalDateTime();
-                LocalDateTime ldt_end = ts_end.toLocalDateTime();
+                LocalDateTime localDateTime_start = ts_start.toLocalDateTime();
+                LocalDateTime localDateTime_end = ts_end.toLocalDateTime();
 
 
                 Appointment appointment = new Appointment(
@@ -35,8 +35,8 @@ public class DBAppointment {
                         resultSet.getString("Description"),
                         resultSet.getString("Location"),
                         resultSet.getString("Type"),
-                        ldt_start,
-                        ldt_end,
+                        localDateTime_start,
+                        localDateTime_end,
                         resultSet.getInt("Customer_ID"),
                         resultSet.getInt("User_ID"),
                         resultSet.getInt("Contact_ID")
