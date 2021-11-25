@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="appointmentSchedules" prefHeight="500.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AppointmentsController">
+<AnchorPane fx:id="appointmentSchedules" prefHeight="500.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AppointmentsController">
     <children>
         <VBox alignment="CENTER" prefHeight="500.0">
             <children>
@@ -18,14 +18,14 @@
                     <children>
                         <TableView fx:id="table_view_id" prefHeight="200.0" prefWidth="1200.0">
                             <columns>
-                                <TableColumn fx:id="appointment_id_tablecolumn" minWidth="-1.0" prefWidth="96.0" text="Appointment ID" />
-                                <TableColumn fx:id="title_tablecolumn" minWidth="-1.0" prefWidth="265.0" text="Title" />
-                                <TableColumn fx:id="description_tablecolumn" minWidth="-1.0" prefWidth="272.0" text="Description" />
-                                <TableColumn fx:id="location_tablecolumn" minWidth="-1.0" prefWidth="86.0" text="Location" />
-                                <TableColumn fx:id="contact_tablecolumn" minWidth="-1.0" prefWidth="97.0" text="Contact" />
-                                <TableColumn fx:id="type_tablecolumn" minWidth="-1.0" prefWidth="66.0" text="Type" />
-                                <TableColumn fx:id="start_date_time_tablecolumn" minWidth="-1.0" prefWidth="97.0" text=" Start Date/Time" />
-                        <TableColumn fx:id="end_date_time_tablecolumn" minWidth="-1.0" prefWidth="97.0" text="End Date/Time" />
+                                <TableColumn fx:id="appointment_id_tablecolumn" minWidth="-1.0" prefWidth="35.0" text="Appointment ID" />
+                                <TableColumn fx:id="title_tablecolumn" minWidth="-1.0" prefWidth="38.0" text="Title" />
+                                <TableColumn fx:id="description_tablecolumn" minWidth="-1.0" prefWidth="67.0" text="Description" />
+                                <TableColumn fx:id="location_tablecolumn" minWidth="-1.0" prefWidth="69.0" text="Location" />
+                                <TableColumn fx:id="contact_tablecolumn" minWidth="-1.0" prefWidth="82.0" text="Contact" />
+                                <TableColumn fx:id="type_tablecolumn" minWidth="-1.0" prefWidth="41.0" text="Type" />
+                                <TableColumn fx:id="start_date_time_tablecolumn" minWidth="-1.0" prefWidth="362.0" text=" Start Date/Time" />
+                        <TableColumn fx:id="end_date_time_tablecolumn" minWidth="-1.0" prefWidth="382.0" text="End Date/Time" />
                         <TableColumn fx:id="customer_id_tablecolumn" minWidth="-1.0" prefWidth="76.0" text="Customer ID" />
                         <TableColumn fx:id="user_id_tablecolumn" minWidth="-1.0" prefWidth="47.0" text="User ID" />
                             </columns>
