@@ -9,7 +9,7 @@
 - [ ] Fix EST zonedDateTime
 - [ ] Validate Customer having overlapping appointments 
 - [ ] If appointments are outside of business hours (Including weekends)
-- [ ] When customer deleted, show custom message alert of deleted customer
+- [x] When customer deleted, show custom message alert of deleted customer
 
 
 ## Medium
