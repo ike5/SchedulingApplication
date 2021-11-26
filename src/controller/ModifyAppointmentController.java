@@ -9,13 +9,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import model.*;
-import test.Test;
 
 import java.io.IOException;
 import java.net.URL;
 
 import java.time.*;
-import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -81,10 +79,8 @@ public class ModifyAppointmentController implements Initializable {
             start = start.plusMinutes(15);
         }
 
-
-        // Set end time combobox to begin no earlier than the start time
+        // Take a user selection and set the End time ComboBox to begin no earlier than the Start time ComboBox
         start_combo.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
-
             // Find the time selected in start_combo
             for (Object startComboItems : start_combo.getItems()) {
                 if (startComboItems.equals(newValue)) {
@@ -105,72 +101,83 @@ public class ModifyAppointmentController implements Initializable {
 
         // If coming to view from Updating appointments, populate fields and combo
         if (AppointmentSingleton.getInstance().getAppointment() != null) {
-            // Populate ComboBoxes
-            for (Object customer : customer_combo.getItems()) {
-                if (((Customer) customer).getId() == AppointmentSingleton.getInstance().getAppointment().getCustomerId()) {
-                    customer_combo.setValue(customer);
-                }
-            }
-            for (Object contact : contact_combo.getItems()) {
-                if (((Contact) contact).getContactId() == AppointmentSingleton.getInstance().getAppointment().getContactId()) {
-                    contact_combo.setValue(contact);
-                }
-            }
-            for (Object user : user_combo.getItems()) {
-                if (((User) user).getUserId() == AppointmentSingleton.getInstance().getAppointment().getUserId()) {
-                    user_combo.setValue(user);
-                }
-            }
-            for (Object location : location_combo.getItems()) {
-                if (location.equals(AppointmentSingleton.getInstance().getAppointment().getAppointmentLocation())) {
-                    location_combo.setValue(location);
-                }
-            }
-            for (Object type : type_combo.getItems()) {
-                if (type.equals(AppointmentSingleton.getInstance().getAppointment().getAppointmentType())) {
-                    type_combo.setValue(type);
-                }
-            }
-
-            // Set number of visible rows in ComboBoxes
-            customer_combo.setVisibleRowCount(5);
-            contact_combo.setVisibleRowCount(5);
-            user_combo.setVisibleRowCount(5);
-            location_combo.setVisibleRowCount(5);
-            type_combo.setVisibleRowCount(5);
-
-            // Populate TextFields
-            appointment_id_textfield.setText(Integer.toString(AppointmentSingleton.getInstance().getAppointment().getAppointmentId()));
-            title_textfield.setText(AppointmentSingleton.getInstance().getAppointment().getAppointmentTitle());
-            description_textfield.setText(AppointmentSingleton.getInstance().getAppointment().getAppointmentDescription());
-
-            // ZoneId of office
-            ZoneId zoneId_EST = ZoneId.of("America/New_York");
-
-            // Get ZonedDateTime of Appointment Start Date & Time
-            ZonedDateTime zonedDateTime_start = ZonedDateTime.of(AppointmentSingleton.getInstance().getAppointment().getStart(), ZoneId.systemDefault());
-            ZonedDateTime zonedDateTime_start_EST = ZonedDateTime.ofInstant(zonedDateTime_start.toInstant(), zoneId_EST);
-            LocalDate localStartDate = zonedDateTime_start_EST.toLocalDate();
-            LocalTime localStartTime = zonedDateTime_start_EST.toLocalTime();
-
-            // Get ZonedDateTime of Appointment End Time
-            ZonedDateTime zonedDateTime_end = ZonedDateTime.of(AppointmentSingleton.getInstance().getAppointment().getEnd(), ZoneId.systemDefault());
-            ZonedDateTime zonedDateTime_end_EST = ZonedDateTime.ofInstant(zonedDateTime_end.toInstant(), zoneId_EST);
-            LocalTime localEndTime = zonedDateTime_end_EST.toLocalTime();
-
-
-            start_date_picker.setValue(localStartDate);
-            start_combo.setValue(localStartTime);
-            end_combo.setValue(localEndTime);
+            populateComboBoxes(AppointmentSingleton.getInstance().getAppointment());
+            setNumberOfVisibleRows(5);
+            populateTextFields(AppointmentSingleton.getInstance().getAppointment());
+            setDatePickerAndTimeCombos(AppointmentSingleton.getInstance().getAppointment());
         }
     }
 
-//    private boolean isBusinessDay() {
-//        if (zonedStartDateTime.getDayOfWeek().equals(DayOfWeek.SATURDAY) ||
-//                zonedStartDateTime.getDayOfWeek().equals(DayOfWeek.SUNDAY)) {
-//            new Test("Falls on weekend ModifyAppointmentController");
-//        }
-//    }
+    private void populateComboBoxes(Appointment appointment) {
+        for (Object customer : customer_combo.getItems()) {
+            if (((Customer) customer).getId() == appointment.getCustomerId()) {
+                customer_combo.setValue(customer);
+            }
+        }
+        for (Object contact : contact_combo.getItems()) {
+            if (((Contact) contact).getContactId() == appointment.getContactId()) {
+                contact_combo.setValue(contact);
+            }
+        }
+        for (Object user : user_combo.getItems()) {
+            if (((User) user).getUserId() == appointment.getUserId()) {
+                user_combo.setValue(user);
+            }
+        }
+        for (Object location : location_combo.getItems()) {
+            if (location.equals(appointment.getAppointmentLocation())) {
+                location_combo.setValue(location);
+            }
+        }
+        for (Object type : type_combo.getItems()) {
+            if (type.equals(appointment.getAppointmentType())) {
+                type_combo.setValue(type);
+            }
+        }
+    }
+
+    private void populateTextFields(Appointment appointment) {
+        // Populate TextFields
+        appointment_id_textfield.setText(Integer.toString(appointment.getAppointmentId()));
+        title_textfield.setText(appointment.getAppointmentTitle());
+        description_textfield.setText(appointment.getAppointmentDescription());
+    }
+
+    private void setNumberOfVisibleRows(int numberOfVisibleRows) {
+        // Set number of visible rows in ComboBoxes
+        customer_combo.setVisibleRowCount(numberOfVisibleRows);
+        contact_combo.setVisibleRowCount(numberOfVisibleRows);
+        user_combo.setVisibleRowCount(numberOfVisibleRows);
+        location_combo.setVisibleRowCount(numberOfVisibleRows);
+        type_combo.setVisibleRowCount(numberOfVisibleRows);
+    }
+
+    private void setDatePickerAndTimeCombos(Appointment appointment) {
+        // ZoneId of office
+        ZoneId zoneId_EST = ZoneId.of("America/New_York");
+
+        // Get ZonedDateTime of Appointment Start Date & Time
+        ZonedDateTime zonedDateTime_start = ZonedDateTime.of(appointment.getStart(), ZoneId.systemDefault());
+        ZonedDateTime zonedDateTime_start_EST = ZonedDateTime.ofInstant(zonedDateTime_start.toInstant(), zoneId_EST);
+        LocalDate localStartDate = zonedDateTime_start_EST.toLocalDate();
+        LocalTime localStartTime = zonedDateTime_start_EST.toLocalTime();
+
+        // Get ZonedDateTime of Appointment End Time
+        ZonedDateTime zonedDateTime_end = ZonedDateTime.of(appointment.getEnd(), ZoneId.systemDefault());
+        ZonedDateTime zonedDateTime_end_EST = ZonedDateTime.ofInstant(zonedDateTime_end.toInstant(), zoneId_EST);
+        LocalTime localEndTime = zonedDateTime_end_EST.toLocalTime();
+
+
+        start_date_picker.setValue(localStartDate);
+        start_combo.setValue(localStartTime);
+        end_combo.setValue(localEndTime);
+    }
+
+
+    private boolean isWeekend() {
+        ZonedDateTime zonedStartDateTime = ZonedDateTime.of(start_date_picker.getValue(), (LocalTime) start_combo.getSelectionModel().getSelectedItem(), ZoneId.systemDefault());
+        return zonedStartDateTime.getDayOfWeek().equals(DayOfWeek.SATURDAY) || zonedStartDateTime.getDayOfWeek().equals(DayOfWeek.SUNDAY);
+    }
 
     /**
      * Button
@@ -204,9 +211,10 @@ public class ModifyAppointmentController implements Initializable {
     public void saveButtonOnAction(ActionEvent actionEvent) throws IOException {
         if (isMissingValue()) {
             Messages.confirmationMessage(String.valueOf(errorMessage()), "Missing value");
+        } else if (isWeekend()) {
+            Messages.errorMessage("Cannot schedule outside of business hours", "Schedule Error");
         } else {
-
-            // If user clicked 'New Appointment' inside the AppointmentsController,
+            // If user clicked 'New Appointment' from AppointmentsController,
             // this option will be executed when Save is clicked.
             if (AppointmentSingleton.getInstance().getAppointment() == null) {
                 Optional<ButtonType> result = Messages.confirmationMessage("Create new appointment?", "Confirm");

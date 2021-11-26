@@ -9,12 +9,13 @@
 - [x] When customer deleted, show custom message alert of deleted customer
 - [x] Fix EST zonedDateTime
 - [ ] Validate Customer having overlapping appointments 
-- [ ] Fix Alert within 15 minutes
-- [ ] Validate appointments outside business hours (Including weekends)
+- [x] Validate appointments outside business hours (Including weekends)
 
 
 ## Medium
 - [x] Remove showing password on login_activity.txt
+- [ ] Fix Alert within 15 minutes
+- [ ] Fix issue where End time combobox is converted to LocalDateTime (non military)
 
 ## Low
 - [ ] Eliminate Dependencies with DBAppoitnment class and ReportsController
