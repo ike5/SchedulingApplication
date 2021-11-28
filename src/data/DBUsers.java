@@ -22,25 +22,6 @@ public class DBUsers {
         validateUsernamePassword(); //Sets User object's isValidUsername and isValidPassword values
     }
 
-    @Deprecated
-    public User getUser(String username, String password) {
-        String sql = "SELECT User_ID, User_Name, Password FROM users WHERE User_Name = ?";
-        User user = null;
-        try {
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
-            ps.setString(1, username);
-            ResultSet rs = ps.executeQuery();
-
-            while (rs.next()) {
-                user = new User(rs.getInt(1), rs.getString(2), rs.getString(3));
-            }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-
-        return password.equals(user.getPassword()) ? user : null;
-    }
-
     public static ObservableList<User> getAllUsers() {
         ObservableList<User> userObservableList = FXCollections.observableArrayList();
 

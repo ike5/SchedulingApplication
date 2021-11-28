@@ -13,99 +13,9 @@ import java.util.Locale;
 
 public @interface Utility {
     @FunctionalInterface
-    interface FunctionalAlertInterface {
-        Alert makeAlert();
-    }
-
-    @FunctionalInterface
     interface FunctionalChangeScreenInterface {
         public Stage eventSource(ActionEvent actionEvent);
     }
-
-    @FunctionalInterface
-    interface FunctionalResultSetInterface {
-        void whileLogic(ResultSet resultSet) throws SQLException;
-    }
-
-    @Target(ElementType.TYPE_USE)
-    @interface StringLength {
-        public int min();
-
-        public int max();
-    }
-
-    @Target(ElementType.TYPE_USE)
-    public @interface CannotBeNull {
-        public boolean possiblyNull();
-    }
-
-    interface AdjustTimeInterface extends TimeZoneInterface {
-        Locale addTime();
-
-        Locale subtractTime();
-    }
-
-    interface TimeZoneInterface {
-        ZonedDateTime startDateTime();
-
-        ZonedDateTime endDateTime();
-
-        Locale createDateTime();
-
-        Locale lastUpdateDateTime();
-    }
-
-    interface ChangeScreenInterface {
-        void changeScreen();
-    }
-
-    interface PersonInterface extends TimeZoneInterface {
-        String createdBy(String name);
-
-        String lastUpdatedBy(String name);
-    }
-
-    interface ContactInterface extends PersonInterface {
-        String setName(String name);
-    }
-
-    interface AppointmentsInterface extends PersonInterface, AdjustTimeInterface {
-        boolean addAppointment();
-
-        boolean updateAppointment();
-
-        boolean deleteAppointment();
-    }
-
-
-    interface CustomerInterface extends PersonInterface {
-    }
-
-    interface UserInterface extends PersonInterface {
-    }
-
-    interface ValidateFieldsInterface extends FunctionalAlertInterface {
-        boolean notAValidField();
-    }
-
-    interface ValidateUserInterface extends ValidateFieldsInterface {
-        boolean incorrectUsername();
-
-        boolean incorrectPassword();
-    }
-
-    interface ValidateAppointmentsInterface extends ValidateFieldsInterface {
-        boolean apptOutsideBusinessHours();
-
-        boolean apptOverlap();
-    }
-
-    interface UpcomingAppointmentsInterface extends FunctionalAlertInterface {
-        boolean within15Minutes();
-
-        boolean noAppointmentsAtTheMoment();
-    }
-
 }
 
 

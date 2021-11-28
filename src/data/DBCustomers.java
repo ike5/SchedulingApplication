@@ -58,66 +58,6 @@ public class DBCustomers {
     }
 
     /**
-     * Inserts a customer into the customers database table provided a Customer object.
-     * A customer entry can exist on its own, but must reference a first_level_division object
-     * and a country object.
-     *
-     * @param customer The Customer object to insert
-     * @return Returns -1 if insert unsuccessful and a value >= 1 if successful.
-     */
-    @Deprecated
-    public int insertCustomer(Customer customer) {
-        String sql = "INSERT INTO customers VALUES (?, ?, ?, ?, ?, null, null, CURRENT_TIMESTAMP, null, ?)";
-        try {
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
-            ps.setInt(1, customer.getId());
-            ps.setString(2, customer.getName());
-            ps.setString(3, customer.getAddress());
-            ps.setString(4, customer.getPostalCode());
-            ps.setString(5, customer.getPhone());
-            ps.setInt(6, customer.getDivision().getDivisionId());
-
-            ps.execute();
-
-            new Test("insertCustomer() called");
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return -1; // if unsuccessful
-    }
-
-    /**
-     * Returns the ResultSet object of all customers in the customer database table.
-     *
-     * @return ResultSet object or null if query unsuccessful or if table empty
-     */
-    @Deprecated(since = "1.0", forRemoval = false)
-    public static ResultSet getAllCustomersResultSet() {
-        String sql = "SELECT * FROM customers";
-        try {
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE,
-                    ResultSet.CONCUR_UPDATABLE);
-            return ps.executeQuery();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        return null;
-    }
-
-    @Deprecated(since = "1.0", forRemoval = false)
-    public static ResultSet getCustomerResultSet(int customerId) {
-        String sql = "SELECT * FROM customers WHERE Customer_ID = " + customerId;
-        try {
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
-            return ps.executeQuery();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        return null;
-    }
-
-    /**
      * Returns an ObservableList<Customer> object of all customers in the customer database table.
      *
      * @return an ObservableList<Customer> object or null if no entries.
@@ -253,34 +193,6 @@ public class DBCustomers {
             throwables.printStackTrace();
         }
         return null; // if unsuccessful
-    }
-
-    /**
-     * Deletes customer from database table provided a Customer object.
-     *
-     * @param customer Customer object
-     * @return Returns -1 if unsuccessful and > 1 if successful
-     */
-    @Deprecated(since = "1.0", forRemoval = false)
-    public static void deleteCustomer(Customer customer) {
-        String sql_update = "UPDATE appointments SET Customer_ID = NULL WHERE Customer_ID = ?";
-        String sql_delete = "DELETE FROM customers WHERE Customer_ID = ?";
-
-        try {
-            // Update any existing appointments referencing the customer to make Customer_ID field null
-            PreparedStatement ps_appointment = JDBC.getConnection().prepareStatement(sql_update);
-            ps_appointment.setInt(1, customer.getId());
-            ps_appointment.executeUpdate();
-
-            // Delete the customer
-            PreparedStatement ps_customer = JDBC.getConnection().prepareStatement(sql_delete);
-            ps_customer.setInt(1, customer.getId());
-            ps_customer.executeUpdate();
-
-            new Test("deleteCustomer() called");
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
     }
 
     /**

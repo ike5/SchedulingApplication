@@ -1,5 +1,0 @@
-How to use Labels_en_CA class (custom ListResourceBundle)?
-Can't find path to Labels or to RB. How to find this?
-
-
-

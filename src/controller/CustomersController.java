@@ -50,10 +50,7 @@ public class CustomersController implements Initializable {
     public Button clear_form_button;
     public Button delete_customer_button;
     public Button logout_button;
-    private static boolean isValuesChanged;
-    private static boolean isSaveButtonDisabled;
-    private static boolean isClearFormButtonDisabled;
-    private static boolean isDeleteCustomerButtonDisabled;
+
     private static boolean isCustomerNameFieldValid;
     private static boolean isAddressFieldValid;
     private static boolean isPostalCodeFieldValid;
@@ -339,22 +336,6 @@ public class CustomersController implements Initializable {
         stage.setTitle(title);
         stage.setScene(new Scene(scene));
         stage.show();
-    }
-
-    /**
-     * Helper
-     *
-     * @param isFieldValid
-     * @param textFieldId
-     */
-    private void textFieldValidationColor(boolean isFieldValid, TextField textFieldId) {
-        if (isFieldValid) {
-            new Test(isFieldValid);
-            textFieldId.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, CornerRadii.EMPTY, Insets.EMPTY)));
-        } else {
-            textFieldId.setBackground(new Background(new BackgroundFill(Color.LIGHTPINK, CornerRadii.EMPTY, Insets.EMPTY)));
-            textFieldId.setStyle("-fx-background-color: pink");
-        }
     }
 
     /**

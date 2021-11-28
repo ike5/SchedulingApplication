@@ -167,23 +167,6 @@ public class LoginController implements Initializable {
     /**
      * Helper
      *
-     * @param keyEvent
-     * @param path
-     * @param title
-     * @throws IOException
-     */
-    @Deprecated
-    private void switchView(KeyEvent keyEvent, String path, String title) throws IOException {
-        Stage stage = (Stage) ((Button) keyEvent.getSource()).getScene().getWindow();
-        Parent scene = FXMLLoader.load(getClass().getResource(path));
-        stage.setTitle(title);
-        stage.setScene(new Scene(scene));
-        stage.show();
-    }
-
-    /**
-     * Helper
-     *
      * @param usernamePasswordReceived
      */
     void makeLogEntry(Pair<String, String> usernamePasswordReceived) {

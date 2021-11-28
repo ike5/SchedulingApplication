@@ -39,43 +39,6 @@ public class DBAppointment {
         return counter;
     }
 
-    @Deprecated
-    public static Appointment getAppointment(int appointmentId) {
-        String sql = "SELECT Appointment_ID, Title, Description, Location, Type, Start, End, Customer_ID, User_ID, Contact_ID " +
-                "FROM appointments " +
-                "WHERE Appointment_ID = ?";
-        Appointment appointment = null;
-        try {
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
-            ps.setInt(1, appointmentId);
-            ResultSet resultSet = ps.executeQuery();
-
-            while (resultSet.next()) {
-                Timestamp timestampStart = resultSet.getTimestamp("Start");
-                Timestamp timestampEnd = resultSet.getTimestamp("End");
-                LocalDateTime localDateTimeStart = timestampStart.toLocalDateTime();
-                LocalDateTime localDateTimeEnd = timestampEnd.toLocalDateTime();
-
-
-                appointment = new Appointment(
-                        resultSet.getInt("Appointment_ID"),
-                        resultSet.getString("Title"),
-                        resultSet.getString("Description"),
-                        resultSet.getString("Location"),
-                        resultSet.getString("Type"),
-                        localDateTimeStart,
-                        localDateTimeEnd,
-                        resultSet.getInt("Customer_ID"),
-                        resultSet.getInt("User_ID"),
-                        resultSet.getInt("Contact_ID")
-                );
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return appointment;
-    }
-
     public static void insertAppointment(String appointmentTitle, String appointmentDescription, String appointmentLocation, String appointmentType, LocalDateTime start, LocalDateTime end, Customer customer, User user, Contact contact) {
         String sql_appointment = "INSERT INTO client_schedule.appointments VALUES(NULL, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, ?, CURRENT_TIMESTAMP, ?, ?, ?, ?)";
         try {
@@ -98,52 +61,6 @@ public class DBAppointment {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
-
-    @Deprecated
-    public static void insertAppointment(Appointment appointment) {
-        String sql_appointment = "INSERT INTO client_schedule.appointments VALUES(NULL, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, ?, CURRENT_TIMESTAMP, ?, ?, ?, ?)";
-        try {
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql_appointment, Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, appointment.getAppointmentTitle());
-            ps.setString(2, appointment.getAppointmentDescription());
-            ps.setString(3, appointment.getAppointmentLocation());
-            ps.setString(4, appointment.getAppointmentType());
-            ps.setTimestamp(5, Timestamp.valueOf(appointment.getStart()));
-            ps.setTimestamp(6, Timestamp.valueOf(appointment.getEnd()));
-            ps.setString(7, Main.user.getUsername());
-            ps.setString(8, Main.user.getUsername());
-            ps.setInt(9, appointment.getCustomerId());
-            ps.setInt(10, appointment.getUserId());
-            ps.setInt(11, appointment.getContactId());
-
-            ps.execute();
-
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-    }
-
-    /**
-     * Gets total number of appointments by type. Selects all types distinctly, then for each
-     * type retrieves number of appointments.
-     *
-     * @param type
-     * @return
-     */
-    private static int getTotalNumberOfAppointmentsByType(String type) {
-        String sql = "SELECT COUNT(Appointment_ID) AS NumberOfAppointments FROM appointments WHERE Type = ?";
-        try {
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
-            ps.setString(1, type);
-            ResultSet resultSet = ps.executeQuery();
-
-            resultSet.next();
-            return resultSet.getInt("NumberOfAppointments");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return -1;
     }
 
     public static Integer getTotalNumberOfAppointmentsByMonth(java.time.Month month) {
@@ -178,39 +95,6 @@ public class DBAppointment {
         return numberOfAppointments;
     }
 
-    public static ObservableList<Map> getMapOfAppointmentsByMonth() {
-        ObservableList<Map> mapObservableList = FXCollections.observableArrayList();
-        for (Month month : Month.values()) {
-            Map<String, String> mapDataRow = new HashMap<>();
-            mapDataRow.put(ReportsController.MONTH_MAP_KEY, month.name());
-            mapDataRow.put(ReportsController.NUM_APPOINTMENT_BY_MONTH_MAP_KEY, Integer.toString(getTotalNumberOfAppointmentsByMonth(month)));
-            mapObservableList.add(mapDataRow);
-        }
-        return mapObservableList;
-    }
-
-
-    /**
-     * Gets a list of all distinct types of appointments from the appointments database.
-     *
-     * @return
-     */
-    private static List<String> getAllTypes() {
-        List<String> typeList = new ArrayList<>();
-
-        String sql = "SELECT DISTINCT Type FROM appointments";
-        try {
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
-            ResultSet resultSet = ps.executeQuery();
-            while (resultSet.next()) {
-                typeList.add(resultSet.getString(1));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return typeList;
-    }
-
     public static Integer getNumberOfAppointmentsByMonthAndType(Month month, String type) {
         Integer numberOfAppointments = 0;
 
@@ -228,22 +112,6 @@ public class DBAppointment {
             throwables.printStackTrace();
         }
         return numberOfAppointments;
-    }
-
-    @Deprecated(since = "1.0", forRemoval = false)
-    public static ObservableList<Map> getMapOfTypesAndValue() {
-        ObservableList<Map> mapObservableList = FXCollections.observableArrayList();
-
-        for (String type : getAllTypes()) {
-            Map<String, String> mapDataRow = new HashMap<>();
-
-            //FIXME - The following Type and Map depend on the ReportsController.TYPE_MAP_KEY and .NUM_APPOINTMENT_MAP_KEY values
-            // First eliminating them can help with plagerims if you didn't get this from the Javafx documentation.
-            mapDataRow.put(ReportsController.TYPE_MAP_KEY, type);
-            mapDataRow.put(ReportsController.NUM_APPOINTMENT_MAP_KEY, Integer.toString(getTotalNumberOfAppointmentsByType(type)));
-            mapObservableList.add(mapDataRow);
-        }
-        return mapObservableList;
     }
 
     public static ObservableList<Appointment> getAllAppointmentsInMonth() {
@@ -314,45 +182,6 @@ public class DBAppointment {
             );
 
             appointmentList.add(appointment);
-        }
-    }
-
-    @Deprecated
-    public static void insertTestAppointment(String user) {
-        // APPOINTMENT TEST VALUES (uncomment in Main to use)
-
-        String title = "Bringing in the wealth";
-        String description = "default description of things";
-        String location = "default location";
-        String type = "default type";
-        String created_by = user;
-        String last_updated_by = user;
-        Timestamp timestampStart = Timestamp.valueOf(LocalDateTime.of(2021, 10, 20, 2, 2));
-        Timestamp timestampEnd = Timestamp.valueOf(LocalDateTime.of(2021, 10, 22, 2, 2));
-
-        int user_id = Main.user.getUserId(); // test
-        int customer_id = DBCustomers.getCustomer(1).getId();
-        int contact_id = 3; // Li Lee
-
-        // Take acquired ID from above and put it into the next insert
-        String sql_app = "INSERT INTO appointments VALUES (null, ?, ?, ?, ?, ?, ?, current_timestamp, ?, current_timestamp, ?, ?, ?, ?)";
-        try { //5 6 are start and end
-            PreparedStatement preparedStatement = JDBC.getConnection().prepareStatement(sql_app);
-            preparedStatement.setString(1, title);
-            preparedStatement.setString(2, description);
-            preparedStatement.setString(3, location);
-            preparedStatement.setString(4, type);
-            preparedStatement.setTimestamp(5, timestampStart);
-            preparedStatement.setTimestamp(6, timestampEnd);
-            preparedStatement.setString(7, created_by);
-            preparedStatement.setString(8, last_updated_by);
-            preparedStatement.setInt(9, customer_id);
-            preparedStatement.setInt(10, user_id);
-            preparedStatement.setInt(11, contact_id);
-
-            preparedStatement.execute();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
         }
     }
 

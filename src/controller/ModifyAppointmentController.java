@@ -115,22 +115,6 @@ public class ModifyAppointmentController implements Initializable {
         }
     }
 
-
-    private void checkOverlap() {
-        LocalDateTime startDateTime = LocalDateTime.of(2021, 11, 25, 10, 40);
-        LocalDateTime endDateTime = LocalDateTime.of(2021, 11, 25, 11, 10);
-        LocalDateTime myDateTime = LocalDateTime.of(2021, 11, 25, 11, 40); // inbetween start and end?
-
-        // Check overlap
-        if (myDateTime.isAfter(startDateTime) && myDateTime.isBefore(endDateTime)) {
-            System.out.println(myDateTime + " is between " + startDateTime + " and " + endDateTime);
-        } else if (myDateTime.isEqual(startDateTime) || myDateTime.isEqual(endDateTime)) {
-            System.out.println("Matches start or end time");
-        } else {
-            System.err.println("Your date and time does not overlap");
-        }
-    }
-
     private void populateComboBoxes(Appointment appointment) {
         for (Object customer : customer_combo.getItems()) {
             if (((Customer) customer).getId() == appointment.getCustomerId()) {
@@ -326,26 +310,6 @@ public class ModifyAppointmentController implements Initializable {
                 }
             }
         }
-    }
-
-    /**
-     * To be used for...
-     *
-     * @return
-     */
-    @Deprecated
-    private Appointment createAppointmentWithoutId() {
-        return new Appointment(
-                title_textfield.getText(),
-                description_textfield.getText(),
-                (String) location_combo.getValue(),
-                (String) type_combo.getValue(),
-                LocalDateTime.of(start_date_picker.getValue(), (LocalTime) start_combo.getSelectionModel().getSelectedItem()),
-                LocalDateTime.of(start_date_picker.getValue(), (LocalTime) end_combo.getSelectionModel().getSelectedItem()),
-                ((Customer) customer_combo.getValue()).getId(),
-                ((User) user_combo.getValue()).getUserId(),
-                ((Contact) contact_combo.getValue()).getContactId()
-        );
     }
 
     /**

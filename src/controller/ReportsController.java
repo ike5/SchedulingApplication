@@ -28,16 +28,7 @@ import java.util.ResourceBundle;
 
 public class ReportsController implements Initializable {
 
-    public TableView customer_table_view;
     public TableView contact_table_view;
-    public RadioButton type_radio_button;
-    public TableColumn<Map, Integer> num_appointments_column;
-    public TableColumn<Map, String> basic_column;
-
-    public static final String TYPE_MAP_KEY = "A";
-    public static final String NUM_APPOINTMENT_MAP_KEY = "B";
-    public static final String MONTH_MAP_KEY = "C";
-    public static final String NUM_APPOINTMENT_BY_MONTH_MAP_KEY = "D";
 
     public static final String NUMBER_OF_APPOINTMENTS_MAP_KEY = "E";
     public static final String NUMBER_OF_APPOINTMENTS_MAP_VALUE = "F";
@@ -65,10 +56,6 @@ public class ReportsController implements Initializable {
     public ListView label_list;
     public ListView values_list;
 
-    @Deprecated
-    private ObservableList<Map> mapObservableListTypesValues;
-    @Deprecated
-    private ObservableList<Map> mapObservableListMonthValues;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -165,21 +152,5 @@ public class ReportsController implements Initializable {
         stage.setTitle("Customers");
         stage.setScene(new Scene(scene));
         stage.show();
-    }
-
-    /**
-     * @deprecated Use initializeCustomersTab() instead
-     */
-    @Deprecated(since = "1", forRemoval = true)
-    private void initializeCustomerTab() {
-        mapObservableListTypesValues = DBAppointment.getMapOfTypesAndValue();
-        mapObservableListMonthValues = DBAppointment.getMapOfAppointmentsByMonth();
-        if (type_radio_button.isSelected()) {
-            basic_column.setText("Type of Appointment");
-            basic_column.setCellValueFactory(new MapValueFactory<>(TYPE_MAP_KEY));
-            num_appointments_column.setCellValueFactory(new MapValueFactory<>(NUM_APPOINTMENT_MAP_KEY));
-            customer_table_view.setItems(mapObservableListTypesValues);
-        }
-        customer_table_view.getColumns().setAll(basic_column, num_appointments_column);
     }
 }
