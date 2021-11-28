@@ -16,7 +16,7 @@ import java.util.*;
 
 public class DBAppointment {
     public static ObservableList<Appointment> getAllAppointments() {
-        ObservableList<Appointment> appointmentObservableList = FXCollections.observableArrayList();
+        ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
         String sql = "SELECT Appointment_ID, Title, Description, Location, Type, Start, End, Customer_ID, User_ID, Contact_ID FROM appointments";
         try {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
@@ -41,12 +41,12 @@ public class DBAppointment {
                         resultSet.getInt("User_ID"),
                         resultSet.getInt("Contact_ID")
                 );
-                appointmentObservableList.add(appointment);
+                appointmentList.add(appointment);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return appointmentObservableList;
+        return appointmentList;
     }
 
     public static Integer getTotalNumberOfAppointments() {
@@ -242,7 +242,7 @@ public class DBAppointment {
 
     public static ObservableList<Appointment> getAllAppointmentsInMonth() {
         String sql = "SELECT * FROM appointments WHERE Start >= ?;";
-        ObservableList<Appointment> appointmentObservableList = FXCollections.observableArrayList();
+        ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
         try {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ps.setTimestamp(1, Timestamp.valueOf(LocalDateTime.now().minusMonths(1)));
@@ -268,17 +268,17 @@ public class DBAppointment {
                         resultSet.getInt("Contact_ID")
                 );
 
-                appointmentObservableList.add(appointment);
+                appointmentList.add(appointment);
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        return appointmentObservableList;
+        return appointmentList;
     }
 
     public static ObservableList<Appointment> getAllAppointmentsInWeek() {
         String sql = "SELECT * FROM appointments WHERE Start >= ?;";
-        ObservableList<Appointment> appointmentObservableList = FXCollections.observableArrayList();
+        ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
         try {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ps.setTimestamp(1, Timestamp.valueOf(LocalDateTime.now().minusDays(7)));
@@ -304,12 +304,49 @@ public class DBAppointment {
                         resultSet.getInt("Contact_ID")
                 );
 
-                appointmentObservableList.add(appointment);
+                appointmentList.add(appointment);
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        return appointmentObservableList;
+        return appointmentList;
+    }
+
+    public static List<Appointment> getAllAppointmentsByCustomerId(int customerId){
+        List<Appointment> appointmentList = new ArrayList<>();
+        String sql = "SELECT * FROM appointments WHERE Customer_ID = ?";
+        try{
+            PreparedStatement ps = JDBC.openConnection().prepareStatement(sql);
+            ps.setInt(1, customerId);
+
+            ResultSet resultSet = ps.executeQuery();
+
+            while (resultSet.next()) {
+                Timestamp ts_start = resultSet.getTimestamp("Start");
+                Timestamp ts_end = resultSet.getTimestamp("End");
+                LocalDateTime ldt_start = ts_start.toLocalDateTime();
+                LocalDateTime ldt_end = ts_end.toLocalDateTime();
+
+
+                Appointment appointment = new Appointment(
+                        resultSet.getInt("Appointment_ID"),
+                        resultSet.getString("Title"),
+                        resultSet.getString("Description"),
+                        resultSet.getString("Location"),
+                        resultSet.getString("Type"),
+                        ldt_start,
+                        ldt_end,
+                        resultSet.getInt("Customer_ID"),
+                        resultSet.getInt("User_ID"),
+                        resultSet.getInt("Contact_ID")
+                );
+
+                appointmentList.add(appointment);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return appointmentList;
     }
 
     public static void insertTestAppointment(String user) {
@@ -391,7 +428,7 @@ public class DBAppointment {
     }
 
     public static ObservableList<Appointment> getAppointmentListFromContact(Contact contact) {
-        ObservableList<Appointment> appointmentObservableList = FXCollections.observableArrayList();
+        ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
         String sql = "SELECT * FROM appointments WHERE Contact_ID = ?";
         try {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
@@ -418,12 +455,12 @@ public class DBAppointment {
                         resultSet.getInt("Contact_ID")
                 );
 
-                appointmentObservableList.add(appointment);
+                appointmentList.add(appointment);
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        return appointmentObservableList;
+        return appointmentList;
     }
 
     public static Pair<Boolean, Pair<LocalDateTime, Integer>> checkUpcomingAppointments() {

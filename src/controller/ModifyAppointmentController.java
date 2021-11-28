@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.net.URL;
 
 import java.time.*;
+import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -102,9 +103,36 @@ public class ModifyAppointmentController implements Initializable {
         // If coming to view from Updating appointments, populate fields and combo
         if (AppointmentSingleton.getInstance().getAppointment() != null) {
             populateComboBoxes(AppointmentSingleton.getInstance().getAppointment());
+
             setNumberOfVisibleRows(5);
+
             populateTextFields(AppointmentSingleton.getInstance().getAppointment());
+
             setDatePickerAndTimeCombos(AppointmentSingleton.getInstance().getAppointment());
+        }
+    }
+
+    private boolean hasOverlappingAppointments(Appointment appointment) {
+        // Compare appointment time with list of appointments by same Customer
+
+        // Remember to not compare against this exact appointment ID in the database
+
+        //Get a List of all appointment objects from the database belonging to that Customer
+    }
+
+
+    private void checkOverlap() {
+        LocalDateTime startDateTime = LocalDateTime.of(2021, 11, 25, 10, 40);
+        LocalDateTime endDateTime = LocalDateTime.of(2021, 11, 25, 11, 10);
+        LocalDateTime myDateTime = LocalDateTime.of(2021, 11, 25, 11, 40); // inbetween start and end?
+
+        // Check overlap
+        if (myDateTime.isAfter(startDateTime) && myDateTime.isBefore(endDateTime)) {
+            System.out.println(myDateTime + " is between " + startDateTime + " and " + endDateTime);
+        } else if (myDateTime.isEqual(startDateTime) || myDateTime.isEqual(endDateTime)) {
+            System.out.println("Matches start or end time");
+        } else {
+            System.err.println("Your date and time does not overlap");
         }
     }
 
@@ -152,6 +180,11 @@ public class ModifyAppointmentController implements Initializable {
         type_combo.setVisibleRowCount(numberOfVisibleRows);
     }
 
+    /**
+     * Called when updating an appointment.
+     *
+     * @param appointment
+     */
     private void setDatePickerAndTimeCombos(Appointment appointment) {
         // ZoneId of office
         ZoneId zoneId_EST = ZoneId.of("America/New_York");
@@ -174,6 +207,13 @@ public class ModifyAppointmentController implements Initializable {
     }
 
 
+    //FIXME refactor to make modular
+
+    /**
+     * Checks to see whether a ZonedDateTime falls on either Saturday or Sunday.
+     *
+     * @return
+     */
     private boolean isWeekend() {
         ZonedDateTime zonedStartDateTime = ZonedDateTime.of(start_date_picker.getValue(), (LocalTime) start_combo.getSelectionModel().getSelectedItem(), ZoneId.systemDefault());
         return zonedStartDateTime.getDayOfWeek().equals(DayOfWeek.SATURDAY) || zonedStartDateTime.getDayOfWeek().equals(DayOfWeek.SUNDAY);
@@ -192,6 +232,7 @@ public class ModifyAppointmentController implements Initializable {
         stage.setScene(new Scene(scene));
         stage.show();
     }
+
 
     /**
      * Button
