@@ -34,6 +34,11 @@ public @interface Utility {
         public int max();
     }
 
+    @Target(ElementType.TYPE_USE)
+    public @interface CannotBeNull {
+        public boolean possiblyNull();
+    }
+
     interface AdjustTimeInterface extends TimeZoneInterface {
         Locale addTime();
 

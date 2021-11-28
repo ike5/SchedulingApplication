@@ -10,6 +10,7 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import model.*;
 import test.Test;
+import utils.Utility;
 
 import java.io.IOException;
 import java.net.URL;
@@ -186,8 +187,6 @@ public class ModifyAppointmentController implements Initializable {
     }
 
 
-    //FIXME refactor to make modular
-
     /**
      * Checks to see whether a ZonedDateTime falls on either Saturday or Sunday.
      *
@@ -222,12 +221,13 @@ public class ModifyAppointmentController implements Initializable {
         onClear(actionEvent);
     }
 
-    private boolean isOverlapping(Appointment a) {
+
+    private boolean isOverlapping(@Utility.CannotBeNull(possiblyNull = true) Appointment a) {
         boolean overlaps = false;
         // Remember to not compare against this exact appointment ID in the database
         for (Appointment b : DBAppointment.getAllAppointmentsByCustomerId(a.getCustomerId())) {
             new Test("ID A: " + a.getAppointmentId());
-            new Test("ID B: " +b.getAppointmentId());
+            new Test("ID B: " + b.getAppointmentId());
             if (!(a.getAppointmentId() == b.getAppointmentId())) {
                 overlaps = !(a.getStart().equals(b.getEnd()) || a.getStart().isAfter(b.getEnd()) || a.getEnd().equals(b.getStart()) || a.getEnd().isBefore(b.getStart()));
                 new Test("ID A: " + a.getAppointmentId());
@@ -251,43 +251,45 @@ public class ModifyAppointmentController implements Initializable {
             Messages.errorMessage("Cannot schedule outside of business hours", "Schedule Error");
         } else if (isOverlapping(AppointmentSingleton.getInstance().getAppointment())) {
             Messages.errorMessage("Appointment overlaps", "Schedule Error");
-        }
-        // If user clicked 'New Appointment' from AppointmentsController,
-        // this option will be executed when Save is clicked.
-        if (AppointmentSingleton.getInstance().getAppointment() == null) {
-            Optional<ButtonType> result = Messages.confirmationMessage("Create new appointment?", "Confirm");
-            if (result.isPresent() && (result.get() == ButtonType.OK)) {
-                DBAppointment.insertAppointment(
-                        title_textfield.getText(),
-                        description_textfield.getText(),
-                        (String) location_combo.getValue(),
-                        (String) type_combo.getValue(),
-                        LocalDateTime.of(start_date_picker.getValue(), (LocalTime) start_combo.getSelectionModel().getSelectedItem()),
-                        LocalDateTime.of(start_date_picker.getValue(), (LocalTime) end_combo.getSelectionModel().getSelectedItem()),
-                        ((Customer) customer_combo.getValue()),
-                        ((User) user_combo.getValue()),
-                        ((Contact) contact_combo.getValue())
-                );
-
-                switchView(actionEvent, "/view/Appointments.fxml", "Appointments");
-            }
         } else {
-            Optional<ButtonType> result = Messages.confirmationMessage("Save changes?", "Confirm");
-            if (result.isPresent() && (result.get() == ButtonType.OK)) {
-                DBAppointment.updateAppointment(
-                        AppointmentSingleton.getInstance().getAppointment().getAppointmentId(),
-                        title_textfield.getText(),
-                        description_textfield.getText(),
-                        (String) location_combo.getValue(),
-                        (String) type_combo.getValue(),
-                        LocalDateTime.of(start_date_picker.getValue(), (LocalTime) start_combo.getSelectionModel().getSelectedItem()),
-                        LocalDateTime.of(start_date_picker.getValue(), (LocalTime) end_combo.getSelectionModel().getSelectedItem()),
-                        ((Customer) customer_combo.getValue()),
-                        ((User) user_combo.getValue()),
-                        ((Contact) contact_combo.getValue())
-                );
 
-                switchView(actionEvent, "/view/Appointments.fxml", "Appointments");
+            // If user clicked 'New Appointment' from AppointmentsController,
+            // this option will be executed when Save is clicked.
+            if (AppointmentSingleton.getInstance().getAppointment() == null) {
+                Optional<ButtonType> result = Messages.confirmationMessage("Create new appointment?", "Confirm");
+                if (result.isPresent() && (result.get() == ButtonType.OK)) {
+                    DBAppointment.insertAppointment(
+                            title_textfield.getText(),
+                            description_textfield.getText(),
+                            (String) location_combo.getValue(),
+                            (String) type_combo.getValue(),
+                            LocalDateTime.of(start_date_picker.getValue(), (LocalTime) start_combo.getSelectionModel().getSelectedItem()),
+                            LocalDateTime.of(start_date_picker.getValue(), (LocalTime) end_combo.getSelectionModel().getSelectedItem()),
+                            ((Customer) customer_combo.getValue()),
+                            ((User) user_combo.getValue()),
+                            ((Contact) contact_combo.getValue())
+                    );
+
+                    switchView(actionEvent, "/view/Appointments.fxml", "Appointments");
+                }
+            } else {
+                Optional<ButtonType> result = Messages.confirmationMessage("Save changes?", "Confirm");
+                if (result.isPresent() && (result.get() == ButtonType.OK)) {
+                    DBAppointment.updateAppointment(
+                            AppointmentSingleton.getInstance().getAppointment().getAppointmentId(),
+                            title_textfield.getText(),
+                            description_textfield.getText(),
+                            (String) location_combo.getValue(),
+                            (String) type_combo.getValue(),
+                            LocalDateTime.of(start_date_picker.getValue(), (LocalTime) start_combo.getSelectionModel().getSelectedItem()),
+                            LocalDateTime.of(start_date_picker.getValue(), (LocalTime) end_combo.getSelectionModel().getSelectedItem()),
+                            ((Customer) customer_combo.getValue()),
+                            ((User) user_combo.getValue()),
+                            ((Contact) contact_combo.getValue())
+                    );
+
+                    switchView(actionEvent, "/view/Appointments.fxml", "Appointments");
+                }
             }
         }
     }
