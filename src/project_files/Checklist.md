@@ -8,16 +8,14 @@
 - [x] When updating appointment, don't allow user to choose time earlier than start
 - [x] When customer deleted, show custom message alert of deleted customer
 - [x] Fix EST zonedDateTime
-- [ ] Validate Customer having overlapping appointments 
-  - In the modify customers save method
-    - Compare range of start and end to any appointments
+- [x] Validate Customer having overlapping appointments 
 - [x] Validate appointments outside business hours (Including weekends)
 
 
 ## Medium
 - [x] Remove showing password on login_activity.txt
 - [ ] Fix Alert within 15 minutes
-- [ ] Fix issue where End time combobox is converted to LocalDateTime (non military)
+- [x] Fix issue where End time combobox is converted to LocalDateTime (non military)
 
 ## Low
 - [ ] Eliminate Dependencies with DBAppoitnment class and ReportsController

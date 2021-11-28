@@ -76,26 +76,49 @@ public class DBAppointment {
     }
 
     public static void insertAppointment(String appointmentTitle, String appointmentDescription, String appointmentLocation, String appointmentType, LocalDateTime start, LocalDateTime end, Customer customer, User user, Contact contact) {
+        String sql_appointment = "INSERT INTO client_schedule.appointments VALUES(NULL, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, ?, CURRENT_TIMESTAMP, ?, ?, ?, ?)";
         try {
             // Insert new appointment into appointments database table
-            String sql_appointment = "INSERT INTO client_schedule.appointments VALUES(NULL, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, ?, CURRENT_TIMESTAMP, ?, ?, ?, ?)";
-            PreparedStatement preparedStatement = JDBC.getConnection().prepareStatement(sql_appointment, Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setString(1, appointmentTitle);
-            preparedStatement.setString(2, appointmentDescription);
-            preparedStatement.setString(3, appointmentLocation);
-            preparedStatement.setString(4, appointmentType);
-            preparedStatement.setTimestamp(5, Timestamp.valueOf(start));
-            preparedStatement.setTimestamp(6, Timestamp.valueOf(end));
-            preparedStatement.setString(7, Main.user.getUsername());
-            preparedStatement.setString(8, Main.user.getUsername());
-            preparedStatement.setInt(9, customer.getId());
-            preparedStatement.setInt(10, user.getUserId());
-            preparedStatement.setInt(11, contact.getContactId());
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql_appointment, Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, appointmentTitle);
+            ps.setString(2, appointmentDescription);
+            ps.setString(3, appointmentLocation);
+            ps.setString(4, appointmentType);
+            ps.setTimestamp(5, Timestamp.valueOf(start));
+            ps.setTimestamp(6, Timestamp.valueOf(end));
+            ps.setString(7, Main.user.getUsername());
+            ps.setString(8, Main.user.getUsername());
+            ps.setInt(9, customer.getId());
+            ps.setInt(10, user.getUserId());
+            ps.setInt(11, contact.getContactId());
 
-            preparedStatement.execute();
+            ps.execute();
 
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    public static void insertAppointment(Appointment appointment) {
+        String sql_appointment = "INSERT INTO client_schedule.appointments VALUES(NULL, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, ?, CURRENT_TIMESTAMP, ?, ?, ?, ?)";
+        try {
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql_appointment, Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, appointment.getAppointmentTitle());
+            ps.setString(2, appointment.getAppointmentDescription());
+            ps.setString(3, appointment.getAppointmentLocation());
+            ps.setString(4, appointment.getAppointmentType());
+            ps.setTimestamp(5, Timestamp.valueOf(appointment.getStart()));
+            ps.setTimestamp(6, Timestamp.valueOf(appointment.getEnd()));
+            ps.setString(7, Main.user.getUsername());
+            ps.setString(8, Main.user.getUsername());
+            ps.setInt(9, appointment.getCustomerId());
+            ps.setInt(10, appointment.getUserId());
+            ps.setInt(11, appointment.getContactId());
+
+            ps.execute();
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
     }
 
@@ -250,10 +273,10 @@ public class DBAppointment {
         return appointmentList;
     }
 
-    public static List<Appointment> getAllAppointmentsByCustomerId(int customerId){
+    public static List<Appointment> getAllAppointmentsByCustomerId(int customerId) {
         List<Appointment> appointmentList = new ArrayList<>();
         String sql = "SELECT * FROM appointments WHERE Customer_ID = ?";
-        try{
+        try {
             PreparedStatement ps = JDBC.openConnection().prepareStatement(sql);
             ps.setInt(1, customerId);
 

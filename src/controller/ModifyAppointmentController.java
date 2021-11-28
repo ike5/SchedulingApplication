@@ -222,20 +222,47 @@ public class ModifyAppointmentController implements Initializable {
     }
 
 
-    private boolean isOverlapping(@Utility.CannotBeNull(possiblyNull = true) Appointment a) {
-        boolean overlaps = false;
-        // Remember to not compare against this exact appointment ID in the database
-        for (Appointment b : DBAppointment.getAllAppointmentsByCustomerId(a.getCustomerId())) {
-            new Test("ID A: " + a.getAppointmentId());
-            new Test("ID B: " + b.getAppointmentId());
-            if (!(a.getAppointmentId() == b.getAppointmentId())) {
-                overlaps = !(a.getStart().equals(b.getEnd()) || a.getStart().isAfter(b.getEnd()) || a.getEnd().equals(b.getStart()) || a.getEnd().isBefore(b.getStart()));
-                new Test("ID A: " + a.getAppointmentId());
-                new Test("ID B: " + b.getAppointmentId());
-                new Test("Overlaps: " + overlaps);
+    private boolean isOverlapping(Appointment appointment) {
+        boolean overlap = false;
+
+        int customerId = ((Customer) customer_combo.getSelectionModel().getSelectedItem()).getId();
+        List<Appointment> appointmentList = DBAppointment.getAllAppointmentsByCustomerId(customerId);
+
+        LocalTime startTime = ((LocalTime) start_combo.getSelectionModel().getSelectedItem());
+        LocalTime endTime = ((LocalTime) end_combo.getSelectionModel().getSelectedItem());
+
+        LocalDateTime startDateTime = LocalDateTime.of(start_date_picker.getValue(), startTime);
+        LocalDateTime endDateTime = LocalDateTime.of(start_date_picker.getValue(), endTime);
+
+        if (appointment != null) {
+            int appointmentId = appointment.getAppointmentId();
+
+            for (Appointment b : appointmentList) {
+                if (b.getAppointmentId() != appointmentId) {
+                    boolean isStartInWindow = (startDateTime.isAfter(b.getStart()) || startDateTime.equals(b.getStart())) && startDateTime.isBefore(b.getEnd());
+                    boolean isEndInWindow = endDateTime.isAfter(b.getStart()) && (endDateTime.isBefore(b.getEnd()) || endDateTime.isEqual(b.getEnd()));
+                    boolean isStartEndOutsideWindow = (startDateTime.isBefore(b.getStart()) || startDateTime.isEqual(b.getStart())) && (endDateTime.isAfter(b.getEnd()) || endDateTime.isEqual(b.getEnd()));
+
+                    if (isStartInWindow || isEndInWindow || isStartEndOutsideWindow) {
+                        overlap = true;
+                        break;
+                    }
+                }
+            }
+        } else {
+            for (Appointment b : appointmentList) {
+                boolean isStartInWindow = (startDateTime.isAfter(b.getStart()) || startDateTime.equals(b.getStart())) && startDateTime.isBefore(b.getEnd());
+                boolean isEndInWindow = endDateTime.isAfter(b.getStart()) && (endDateTime.isBefore(b.getEnd()) || endDateTime.isEqual(b.getEnd()));
+                boolean isStartEndOutsideWindow = (startDateTime.isBefore(b.getStart()) || startDateTime.isEqual(b.getStart())) && (endDateTime.isAfter(b.getEnd()) || endDateTime.isEqual(b.getEnd()));
+
+                if (isStartInWindow || isEndInWindow || isStartEndOutsideWindow) {
+                    overlap = true;
+                    break;
+                }
             }
         }
-        return overlaps;
+
+        return overlap;
     }
 
     /**
@@ -245,55 +272,81 @@ public class ModifyAppointmentController implements Initializable {
      * @throws IOException
      */
     public void saveButtonOnAction(ActionEvent actionEvent) throws IOException {
+        Appointment appointment = AppointmentSingleton.getInstance().getAppointment();
+
         if (isMissingValue()) {
             Messages.confirmationMessage(String.valueOf(errorMessage()), "Missing value");
         } else if (isWeekend()) {
             Messages.errorMessage("Cannot schedule outside of business hours", "Schedule Error");
-        } else if (isOverlapping(AppointmentSingleton.getInstance().getAppointment())) {
-            Messages.errorMessage("Appointment overlaps", "Schedule Error");
         } else {
-
             // If user clicked 'New Appointment' from AppointmentsController,
             // this option will be executed when Save is clicked.
-            if (AppointmentSingleton.getInstance().getAppointment() == null) {
-                Optional<ButtonType> result = Messages.confirmationMessage("Create new appointment?", "Confirm");
-                if (result.isPresent() && (result.get() == ButtonType.OK)) {
-                    DBAppointment.insertAppointment(
-                            title_textfield.getText(),
-                            description_textfield.getText(),
-                            (String) location_combo.getValue(),
-                            (String) type_combo.getValue(),
-                            LocalDateTime.of(start_date_picker.getValue(), (LocalTime) start_combo.getSelectionModel().getSelectedItem()),
-                            LocalDateTime.of(start_date_picker.getValue(), (LocalTime) end_combo.getSelectionModel().getSelectedItem()),
-                            ((Customer) customer_combo.getValue()),
-                            ((User) user_combo.getValue()),
-                            ((Contact) contact_combo.getValue())
-                    );
+            if (appointment == null) {
+                if (isOverlapping(null)) {
+                    Messages.errorMessage("Appointment overlaps", "Schedule Error");
+                } else {
+                    Optional<ButtonType> result = Messages.confirmationMessage("Create new appointment?", "Confirm");
+                    if (result.isPresent() && (result.get() == ButtonType.OK)) {
+                        DBAppointment.insertAppointment(
+                                title_textfield.getText(),
+                                description_textfield.getText(),
+                                (String) location_combo.getValue(),
+                                (String) type_combo.getValue(),
+                                LocalDateTime.of(start_date_picker.getValue(), (LocalTime) start_combo.getSelectionModel().getSelectedItem()),
+                                LocalDateTime.of(start_date_picker.getValue(), (LocalTime) end_combo.getSelectionModel().getSelectedItem()),
+                                ((Customer) customer_combo.getValue()),
+                                ((User) user_combo.getValue()),
+                                ((Contact) contact_combo.getValue())
+                        );
 
-                    switchView(actionEvent, "/view/Appointments.fxml", "Appointments");
+                        switchView(actionEvent, "/view/Appointments.fxml", "Appointments");
+                    }
                 }
             } else {
-                Optional<ButtonType> result = Messages.confirmationMessage("Save changes?", "Confirm");
-                if (result.isPresent() && (result.get() == ButtonType.OK)) {
-                    DBAppointment.updateAppointment(
-                            AppointmentSingleton.getInstance().getAppointment().getAppointmentId(),
-                            title_textfield.getText(),
-                            description_textfield.getText(),
-                            (String) location_combo.getValue(),
-                            (String) type_combo.getValue(),
-                            LocalDateTime.of(start_date_picker.getValue(), (LocalTime) start_combo.getSelectionModel().getSelectedItem()),
-                            LocalDateTime.of(start_date_picker.getValue(), (LocalTime) end_combo.getSelectionModel().getSelectedItem()),
-                            ((Customer) customer_combo.getValue()),
-                            ((User) user_combo.getValue()),
-                            ((Contact) contact_combo.getValue())
-                    );
+                if (isOverlapping(appointment)) {
+                    Messages.errorMessage("Appointment overlaps", "Schedule Error");
+                } else {
+                    Optional<ButtonType> result = Messages.confirmationMessage("Save changes?", "Confirm");
+                    if (result.isPresent() && (result.get() == ButtonType.OK)) {
+                        DBAppointment.updateAppointment(
+                                AppointmentSingleton.getInstance().getAppointment().getAppointmentId(),
+                                title_textfield.getText(),
+                                description_textfield.getText(),
+                                (String) location_combo.getValue(),
+                                (String) type_combo.getValue(),
+                                LocalDateTime.of(start_date_picker.getValue(), (LocalTime) start_combo.getSelectionModel().getSelectedItem()),
+                                LocalDateTime.of(start_date_picker.getValue(), (LocalTime) end_combo.getSelectionModel().getSelectedItem()),
+                                ((Customer) customer_combo.getValue()),
+                                ((User) user_combo.getValue()),
+                                ((Contact) contact_combo.getValue())
+                        );
 
-                    switchView(actionEvent, "/view/Appointments.fxml", "Appointments");
+                        switchView(actionEvent, "/view/Appointments.fxml", "Appointments");
+                    }
                 }
             }
         }
     }
 
+    /**
+     * To be used for...
+     *
+     * @return
+     */
+    @Deprecated
+    private Appointment createAppointmentWithoutId() {
+        return new Appointment(
+                title_textfield.getText(),
+                description_textfield.getText(),
+                (String) location_combo.getValue(),
+                (String) type_combo.getValue(),
+                LocalDateTime.of(start_date_picker.getValue(), (LocalTime) start_combo.getSelectionModel().getSelectedItem()),
+                LocalDateTime.of(start_date_picker.getValue(), (LocalTime) end_combo.getSelectionModel().getSelectedItem()),
+                ((Customer) customer_combo.getValue()).getId(),
+                ((User) user_combo.getValue()).getUserId(),
+                ((Contact) contact_combo.getValue()).getContactId()
+        );
+    }
 
     /**
      * Helper
