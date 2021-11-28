@@ -22,27 +22,7 @@ public class DBAppointment {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ResultSet resultSet = ps.executeQuery();
 
-            while (resultSet.next()) {
-                Timestamp ts_start = resultSet.getTimestamp("Start");
-                Timestamp ts_end = resultSet.getTimestamp("End");
-                LocalDateTime localDateTime_start = ts_start.toLocalDateTime();
-                LocalDateTime localDateTime_end = ts_end.toLocalDateTime();
-
-
-                Appointment appointment = new Appointment(
-                        resultSet.getInt("Appointment_ID"),
-                        resultSet.getString("Title"),
-                        resultSet.getString("Description"),
-                        resultSet.getString("Location"),
-                        resultSet.getString("Type"),
-                        localDateTime_start,
-                        localDateTime_end,
-                        resultSet.getInt("Customer_ID"),
-                        resultSet.getInt("User_ID"),
-                        resultSet.getInt("Contact_ID")
-                );
-                appointmentList.add(appointment);
-            }
+            addToAppointmentList(appointmentList, resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -248,28 +228,7 @@ public class DBAppointment {
             ps.setTimestamp(1, Timestamp.valueOf(LocalDateTime.now().minusMonths(1)));
             ResultSet resultSet = ps.executeQuery();
 
-            while (resultSet.next()) {
-                Timestamp ts_start = resultSet.getTimestamp("Start");
-                Timestamp ts_end = resultSet.getTimestamp("End");
-                LocalDateTime ldt_start = ts_start.toLocalDateTime();
-                LocalDateTime ldt_end = ts_end.toLocalDateTime();
-
-
-                Appointment appointment = new Appointment(
-                        resultSet.getInt("Appointment_ID"),
-                        resultSet.getString("Title"),
-                        resultSet.getString("Description"),
-                        resultSet.getString("Location"),
-                        resultSet.getString("Type"),
-                        ldt_start,
-                        ldt_end,
-                        resultSet.getInt("Customer_ID"),
-                        resultSet.getInt("User_ID"),
-                        resultSet.getInt("Contact_ID")
-                );
-
-                appointmentList.add(appointment);
-            }
+            addToAppointmentList(appointmentList, resultSet);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -284,28 +243,7 @@ public class DBAppointment {
             ps.setTimestamp(1, Timestamp.valueOf(LocalDateTime.now().minusDays(7)));
             ResultSet resultSet = ps.executeQuery();
 
-            while (resultSet.next()) {
-                Timestamp ts_start = resultSet.getTimestamp("Start");
-                Timestamp ts_end = resultSet.getTimestamp("End");
-                LocalDateTime ldt_start = ts_start.toLocalDateTime();
-                LocalDateTime ldt_end = ts_end.toLocalDateTime();
-
-
-                Appointment appointment = new Appointment(
-                        resultSet.getInt("Appointment_ID"),
-                        resultSet.getString("Title"),
-                        resultSet.getString("Description"),
-                        resultSet.getString("Location"),
-                        resultSet.getString("Type"),
-                        ldt_start,
-                        ldt_end,
-                        resultSet.getInt("Customer_ID"),
-                        resultSet.getInt("User_ID"),
-                        resultSet.getInt("Contact_ID")
-                );
-
-                appointmentList.add(appointment);
-            }
+            addToAppointmentList(appointmentList, resultSet);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -321,32 +259,36 @@ public class DBAppointment {
 
             ResultSet resultSet = ps.executeQuery();
 
-            while (resultSet.next()) {
-                Timestamp ts_start = resultSet.getTimestamp("Start");
-                Timestamp ts_end = resultSet.getTimestamp("End");
-                LocalDateTime ldt_start = ts_start.toLocalDateTime();
-                LocalDateTime ldt_end = ts_end.toLocalDateTime();
-
-
-                Appointment appointment = new Appointment(
-                        resultSet.getInt("Appointment_ID"),
-                        resultSet.getString("Title"),
-                        resultSet.getString("Description"),
-                        resultSet.getString("Location"),
-                        resultSet.getString("Type"),
-                        ldt_start,
-                        ldt_end,
-                        resultSet.getInt("Customer_ID"),
-                        resultSet.getInt("User_ID"),
-                        resultSet.getInt("Contact_ID")
-                );
-
-                appointmentList.add(appointment);
-            }
+            addToAppointmentList(appointmentList, resultSet);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
         return appointmentList;
+    }
+
+    private static void addToAppointmentList(List<Appointment> appointmentList, ResultSet resultSet) throws SQLException {
+        while (resultSet.next()) {
+            Timestamp ts_start = resultSet.getTimestamp("Start");
+            Timestamp ts_end = resultSet.getTimestamp("End");
+            LocalDateTime ldt_start = ts_start.toLocalDateTime();
+            LocalDateTime ldt_end = ts_end.toLocalDateTime();
+
+
+            Appointment appointment = new Appointment(
+                    resultSet.getInt("Appointment_ID"),
+                    resultSet.getString("Title"),
+                    resultSet.getString("Description"),
+                    resultSet.getString("Location"),
+                    resultSet.getString("Type"),
+                    ldt_start,
+                    ldt_end,
+                    resultSet.getInt("Customer_ID"),
+                    resultSet.getInt("User_ID"),
+                    resultSet.getInt("Contact_ID")
+            );
+
+            appointmentList.add(appointment);
+        }
     }
 
     public static void insertTestAppointment(String user) {
@@ -435,28 +377,7 @@ public class DBAppointment {
             ps.setInt(1, contact.getContactId());
             ResultSet resultSet = ps.executeQuery();
 
-            while (resultSet.next()) {
-                Timestamp ts_start = resultSet.getTimestamp("Start");
-                Timestamp ts_end = resultSet.getTimestamp("End");
-                LocalDateTime ldt_start = ts_start.toLocalDateTime();
-                LocalDateTime ldt_end = ts_end.toLocalDateTime();
-
-
-                Appointment appointment = new Appointment(
-                        resultSet.getInt("Appointment_ID"),
-                        resultSet.getString("Title"),
-                        resultSet.getString("Description"),
-                        resultSet.getString("Location"),
-                        resultSet.getString("Type"),
-                        ldt_start,
-                        ldt_end,
-                        resultSet.getInt("Customer_ID"),
-                        resultSet.getInt("User_ID"),
-                        resultSet.getInt("Contact_ID")
-                );
-
-                appointmentList.add(appointment);
-            }
+            addToAppointmentList(appointmentList, resultSet);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }

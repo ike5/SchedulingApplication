@@ -118,6 +118,7 @@ public class ModifyAppointmentController implements Initializable {
         // Remember to not compare against this exact appointment ID in the database
 
         //Get a List of all appointment objects from the database belonging to that Customer
+        return true;
     }
 
 

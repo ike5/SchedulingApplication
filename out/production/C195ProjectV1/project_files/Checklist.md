@@ -9,6 +9,8 @@
 - [x] When customer deleted, show custom message alert of deleted customer
 - [x] Fix EST zonedDateTime
 - [ ] Validate Customer having overlapping appointments 
+  - In the modify customers save method
+    - Compare range of start and end to any appointments
 - [x] Validate appointments outside business hours (Including weekends)
 
 
