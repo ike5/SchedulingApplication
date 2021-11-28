@@ -2,22 +2,11 @@
 
 --- 
 ## High
-- [x] Fix combo boxes that calculate how many appointments exist
-- [x] Make a report tab count number of Appointments, Users, Contacts, Logins
-- [x] Validate time overlapping ~~with alert~~
-- [x] When updating appointment, don't allow user to choose time earlier than start
-- [x] When customer deleted, show custom message alert of deleted customer
-- [x] Fix EST zonedDateTime
-- [ ] Validate Customer having overlapping appointments 
-  - In the modify customers save method
-    - Compare range of start and end to any appointments
-- [x] Validate appointments outside business hours (Including weekends)
+
 
 
 ## Medium
-- [x] Remove showing password on login_activity.txt
 - [ ] Fix Alert within 15 minutes
-- [ ] Fix issue where End time combobox is converted to LocalDateTime (non military)
 
 ## Low
 - [ ] Eliminate Dependencies with DBAppoitnment class and ReportsController
@@ -27,7 +16,6 @@
 - [ ] Refactor ChangeScreen Util
 - [ ] Remove UtilityInterfaces
 - [ ] Fix UI size for each page
-- [x] Fix tabbing issues modify appointment
 - [ ] Add Javadocs annotations
 - [ ] Create UML diagram to insert into project
 - [ ] Delete all unnecessary files
@@ -44,5 +32,3 @@
 # Essential Tests
 
 - [ ] Scheduling after hours (last appt @ 21:45)
-- [ ] Adding too much text to description
-- [ ] Adding too much text to title

@@ -9,6 +9,7 @@ import javafx.util.Pair;
 import main.Main;
 import model.LogType;
 import model.Messages;
+import test.Test;
 import utils.ChangeScreen;
 import data.DBUsers;
 import javafx.event.ActionEvent;
@@ -48,12 +49,14 @@ public class LoginController implements Initializable {
         login_id.setText(Main.resourceBundle.getString("login_button"));
     }
 
+    @FXML
     public void onUsernameKeyTyped(KeyEvent keyEvent) {
         stringValidation(validateUsernameString(), username_label_id, username_field_id, "invalid_username_format");
     }
 
+    @FXML
     public void onPasswordKeyTyped(KeyEvent keyEvent) {
-       stringValidation(validatePasswordString(), password_label_id, password_field_id, "invalid_password_format");
+        stringValidation(validatePasswordString(), password_label_id, password_field_id, "invalid_password_format");
 
     }
 
@@ -68,8 +71,17 @@ public class LoginController implements Initializable {
         }
     }
 
-    //FIXME (low) - The red password error happens because of a TAB keystroke when entering the password TextField.
+    /**
+     * When login button is highlighted, pressing the ENTER key will trigger this method.
+     *
+     * @param keyEvent
+     * @throws IOException
+     *
+     */
+    @Deprecated
+    @FXML
     public void onLoginKeyPressed(KeyEvent keyEvent) throws IOException {
+        new Test("onLoginKeyPressed()");
 //        if (keyEvent.getCode().equals(KeyCode.ENTER)) {
 //            dbUsers = new DBUsers(username_field_id.getText(), password_field_id.getText());
 //
@@ -87,14 +99,14 @@ public class LoginController implements Initializable {
     }
 
     /**
-     * Button
+     * This method is triggered when the login button is CLICKED with a mouse.
      *
      * @param actionEvent
      * @throws IOException
      */
     @FXML
     public void onLoginAction(ActionEvent actionEvent) throws IOException {
-        //FIXME (med) - pressing ENTER when button is highlighted doesn't work
+        new Test("onLoginAction()");
         Pair<String, String> usernamePasswordReceived = getUsernamePasswordReceived();
 
         ChangeScreen.changeScreen(
@@ -113,24 +125,26 @@ public class LoginController implements Initializable {
     }
 
     /**
-     * Typing ENTER
+     * Typing ENTER while on username TextField calls this method
      *
      * @param actionEvent
      * @throws IOException
      */
     @FXML
     public void usernameOnAction(ActionEvent actionEvent) throws IOException {
+        new Test("usernameOnAction()");
         textFieldLogin(actionEvent);
     }
 
     /**
-     * Typing ENTER
+     * Typing ENTER while on password TextField triggers this method
      *
      * @param actionEvent
      * @throws IOException
      */
     @FXML
     public void passwordOnAction(ActionEvent actionEvent) throws IOException {
+        new Test("passwordOnAction()");
         textFieldLogin(actionEvent);
     }
 
@@ -158,6 +172,7 @@ public class LoginController implements Initializable {
      * @param title
      * @throws IOException
      */
+    @Deprecated
     private void switchView(KeyEvent keyEvent, String path, String title) throws IOException {
         Stage stage = (Stage) ((Button) keyEvent.getSource()).getScene().getWindow();
         Parent scene = FXMLLoader.load(getClass().getResource(path));
@@ -181,6 +196,7 @@ public class LoginController implements Initializable {
 
     /**
      * Helper
+     *
      * @param usernamePasswordReceived
      * @param logTypeStatus
      */

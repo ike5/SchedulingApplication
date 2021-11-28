@@ -28,13 +28,9 @@ import java.util.ResourceBundle;
 
 public class ReportsController implements Initializable {
 
-    public TableView user_table_view;
     public TableView customer_table_view;
     public TableView contact_table_view;
-    public TableView additional_table_view;
-    public ToggleGroup radioButtonToggleGroup;
     public RadioButton type_radio_button;
-    public RadioButton month_radio_button;
     public TableColumn<Map, Integer> num_appointments_column;
     public TableColumn<Map, String> basic_column;
 
@@ -69,7 +65,9 @@ public class ReportsController implements Initializable {
     public ListView label_list;
     public ListView values_list;
 
+    @Deprecated
     private ObservableList<Map> mapObservableListTypesValues;
+    @Deprecated
     private ObservableList<Map> mapObservableListMonthValues;
 
     @Override
