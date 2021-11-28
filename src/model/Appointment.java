@@ -54,6 +54,7 @@ public class Appointment {
         setIds();
     }
 
+    @Deprecated
     // setAppointmentId must be used
     public Appointment(String appointmentTitle, String appointmentDescription, String appointmentLocation, String appointmentType, LocalDateTime localDateTime_start, LocalDateTime localDateTime_end, int customerId, int userId, int contactId) {
         this.appointmentTitle = appointmentTitle;

@@ -39,6 +39,7 @@ public class DBAppointment {
         return counter;
     }
 
+    @Deprecated
     public static Appointment getAppointment(int appointmentId) {
         String sql = "SELECT Appointment_ID, Title, Description, Location, Type, Start, End, Customer_ID, User_ID, Contact_ID " +
                 "FROM appointments " +
@@ -99,6 +100,7 @@ public class DBAppointment {
         }
     }
 
+    @Deprecated
     public static void insertAppointment(Appointment appointment) {
         String sql_appointment = "INSERT INTO client_schedule.appointments VALUES(NULL, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, ?, CURRENT_TIMESTAMP, ?, ?, ?, ?)";
         try {
@@ -228,6 +230,7 @@ public class DBAppointment {
         return numberOfAppointments;
     }
 
+    @Deprecated(since = "1.0", forRemoval = false)
     public static ObservableList<Map> getMapOfTypesAndValue() {
         ObservableList<Map> mapObservableList = FXCollections.observableArrayList();
 
@@ -314,6 +317,7 @@ public class DBAppointment {
         }
     }
 
+    @Deprecated
     public static void insertTestAppointment(String user) {
         // APPOINTMENT TEST VALUES (uncomment in Main to use)
 
@@ -442,30 +446,3 @@ public class DBAppointment {
         return upcomingAppt;
     }
 }
-
-
-
-    /*
-    MySQL converts TIMESTAMP values from the current time zone to UTC for storage, and back from UTC to the current time zone for retrieval.
-    (This does not occur for other types such as DATETIME.
-
-    In MySQL 8.0.19 and later, you can specify a time zone offset when inserting a TIMESTAMP or DATETIME value into a table.
-    See Section 9.1.3, “Date and Time Literals”, for more information and examples.
-
-    In MySQL 8.0.22 and later, you can convert TIMESTAMP values to UTC DATETIME values when retrieving them using CAST()
-    with the AT TIME ZONE operator, as shown here:
-
-    mysql> SELECT col,
-     >     CAST(col AT TIME ZONE INTERVAL '+00:00' AS DATETIME) AS ut
-     >     FROM ts ORDER BY id;
-+---------------------+---------------------+
-| col                 | ut                  |
-+---------------------+---------------------+
-| 2020-01-01 10:10:10 | 2020-01-01 15:10:10 |
-| 2019-12-31 23:40:10 | 2020-01-01 04:40:10 |
-| 2020-01-01 13:10:10 | 2020-01-01 18:10:10 |
-| 2020-01-01 10:10:10 | 2020-01-01 15:10:10 |
-| 2020-01-01 04:40:10 | 2020-01-01 09:40:10 |
-| 2020-01-01 18:10:10 | 2020-01-01 23:10:10 |
-+---------------------+---------------------+
-     */

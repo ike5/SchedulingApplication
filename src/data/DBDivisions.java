@@ -90,6 +90,7 @@ public class DBDivisions {
      * @param divisionId The division ID provided
      * @return Returns an integer representing the country id or -1 if invalid division id provided.
      */
+    @Deprecated(since = "1.0", forRemoval = false)
     public static int getCountryId(int divisionId) {
         String sql = "SELECT COUNTRY_ID FROM first_level_divisions WHERE Division_ID = ?";
         try {
@@ -114,6 +115,7 @@ public class DBDivisions {
      * @param divisionId
      * @return
      */
+    @Deprecated(since = "1.0", forRemoval = false)
     public static Division getDivision(int divisionId) {
         String sql = "SELECT client_schedule.first_level_divisions.Division_ID,\n" +
                 "       client_schedule.first_level_divisions.Division,\n" +

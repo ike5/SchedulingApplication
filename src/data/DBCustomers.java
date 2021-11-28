@@ -92,6 +92,7 @@ public class DBCustomers {
      *
      * @return ResultSet object or null if query unsuccessful or if table empty
      */
+    @Deprecated(since = "1.0", forRemoval = false)
     public static ResultSet getAllCustomersResultSet() {
         String sql = "SELECT * FROM customers";
         try {
@@ -104,6 +105,7 @@ public class DBCustomers {
         return null;
     }
 
+    @Deprecated(since = "1.0", forRemoval = false)
     public static ResultSet getCustomerResultSet(int customerId) {
         String sql = "SELECT * FROM customers WHERE Customer_ID = " + customerId;
         try {
@@ -259,6 +261,7 @@ public class DBCustomers {
      * @param customer Customer object
      * @return Returns -1 if unsuccessful and > 1 if successful
      */
+    @Deprecated(since = "1.0", forRemoval = false)
     public static void deleteCustomer(Customer customer) {
         String sql_update = "UPDATE appointments SET Customer_ID = NULL WHERE Customer_ID = ?";
         String sql_delete = "DELETE FROM customers WHERE Customer_ID = ?";
