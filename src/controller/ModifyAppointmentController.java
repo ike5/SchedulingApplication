@@ -15,6 +15,7 @@ import java.net.URL;
 
 import java.time.*;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -112,13 +113,17 @@ public class ModifyAppointmentController implements Initializable {
         }
     }
 
-    private boolean hasOverlappingAppointments(Appointment appointment) {
-        // Compare appointment time with list of appointments by same Customer
-
+    private boolean isOverlapping(Appointment a) {
+        boolean overlaps = false;
         // Remember to not compare against this exact appointment ID in the database
-
-        //Get a List of all appointment objects from the database belonging to that Customer
-        return true;
+        for (Appointment b : DBAppointment.getAllAppointmentsByCustomerId(a.getCustomerId())) {
+            if (a.getAppointmentId() == b.getAppointmentId()) {
+                // do nothing since they are the same object
+            } else {
+                overlaps = !(a.getStart().equals(b.getEnd()) || a.getStart().isAfter(b.getEnd()) || a.getEnd().equals(b.getStart()) || a.getEnd().isBefore(b.getStart()));
+            }
+        }
+        return overlaps;
     }
 
 
