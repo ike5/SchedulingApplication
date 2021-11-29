@@ -72,33 +72,6 @@ public class LoginController implements Initializable {
     }
 
     /**
-     * When login button is highlighted, pressing the ENTER key will trigger this method.
-     *
-     * @param keyEvent
-     * @throws IOException
-     *
-     */
-    @Deprecated
-    @FXML
-    public void onLoginKeyPressed(KeyEvent keyEvent) throws IOException {
-        new Test("onLoginKeyPressed()");
-//        if (keyEvent.getCode().equals(KeyCode.ENTER)) {
-//            dbUsers = new DBUsers(username_field_id.getText(), password_field_id.getText());
-//
-//            if (dbUsers.getUser().isValidUsername()) {
-//                if (dbUsers.getUser().isValidPassword()) {
-//                    Main.user = dbUsers.getUser();
-//                    switchView(keyEvent, "/view/Customers.fxml", "Welcome " + dbUsers.getUser().getUsername() + "!");
-//                } else {
-//                    Messages.errorMessage(Main.resourceBundle.getString("incorrect_password"), Main.resourceBundle.getString("password_alert_title"));
-//                }
-//            } else {
-//                Messages.errorMessage(Main.resourceBundle.getString("incorrect_username"), Main.resourceBundle.getString("username_alert_title"));
-//            }
-//        }
-    }
-
-    /**
      * This method is triggered when the login button is CLICKED with a mouse.
      *
      * @param actionEvent
@@ -106,7 +79,6 @@ public class LoginController implements Initializable {
      */
     @FXML
     public void onLoginAction(ActionEvent actionEvent) throws IOException {
-        new Test("onLoginAction()");
         Pair<String, String> usernamePasswordReceived = getUsernamePasswordReceived();
 
         ChangeScreen.changeScreen(
@@ -132,7 +104,6 @@ public class LoginController implements Initializable {
      */
     @FXML
     public void usernameOnAction(ActionEvent actionEvent) throws IOException {
-        new Test("usernameOnAction()");
         textFieldLogin(actionEvent);
     }
 
@@ -144,7 +115,6 @@ public class LoginController implements Initializable {
      */
     @FXML
     public void passwordOnAction(ActionEvent actionEvent) throws IOException {
-        new Test("passwordOnAction()");
         textFieldLogin(actionEvent);
     }
 
