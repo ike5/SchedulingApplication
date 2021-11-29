@@ -62,20 +62,12 @@ public class ModifyAppointmentController implements Initializable {
         LocalTime startTime = LocalTime.of(8, 0); // 8:00AM
         LocalTime endTime = LocalTime.of(21, 45); // 11:45, but last appointment is +15 min so, 12:00AM
 
-        new Test(startTime);
-        new Test(endTime);
-
         // Set ZoneId for office
         ZoneId zoneIdEST = ZoneId.of("America/New_York");
 
         // Ensure ZonedDateTime is EST to begin with
         ZonedDateTime zonedDateTimeStart = ZonedDateTime.of(localDate, startTime, zoneIdEST);
         ZonedDateTime zonedDateTimeEnd = ZonedDateTime.of(localDate, endTime, zoneIdEST);
-
-        new Test(zonedDateTimeStart);
-        new Test(zonedDateTimeEnd);
-
-        new Test(ZoneId.systemDefault());
 
         // Convert ZonedDateTime to SystemDefault
         ZonedDateTime zonedDateTimeStartEST = ZonedDateTime.ofInstant(zonedDateTimeStart.toInstant(), ZoneId.systemDefault());
