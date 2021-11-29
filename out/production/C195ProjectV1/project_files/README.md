@@ -24,6 +24,7 @@ macOS 12.0.1
 
 ## Getting started
 
+- If using a VM, make sure machine has a timezone set. 
 
 ## Additional Report description
 

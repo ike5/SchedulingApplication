@@ -318,7 +318,6 @@ public class ModifyAppointmentController implements Initializable {
      * @param actionEvent
      */
     private void onClear(ActionEvent actionEvent) {
-        //FIXME use .getItem().clear() instead of null?
         customer_combo.valueProperty().set(null);
         contact_combo.valueProperty().set(null);
         user_combo.valueProperty().set(null);

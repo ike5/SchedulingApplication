@@ -57,7 +57,7 @@
                   <Label fx:id="language_zone_id" text="Language" />
                </children>
             </HBox>
-                <Button fx:id="login_id" mnemonicParsing="false" onAction="#onLoginAction" onKeyPressed="#onLoginKeyPressed"  text="Login">
+                <Button fx:id="login_id" mnemonicParsing="false" onAction="#onLoginAction" text="Login">
                     <font>
                         <Font size="18.0" />
                     </font>
