@@ -9,7 +9,6 @@
 - [ ] Fix Alert within 15 minutes
 
 ## Low
-- [x] Eliminate Dependencies with DBAppoitnment class and ReportsController
 - [ ] Refactor ChangeScreen Util
 - [ ] Fix UI size for each page
 - [ ] Add Javadocs annotations

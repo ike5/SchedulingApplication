@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import model.User;
+import test.Test;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -28,7 +29,8 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
-//        Locale.setDefault(new Locale("fr", "CA")); // Test to set default to French
+        Test.changeLocale();
+
         openConnection();
         launch(args);
         closeConnection();

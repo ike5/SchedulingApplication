@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class Test {
     public static int instances;
@@ -20,9 +21,13 @@ public class Test {
         System.out.println(str + " [" + instances + "]");
     }
 
-    public Test(Object obj){
+    public Test(Object obj) {
         incrementInstances();
         System.out.println(obj.toString() + " [" + instances + "]");
+    }
+
+    public static void changeLocale() {
+        Locale.setDefault(new Locale("fr", "CA")); // Test to set default to French Canadian
     }
 
     /**

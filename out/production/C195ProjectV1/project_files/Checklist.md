@@ -10,7 +10,6 @@
 
 ## Low
 - [x] Eliminate Dependencies with DBAppoitnment class and ReportsController
-- [ ] Fix clear button on ModifyAppointment to clear comboboxes using .clear() instead of null.
 - [ ] Refactor ChangeScreen Util
 - [ ] Fix UI size for each page
 - [ ] Add Javadocs annotations
