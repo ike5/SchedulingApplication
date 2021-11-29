@@ -18,6 +18,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import model.User;
 import utils.Utility;
 
 import java.io.*;
@@ -154,7 +155,7 @@ public class LoginController implements Initializable {
      * Helper method that takes a String pair and LogType and passes a value to the LoginTracker.addToLog method.
      *
      * @param usernamePasswordReceived A String pair of username and password
-     * @param logTypeStatus An enum of either SUCCESS or FAILURE
+     * @param logTypeStatus            An enum of either SUCCESS or FAILURE
      */
     private void addToLog(Pair<String, String> usernamePasswordReceived, LogType logTypeStatus) {
         LoginTracker.addToLog(
@@ -165,12 +166,12 @@ public class LoginController implements Initializable {
     }
 
     /**
-     * Validation
-     * <p>
-     * Validates a username by matching string values that begin with a number or letter, and contains
-     * only numbers and letters.
+     * Validates a username by matching string values that begin with either:
+     * 1) a number
+     * 2) a letter
+     * Allows any amount of (only) letters or numbers in the string.
      *
-     * @return
+     * @return true if only contains numbers or letters, false if anything else
      */
     private boolean validateUsernameString() {
         String regexUsername = "^[0-z]+";
@@ -178,8 +179,6 @@ public class LoginController implements Initializable {
     }
 
     /**
-     * Validation
-     * <p>
      * Validates password by matching all string values except whitespaces
      *
      * @return Returns true if password field complies with regex
@@ -190,53 +189,70 @@ public class LoginController implements Initializable {
     }
 
     /**
+     * Helper method that validates user login then switches views if successful.
+     * <p>
      * Note the event source is either a Button or a TextField:
      * stage = (Stage) ((TextField) actionEvent.getSource()).getScene().getWindow();
      * stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
      *
-     * @param actionEvent
+     * @param actionEvent           Either a Button actionEvent or a TextField
      * @param userLogin
      * @param scene
-     * @param o
+     * @param changeScreenInterface
      */
-    public static void changeScreen(ActionEvent actionEvent, DBUsers userLogin, Parent scene, Utility.FunctionalChangeScreenInterface o) {
-        Main.resourceBundle = ResourceBundle.getBundle("RBundle", Locale.getDefault());
+    private static void changeScreen(ActionEvent actionEvent, DBUsers userLogin, Parent scene, Utility.FunctionalChangeScreenInterface changeScreenInterface) {
 
-        // Check if username and password are valid
-        // then switch views or alert
         if (userLogin.getUser().isValidUsername()) {
             if (userLogin.getUser().isValidPassword()) {
-                Main.user = userLogin.getUser();
-                Pair<Boolean, Pair<LocalDateTime, Integer>> upcomingAppointment = DBAppointment.checkUpcomingAppointments();
-                if (upcomingAppointment != null) {
-                    Messages.warningMessage(
-                            "Upcoming appointment: " + upcomingAppointment.getValue().getValue() +
-                                    "\nTime: " + ZonedDateTime.of(upcomingAppointment.getValue().getKey(), ZoneId.systemDefault()),
-                            "Upcoming appointment"
-                    );
-                } else {
-                    Messages.warningMessage("No upcoming appointments", "Upcoming appointment");
-                }
-
-                switchView(actionEvent, userLogin, scene, o);
+                checkUpcomingAppointment(userLogin);
+                switchView(actionEvent, userLogin, scene, changeScreenInterface);
             } else {
-                Messages.errorMessage(Main.resourceBundle.getString("incorrect_password"), Main.resourceBundle.getString("password_alert_title"));
+                Messages.errorMessage(
+                        Main.resourceBundle.getString("incorrect_password"),
+                        Main.resourceBundle.getString("password_alert_title")
+                );
             }
         } else {
-            Messages.errorMessage(Main.resourceBundle.getString("incorrect_username"), Main.resourceBundle.getString("username_alert_title"));
+            Messages.errorMessage(
+                    Main.resourceBundle.getString("incorrect_username"),
+                    Main.resourceBundle.getString("username_alert_title")
+            );
         }
     }
 
     /**
-     * Helper
+     * Helper method that responds to the call to DBAppointment.checkUpcomingAppointments() and provides a message
+     * to display to the user.
      *
-     * @param actionEvent
-     * @param userLogin
-     * @param scene
-     * @param o
+     * @param userLogin DBUsers object sets static User variable if login successful
      */
-    private static void switchView(ActionEvent actionEvent, DBUsers userLogin, Parent scene, Utility.FunctionalChangeScreenInterface o) {
-        Stage stage = o.eventSource(actionEvent);
+    private static void checkUpcomingAppointment(DBUsers userLogin) {
+        Main.user = userLogin.getUser(); // If login successful, set static User variable to currently logged-in User.
+
+        Pair<Boolean, Pair<LocalDateTime, Integer>> upcomingAppointment = DBAppointment.checkUpcomingAppointments();
+
+        if (upcomingAppointment != null) {
+            Messages.warningMessage(
+                    "Upcoming appointment: " + upcomingAppointment.getValue().getValue() +
+                            "\nTime: " + ZonedDateTime.of(upcomingAppointment.getValue().getKey(), ZoneId.systemDefault()),
+                    "Upcoming appointment"
+            );
+        } else {
+            Messages.warningMessage("No upcoming appointments", "Upcoming appointment");
+        }
+    }
+
+    /**
+     * Helper method that switches views based on having variable event sources. Sets the Stage to an event source of
+     * either a Button or TextField for this application.
+     *
+     * @param actionEvent           An event source
+     * @param userLogin             A DBUsers object to get currently logged-in User's username to display
+     * @param scene                 Builds a new Scene to switch to
+     * @param changeScreenInterface A variable event source object
+     */
+    private static void switchView(ActionEvent actionEvent, DBUsers userLogin, Parent scene, Utility.FunctionalChangeScreenInterface changeScreenInterface) {
+        Stage stage = changeScreenInterface.eventSource(actionEvent);
         stage.setTitle("Welcome " + userLogin.getUser().getUsername() + "!");
         stage.setScene(new Scene(scene));
         stage.show();
