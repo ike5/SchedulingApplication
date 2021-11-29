@@ -132,16 +132,18 @@ public class LoginController implements Initializable {
         changeScreen(
                 actionEvent,
                 dbUsers,
-                FXMLLoader.load(getClass().getResource("/view/Customers.fxml")),
+                FXMLLoader.load(getClass().getResource(Main.resourceBundle.getString("customer_screen"))),
                 aEvent -> (Stage) ((TextField) aEvent.getSource()).getScene().getWindow());
     }
 
     /**
-     * Helper
+     * Helper method that adds to the login_activity.txt file the status of whether a login attempt was successful or
+     * not. This method takes a String pair of username and password, which is then validated. If validation succeeds
+     * a message of SUCCESS is appended to the beginning of the log, otherwise a message of FAILURE is appended.
      *
-     * @param usernamePasswordReceived
+     * @param usernamePasswordReceived A String pair of username and password
      */
-    void makeLogEntry(Pair<String, String> usernamePasswordReceived) {
+    private void makeLogEntry(Pair<String, String> usernamePasswordReceived) {
         if (dbUsers.getUser().isValidUsername() && dbUsers.getUser().isValidPassword()) {
             addToLog(usernamePasswordReceived, LogType.SUCCESS);
         } else {
@@ -157,7 +159,7 @@ public class LoginController implements Initializable {
      */
     private void addToLog(Pair<String, String> usernamePasswordReceived, LogType logTypeStatus) {
         LoginTracker.addToLog(
-                Path.of("login_activity.txt"),
+                Path.of(Main.resourceBundle.getString("log_path")),
                 logTypeStatus,
                 "Username: " + usernamePasswordReceived.getKey() +
 //                        "\tPassword: " + usernamePasswordReceived.getValue() +
