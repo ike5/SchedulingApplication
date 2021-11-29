@@ -137,9 +137,8 @@ public class LoginController implements Initializable {
     }
 
     /**
-     * Helper method that adds to the login_activity.txt file the status of whether a login attempt was successful or
-     * not. This method takes a String pair of username and password, which is then validated. If validation succeeds
-     * a message of SUCCESS is appended to the beginning of the log, otherwise a message of FAILURE is appended.
+     * Helper method that takes a String pair of username and password to be validated. Sends Enum values of either
+     * SUCCESS or FAILURE to addToLog() method.
      *
      * @param usernamePasswordReceived A String pair of username and password
      */
@@ -152,17 +151,16 @@ public class LoginController implements Initializable {
     }
 
     /**
-     * Helper
+     * Helper method that takes a String pair and LogType and passes a value to the LoginTracker.addToLog method.
      *
-     * @param usernamePasswordReceived
-     * @param logTypeStatus
+     * @param usernamePasswordReceived A String pair of username and password
+     * @param logTypeStatus An enum of either SUCCESS or FAILURE
      */
     private void addToLog(Pair<String, String> usernamePasswordReceived, LogType logTypeStatus) {
         LoginTracker.addToLog(
                 Path.of(Main.resourceBundle.getString("log_path")),
                 logTypeStatus,
                 "Username: " + usernamePasswordReceived.getKey() +
-//                        "\tPassword: " + usernamePasswordReceived.getValue() +
                         "\tLocalDateTime: " + LocalDateTime.now());
     }
 

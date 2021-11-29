@@ -10,7 +10,7 @@ import java.util.List;
 public class LoginTracker {
 
     /**
-     * Adds new line to log starting each line with an identifying logType value.
+     * Logs login attempts. Appends individual login attempts to any designated file.
      *
      * @param path       The path to the log file
      * @param logType    Identifies the login attempt as a SUCCESS or FAILURE
