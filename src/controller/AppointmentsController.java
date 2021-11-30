@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import main.Main;
 import model.Appointment;
 import model.AppointmentSingleton;
 import model.Messages;
@@ -87,13 +88,13 @@ public class AppointmentsController implements Initializable {
 
     public void newAppointmentButtonOnAction(ActionEvent actionEvent) throws IOException {
         AppointmentSingleton.getInstance().setAppointment(null);
-        switchView(actionEvent, "/view/ModifyAppointment.fxml", "New Appointment");
+        switchView(actionEvent, Main.resourceBundle.getString("modify_appointment_screen"), "New Appointment");
     }
 
     public void updateAppointmentButtonOnAction(ActionEvent actionEvent) throws IOException {
         if (table_view_id.getSelectionModel().selectedItemProperty() != null) {
             AppointmentSingleton.getInstance().setAppointment((Appointment) table_view_id.getSelectionModel().getSelectedItem());
-            switchView(actionEvent, "/view/ModifyAppointment.fxml", "Modify Appointment");
+            switchView(actionEvent, Main.resourceBundle.getString("modify_appointment_screen"), "Modify Appointment");
         } else {
             Messages.errorMessage("Please select an appointment", "Nothing selected");
         }
