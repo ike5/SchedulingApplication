@@ -2,12 +2,14 @@ package controller;
 
 import data.*;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import main.Main;
 import model.*;
 import test.Test;
 import utils.Utility;
@@ -22,7 +24,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 /**
- * This class is used to modify existing appointments as well as create new appointments.
+ * This class is used to modify existing appointments and create new appointments.
  */
 public class ModifyAppointmentController implements Initializable {
     public ComboBox type_combo;
@@ -40,6 +42,17 @@ public class ModifyAppointmentController implements Initializable {
     public ComboBox start_combo;
     public ComboBox end_combo;
 
+    /**
+     * Initializes ComboBoxes and DatePickers. If an Appointment is
+     * being modified, the form TextFields are pre-populated with
+     * info from the AppointmentSingleton. The LocalTime ComboBoxes
+     * are set to ZonedDateTime here, representing the machine's
+     * local time, but all appointments options in the ComboBoxes
+     * can only be selected from EST.
+     *
+     * @param url
+     * @param resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Initialize singleton default values
@@ -115,6 +128,12 @@ public class ModifyAppointmentController implements Initializable {
         }
     }
 
+    /**
+     * Helper method to pre-populate ComboBoxes when user is
+     * updating an appointment.
+     *
+     * @param appointment The Appointment object being updated
+     */
     private void populateComboBoxes(Appointment appointment) {
         for (Object customer : customer_combo.getItems()) {
             if (((Customer) customer).getId() == appointment.getCustomerId()) {
@@ -143,6 +162,12 @@ public class ModifyAppointmentController implements Initializable {
         }
     }
 
+    /**
+     * Helper method to pre-populate TextFields when user is
+     * updating an Appointment object.
+     *
+     * @param appointment The Appointment object being updated
+     */
     private void populateTextFields(Appointment appointment) {
         // Populate TextFields
         appointment_id_textfield.setText(Integer.toString(appointment.getAppointmentId()));
@@ -150,6 +175,11 @@ public class ModifyAppointmentController implements Initializable {
         description_textfield.setText(appointment.getAppointmentDescription());
     }
 
+    /**
+     * Sets number of visible rows on all ComboBoxes
+     *
+     * @param numberOfVisibleRows int value number of visible rows
+     */
     private void setNumberOfVisibleRows(int numberOfVisibleRows) {
         // Set number of visible rows in ComboBoxes
         customer_combo.setVisibleRowCount(numberOfVisibleRows);
@@ -160,9 +190,10 @@ public class ModifyAppointmentController implements Initializable {
     }
 
     /**
-     * Called when updating an appointment.
+     * Pre-populates DatePicker, Start, and End ComboBoxes when
+     * updating an Appointment.
      *
-     * @param appointment
+     * @param appointment Appointment object being updated
      */
     private void setDatePickerAndTimeCombos(Appointment appointment) {
         start_date_picker.setValue(appointment.getStart().toLocalDate());
@@ -172,24 +203,31 @@ public class ModifyAppointmentController implements Initializable {
 
 
     /**
-     * Checks to see whether a ZonedDateTime falls on either Saturday or Sunday.
+     * Helper method that checks whether the appointment starts
+     * on a Saturday or Sunday.
      *
      * @return
      */
     private boolean isWeekend() {
-        ZonedDateTime zonedStartDateTime = ZonedDateTime.of(start_date_picker.getValue(), (LocalTime) start_combo.getSelectionModel().getSelectedItem(), ZoneId.systemDefault());
-        return zonedStartDateTime.getDayOfWeek().equals(DayOfWeek.SATURDAY) || zonedStartDateTime.getDayOfWeek().equals(DayOfWeek.SUNDAY);
+        ZonedDateTime zonedStartDateTime = ZonedDateTime.of(
+                start_date_picker.getValue(),
+                (LocalTime) start_combo.getSelectionModel().getSelectedItem(),
+                ZoneId.systemDefault()
+        );
+        return zonedStartDateTime.getDayOfWeek().equals(DayOfWeek.SATURDAY) ||
+                zonedStartDateTime.getDayOfWeek().equals(DayOfWeek.SUNDAY);
     }
 
     /**
-     * Button
+     * Button to go back to the Appointments View.
      *
-     * @param actionEvent
+     * @param actionEvent Back Button pressed
      * @throws IOException
      */
+    @FXML
     public void cancelButtonOnAction(ActionEvent actionEvent) throws IOException {
         Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
-        Parent scene = FXMLLoader.load(getClass().getResource("/view/Appointments.fxml"));
+        Parent scene = FXMLLoader.load(getClass().getResource(Main.resourceBundle.getString("appointments_screen")));
         stage.setTitle("Appointments");
         stage.setScene(new Scene(scene));
         stage.show();
@@ -197,18 +235,30 @@ public class ModifyAppointmentController implements Initializable {
 
 
     /**
-     * Button
+     * Button to clear all TextFields
      *
-     * @param actionEvent
+     * @param actionEvent Clear Button pressed
      */
+    @FXML
     public void clearButtonOnAction(ActionEvent actionEvent) {
         onClear(actionEvent);
     }
 
-
+    /**
+     * Helper method that checks whether the provided appointment
+     * overlaps with any existing appointments with that same
+     * customer. If there is no appointment ID associated with the
+     * Appointment parameter value, then it is assumed that the
+     * user is creating a new appointment.
+     *
+     * @param appointment Appointment object used to determine if
+     *                    there is an appointment ID.
+     * @return
+     */
     private boolean isOverlapping(Appointment appointment) {
         boolean overlap = false;
 
+        // Get all appointments with same customer
         int customerId = ((Customer) customer_combo.getSelectionModel().getSelectedItem()).getId();
         List<Appointment> appointmentList = DBAppointment.getAllAppointmentsByCustomerId(customerId);
 
@@ -218,10 +268,12 @@ public class ModifyAppointmentController implements Initializable {
         LocalDateTime startDateTime = LocalDateTime.of(start_date_picker.getValue(), startTime);
         LocalDateTime endDateTime = LocalDateTime.of(start_date_picker.getValue(), endTime);
 
-        if (appointment != null) {
+
+        if (appointment != null) { // Existing appointment being modified
             int appointmentId = appointment.getAppointmentId();
 
             for (Appointment b : appointmentList) {
+                // Need to check whether same appointment exists in database, then ignore it
                 if (b.getAppointmentId() != appointmentId) {
                     boolean isStartInWindow = (startDateTime.isAfter(b.getStart()) || startDateTime.equals(b.getStart())) && startDateTime.isBefore(b.getEnd());
                     boolean isEndInWindow = endDateTime.isAfter(b.getStart()) && (endDateTime.isBefore(b.getEnd()) || endDateTime.isEqual(b.getEnd()));
@@ -233,7 +285,9 @@ public class ModifyAppointmentController implements Initializable {
                     }
                 }
             }
-        } else {
+        } else { // User is creating a new appointment
+
+            // No need to check whether same appointment exists in database
             for (Appointment b : appointmentList) {
                 boolean isStartInWindow = (startDateTime.isAfter(b.getStart()) || startDateTime.equals(b.getStart())) && startDateTime.isBefore(b.getEnd());
                 boolean isEndInWindow = endDateTime.isAfter(b.getStart()) && (endDateTime.isBefore(b.getEnd()) || endDateTime.isEqual(b.getEnd()));
@@ -250,11 +304,12 @@ public class ModifyAppointmentController implements Initializable {
     }
 
     /**
-     * Button
+     * Button to save a new or updated appointment.
      *
      * @param actionEvent
      * @throws IOException
      */
+    @FXML
     public void saveButtonOnAction(ActionEvent actionEvent) throws IOException {
         Appointment appointment = AppointmentSingleton.getInstance().getAppointment();
 
@@ -263,9 +318,7 @@ public class ModifyAppointmentController implements Initializable {
         } else if (isWeekend()) {
             Messages.errorMessage("Cannot schedule outside of business hours", "Schedule Error");
         } else {
-            // If user clicked 'New Appointment' from AppointmentsController,
-            // this option will be executed when Save is clicked.
-            if (appointment == null) {
+            if (appointment == null) { // If user clicked 'New Appointment' from AppointmentsController,
                 if (isOverlapping(null)) {
                     Messages.errorMessage("Appointment overlaps", "Schedule Error");
                 } else {
@@ -283,7 +336,7 @@ public class ModifyAppointmentController implements Initializable {
                                 ((Contact) contact_combo.getValue())
                         );
 
-                        switchView(actionEvent, "/view/Appointments.fxml", "Appointments");
+                        switchView(actionEvent, Main.resourceBundle.getString("appointments_screen"), "Appointments");
                     }
                 }
             } else {
@@ -305,7 +358,7 @@ public class ModifyAppointmentController implements Initializable {
                                 ((Contact) contact_combo.getValue())
                         );
 
-                        switchView(actionEvent, "/view/Appointments.fxml", "Appointments");
+                        switchView(actionEvent, Main.resourceBundle.getString("appointments_screen"), "Appointments");
                     }
                 }
             }
@@ -313,7 +366,7 @@ public class ModifyAppointmentController implements Initializable {
     }
 
     /**
-     * Helper
+     * Helper method to reset all TextFields and ComboBoxes
      *
      * @param actionEvent
      */
@@ -329,11 +382,11 @@ public class ModifyAppointmentController implements Initializable {
     }
 
     /**
-     * Helper
+     * Helper method to change Views
      *
-     * @param actionEvent
-     * @param path
-     * @param title
+     * @param actionEvent The ActionEvent triggering the stage
+     * @param path        A String path of the new View
+     * @param title       The title of the new View
      * @throws IOException
      */
     private void switchView(ActionEvent actionEvent, String path, String title) throws IOException {
@@ -345,9 +398,9 @@ public class ModifyAppointmentController implements Initializable {
     }
 
     /**
-     * Validation
+     * Validates all ComboBoxes and TextFields for missing values.
      *
-     * @return
+     * @return returns true if any field is missing
      */
     private boolean isMissingValue() {
         boolean isEmpty = false;
@@ -367,9 +420,10 @@ public class ModifyAppointmentController implements Initializable {
     }
 
     /**
-     * Validation
+     * Validates each field and provides an error message if that
+     * field is missing a value.
      *
-     * @return
+     * @return A StringBuilder error message
      */
     private StringBuilder errorMessage() {
         StringBuilder errorMessage = new StringBuilder();

@@ -26,7 +26,7 @@
 - [x] AppointmentsController
 - [x] CustomersController
 - [x] LoginController
-- [ ] ModifyAppointmentController
+- [x] ModifyAppointmentController
 - [ ] ReportsController
 - [ ] DBAppointment
 - [ ] DBContacts
