@@ -46,7 +46,7 @@ public class AppointmentsController implements Initializable {
     public Button update_button;
 
     /**
-     * Initializes TableView with Appointment object. This method also ensures that Delete and Update buttons
+     * Initializes TableView with Appointment objects. This method also ensures that Delete and Update buttons
      * start off inactive until a table item is selected.
      *
      * @param url
@@ -99,6 +99,7 @@ public class AppointmentsController implements Initializable {
      *
      * @param actionEvent Month RadioButton
      */
+    @FXML
     public void monthViewRadioButtonOnAction(ActionEvent actionEvent) {
         table_view_id.setItems(DBAppointment.getAllAppointmentsInMonth());
     }
@@ -108,6 +109,7 @@ public class AppointmentsController implements Initializable {
      *
      * @param actionEvent Week RadioButton
      */
+    @FXML
     public void weekViewRadioButtonOnAction(ActionEvent actionEvent) {
         table_view_id.setItems(DBAppointment.getAllAppointmentsInWeek());
     }
@@ -117,6 +119,7 @@ public class AppointmentsController implements Initializable {
      *
      * @param actionEvent All Appointments RadioButton
      */
+    @FXML
     public void allAppointmentsRadioButtonOnAction(ActionEvent actionEvent) {
         table_view_id.setItems(DBAppointment.getAllAppointments());
     }
@@ -129,6 +132,7 @@ public class AppointmentsController implements Initializable {
      * @param actionEvent New Appointment Button pressed
      * @throws IOException
      */
+    @FXML
     public void newAppointmentButtonOnAction(ActionEvent actionEvent) throws IOException {
         AppointmentSingleton.getInstance().setAppointment(null);
 
@@ -143,6 +147,7 @@ public class AppointmentsController implements Initializable {
      * @param actionEvent Update Appointment Button is pressed
      * @throws IOException
      */
+    @FXML
     public void updateAppointmentButtonOnAction(ActionEvent actionEvent) throws IOException {
         if (table_view_id.getSelectionModel().selectedItemProperty() != null) {
             AppointmentSingleton.getInstance().setAppointment((Appointment) table_view_id.getSelectionModel().getSelectedItem());
@@ -158,6 +163,7 @@ public class AppointmentsController implements Initializable {
      *
      * @param actionEvent Delete Appointment Button is pressed
      */
+    @FXML
     public void deleteAppointmentButtonOnAction(ActionEvent actionEvent) {
         AppointmentSingleton.getInstance().setAppointment((Appointment) table_view_id.getSelectionModel().getSelectedItem());
 

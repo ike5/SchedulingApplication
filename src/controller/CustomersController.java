@@ -2,6 +2,7 @@ package controller;
 
 import data.DBAppointment;
 import data.DBDivisions;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
@@ -30,6 +31,10 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+/**
+ * This class displays all customers to the user. New customers can be added and existing customers can
+ * be modified and saved to the database.
+ */
 public class CustomersController implements Initializable {
     public TextField customer_id_id;
     public TextField customer_name_id;
@@ -57,6 +62,14 @@ public class CustomersController implements Initializable {
     private static boolean isPhoneNumberFieldValid;
     ObservableList<Customer> customerObservableList;
 
+    /**
+     * Initializes TableView with Customer objects. Disables the Save,
+     * Clear, and Delete buttons. Initializes ComboBoxes. Adds a TableView
+     * listener.
+     *
+     * @param url
+     * @param resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Set focus options on buttons
@@ -121,34 +134,55 @@ public class CustomersController implements Initializable {
     }
 
     /**
+     * Validates each key entry in the TextField.
      *
-     * @param keyEvent
+     * @param keyEvent A key event
      */
+    @FXML
     public void customerNameOnKeyTyped(KeyEvent keyEvent) {
         isCustomerNameFieldValid = isValidTextField((TextField) keyEvent.getSource());
         disableButtonsLogic();
     }
 
+    /**
+     * Validates each key entry in the TextField.
+     *
+     * @param keyEvent A key event
+     */
+    @FXML
     public void addressOnKeyTyped(KeyEvent keyEvent) {
         isAddressFieldValid = isValidTextField((TextField) keyEvent.getSource());
         disableButtonsLogic();
     }
 
+    /**
+     * Validates each key entry in the TextField.
+     *
+     * @param keyEvent A key event
+     */
+    @FXML
     public void postalCodeOnKeyTyped(KeyEvent keyEvent) {
         isPostalCodeFieldValid = isValidTextField((TextField) keyEvent.getSource());
         disableButtonsLogic();
     }
 
+    /**
+     * Validates each key entry in the TextField.
+     *
+     * @param keyEvent A key event
+     */
+    @FXML
     public void phoneNumberOnKeyTyped(KeyEvent keyEvent) {
         isPhoneNumberFieldValid = isValidTextField((TextField) keyEvent.getSource());
         disableButtonsLogic();
     }
 
     /**
-     * Button
+     * Button to clear the form.
      *
-     * @param actionEvent
+     * @param actionEvent Clear Button pressed
      */
+    @FXML
     public void clearFormButtonOnAction(ActionEvent actionEvent) {
         table_view_id.getSelectionModel().clearSelection();
         customer_id_id.clear();
@@ -161,10 +195,12 @@ public class CustomersController implements Initializable {
     }
 
     /**
-     * Button
+     * Button to delete a customer. Only active when a TableView item
+     * is selected.
      *
-     * @param actionEvent
+     * @param actionEvent Delete Button pressed
      */
+    @FXML
     public void deleteCustomerButtonOnAction(ActionEvent actionEvent) {
         if (!table_view_id.getSelectionModel().isEmpty()) {
             Optional<ButtonType> result = Messages
@@ -186,11 +222,12 @@ public class CustomersController implements Initializable {
     }
 
     /**
-     * Button
+     * Button to logout.
      *
-     * @param actionEvent
+     * @param actionEvent Logout Button pressed
      * @throws IOException
      */
+    @FXML
     public void logoutButtonOnAction(ActionEvent actionEvent) throws IOException {
         Optional<ButtonType> result = Messages.confirmationMessage("Logout?", "Confirm logout?");
         if (result.isPresent() && result.get() == ButtonType.OK) {
@@ -199,35 +236,38 @@ public class CustomersController implements Initializable {
     }
 
     /**
-     * Button
+     * Button to switch to the Appointments View.
      *
-     * @param actionEvent
+     * @param actionEvent Appointments Button pressed
      * @throws IOException
      */
+    @FXML
     public void viewAppointmentsButtonOnAction(ActionEvent actionEvent) throws IOException {
         switchView(actionEvent, Main.resourceBundle.getString("appointments_screen"), "Appointments");
     }
 
     /**
-     * Button
+     * Button to switch to the Reports View.
      *
-     * @param actionEvent
+     * @param actionEvent Reports Button pressed
      * @throws IOException
      */
+    @FXML
     public void reportsButtonOnAction(ActionEvent actionEvent) throws IOException {
         switchView(actionEvent, Main.resourceBundle.getString("reports_screen"), "Reports");
     }
 
     /**
-     * Button
+     * Button to save a new customer. If a customer id is provided
+     * (a customer was selected and generates an id) then the save
+     * button updates the existing customer values to those provided.
      *
-     * @param actionEvent
+     * @param actionEvent Save Button pressed
      */
+    @FXML
     public void saveButtonOnAction(ActionEvent actionEvent) {
         boolean isEmptyTableView = table_view_id.getSelectionModel().isEmpty();
         boolean isMissingComboBoxValues = isMissingComboBoxValues();
-        new Test("isEmptyTableView: " + isEmptyTableView);
-        new Test("isMissingComboBoxValues: " + isMissingComboBoxValues);
 
         if (isEmptyTableView) {
             // Save new Customer
@@ -269,7 +309,7 @@ public class CustomersController implements Initializable {
     }
 
     /**
-     * Helper
+     * Helper method to disable or enable buttons.
      *
      * @param isSaveButtonDisabled
      * @param isClearFormButtonDisabled
@@ -282,16 +322,18 @@ public class CustomersController implements Initializable {
     }
 
     /**
-     * Helper
+     * Helper method to populate the TableView with all customers in
+     * the database.
      */
     private void populateTableView() {
         customerObservableList = DBCustomers.getAllCustomers();
         table_view_id.setItems(customerObservableList);
-        table_view_id.refresh(); // not necessary?
+
+        table_view_id.refresh();
     }
 
     /**
-     * Helper
+     * Helper method to logout.
      *
      * @param actionEvent
      * @throws IOException
@@ -301,7 +343,7 @@ public class CustomersController implements Initializable {
     }
 
     /**
-     * Helper
+     * Helper to enable or disable Save, Clear, and Delete buttons.
      */
     private void disableButtonsLogic() {
         if (table_view_id.getSelectionModel().isEmpty()) {
@@ -316,7 +358,8 @@ public class CustomersController implements Initializable {
     }
 
     /**
-     * Helper
+     * Helper method to invalidate all TextFields. Sets the boolean
+     * values of each TextField to false.
      */
     private void invalidateAllTextFields() {
         boolean isValid = false;
@@ -327,11 +370,11 @@ public class CustomersController implements Initializable {
     }
 
     /**
-     * Helper
+     * Helper method to switch Views.
      *
-     * @param actionEvent
-     * @param path
-     * @param title
+     * @param actionEvent The calling Button ActionEvent
+     * @param path        The new View path
+     * @param title       The title of the new View
      * @throws IOException
      */
     private void switchView(ActionEvent actionEvent, String path, String title) throws IOException {
@@ -343,9 +386,10 @@ public class CustomersController implements Initializable {
     }
 
     /**
-     * Validation
+     * Validates whether either Country or Division ComboBoxes have
+     * been selected.
      *
-     * @return
+     * @return Returns false if either ComboBox is unselected.
      */
     private boolean isMissingComboBoxValues() {
         return country_combo_id.getSelectionModel().isEmpty() ||
@@ -353,10 +397,10 @@ public class CustomersController implements Initializable {
     }
 
     /**
-     * Validation
+     * Validates text input in a TextField.
      *
-     * @param textField
-     * @return
+     * @param textField The TextField to be validated
+     * @return Returns false if text input starts with a whitespace
      */
     private boolean isValidTextField(TextField textField) {
         // Can't start with a whitespace and matches 1 or more characters
@@ -365,9 +409,10 @@ public class CustomersController implements Initializable {
     }
 
     /**
-     * Validation
+     * Validates all TextFields.
      *
-     * @return Returns true if valid, false if one or more fields is invalid.
+     * @return Returns true if valid, false if one or more fields is
+     * invalid.
      */
     private boolean allTextFieldsValid() {
         return isCustomerNameFieldValid &&

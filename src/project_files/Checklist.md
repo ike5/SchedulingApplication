@@ -23,8 +23,8 @@
 
 ## Add Javadocs
 
-- [ ] AppointmentsController
-- [ ] CustomersController
+- [x] AppointmentsController
+- [x] CustomersController
 - [ ] LoginController
 - [ ] ModifyAppointmentController
 - [ ] ReportsController

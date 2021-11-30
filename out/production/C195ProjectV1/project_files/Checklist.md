@@ -20,3 +20,40 @@
 # Essential Tests
 
 - [ ] Scheduling after hours (last appt @ 21:45)
+
+## Add Javadocs
+
+- [ ] AppointmentsController
+- [ ] CustomersController
+- [ ] LoginController
+- [ ] ModifyAppointmentController
+- [ ] ReportsController
+- [ ] DBAppointment
+- [ ] DBContacts
+- [ ] DBCountries
+- [ ] DBCustomers
+- [ ] DBDivisions
+- [ ] DBUsers
+- [ ] JDBC
+- [ ] LoginTracker
+- [ ] Main
+- [ ] Appointment
+- [ ] AppointmentSingleton
+- [ ] ComboInterface
+- [ ] Contact
+- [ ] ContactsListSingleton
+- [ ] Country
+- [ ] CountryCombo
+- [ ] CountryListSingleton
+- [ ] Customer
+- [ ] CustomerListSingleton
+- [ ] Division
+- [ ] DivisionCombo
+- [ ] DivisionListSingleton
+- [ ] LocationListSingleton
+- [ ] LogType
+- [ ] Messages
+- [ ] TypeListSingleton
+- [ ] User
+- [ ] UserListSingleton
+- [ ] Utility
