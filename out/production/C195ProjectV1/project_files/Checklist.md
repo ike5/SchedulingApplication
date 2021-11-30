@@ -23,9 +23,9 @@
 
 ## Add Javadocs
 
-- [ ] AppointmentsController
-- [ ] CustomersController
-- [ ] LoginController
+- [x] AppointmentsController
+- [x] CustomersController
+- [x] LoginController
 - [ ] ModifyAppointmentController
 - [ ] ReportsController
 - [ ] DBAppointment

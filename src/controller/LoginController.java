@@ -30,6 +30,9 @@ import java.time.ZonedDateTime;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+/**
+ * This class displays a login form and validates username and password credentials.
+ */
 public class LoginController implements Initializable {
     public Label zone_id;
     public Label language_zone_id;
@@ -43,6 +46,12 @@ public class LoginController implements Initializable {
     public Button login_id;
     private DBUsers dbUsers;
 
+    /**
+     * Initializes Labels and TextFields of login form.
+     *
+     * @param url
+     * @param resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         language_zone_id.setText(Main.resourceBundle.getString("zone_id"));
@@ -52,17 +61,35 @@ public class LoginController implements Initializable {
         login_id.setText(Main.resourceBundle.getString("login_button"));
     }
 
+    /**
+     * Validates each key entry in the TextField.
+     *
+     * @param keyEvent A key event
+     */
     @FXML
     public void onUsernameKeyTyped(KeyEvent keyEvent) {
         stringValidation(validateUsernameString(), username_label_id, username_field_id, "invalid_username_format");
     }
 
+    /**
+     * Validates each key entry in the TextField.
+     *
+     * @param keyEvent A key event
+     */
     @FXML
     public void onPasswordKeyTyped(KeyEvent keyEvent) {
         stringValidation(validatePasswordString(), password_label_id, password_field_id, "invalid_password_format");
 
     }
 
+    /**
+     * Helper method to provide visual error message when username or password is invalid.
+     *
+     * @param isInvalid            Is an invalid username or password
+     * @param label                The label to be changed
+     * @param field                The TextField to have its color changed
+     * @param invalidFormatMessage The invalid message as a resource bundle
+     */
     private void stringValidation(boolean isInvalid, Label label, TextField field, String invalidFormatMessage) {
         if (isInvalid) {
             label.setVisible(false);
@@ -77,12 +104,12 @@ public class LoginController implements Initializable {
     /**
      * This method is triggered when the login button is CLICKED with a mouse.
      *
-     * @param actionEvent
+     * @param actionEvent Login Button is Clicked
      * @throws IOException
      */
     @FXML
     public void onLoginAction(ActionEvent actionEvent) throws IOException {
-        Pair<String, String> usernamePasswordReceived = getUsernamePasswordReceived();
+        getUsernamePasswordReceived(); // move inside changeScreen()
 
         changeScreen(
                 actionEvent,
@@ -92,6 +119,13 @@ public class LoginController implements Initializable {
         );
     }
 
+    /**
+     * Helper method to retrieve the username and password exactly as entered
+     * in the login form. This username and password is then made in a log
+     * entry.
+     *
+     * @return Returns a username and password Pair<String, String> object
+     */
     private Pair<String, String> getUsernamePasswordReceived() {
         dbUsers = new DBUsers(username_field_id.getText(), password_field_id.getText());
         Pair<String, String> usernamePasswordReceived = new Pair<>(username_field_id.getText(), password_field_id.getText());
@@ -100,7 +134,8 @@ public class LoginController implements Initializable {
     }
 
     /**
-     * Typing ENTER while on username TextField calls this method
+     * Typing ENTER while on username TextField calls this method. Logs
+     * user in.
      *
      * @param actionEvent
      * @throws IOException
@@ -111,7 +146,8 @@ public class LoginController implements Initializable {
     }
 
     /**
-     * Typing ENTER while on password TextField triggers this method
+     * Typing ENTER while on password TextField calls this method. Logs
+     * user in.
      *
      * @param actionEvent
      * @throws IOException
@@ -122,13 +158,14 @@ public class LoginController implements Initializable {
     }
 
     /**
-     * Helper
+     * Helper method that logs user in. Can be used in methods that contain
+     * an ActionEvent.
      *
      * @param actionEvent
      * @throws IOException
      */
     private void textFieldLogin(ActionEvent actionEvent) throws IOException {
-        Pair<String, String> usernamePasswordReceived = getUsernamePasswordReceived();
+        getUsernamePasswordReceived();
 
         changeScreen(
                 actionEvent,
