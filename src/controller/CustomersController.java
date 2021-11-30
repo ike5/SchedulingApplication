@@ -120,6 +120,10 @@ public class CustomersController implements Initializable {
         });
     }
 
+    /**
+     *
+     * @param keyEvent
+     */
     public void customerNameOnKeyTyped(KeyEvent keyEvent) {
         isCustomerNameFieldValid = isValidTextField((TextField) keyEvent.getSource());
         disableButtonsLogic();
@@ -201,7 +205,7 @@ public class CustomersController implements Initializable {
      * @throws IOException
      */
     public void viewAppointmentsButtonOnAction(ActionEvent actionEvent) throws IOException {
-        switchView(actionEvent, "/view/Appointments.fxml", "Appointments");
+        switchView(actionEvent, Main.resourceBundle.getString("appointments_screen"), "Appointments");
     }
 
     /**
@@ -211,7 +215,7 @@ public class CustomersController implements Initializable {
      * @throws IOException
      */
     public void reportsButtonOnAction(ActionEvent actionEvent) throws IOException {
-        switchView(actionEvent, "/view/Reports.fxml", "Reports");
+        switchView(actionEvent, Main.resourceBundle.getString("reports_screen"), "Reports");
     }
 
     /**
@@ -293,7 +297,7 @@ public class CustomersController implements Initializable {
      * @throws IOException
      */
     private void logout(ActionEvent actionEvent) throws IOException {
-        switchView(actionEvent, "/view/LoginScreen.fxml", "login");
+        switchView(actionEvent, Main.resourceBundle.getString("login_screen"), "login");
     }
 
     /**

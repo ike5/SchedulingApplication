@@ -133,7 +133,7 @@ public class LoginController implements Initializable {
         changeScreen(
                 actionEvent,
                 dbUsers,
-                FXMLLoader.load(getClass().getResource(Main.resourceBundle.getString("customer_screen"))),
+                FXMLLoader.load(getClass().getResource(Main.resourceBundle.getString("customers_screen"))),
                 aEvent -> (Stage) ((TextField) aEvent.getSource()).getScene().getWindow());
     }
 
