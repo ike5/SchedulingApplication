@@ -3,6 +3,10 @@ package data;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
+/**
+ * @author Ike Maldonado
+ * @version 1.0
+ */
 public class JDBC {
     private static final String protocol = "jdbc";
     private static final String vendor = ":mysql:";

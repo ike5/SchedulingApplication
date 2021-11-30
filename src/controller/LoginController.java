@@ -32,6 +32,9 @@ import java.util.ResourceBundle;
 
 /**
  * This class displays a login form and validates username and password credentials.
+ *
+ * @author Ike Maldonado
+ * @version 1.0
  */
 public class LoginController implements Initializable {
     public Label zone_id;
@@ -120,20 +123,6 @@ public class LoginController implements Initializable {
     }
 
     /**
-     * Helper method to retrieve the username and password exactly as entered
-     * in the login form. This username and password is then made in a log
-     * entry.
-     *
-     * @return Returns a username and password Pair<String, String> object
-     */
-    private Pair<String, String> getUsernamePasswordReceived() {
-        dbUsers = new DBUsers(username_field_id.getText(), password_field_id.getText());
-        Pair<String, String> usernamePasswordReceived = new Pair<>(username_field_id.getText(), password_field_id.getText());
-        makeLogEntry(usernamePasswordReceived);
-        return usernamePasswordReceived;
-    }
-
-    /**
      * Typing ENTER while on username TextField calls this method. Logs
      * user in.
      *
@@ -155,6 +144,20 @@ public class LoginController implements Initializable {
     @FXML
     public void passwordOnAction(ActionEvent actionEvent) throws IOException {
         textFieldLogin(actionEvent);
+    }
+
+    /**
+     * Helper method to retrieve the username and password exactly as entered
+     * in the login form. This username and password is then made in a log
+     * entry.
+     *
+     * @return Returns a username and password Pair<String, String> object
+     */
+    private Pair<String, String> getUsernamePasswordReceived() {
+        dbUsers = new DBUsers(username_field_id.getText(), password_field_id.getText());
+        Pair<String, String> usernamePasswordReceived = new Pair<>(username_field_id.getText(), password_field_id.getText());
+        makeLogEntry(usernamePasswordReceived);
+        return usernamePasswordReceived;
     }
 
     /**

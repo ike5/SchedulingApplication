@@ -11,6 +11,10 @@ import test.Test;
 
 import java.sql.*;
 
+/**
+ * @author Ike Maldonado
+ * @version 1.0
+ */
 public class DBCustomers {
 
     /**

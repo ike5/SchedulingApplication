@@ -13,6 +13,9 @@ import java.sql.SQLException;
  * The purpose of this class is to work with the first_level_divisions database table. There are only
  * 3 countries but there are 68 total divisions set up for this application. The functionality of this
  * class should be READ ONLY.
+ *
+ * @author Ike Maldonado
+ * @version 1.0
  */
 public class DBDivisions {
 

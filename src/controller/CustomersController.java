@@ -34,6 +34,9 @@ import java.util.ResourceBundle;
 /**
  * This class displays all customers to the user. New customers can be added and existing customers can
  * be modified and saved to the database.
+ *
+ * @author Ike Maldonado
+ * @version 1.0
  */
 public class CustomersController implements Initializable {
     public TextField customer_id_id;

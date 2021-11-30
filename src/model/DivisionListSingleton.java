@@ -1,7 +1,10 @@
 package model;
 
 import javafx.collections.ObservableList;
-
+/**
+ * @author Ike Maldonado
+ * @version 1.0
+ */
 public final class DivisionListSingleton {
     private ObservableList<Division> divisionObservableList;
 

@@ -11,6 +11,9 @@ import java.sql.SQLException;
 /**
  * This class must be instantiated in order to use the methods. The reason behind this is that a static User object can
  * then be referred to throughout the lifecycle of the program.
+ *
+ * @author Ike Maldonado
+ * @version 1.0
  */
 public class DBUsers {
     private final String providedPassword;

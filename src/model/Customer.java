@@ -6,6 +6,9 @@ import main.Main;
 
 /**
  * Rules: A customer cannot be made without a first_level_division and country
+ *
+ * @author Ike Maldonado
+ * @version 1.0
  */
 public class Customer {
     private final int id;

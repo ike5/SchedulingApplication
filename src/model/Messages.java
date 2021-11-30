@@ -4,7 +4,10 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 
 import java.util.Optional;
-
+/**
+ * @author Ike Maldonado
+ * @version 1.0
+ */
 public class Messages {
     public static void errorMessage(String message, String title) {
         Alert alert = new Alert(Alert.AlertType.ERROR, message);

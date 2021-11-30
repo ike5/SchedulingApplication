@@ -3,7 +3,10 @@ package model;
 import data.DBDivisions;
 import javafx.scene.control.ComboBox;
 import test.Test;
-
+/**
+ * @author Ike Maldonado
+ * @version 1.0
+ */
 public class DivisionCombo implements ComboInterface {
 
     @Override

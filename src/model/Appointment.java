@@ -9,7 +9,8 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
 /**
- *
+ * @author Ike Maldonado
+ * @version 1.0
  */
 public class Appointment {
     // Everything except title and location can be null

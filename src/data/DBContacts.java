@@ -9,6 +9,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * @author Ike Maldonado
+ * @version 1.0
+ */
 public class DBContacts {
     /**
      * Returns an ObservableList<Contact> object of all contacts listed in the contacts database table.

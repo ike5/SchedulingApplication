@@ -1,5 +1,8 @@
 package model;
-
+/**
+ * @author Ike Maldonado
+ * @version 1.0
+ */
 public class Country {
     private final int countryId;
     private final String name;

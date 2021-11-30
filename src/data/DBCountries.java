@@ -12,7 +12,8 @@ import java.sql.Timestamp;
 
 
 /**
- * This class doesn't have any constraints.
+ * @author Ike Maldonado
+ * @version 1.0
  */
 public class DBCountries {
 

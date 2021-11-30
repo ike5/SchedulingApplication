@@ -2,7 +2,10 @@ package model;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
+/**
+ * @author Ike Maldonado
+ * @version 1.0
+ */
 public final class LocationListSingleton {
     private ObservableList<String> locationObservableList;
 

@@ -4,6 +4,9 @@ import javafx.collections.ObservableList;
 
 /**
  * This class is used for holding an all listed customers in the database.
+ *
+ * @author Ike Maldonado
+ * @version 1.0
  */
 public final class CustomerListSingleton {
     private ObservableList<Customer> customerObservableList;

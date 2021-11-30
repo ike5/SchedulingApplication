@@ -1,7 +1,9 @@
 package model;
 
-import data.DBDivisions;
-
+/**
+ * @author Ike Maldonado
+ * @version 1.0
+ */
 public class Division {
     private final int divisionId;
     private final String divisionName;

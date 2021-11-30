@@ -24,6 +24,9 @@ import java.util.ResourceBundle;
 /**
  * This class displays appointments to the user by either month, week, or all time. New appointments can be added,
  * and existing appointments can be modified.
+ *
+ * @author Ike Maldonado
+ * @version 1.0
  */
 public class AppointmentsController implements Initializable {
     public TableView table_view_id;

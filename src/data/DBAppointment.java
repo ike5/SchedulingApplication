@@ -14,6 +14,10 @@ import java.sql.*;
 import java.time.*;
 import java.util.*;
 
+/**
+ * @author Ike Maldonado
+ * @version 1.0
+ */
 public class DBAppointment {
     public static ObservableList<Appointment> getAllAppointments() {
         ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();

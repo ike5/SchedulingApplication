@@ -4,6 +4,9 @@ import javafx.collections.ObservableList;
 
 /**
  * This class is used for holding a list of all users.
+ *
+ * @author Ike Maldonado
+ * @version 1.0
  */
 public final class UserListSingleton {
     private ObservableList<User> userObservableList;

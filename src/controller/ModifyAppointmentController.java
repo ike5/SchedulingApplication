@@ -25,6 +25,9 @@ import java.util.ResourceBundle;
 
 /**
  * This class is used to modify existing appointments and create new appointments.
+ *
+ * @author Ike Maldonado
+ * @version 1.0
  */
 public class ModifyAppointmentController implements Initializable {
     public ComboBox type_combo;
@@ -129,6 +132,93 @@ public class ModifyAppointmentController implements Initializable {
     }
 
     /**
+     * Button to go back to the Appointments View.
+     *
+     * @param actionEvent Back Button pressed
+     * @throws IOException
+     */
+    @FXML
+    public void cancelButtonOnAction(ActionEvent actionEvent) throws IOException {
+        Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
+        Parent scene = FXMLLoader.load(getClass().getResource(Main.resourceBundle.getString("appointments_screen")));
+        stage.setTitle("Appointments");
+        stage.setScene(new Scene(scene));
+        stage.show();
+    }
+
+    /**
+     * Button to clear all TextFields
+     *
+     * @param actionEvent Clear Button pressed
+     */
+    @FXML
+    public void clearButtonOnAction(ActionEvent actionEvent) {
+        onClear(actionEvent);
+    }
+
+    /**
+     * Button to save a new or updated appointment.
+     *
+     * @param actionEvent
+     * @throws IOException
+     */
+    @FXML
+    public void saveButtonOnAction(ActionEvent actionEvent) throws IOException {
+        Appointment appointment = AppointmentSingleton.getInstance().getAppointment();
+
+        if (isMissingValue()) {
+            Messages.confirmationMessage(String.valueOf(errorMessage()), "Missing value");
+        } else if (isWeekend()) {
+            Messages.errorMessage("Cannot schedule outside of business hours", "Schedule Error");
+        } else {
+            if (appointment == null) { // If user clicked 'New Appointment' from AppointmentsController,
+                if (isOverlapping(null)) {
+                    Messages.errorMessage("Appointment overlaps", "Schedule Error");
+                } else {
+                    Optional<ButtonType> result = Messages.confirmationMessage("Create new appointment?", "Confirm");
+                    if (result.isPresent() && (result.get() == ButtonType.OK)) {
+                        DBAppointment.insertAppointment(
+                                title_textfield.getText(),
+                                description_textfield.getText(),
+                                (String) location_combo.getValue(),
+                                (String) type_combo.getValue(),
+                                LocalDateTime.of(start_date_picker.getValue(), (LocalTime) start_combo.getSelectionModel().getSelectedItem()),
+                                LocalDateTime.of(start_date_picker.getValue(), (LocalTime) end_combo.getSelectionModel().getSelectedItem()),
+                                ((Customer) customer_combo.getValue()),
+                                ((User) user_combo.getValue()),
+                                ((Contact) contact_combo.getValue())
+                        );
+
+                        switchView(actionEvent, Main.resourceBundle.getString("appointments_screen"), "Appointments");
+                    }
+                }
+            } else {
+                if (isOverlapping(appointment)) {
+                    Messages.errorMessage("Appointment overlaps", "Schedule Error");
+                } else {
+                    Optional<ButtonType> result = Messages.confirmationMessage("Save changes?", "Confirm");
+                    if (result.isPresent() && (result.get() == ButtonType.OK)) {
+                        DBAppointment.updateAppointment(
+                                AppointmentSingleton.getInstance().getAppointment().getAppointmentId(),
+                                title_textfield.getText(),
+                                description_textfield.getText(),
+                                (String) location_combo.getValue(),
+                                (String) type_combo.getValue(),
+                                LocalDateTime.of(start_date_picker.getValue(), (LocalTime) start_combo.getSelectionModel().getSelectedItem()),
+                                LocalDateTime.of(start_date_picker.getValue(), (LocalTime) end_combo.getSelectionModel().getSelectedItem()),
+                                ((Customer) customer_combo.getValue()),
+                                ((User) user_combo.getValue()),
+                                ((Contact) contact_combo.getValue())
+                        );
+
+                        switchView(actionEvent, Main.resourceBundle.getString("appointments_screen"), "Appointments");
+                    }
+                }
+            }
+        }
+    }
+
+    /**
      * Helper method to pre-populate ComboBoxes when user is
      * updating an appointment.
      *
@@ -218,31 +308,6 @@ public class ModifyAppointmentController implements Initializable {
                 zonedStartDateTime.getDayOfWeek().equals(DayOfWeek.SUNDAY);
     }
 
-    /**
-     * Button to go back to the Appointments View.
-     *
-     * @param actionEvent Back Button pressed
-     * @throws IOException
-     */
-    @FXML
-    public void cancelButtonOnAction(ActionEvent actionEvent) throws IOException {
-        Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
-        Parent scene = FXMLLoader.load(getClass().getResource(Main.resourceBundle.getString("appointments_screen")));
-        stage.setTitle("Appointments");
-        stage.setScene(new Scene(scene));
-        stage.show();
-    }
-
-
-    /**
-     * Button to clear all TextFields
-     *
-     * @param actionEvent Clear Button pressed
-     */
-    @FXML
-    public void clearButtonOnAction(ActionEvent actionEvent) {
-        onClear(actionEvent);
-    }
 
     /**
      * Helper method that checks whether the provided appointment
@@ -301,68 +366,6 @@ public class ModifyAppointmentController implements Initializable {
         }
 
         return overlap;
-    }
-
-    /**
-     * Button to save a new or updated appointment.
-     *
-     * @param actionEvent
-     * @throws IOException
-     */
-    @FXML
-    public void saveButtonOnAction(ActionEvent actionEvent) throws IOException {
-        Appointment appointment = AppointmentSingleton.getInstance().getAppointment();
-
-        if (isMissingValue()) {
-            Messages.confirmationMessage(String.valueOf(errorMessage()), "Missing value");
-        } else if (isWeekend()) {
-            Messages.errorMessage("Cannot schedule outside of business hours", "Schedule Error");
-        } else {
-            if (appointment == null) { // If user clicked 'New Appointment' from AppointmentsController,
-                if (isOverlapping(null)) {
-                    Messages.errorMessage("Appointment overlaps", "Schedule Error");
-                } else {
-                    Optional<ButtonType> result = Messages.confirmationMessage("Create new appointment?", "Confirm");
-                    if (result.isPresent() && (result.get() == ButtonType.OK)) {
-                        DBAppointment.insertAppointment(
-                                title_textfield.getText(),
-                                description_textfield.getText(),
-                                (String) location_combo.getValue(),
-                                (String) type_combo.getValue(),
-                                LocalDateTime.of(start_date_picker.getValue(), (LocalTime) start_combo.getSelectionModel().getSelectedItem()),
-                                LocalDateTime.of(start_date_picker.getValue(), (LocalTime) end_combo.getSelectionModel().getSelectedItem()),
-                                ((Customer) customer_combo.getValue()),
-                                ((User) user_combo.getValue()),
-                                ((Contact) contact_combo.getValue())
-                        );
-
-                        switchView(actionEvent, Main.resourceBundle.getString("appointments_screen"), "Appointments");
-                    }
-                }
-            } else {
-                if (isOverlapping(appointment)) {
-                    Messages.errorMessage("Appointment overlaps", "Schedule Error");
-                } else {
-                    Optional<ButtonType> result = Messages.confirmationMessage("Save changes?", "Confirm");
-                    if (result.isPresent() && (result.get() == ButtonType.OK)) {
-                        DBAppointment.updateAppointment(
-                                AppointmentSingleton.getInstance().getAppointment().getAppointmentId(),
-                                title_textfield.getText(),
-                                description_textfield.getText(),
-                                (String) location_combo.getValue(),
-                                (String) type_combo.getValue(),
-                                LocalDateTime.of(start_date_picker.getValue(), (LocalTime) start_combo.getSelectionModel().getSelectedItem()),
-                                LocalDateTime.of(start_date_picker.getValue(), (LocalTime) end_combo.getSelectionModel().getSelectedItem()),
-                                ((Customer) customer_combo.getValue()),
-                                ((User) user_combo.getValue()),
-                                ((Contact) contact_combo.getValue())
-                        );
-
-                        switchView(actionEvent, Main.resourceBundle.getString("appointments_screen"), "Appointments");
-                    }
-                }
-            }
-        }
     }
 
     /**

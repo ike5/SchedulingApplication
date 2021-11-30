@@ -2,7 +2,10 @@ package model;
 
 import data.DBCountries;
 import javafx.scene.control.ComboBox;
-
+/**
+ * @author Ike Maldonado
+ * @version 1.0
+ */
 public class CountryCombo implements ComboInterface {
     ComboBox<Country> country_combo_id = new ComboBox<>();
 

@@ -1,5 +1,8 @@
 package model;
-
+/**
+ * @author Ike Maldonado
+ * @version 1.0
+ */
 public class Contact {
     private int contactId;
     private  String contactName;

@@ -11,6 +11,10 @@ import java.sql.SQLException;
 import java.time.ZonedDateTime;
 import java.util.Locale;
 
+/**
+ * @author Ike Maldonado
+ * @version 1.0
+ */
 public @interface Utility {
     @FunctionalInterface
     interface FunctionalChangeScreenInterface {

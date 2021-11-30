@@ -26,6 +26,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+/**
+ * @author Ike Maldonado
+ * @version 1.0
+ */
 public class ReportsController implements Initializable {
 
     public TableView contact_table_view;

@@ -7,6 +7,10 @@ import java.nio.file.*;
 
 import java.util.List;
 
+/**
+ * @author Ike Maldonado
+ * @version 1.0
+ */
 public class LoginTracker {
 
     /**
