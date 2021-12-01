@@ -15,7 +15,7 @@ import java.time.*;
 import java.util.*;
 
 /**
- * This class makes provides CRUD functionality for appointments.
+ * This class makes provides CRUD functionality for appointments database table.
  *
  * @author Ike Maldonado
  * @version 1.0

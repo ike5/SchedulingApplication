@@ -10,20 +10,25 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
+ * This class provides READ functionality for the contacts database table.
+ *
  * @author Ike Maldonado
  * @version 1.0
  */
 public class DBContacts {
     /**
-     * Returns an ObservableList<Contact> object of all contacts listed in the contacts database table.
+     * Returns an ObservableList<Contact> object of all contacts listed in
+     * the contacts database table.
      *
-     * @return
+     * @return ObservableList<Contact> object
      */
     public static ObservableList<Contact> getAllContacts() {
         ObservableList<Contact> contactObservableList = FXCollections.observableArrayList();
+
         String sql = "SELECT * FROM contacts";
         try {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+
             ResultSet resultSet = ps.executeQuery();
 
             while (resultSet.next()) {
@@ -32,6 +37,7 @@ public class DBContacts {
                         resultSet.getString("Contact_Name"),
                         resultSet.getString("Email")
                 );
+
                 contactObservableList.add(contact);
             }
         } catch (SQLException throwables) {
@@ -40,8 +46,14 @@ public class DBContacts {
         return contactObservableList;
     }
 
+    /**
+     * Helper method that counts total number of contacts.
+     *
+     * @return An Integer representing number of counted Contacts objects.
+     */
     public static Integer getTotalNumberOfContacts() {
         Integer counter = 0;
+
         for (Contact c : getAllContacts()) {
             counter++;
         }
@@ -50,6 +62,8 @@ public class DBContacts {
     }
 
     /**
+     * Returns a Contact object provided a contact id.
+     *
      * @param contactId The contact ID
      * @return ResultSet object of the contact requested
      */
@@ -58,6 +72,7 @@ public class DBContacts {
         Contact contact = null;
         try {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+
             ResultSet resultSet = ps.executeQuery();
 
             while (resultSet.next()) {

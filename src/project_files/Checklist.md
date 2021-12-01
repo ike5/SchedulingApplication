@@ -1,19 +1,20 @@
 # Priority Checklist
 
 --- 
+
 ## High
 
-
-
 ## Medium
+
 - [ ] Fix Alert within 15 minutes
 
 ## Low
+
 - [ ] Ensure 2 Lambda expressions
 - [ ] Add Javadocs annotations
 - [ ] Create Javadocs
 - [ ] Finish README.txt
-- [ ] Change README.md --> README.txt 
+- [ ] Change README.md --> README.txt
 
 ---
 
@@ -29,7 +30,7 @@
 - [x] ModifyAppointmentController
 - [x] ReportsController
 - [x] DBAppointment
-- [ ] DBContacts
+- [x] DBContacts
 - [ ] DBCountries
 - [ ] DBCustomers
 - [ ] DBDivisions
