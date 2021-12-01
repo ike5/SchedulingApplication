@@ -12,28 +12,12 @@ import java.sql.Timestamp;
 
 
 /**
+ * This class provides READ functionality to the countries database table.
+ *
  * @author Ike Maldonado
  * @version 1.0
  */
 public class DBCountries {
-
-    /**
-     * Returns the ResultSet object of Countries. Since countries doesn't have a constraint, it is okay to implement
-     * this method.
-     *
-     * @return ResultSet object
-     */
-    public static ResultSet getAllCountriesResultSet() {
-        try {
-            String sql = "SELECT * FROM countries";
-
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
-            return ps.executeQuery();
-        } catch (SQLException throwable) {
-            throwable.printStackTrace();
-        }
-        return null;
-    }
 
     /**
      * Returns an ObservableList<Country> object. Since the countries table does not have any constraints,
@@ -44,7 +28,6 @@ public class DBCountries {
     public static ObservableList<Country> getAllCountries() {
         ObservableList<Country> countryObservableList = FXCollections.observableArrayList();
         try {
-            // Get the ResultSet object from helper method
             ResultSet resultSet = getAllCountriesResultSet();
 
             while (resultSet.next()) {
@@ -58,5 +41,23 @@ public class DBCountries {
             throwable.printStackTrace();
         }
         return countryObservableList;
+    }
+
+    /**
+     * Helper method that returns the ResultSet object of countries.
+     *
+     * @return ResultSet object of countries. If no countries, returns null.
+     */
+    public static ResultSet getAllCountriesResultSet() {
+        try {
+            String sql = "SELECT * FROM countries";
+
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+
+            return ps.executeQuery();
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
+        return null;
     }
 }

@@ -31,7 +31,7 @@
 - [x] ReportsController
 - [x] DBAppointment
 - [x] DBContacts
-- [ ] DBCountries
+- [x] DBCountries
 - [ ] DBCustomers
 - [ ] DBDivisions
 - [ ] DBUsers
