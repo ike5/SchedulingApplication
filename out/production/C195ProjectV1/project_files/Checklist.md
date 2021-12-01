@@ -33,7 +33,7 @@
 - [x] DBContacts
 - [x] DBCountries
 - [x] DBCustomers
-- [ ] DBDivisions
+- [x] DBDivisions
 - [ ] DBUsers
 - [ ] JDBC
 - [ ] LoginTracker

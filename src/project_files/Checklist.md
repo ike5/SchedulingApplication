@@ -34,7 +34,7 @@
 - [x] DBCountries
 - [x] DBCustomers
 - [x] DBDivisions
-- [ ] DBUsers
+- [x] DBUsers
 - [ ] JDBC
 - [ ] LoginTracker
 - [ ] Main

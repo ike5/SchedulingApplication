@@ -9,8 +9,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * This class must be instantiated in order to use the methods. The reason behind this is that a static User object can
- * then be referred to throughout the lifecycle of the program.
+ * This class provides CRUD functionality to the users database table. While
+ * creating a new user in the database is not necessarily permitted, a User
+ * object will be created when this class is instantiated. This User class
+ * is used throughout the program to represent the credentials of the person
+ * using the application.
  *
  * @author Ike Maldonado
  * @version 1.0
@@ -25,12 +28,18 @@ public class DBUsers {
         validateUsernamePassword(); //Sets User object's isValidUsername and isValidPassword values
     }
 
+    /**
+     * Returns an ObservableList of all users in the database table.
+     *
+     * @return ObservableList<User> object or null if none.
+     */
     public static ObservableList<User> getAllUsers() {
         ObservableList<User> userObservableList = FXCollections.observableArrayList();
 
         String sql = "SELECT User_ID, User_Name, Password FROM users";
         try {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+
             ResultSet resultSet = ps.executeQuery();
 
             while (resultSet.next()) {
@@ -41,17 +50,22 @@ public class DBUsers {
                 );
                 userObservableList.add(user);
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return userObservableList;
     }
 
+    /**
+     * Helper method that validates a user's username and password. This
+     * method sets the {@link #user} variable.
+     */
     private void validateUsernamePassword() {
         String sql = "SELECT User_ID, User_Name, Password FROM users WHERE User_Name = ?";
         try {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ps.setString(1, user.getUsername());
+
             ResultSet resultSet = ps.executeQuery();
 
             // if a ResultSet row exists, then the provided User_Name exists
@@ -72,12 +86,20 @@ public class DBUsers {
     }
 
 
+    /**
+     * Returns a User object provided a user id.
+     *
+     * @param userId An int representing the user id
+     * @return Returns a User object
+     */
     public static User getUser(int userId) {
-        String sql = "SELECT User_ID, User_Name, Password FROM users WHERE User_ID = ?";
         User user = null;
+
+        String sql = "SELECT User_ID, User_Name, Password FROM users WHERE User_ID = ?";
         try {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ps.setInt(1, userId);
+
             ResultSet resultSet = ps.executeQuery();
 
             while (resultSet.next()) {
@@ -89,8 +111,8 @@ public class DBUsers {
                 user.setValidUsername(true);
                 user.setValidPassword(true);
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return user;
     }
