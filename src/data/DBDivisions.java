@@ -10,9 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * The purpose of this class is to work with the first_level_divisions database table. There are only
- * 3 countries but there are 68 total divisions set up for this application. The functionality of this
- * class should be READ ONLY.
+ * This class provides READ functionality to the first_level_divisions database table.
  *
  * @author Ike Maldonado
  * @version 1.0
@@ -25,6 +23,8 @@ public class DBDivisions {
      * @return A ResultSet object containing all listed Division_ID, Divisions related to the Country ID.
      */
     public static ObservableList<Division> getDivisions(int countryId) {
+        ObservableList<Division> divisionObservableList = FXCollections.observableArrayList();
+
         String sql = "SELECT client_schedule.first_level_divisions.Division_ID,\n" +
                 "       client_schedule.first_level_divisions.Division,\n" +
                 "       client_schedule.countries.Country_ID,\n" +
@@ -32,7 +32,6 @@ public class DBDivisions {
                 "FROM countries, first_level_divisions\n" +
                 "WHERE (client_schedule.first_level_divisions.COUNTRY_ID = client_schedule.countries.Country_ID)\n" +
                 "AND (client_schedule.countries.Country_ID = ?);";
-        ObservableList<Division> divisionObservableList = FXCollections.observableArrayList();
         try {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ps.setInt(1, countryId);
@@ -60,13 +59,14 @@ public class DBDivisions {
      * @return Returns an ObservableList<Division>
      */
     public static ObservableList<Division> getAllFirstLevelDivisions() {
+        ObservableList<Division> divisionObservableList = FXCollections.observableArrayList();
+
         String sql = "SELECT client_schedule.first_level_divisions.Division_ID,\n" +
                 "       client_schedule.first_level_divisions.Division,\n" +
                 "       client_schedule.countries.Country_ID,\n" +
                 "       client_schedule.countries.Country\n" +
                 "FROM countries, first_level_divisions\n" +
                 "WHERE (client_schedule.first_level_divisions.COUNTRY_ID = client_schedule.countries.Country_ID);";
-        ObservableList<Division> divisionObservableList = FXCollections.observableArrayList();
         try {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
 
