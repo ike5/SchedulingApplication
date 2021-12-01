@@ -28,6 +28,7 @@ public class DBAppointment {
      */
     public static ObservableList<Appointment> getAllAppointments() {
         ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
+
         String sql = "SELECT Appointment_ID, Title, Description, Location, Type, Start, End, Customer_ID, User_ID, Contact_ID FROM appointments";
         try {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
@@ -57,7 +58,7 @@ public class DBAppointment {
     }
 
     /**
-     * Inserts an appointment into the database.
+     * Inserts an appointment into the appointments database table.
      *
      * @param appointmentTitle       A String appointment title
      * @param appointmentDescription A String appointment description
@@ -87,7 +88,6 @@ public class DBAppointment {
             ps.setInt(11, contact.getContactId());
 
             ps.execute();
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -126,6 +126,7 @@ public class DBAppointment {
      */
     public static Integer getNumberOfAppointmentsByType(String type) {
         Integer numberOfAppointments = 0;
+
         String sql = "SELECT COUNT(Appointment_ID) AS NumberOfAppointments FROM appointments WHERE Type = ?";
         try {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
@@ -133,6 +134,7 @@ public class DBAppointment {
 
             ResultSet resultSet = ps.executeQuery();
             resultSet.next();
+
             numberOfAppointments = resultSet.getInt(1);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -140,6 +142,15 @@ public class DBAppointment {
         return numberOfAppointments;
     }
 
+    /**
+     * Returns the total number of appointments that are in the same month
+     * and are of the same type.
+     *
+     * @param month A Month enum
+     * @param type  A String type of appointment
+     * @return Returns an Integer representing the total number of
+     * appointments in specified month of specified type.
+     */
     public static Integer getNumberOfAppointmentsByMonthAndType(Month month, String type) {
         Integer numberOfAppointments = 0;
 
@@ -148,23 +159,30 @@ public class DBAppointment {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ps.setInt(1, month.getValue());
             ps.setString(2, type);
+
             ResultSet resultSet = ps.executeQuery();
-
             resultSet.next();
-            numberOfAppointments = resultSet.getInt(1);
 
+            numberOfAppointments = resultSet.getInt(1);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
         return numberOfAppointments;
     }
 
+    /**
+     * Returns an ObservableList of all appointments in a specified month.
+     *
+     * @return ObservableList<Appointment>
+     */
     public static ObservableList<Appointment> getAllAppointmentsInMonth() {
-        String sql = "SELECT * FROM appointments WHERE Start >= ?;";
         ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
+
+        String sql = "SELECT * FROM appointments WHERE Start >= ?";
         try {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ps.setTimestamp(1, Timestamp.valueOf(LocalDateTime.now().minusMonths(1)));
+
             ResultSet resultSet = ps.executeQuery();
 
             addToAppointmentList(appointmentList, resultSet);
@@ -174,12 +192,19 @@ public class DBAppointment {
         return appointmentList;
     }
 
+    /**
+     * Returns an ObservableList of all appointments in specified week.
+     *
+     * @return ObservableList<Appointment>
+     */
     public static ObservableList<Appointment> getAllAppointmentsInWeek() {
-        String sql = "SELECT * FROM appointments WHERE Start >= ?;";
+        String sql = "SELECT * FROM appointments WHERE Start >= ?";
+
         ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
         try {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ps.setTimestamp(1, Timestamp.valueOf(LocalDateTime.now().minusDays(7)));
+
             ResultSet resultSet = ps.executeQuery();
 
             addToAppointmentList(appointmentList, resultSet);
@@ -189,6 +214,13 @@ public class DBAppointment {
         return appointmentList;
     }
 
+    /**
+     * Returns a List of all appointments belonging to a specified
+     * customer.
+     *
+     * @param customerId An int value representing a specified customer
+     * @return Returns a List<Appointment>
+     */
     public static List<Appointment> getAllAppointmentsByCustomerId(int customerId) {
         List<Appointment> appointmentList = new ArrayList<>();
         String sql = "SELECT * FROM appointments WHERE Customer_ID = ?";
@@ -205,6 +237,14 @@ public class DBAppointment {
         return appointmentList;
     }
 
+    /**
+     * Helper method to add to a specified List<Appointment> object. For
+     * use when retrieving multiple items from the appointments database.
+     *
+     * @param appointmentList Takes a list of appoint
+     * @param resultSet       The ResultSet database object retrieved.
+     * @throws SQLException
+     */
     private static void addToAppointmentList(List<Appointment> appointmentList, ResultSet resultSet) throws SQLException {
         while (resultSet.next()) {
             Timestamp ts_start = resultSet.getTimestamp("Start");
@@ -230,6 +270,20 @@ public class DBAppointment {
         }
     }
 
+    /**
+     * This method executes updates on the appointments table.
+     *
+     * @param appointmentId          An int appointment id to make the update on
+     * @param appointmentTitle       A String appointment title
+     * @param appointmentDescription A String appointment description
+     * @param appointmentLocation    A String appointment location
+     * @param appointmentType        A String appointment type
+     * @param start                  The start time of the appointment as a LocalDateTime
+     * @param end                    The end time of the appointment as a LocalDateTime
+     * @param customer               A Customer object
+     * @param user                   A User object
+     * @param contact                A Contact object
+     */
     public static void updateAppointment(int appointmentId, String appointmentTitle, String appointmentDescription, String appointmentLocation, String appointmentType, LocalDateTime start, LocalDateTime end, Customer customer, User user, Contact contact) {
         String sql = "UPDATE appointments Set Title = ?, Description = ?, Location = ?, Type = ?, Start = ?, End = ?, Last_Update = CURRENT_TIMESTAMP, Last_Updated_By = ?, Customer_ID = ?, User_ID = ?, Contact_ID = ? WHERE Appointment_ID = ?";
         try {
@@ -253,70 +307,100 @@ public class DBAppointment {
     }
 
     /**
-     * @param appointmentId
+     * This method deletes an appointment from the database table provided
+     * an appointmentId that exists.
+     *
+     * @param appointmentId An int appointment id
      * @return Returns true if delete is successful.
      */
     public static boolean deleteAppointment(int appointmentId) {
-        boolean flag = false;
+        boolean isDeleted = false;
+
         String sql = "DELETE FROM appointments WHERE Appointment_ID = ?";
         try {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ps.setInt(1, appointmentId);
+
             ps.executeUpdate();
-            flag = true;
+
+            isDeleted = true;
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        return flag;
+        return isDeleted;
     }
 
+    /**
+     * Returns an ObservableList of appointments where a specified Contact
+     * object is provided.
+     *
+     * @param contact A specified Contact object
+     * @return ObservableList<Appointment>
+     */
     public static ObservableList<Appointment> getAppointmentListFromContact(Contact contact) {
         ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
+
         String sql = "SELECT * FROM appointments WHERE Contact_ID = ?";
         try {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ps.setInt(1, contact.getContactId());
+
             ResultSet resultSet = ps.executeQuery();
 
             addToAppointmentList(appointmentList, resultSet);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return appointmentList;
     }
 
+    /**
+     * This method checks for upcoming appointments within the next 15
+     * minutes belonging to the user logged in.
+     *
+     * @return Returns a Pair whose boolean value is true if an appointment
+     * exists in the next 15 minutes and, if so, provides another Pair object
+     * of the upcoming appointment time and id. Otherwise, returns false
+     * and null.
+     */
     public static Pair<Boolean, Pair<LocalDateTime, Integer>> checkUpcomingAppointments() {
-        List<Pair<LocalDateTime, Integer>> localDateTimeList = new ArrayList<>();
-        Pair<Boolean, Pair<LocalDateTime, Integer>> upcomingAppt = null;
+        List<Pair<LocalDateTime, Integer>> localDateTimeAppointmentIdList = new ArrayList<>();
+        Pair<Boolean, Pair<LocalDateTime, Integer>> upcomingAppointment = null;
 
         String sql = "SELECT Appointment_ID, Start FROM appointments WHERE User_ID = ?";
         try {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ps.setInt(1, Main.user.getUserId());
+
             ResultSet resultSet = ps.executeQuery();
 
             while (resultSet.next()) {
                 // Retrieve appointment start time from database
-                localDateTimeList.add(new Pair(resultSet.getTimestamp(2).toLocalDateTime(), resultSet.getInt(1)));
+                localDateTimeAppointmentIdList.add(
+                        new Pair(resultSet.getTimestamp(2).toLocalDateTime(), resultSet.getInt(1))
+                );
             }
 
             // Create a duration of 15 minutes
             Duration duration = Duration.ofMinutes(15);
+
             // Get current time
             ZonedDateTime currentTime = ZonedDateTime.now();
 
-            for (Pair<LocalDateTime, Integer> l : localDateTimeList) {
-                // Convert to zoned datetime matching user zone
-                ZonedDateTime zonedDateTime = ZonedDateTime.of(l.getKey(), ZoneId.systemDefault());
+            // Iterate through all LocalDateTime and AppointmentID retrieved from database and see
+            // if there are any appointments within 15 minutes of current time.
+            for (Pair<LocalDateTime, Integer> timeAppointmentIdPair : localDateTimeAppointmentIdList) {
 
-                if (zonedDateTime.isAfter(currentTime) &&
-                        zonedDateTime.isBefore(currentTime.plusMinutes(duration.toMinutes()))) {
-                    upcomingAppt = new Pair<>(Boolean.TRUE, l);
+                // Convert to zoned datetime matching user zone
+                ZonedDateTime zonedDateTime = ZonedDateTime.of(timeAppointmentIdPair.getKey(), ZoneId.systemDefault());
+
+                if (zonedDateTime.isAfter(currentTime) && zonedDateTime.isBefore(currentTime.plusMinutes(duration.toMinutes()))) {
+                    upcomingAppointment = new Pair<>(Boolean.TRUE, timeAppointmentIdPair);
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return upcomingAppt;
+        return upcomingAppointment;
     }
 }

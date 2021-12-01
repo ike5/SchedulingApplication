@@ -28,7 +28,7 @@
 - [x] LoginController
 - [x] ModifyAppointmentController
 - [x] ReportsController
-- [ ] DBAppointment
+- [x] DBAppointment
 - [ ] DBContacts
 - [ ] DBCountries
 - [ ] DBCustomers
