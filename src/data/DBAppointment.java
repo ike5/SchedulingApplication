@@ -15,10 +15,17 @@ import java.time.*;
 import java.util.*;
 
 /**
+ * This class makes provides CRUD functionality for appointments.
+ *
  * @author Ike Maldonado
  * @version 1.0
  */
 public class DBAppointment {
+    /**
+     * Returns an ObservableList of all Appointments in the database.
+     *
+     * @return Returns an ObservableList<Appointment>
+     */
     public static ObservableList<Appointment> getAllAppointments() {
         ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
         String sql = "SELECT Appointment_ID, Title, Description, Location, Type, Start, End, Customer_ID, User_ID, Contact_ID FROM appointments";
@@ -33,6 +40,12 @@ public class DBAppointment {
         return appointmentList;
     }
 
+
+    /**
+     * Counts the total number of appointments in the database.
+     *
+     * @return Returns an integer of the total number of appointments.
+     */
     public static Integer getTotalNumberOfAppointments() {
         Integer counter = 0;
 
@@ -43,6 +56,19 @@ public class DBAppointment {
         return counter;
     }
 
+    /**
+     * Inserts an appointment into the database.
+     *
+     * @param appointmentTitle       A String appointment title
+     * @param appointmentDescription A String appointment description
+     * @param appointmentLocation    A String appointment location
+     * @param appointmentType        A String appointment type
+     * @param start                  The start time of the appointment as a LocalDateTime
+     * @param end                    The end time of the appointment as a LocalDateTime
+     * @param customer               A Customer object
+     * @param user                   A User object
+     * @param contact                A Contact object
+     */
     public static void insertAppointment(String appointmentTitle, String appointmentDescription, String appointmentLocation, String appointmentType, LocalDateTime start, LocalDateTime end, Customer customer, User user, Contact contact) {
         String sql_appointment = "INSERT INTO client_schedule.appointments VALUES(NULL, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, ?, CURRENT_TIMESTAMP, ?, ?, ?, ?)";
         try {
@@ -67,7 +93,15 @@ public class DBAppointment {
         }
     }
 
+    /**
+     * Returns the total number of appointments by a specified month.
+     *
+     * @param month A Month enum
+     * @return Returns an Integer representing the total number of
+     * appointments in that month.
+     */
     public static Integer getTotalNumberOfAppointmentsByMonth(java.time.Month month) {
+        Integer numberOfAppointments = 0;
         String sql = "SELECT COUNT(Appointment_ID) AS NumberOfAppointments FROM appointments WHERE MONTH(Start) = ?";
         try {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
@@ -76,13 +110,20 @@ public class DBAppointment {
 
             ResultSet resultSet = ps.executeQuery();
             resultSet.next();
-            return resultSet.getInt("NumberOfAppointments");
+            numberOfAppointments = resultSet.getInt("NumberOfAppointments");
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return -1;
+        return numberOfAppointments;
     }
 
+    /**
+     * Returns the total number of appointments by a specified type.
+     *
+     * @param type A String type of appointment
+     * @return Returns an Integer representing the total number of
+     * appointments of that type.
+     */
     public static Integer getNumberOfAppointmentsByType(String type) {
         Integer numberOfAppointments = 0;
         String sql = "SELECT COUNT(Appointment_ID) AS NumberOfAppointments FROM appointments WHERE Type = ?";
