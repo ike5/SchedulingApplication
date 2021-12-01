@@ -69,7 +69,6 @@ public class LoginController implements Initializable {
      *
      * @param keyEvent A key event
      */
-    @FXML
     public void onUsernameKeyTyped(KeyEvent keyEvent) {
         stringValidation(validateUsernameString(), username_label_id, username_field_id, "invalid_username_format");
     }
@@ -79,7 +78,6 @@ public class LoginController implements Initializable {
      *
      * @param keyEvent A key event
      */
-    @FXML
     public void onPasswordKeyTyped(KeyEvent keyEvent) {
         stringValidation(validatePasswordString(), password_label_id, password_field_id, "invalid_password_format");
 
@@ -110,7 +108,6 @@ public class LoginController implements Initializable {
      * @param actionEvent Login Button is Clicked
      * @throws IOException
      */
-    @FXML
     public void onLoginAction(ActionEvent actionEvent) throws IOException {
         getUsernamePasswordReceived(); // move inside changeScreen()
 
@@ -129,7 +126,6 @@ public class LoginController implements Initializable {
      * @param actionEvent
      * @throws IOException
      */
-    @FXML
     public void usernameOnAction(ActionEvent actionEvent) throws IOException {
         textFieldLogin(actionEvent);
     }
@@ -141,7 +137,6 @@ public class LoginController implements Initializable {
      * @param actionEvent
      * @throws IOException
      */
-    @FXML
     public void passwordOnAction(ActionEvent actionEvent) throws IOException {
         textFieldLogin(actionEvent);
     }

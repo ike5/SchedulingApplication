@@ -141,7 +141,6 @@ public class CustomersController implements Initializable {
      *
      * @param keyEvent A key event
      */
-    @FXML
     public void customerNameOnKeyTyped(KeyEvent keyEvent) {
         isCustomerNameFieldValid = isValidTextField((TextField) keyEvent.getSource());
         disableButtonsLogic();
@@ -152,7 +151,6 @@ public class CustomersController implements Initializable {
      *
      * @param keyEvent A key event
      */
-    @FXML
     public void addressOnKeyTyped(KeyEvent keyEvent) {
         isAddressFieldValid = isValidTextField((TextField) keyEvent.getSource());
         disableButtonsLogic();
@@ -163,7 +161,6 @@ public class CustomersController implements Initializable {
      *
      * @param keyEvent A key event
      */
-    @FXML
     public void postalCodeOnKeyTyped(KeyEvent keyEvent) {
         isPostalCodeFieldValid = isValidTextField((TextField) keyEvent.getSource());
         disableButtonsLogic();
@@ -174,7 +171,6 @@ public class CustomersController implements Initializable {
      *
      * @param keyEvent A key event
      */
-    @FXML
     public void phoneNumberOnKeyTyped(KeyEvent keyEvent) {
         isPhoneNumberFieldValid = isValidTextField((TextField) keyEvent.getSource());
         disableButtonsLogic();
@@ -185,7 +181,6 @@ public class CustomersController implements Initializable {
      *
      * @param actionEvent Clear Button pressed
      */
-    @FXML
     public void clearFormButtonOnAction(ActionEvent actionEvent) {
         table_view_id.getSelectionModel().clearSelection();
         customer_id_id.clear();
@@ -203,7 +198,6 @@ public class CustomersController implements Initializable {
      *
      * @param actionEvent Delete Button pressed
      */
-    @FXML
     public void deleteCustomerButtonOnAction(ActionEvent actionEvent) {
         if (!table_view_id.getSelectionModel().isEmpty()) {
             Optional<ButtonType> result = Messages
@@ -230,7 +224,6 @@ public class CustomersController implements Initializable {
      * @param actionEvent Logout Button pressed
      * @throws IOException
      */
-    @FXML
     public void logoutButtonOnAction(ActionEvent actionEvent) throws IOException {
         Optional<ButtonType> result = Messages.confirmationMessage("Logout?", "Confirm logout?");
         if (result.isPresent() && result.get() == ButtonType.OK) {
@@ -244,7 +237,6 @@ public class CustomersController implements Initializable {
      * @param actionEvent Appointments Button pressed
      * @throws IOException
      */
-    @FXML
     public void viewAppointmentsButtonOnAction(ActionEvent actionEvent) throws IOException {
         switchView(actionEvent, Main.resourceBundle.getString("appointments_screen"), "Appointments");
     }
@@ -255,7 +247,6 @@ public class CustomersController implements Initializable {
      * @param actionEvent Reports Button pressed
      * @throws IOException
      */
-    @FXML
     public void reportsButtonOnAction(ActionEvent actionEvent) throws IOException {
         switchView(actionEvent, Main.resourceBundle.getString("reports_screen"), "Reports");
     }
@@ -267,7 +258,6 @@ public class CustomersController implements Initializable {
      *
      * @param actionEvent Save Button pressed
      */
-    @FXML
     public void saveButtonOnAction(ActionEvent actionEvent) {
         boolean isEmptyTableView = table_view_id.getSelectionModel().isEmpty();
         boolean isMissingComboBoxValues = isMissingComboBoxValues();

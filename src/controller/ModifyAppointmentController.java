@@ -137,7 +137,6 @@ public class ModifyAppointmentController implements Initializable {
      * @param actionEvent Back Button pressed
      * @throws IOException
      */
-    @FXML
     public void cancelButtonOnAction(ActionEvent actionEvent) throws IOException {
         Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
         Parent scene = FXMLLoader.load(getClass().getResource(Main.resourceBundle.getString("appointments_screen")));
@@ -151,7 +150,6 @@ public class ModifyAppointmentController implements Initializable {
      *
      * @param actionEvent Clear Button pressed
      */
-    @FXML
     public void clearButtonOnAction(ActionEvent actionEvent) {
         onClear(actionEvent);
     }
@@ -162,7 +160,6 @@ public class ModifyAppointmentController implements Initializable {
      * @param actionEvent
      * @throws IOException
      */
-    @FXML
     public void saveButtonOnAction(ActionEvent actionEvent) throws IOException {
         Appointment appointment = AppointmentSingleton.getInstance().getAppointment();
 
