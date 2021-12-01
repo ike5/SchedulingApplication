@@ -32,7 +32,7 @@
 - [x] DBAppointment
 - [x] DBContacts
 - [x] DBCountries
-- [ ] DBCustomers
+- [x] DBCustomers
 - [ ] DBDivisions
 - [ ] DBUsers
 - [ ] JDBC

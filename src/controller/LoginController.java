@@ -11,14 +11,12 @@ import model.LogType;
 import model.Messages;
 import data.DBUsers;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import model.User;
 import utils.Utility;
 
 import java.io.*;
@@ -27,7 +25,6 @@ import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.Locale;
 import java.util.ResourceBundle;
 
 /**

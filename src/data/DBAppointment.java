@@ -1,14 +1,10 @@
 package data;
 
-import com.mysql.cj.jdbc.exceptions.MysqlDataTruncation;
-import controller.ReportsController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.Alert;
 import javafx.util.Pair;
 import main.Main;
 import model.*;
-import test.Test;
 
 import java.sql.*;
 import java.time.*;

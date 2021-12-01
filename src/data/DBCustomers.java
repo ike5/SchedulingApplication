@@ -2,24 +2,28 @@ package data;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.Alert;
 import main.Main;
 import model.Customer;
 import model.Division;
 import model.User;
-import test.Test;
 
 import java.sql.*;
 
 /**
+ * This class provides CRUD functionality to the customers database table.
+ *
  * @author Ike Maldonado
  * @version 1.0
  */
 public class DBCustomers {
 
+
     /**
-     * Inserts a customer into the customers database table. All divisionId data must be validated in order for this method to
-     * work properly. While testing, make sure that the Main.user object is instantiated.
+     * Inserts a customer into the customers database table.
+     * <p>
+     * Dependencies:
+     * <li>All divisionId data must be validated</li>
+     * <li>{@link Main#user} must be instantiated</li>
      *
      * @param customerName The Customer_Name field
      * @param address      The Address field
@@ -29,10 +33,9 @@ public class DBCustomers {
      * @return Returns a new Customer object or null if entry was unsuccessful.
      */
     public static Customer insertCustomer(String customerName, String address, String postalCode, String phone, int divisionId, User user) {
-
         Customer customer = null;
-        String sql_cus = "INSERT INTO customers VALUES(Null, ?, ?, ?, ?, current_timestamp, ?, current_timestamp, ?, ?)";
 
+        String sql_cus = "INSERT INTO customers VALUES(Null, ?, ?, ?, ?, current_timestamp, ?, current_timestamp, ?, ?)";
         try {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql_cus, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, customerName);
@@ -44,17 +47,15 @@ public class DBCustomers {
             ps.setInt(7, divisionId);
 
             ps.execute();
+
             ResultSet rs = ps.getGeneratedKeys();
+
             rs.next();
             int customerIdKey = rs.getInt(1);
 
-            customer = DBCustomers.getCustomer(customerIdKey); // Helper method
-
-            new Test("insertCustomer() called");
-
+            customer = DBCustomers.getCustomer(customerIdKey);
         } catch (SQLIntegrityConstraintViolationException e) {
             e.printStackTrace();
-            System.out.println("Invalid Division ID");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -62,7 +63,8 @@ public class DBCustomers {
     }
 
     /**
-     * Returns an ObservableList<Customer> object of all customers in the customer database table.
+     * Returns an ObservableList<Customer> object of all customers in the
+     * customer database table.
      *
      * @return an ObservableList<Customer> object or null if no entries.
      */
@@ -72,32 +74,37 @@ public class DBCustomers {
         ObservableList<Customer> customerList = FXCollections.observableArrayList();
         try {
             PreparedStatement psCustomer = JDBC.getConnection().prepareStatement(sql_customers);
+
             ResultSet resultSetCustomers = psCustomer.executeQuery();
 
             while (resultSetCustomers.next()) {
                 String sql_div = "SELECT Division_ID, Division, COUNTRY_ID FROM first_level_divisions WHERE Division_ID = ?";
-                PreparedStatement psDiv = JDBC.getConnection().prepareStatement(sql_div);
-                psDiv.setInt(1, resultSetCustomers.getInt("Division_ID"));
-                ResultSet resultSetDiv = psDiv.executeQuery();
+                PreparedStatement ps_division = JDBC.getConnection().prepareStatement(sql_div);
+                ps_division.setInt(1, resultSetCustomers.getInt("Division_ID"));
+
+                ResultSet resultSetDiv = ps_division.executeQuery();
+
                 resultSetDiv.next();
 
                 String sql_country = "SELECT Country_ID, Country FROM countries WHERE Country_ID = ?";
-                PreparedStatement psCountry = JDBC.getConnection().prepareStatement(sql_country);
-                psCountry.setInt(1, resultSetDiv.getInt("Country_ID"));
-                ResultSet resultSetCountry = psCountry.executeQuery();
+                PreparedStatement ps_country = JDBC.getConnection().prepareStatement(sql_country);
+                ps_country.setInt(1, resultSetDiv.getInt("Country_ID"));
+
+                ResultSet resultSetCountry = ps_country.executeQuery();
+
                 resultSetCountry.next();
 
                 Customer customer = new Customer(
                         resultSetCustomers.getInt(1),                // Customer_ID
-                        resultSetCustomers.getString(2),              // Customer_Name
+                        resultSetCustomers.getString(2),             // Customer_Name
                         resultSetCustomers.getString(3),             // Address
                         resultSetCustomers.getString(4),             // Postal_Code
                         resultSetCustomers.getString(5),             // Phone
                         new Division(
-                                resultSetDiv.getInt(1),        // first_level_divisions.Division_ID
-                                resultSetDiv.getString(2),             // first_level_divisions.Division
-                                resultSetCountry.getInt(1),               // Country_ID
-                                resultSetCountry.getString(2)             // Country
+                                resultSetDiv.getInt(1),              // first_level_divisions.Division_ID
+                                resultSetDiv.getString(2),           // first_level_divisions.Division
+                                resultSetCountry.getInt(1),          // Country_ID
+                                resultSetCountry.getString(2)        // Country
                         )
                 );
                 customerList.add(customer);
@@ -109,8 +116,14 @@ public class DBCustomers {
         return null;
     }
 
+    /**
+     * Returns the total number of customers in customers database.
+     *
+     * @return An Integer representing the total number of customers
+     */
     public static Integer getTotalNumberOfCustomers() {
         Integer counter = 0;
+
         for (Customer c : getAllCustomers()) {
             counter++;
         }
@@ -124,6 +137,8 @@ public class DBCustomers {
      * @return Customer object or null if no such customer exists
      */
     public static Customer getCustomer(int customerId) {
+        Customer customer = null;
+
         String sql = "SELECT client_schedule.customers.Customer_ID,\n" +
                 "       client_schedule.customers.Customer_Name,\n" +
                 "       client_schedule.customers.Address,\n" +
@@ -140,7 +155,6 @@ public class DBCustomers {
                 "WHERE client_schedule.customers.Division_ID = client_schedule.first_level_divisions.Division_ID\n" +
                 "  AND client_schedule.first_level_divisions.COUNTRY_ID = client_schedule.countries.Country_ID\n" +
                 "  AND client_schedule.customers.Customer_ID = ?;";
-        Customer customer = null;
         try {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ps.setInt(1, customerId);
@@ -177,8 +191,8 @@ public class DBCustomers {
      * the update was unsuccessful.
      */
     public static Customer updateCustomer(Customer customer) {
-        String sql = "UPDATE customers SET Customer_Name = ?, Address = ?, Postal_Code = ?, Phone = ?, Last_Update = CURRENT_TIMESTAMP, Last_Updated_By = ?, Division_ID = ? WHERE Customer_ID = ?";
-
+        String sql = "UPDATE customers SET Customer_Name = ?, Address = ?, Postal_Code = ?, Phone = ?, " +
+                "Last_Update = CURRENT_TIMESTAMP, Last_Updated_By = ?, Division_ID = ? WHERE Customer_ID = ?";
         try {
             PreparedStatement ps = JDBC.openConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, customer.getName());
@@ -190,11 +204,9 @@ public class DBCustomers {
             ps.setInt(7, customer.getId());
             ps.executeUpdate();
 
-            new Test("updateCustomer() called");
-
             return DBCustomers.getCustomer(customer.getId());
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return null; // if unsuccessful
     }
@@ -219,10 +231,8 @@ public class DBCustomers {
             PreparedStatement ps_customer = JDBC.getConnection().prepareStatement(sql_delete_customer);
             ps_customer.setInt(1, customerId);
             ps_customer.executeUpdate();
-
-            new Test("deleteCustomerById() called");
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }

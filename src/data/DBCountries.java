@@ -3,13 +3,10 @@ package data;
 import model.Country;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import model.Customer;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-
 
 /**
  * This class provides READ functionality to the countries database table.
