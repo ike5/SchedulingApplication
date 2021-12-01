@@ -17,6 +17,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.MapValueFactory;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import main.Main;
 import model.*;
 
 import java.io.IOException;
@@ -79,7 +80,7 @@ public class ReportsController implements Initializable {
 
         // Customer Tab Month ComboBox Listener
         month_combo.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
-            // If only month combo is selected, ask database for COUNT of just month
+            // If only month combo is selected, query database for COUNT of just month
             // If both type and month selected, query database for COUNT of month AND type
             if (type_combo.getSelectionModel().isEmpty()) {
                 number_of_appointments_id.setText(String.valueOf(DBAppointment.getTotalNumberOfAppointmentsByMonth((Month) newValue)));
@@ -108,6 +109,11 @@ public class ReportsController implements Initializable {
         });
     }
 
+    /**
+     * Helper method to initialize the Additional Reports Info tab. Uses
+     * a Map<String, Integer> to store the label-value pair, which offers
+     * modularity for future versions of this application.
+     */
     private void initializeAdditionalReportsTab() {
         Map<String, Integer> reportsValuesMap = new HashMap<>();
         Path path = Path.of("login_activity.txt");
@@ -128,10 +134,13 @@ public class ReportsController implements Initializable {
 
         label_list.setItems(keyList);
         values_list.setItems(valuesList);
-
-        //todo count number of logins
     }
 
+    /**
+     * Helper method to initialize the Contacts tab. Uses a Map<String, Integer>
+     * to store the label-value pair, which offers modularity for future versions
+     * of this application.
+     */
     private void initializeContactsTab() {
         contact_listview.setItems(DBContacts.getAllContacts());
         contact_appointment_id_column.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("AppointmentId"));
@@ -143,6 +152,11 @@ public class ReportsController implements Initializable {
         contact_customer_id_column.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("CustomerId"));
     }
 
+    /**
+     * Helper method to initialize the Customers tab. Uses a Map<String, Integer>
+     * to store the label-value pair, which offers modularity for future versions
+     * of this application.
+     */
     private void initializeCustomersTab() {
         ObservableList<Month> monthObservableList = FXCollections.observableArrayList(Month.values());
         ObservableList<String> logTypeObservableList = FXCollections.observableArrayList(TypeListSingleton.getInstance().getTypeObservableList());
@@ -150,18 +164,15 @@ public class ReportsController implements Initializable {
         type_combo.setItems(logTypeObservableList);
     }
 
-    public void customerTabOnSelectionChanged(Event event) {
-    }
-
-    public void contactTabOnSelectionChanged(Event event) {
-    }
-
-    public void additionalReportTabOnSelectionChanged(Event event) {
-    }
-
+    /**
+     * Button to go back to Customers View.
+     *
+     * @param actionEvent Back Button pressed
+     * @throws IOException
+     */
     public void backButtonOnAction(ActionEvent actionEvent) throws IOException {
         Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
-        Parent scene = FXMLLoader.load(getClass().getResource("/view/Customers.fxml"));
+        Parent scene = FXMLLoader.load(getClass().getResource(Main.resourceBundle.getString("customers_screen")));
         stage.setTitle("Customers");
         stage.setScene(new Scene(scene));
         stage.show();
