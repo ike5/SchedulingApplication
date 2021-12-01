@@ -1,6 +1,9 @@
 package model;
 
 /**
+ * This class provides a single instance of the Appointment class in
+ * order to simplify passing data between Views.
+ *
  * @author Ike Maldonado
  * @version 1.0
  */

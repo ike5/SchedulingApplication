@@ -8,6 +8,8 @@ import java.nio.file.*;
 import java.util.List;
 
 /**
+ * This class provides READ and WRITE functions for making log entries.
+ *
  * @author Ike Maldonado
  * @version 1.0
  */
@@ -26,6 +28,7 @@ public class LoginTracker {
                     .append(logType.name())
                     .append("\t")
                     .append(logMessage);
+
             writer.newLine();
         } catch (IOException e) {
             e.printStackTrace();
@@ -42,6 +45,7 @@ public class LoginTracker {
         Integer counter = 0;
         try {
             final List<String> lines = Files.readAllLines(path.normalize());
+
             for (String l : lines) {
                 counter++;
             }

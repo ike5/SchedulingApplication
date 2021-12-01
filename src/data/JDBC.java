@@ -4,6 +4,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 
 /**
+ * This class opens and closes the connection to a provided database. The
+ * resulting Connection object can also be retrieved and used throughout
+ * the lifecycle of the program.
+ *
  * @author Ike Maldonado
  * @version 1.0
  */
@@ -28,6 +32,7 @@ public class JDBC {
         try {
             Class.forName(driver); // Locate Driver
             conn = DriverManager.getConnection(jdbc_url, username, password);
+
             System.out.println("Connection to database successful...");
         } catch (Exception e) {
             e.printStackTrace();
@@ -36,11 +41,12 @@ public class JDBC {
     }
 
     /**
-     * Helper method to call close() on the Connection object.
+     * Helper method to call {@link Connection#close()} on the Connection object.
      */
     public static void closeConnection() {
         try {
             conn.close();
+
             System.out.println("Connection closed...");
         } catch (Exception e) {
             System.out.println("Error:" + e.getMessage());
@@ -50,7 +56,7 @@ public class JDBC {
     /**
      * Helper method to retrieve the static Connection object.
      *
-     * @return Returns the Connection object. It is advisable to call openConnection() first before getting the
+     * @return Returns the Connection object. It is advisable to call {@link #openConnection()} first before getting the
      * Connection object.
      */
     public static Connection getConnection() {

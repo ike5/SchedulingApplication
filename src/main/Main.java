@@ -6,7 +6,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import model.User;
-import test.Test;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -16,6 +15,12 @@ import static data.JDBC.openConnection;
 
 
 /**
+ * This is the main class where the program launches. This class also opens
+ * and closes the connection to the database.
+ * <p>
+ * Several dependencies throughout the lifecycle of the program are provided
+ * as static variables: {@link #resourceBundle} & {@link #user}.
+ *
  * @author Ike Maldonado
  * @version 1.0
  */

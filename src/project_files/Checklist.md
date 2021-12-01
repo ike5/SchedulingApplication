@@ -35,10 +35,10 @@
 - [x] DBCustomers
 - [x] DBDivisions
 - [x] DBUsers
-- [ ] JDBC
-- [ ] LoginTracker
-- [ ] Main
-- [ ] Appointment
+- [x] JDBC
+- [x] LoginTracker
+- [x] Main
+- [x] Appointment
 - [ ] AppointmentSingleton
 - [ ] ComboInterface
 - [ ] Contact
