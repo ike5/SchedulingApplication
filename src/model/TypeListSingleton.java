@@ -18,6 +18,11 @@ public final class TypeListSingleton {
         setTypeObservableList();
     }
 
+    /**
+     * Gets instance.
+     *
+     * @return the instance
+     */
     public static TypeListSingleton getInstance() {
         return INSTANCE;
     }
@@ -38,6 +43,11 @@ public final class TypeListSingleton {
         );
     }
 
+    /**
+     * Gets type observable list.
+     *
+     * @return the type observable list
+     */
     public ObservableList<String> getTypeObservableList() {
         return this.typeObservableList;
     }

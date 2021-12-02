@@ -1,12 +1,10 @@
-# Priority Checklist
+# Checklist
 
 --- 
 
 ## High
 
 ## Medium
-
-- [ ] Fix Alert within 15 minutes
 
 ## Low
 
@@ -16,13 +14,8 @@
 - [ ] Finish README.txt
 - [ ] Change README.md --> README.txt
 
----
 
-# Essential Tests
-
-- [ ] Scheduling after hours (last appt @ 21:45)
-
-## Add Javadocs
+#### Add Javadocs
 
 - [x] AppointmentsController
 - [x] CustomersController
@@ -34,11 +27,11 @@
 - [x] DBCountries
 - [x] DBCustomers
 - [x] DBDivisions
-- [ ] DBUsers
-- [ ] JDBC
-- [ ] LoginTracker
-- [ ] Main
-- [ ] Appointment
+- [x] DBUsers
+- [x] JDBC
+- [x] LoginTracker
+- [x] Main
+- [x] Appointment
 - [ ] AppointmentSingleton
 - [ ] ComboInterface
 - [ ] Contact

@@ -17,14 +17,29 @@ public final class DivisionListSingleton {
     private DivisionListSingleton() {
     }
 
+    /**
+     * Gets instance.
+     *
+     * @return the instance
+     */
     public static DivisionListSingleton getInstance() {
         return INSTANCE;
     }
 
+    /**
+     * Sets division observable list.
+     *
+     * @param divisionObservableList the division observable list
+     */
     public void setDivisionObservableList(ObservableList<Division> divisionObservableList) {
         this.divisionObservableList = divisionObservableList;
     }
 
+    /**
+     * Gets division observable list.
+     *
+     * @return the division observable list
+     */
     public ObservableList<Division> getDivisionObservableList() {
         return this.divisionObservableList;
     }

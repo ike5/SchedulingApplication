@@ -9,10 +9,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
 /**
- * This class creates Appointment objects.
- *
- * @author Ike Maldonado
- * @version 1.0
+ * The type Appointment.
  */
 public class Appointment {
     private int appointmentId;
@@ -32,6 +29,20 @@ public class Appointment {
     private String startString;
     private String endString;
 
+    /**
+     * Instantiates a new Appointment.
+     *
+     * @param appointmentId          the appointment id
+     * @param appointmentTitle       the appointment title
+     * @param appointmentDescription the appointment description
+     * @param appointmentLocation    the appointment location
+     * @param appointmentType        the appointment type
+     * @param localDateTime_start    the local date time start
+     * @param localDateTime_end      the local date time end
+     * @param customerId             the customer id
+     * @param userId                 the user id
+     * @param contactId              the contact id
+     */
     public Appointment(int appointmentId, String appointmentTitle, String appointmentDescription, String appointmentLocation, String appointmentType, LocalDateTime localDateTime_start, LocalDateTime localDateTime_end, int customerId, int userId, int contactId) {
         this.appointmentId = appointmentId;
         this.appointmentTitle = appointmentTitle;
@@ -57,10 +68,6 @@ public class Appointment {
         setIds();
     }
 
-    /**
-     * Helper method to convert Customer, User, and Contact objects to
-     * their respective ids.
-     */
     private void setIds() {
         this.customerId = customer.getId();
         this.userId = user.getUserId();
@@ -69,32 +76,36 @@ public class Appointment {
     }
 
     /**
-     * Sets Contact name value
-     * @param contactName
+     * Sets contact name.
+     *
+     * @param contactName the contact name
      */
     public void setContactName(String contactName) {
         this.contactName = contactName;
     }
 
     /**
-     * Gets Contact name value
-     * @return Contact name String
+     * Gets contact name.
+     *
+     * @return the contact name
      */
     public String getContactName() {
         return contactName;
     }
 
     /**
-     * Sets start time string value
-     * @param startString
+     * Sets start string.
+     *
+     * @param startString the start string
      */
     public void setStartString(String startString) {
         this.startString = startString;
     }
 
     /**
-     * Gets start time string value
-     * @return Start time String
+     * Gets start string.
+     *
+     * @return the start string
      */
     public String getStartString() {
         return startString;
@@ -102,224 +113,252 @@ public class Appointment {
 
 
     /**
-     * Sets end time string value
-     * @param endString
+     * Sets end string.
+     *
+     * @param endString the end string
      */
     public void setEndString(String endString) {
         this.endString = endString;
     }
 
     /**
-     * Gets end time string value
-     * @return End time String
+     * Gets end string.
+     *
+     * @return the end string
      */
     public String getEndString() {
         return endString;
     }
 
     /**
-     * Sets Customer id value
-     * @param customerId
+     * Sets customer id.
+     *
+     * @param customerId the customer id
      */
     public void setCustomerId(int customerId) {
         this.customerId = customerId;
     }
 
     /**
-     * Gets Customer id value
-     * @return Customer id int
+     * Gets customer id.
+     *
+     * @return the customer id
      */
     public int getCustomerId() {
         return customerId;
     }
 
     /**
-     * Sets User id value
-     * @param userId
+     * Sets user id.
+     *
+     * @param userId the user id
      */
     public void setUserId(int userId) {
         this.userId = userId;
     }
 
     /**
-     * Gets User id value
-     * @return User id int
+     * Gets user id.
+     *
+     * @return the user id
      */
     public int getUserId() {
         return userId;
     }
 
     /**
-     * Sets Contact id value
-     * @param contactId
+     * Sets contact id.
+     *
+     * @param contactId the contact id
      */
     public void setContactId(int contactId) {
         this.contactId = contactId;
     }
 
     /**
-     * Gets Contact id value
-     * @return Contact id int
+     * Gets contact id.
+     *
+     * @return the contact id
      */
     public int getContactId() {
         return contactId;
     }
 
     /**
-     * Sets Appointment id value
-     * @param appointmentId
+     * Sets appointment id.
+     *
+     * @param appointmentId the appointment id
      */
     public void setAppointmentId(int appointmentId) {
         this.appointmentId = appointmentId;
     }
 
     /**
-     * Sets Appointment title
-     * @param appointmentTitle
+     * Sets appointment title.
+     *
+     * @param appointmentTitle the appointment title
      */
     public void setAppointmentTitle(String appointmentTitle) {
         this.appointmentTitle = appointmentTitle;
     }
 
     /**
-     * Sets Appointment description
-     * @param appointmentDescription
+     * Sets appointment description.
+     *
+     * @param appointmentDescription the appointment description
      */
     public void setAppointmentDescription(String appointmentDescription) {
         this.appointmentDescription = appointmentDescription;
     }
 
     /**
-     * Sets Appointment location
-     * @param appointmentLocation
+     * Sets appointment location.
+     *
+     * @param appointmentLocation the appointment location
      */
     public void setAppointmentLocation(String appointmentLocation) {
         this.appointmentLocation = appointmentLocation;
     }
 
     /**
-     * Sets Appointment type value
-     * @param appointmentType
+     * Sets appointment type.
+     *
+     * @param appointmentType the appointment type
      */
     public void setAppointmentType(String appointmentType) {
         this.appointmentType = appointmentType;
     }
 
     /**
-     * Sets Customer value
-     * @param customer
+     * Sets customer.
+     *
+     * @param customer the customer
      */
     public void setCustomer(Customer customer) {
         this.customer = customer;
     }
 
     /**
-     * Sets User value
-     * @param user
+     * Sets user.
+     *
+     * @param user the user
      */
     public void setUser(User user) {
         this.user = user;
     }
 
     /**
-     * Sets Contact value
-     * @param contact
+     * Sets contact.
+     *
+     * @param contact the contact
      */
     public void setContact(Contact contact) {
         this.contact = contact;
     }
 
     /**
-     * Gets start time value
-     * @return start LocalDateTime value
+     * Gets start.
+     *
+     * @return the start
      */
     public LocalDateTime getStart() {
         return start;
     }
 
     /**
-     * Sets start time value
-     * @param start
+     * Sets start.
+     *
+     * @param start the start
      */
     public void setStart(LocalDateTime start) {
         this.start = start;
     }
 
     /**
-     * Gets end time value
-     * @return end LocalDateTime value
+     * Gets end.
+     *
+     * @return the end
      */
     public LocalDateTime getEnd() {
         return end;
     }
 
     /**
-     * Sets end time value
-     * @param end
+     * Sets end.
+     *
+     * @param end the end
      */
     public void setEnd(LocalDateTime end) {
         this.end = end;
     }
 
     /**
-     * Gets Appointment id value
-     * @return Appointment id int
+     * Gets appointment id.
+     *
+     * @return the appointment id
      */
     public int getAppointmentId() {
         return appointmentId;
     }
 
     /**
-     * Gets Appointment title value
-     * @return Appointment title String
+     * Gets appointment title.
+     *
+     * @return the appointment title
      */
     public String getAppointmentTitle() {
         return appointmentTitle;
     }
 
     /**
-     * Gets Appointment Description value
-     * @return Appointment description String
+     * Gets appointment description.
+     *
+     * @return the appointment description
      */
     public String getAppointmentDescription() {
         return appointmentDescription;
     }
 
     /**
-     * Gets Appointment location value
-     * @return Appointment location String
+     * Gets appointment location.
+     *
+     * @return the appointment location
      */
     public String getAppointmentLocation() {
         return appointmentLocation;
     }
 
     /**
-     * Gets Appointment type value
-     * @return Appointment type value String
+     * Gets appointment type.
+     *
+     * @return the appointment type
      */
     public String getAppointmentType() {
         return appointmentType;
     }
 
     /**
-     * Gets Customer object
-     * @return Returns a Customer object
+     * Gets customer.
+     *
+     * @return the customer
      */
     public Customer getCustomer() {
         return customer;
     }
 
     /**
-     * Gets User object
-     * @return Returns a User object
+     * Gets user.
+     *
+     * @return the user
      */
     public User getUser() {
         return user;
     }
 
     /**
-     * Gets Contact object
-     * @return Returns a Contact object
+     * Gets contact.
+     *
+     * @return the contact
      */
     public Contact getContact() {
         return contact;

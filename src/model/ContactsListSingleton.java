@@ -17,14 +17,29 @@ public final class ContactsListSingleton {
     private ContactsListSingleton() {
     }
 
+    /**
+     * Gets instance.
+     *
+     * @return the instance
+     */
     public static ContactsListSingleton getInstance() {
         return INSTANCE;
     }
 
+    /**
+     * Sets contact observable list.
+     *
+     * @param contactObservableList the contact observable list
+     */
     public void setContactObservableList(ObservableList<Contact> contactObservableList) {
         this.contactObservableList = contactObservableList;
     }
 
+    /**
+     * Gets contact observable list.
+     *
+     * @return the contact observable list
+     */
     public ObservableList<Contact> getContactObservableList() {
         return this.contactObservableList;
     }

@@ -19,6 +19,11 @@ public final class LocationListSingleton {
         setLocationObservableList();
     }
 
+    /**
+     * Gets instance.
+     *
+     * @return the instance
+     */
     public static LocationListSingleton getInstance() {
         return INSTANCE;
     }
@@ -36,6 +41,11 @@ public final class LocationListSingleton {
         );
     }
 
+    /**
+     * Gets location observable list.
+     *
+     * @return the location observable list
+     */
     public ObservableList<String> getLocationObservableList() {
         return this.locationObservableList;
     }

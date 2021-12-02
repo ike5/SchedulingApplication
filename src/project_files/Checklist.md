@@ -32,7 +32,7 @@
 - [x] LoginTracker
 - [x] Main
 - [x] Appointment
-- [ ] AppointmentSingleton
+- [x] AppointmentSingleton
 - [ ] ComboInterface
 - [ ] Contact
 - [ ] ContactsListSingleton

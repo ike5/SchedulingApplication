@@ -16,14 +16,29 @@ public final class UserListSingleton {
     private UserListSingleton() {
     }
 
+    /**
+     * Gets instance.
+     *
+     * @return the instance
+     */
     public static UserListSingleton getInstance() {
         return INSTANCE;
     }
 
+    /**
+     * Sets user observable list.
+     *
+     * @param userObservableList the user observable list
+     */
     public void setUserObservableList(ObservableList<User> userObservableList) {
         this.userObservableList = userObservableList;
     }
 
+    /**
+     * Gets user observable list.
+     *
+     * @return the user observable list
+     */
     public ObservableList<User> getUserObservableList() {
         return this.userObservableList;
     }
