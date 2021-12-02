@@ -3,7 +3,7 @@ package model;
 import javafx.collections.ObservableList;
 
 /**
- * This class is used to provide a single instance a Contacts object in
+ * This class is used to provide a single instance of a Contacts object in
  * order to simplify passing data between controllers.
  *
  * @author Ike Maldonado

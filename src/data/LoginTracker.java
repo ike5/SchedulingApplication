@@ -8,7 +8,7 @@ import java.nio.file.*;
 import java.util.List;
 
 /**
- * This class provides READ and WRITE functions for making log entries.
+ * This class provides READ and WRITE functionality for making log entries.
  *
  * @author Ike Maldonado
  * @version 1.0

@@ -4,7 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 /**
- * This class is used to provide a single instance a LocationList object
+ * This class is used to provide a single instance of a LocationList object
  * in order to simplify passing data between controllers.
  *
  * @author Ike Maldonado

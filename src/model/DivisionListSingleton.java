@@ -3,7 +3,7 @@ package model;
 import javafx.collections.ObservableList;
 
 /**
- * This class is used to provide a single instance a Division object
+ * This class is used to provide a single instance of a Division object
  * in order to simplify passing data between controllers.
  *
  * @author Ike Maldonado

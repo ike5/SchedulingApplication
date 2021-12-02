@@ -3,7 +3,7 @@ package model;
 import main.Main;
 
 /**
- * Rules: A customer cannot be made without a first_level_division and country
+ * The type Customer.
  *
  * @author Ike Maldonado
  * @version 1.0

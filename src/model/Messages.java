@@ -6,7 +6,7 @@ import javafx.scene.control.ButtonType;
 import java.util.Optional;
 
 /**
- * The type Messages.
+ * This class provides standard Alert messages to use throughout the applicaiton.
  *
  * @author Ike Maldonado
  * @version 1.0
