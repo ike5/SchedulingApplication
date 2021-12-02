@@ -21,17 +21,14 @@ IntelliJ IDEA 2021.2.2 (Ultimate Edition)
 Build #IU-212.5284.40, built on September 13, 2021  
 Runtime version: 11.0.12+7-b1504.28 aarch64  
 VM: OpenJDK 64-Bit Server VM by JetBrains s.r.o.  
-macOS 12.0.1  
 
 
 ## Getting started
 
+Please follow the guidelines before running the program:
+
 - Setting timezones
   - Make sure to set machine timezone in order for LocalTime ComboBoxes to populate correctly.
-
-- Changing default locale
-  - Uncomment static `Test.changeLocale()` method in Main method
-  
 
 ## Additional Report description
 - This report counts the total number of Appointments, Customers, Contacts, and logins (successful and unsuccessful). 
@@ -44,5 +41,5 @@ macOS 12.0.1
   - `LoginController.java > onLoginAction() > changeScreen()`
 
 ## MySQL info
-MySQL version: 8.0.25
+MySQL version: 8.0.25  
 Driver: mysql-connector-java-8.0.25

@@ -14,6 +14,7 @@ import main.Main;
 import model.Appointment;
 import model.AppointmentSingleton;
 import model.Messages;
+import utils.Utility;
 
 import java.io.IOException;
 import java.net.URL;
@@ -28,17 +29,17 @@ import java.util.ResourceBundle;
  * @version 1.0
  */
 public class AppointmentsController implements Initializable {
-    public TableView table_view_id;
-    public TableColumn appointment_id_tablecolumn;
-    public TableColumn title_tablecolumn;
-    public TableColumn description_tablecolumn;
-    public TableColumn location_tablecolumn;
-    public TableColumn contact_tablecolumn;
-    public TableColumn type_tablecolumn;
-    public TableColumn start_date_time_tablecolumn;
-    public TableColumn end_date_time_tablecolumn;
-    public TableColumn customer_id_tablecolumn;
-    public TableColumn user_id_tablecolumn;
+    public TableView<Appointment> table_view_id;
+    public TableColumn<Appointment, Integer> appointment_id_tablecolumn;
+    public TableColumn<Appointment, String> title_tablecolumn;
+    public TableColumn<Appointment, String> description_tablecolumn;
+    public TableColumn<Appointment, String> location_tablecolumn;
+    public TableColumn<Appointment, String> contact_tablecolumn;
+    public TableColumn<Appointment, String> type_tablecolumn;
+    public TableColumn<Appointment, String> start_date_time_tablecolumn;
+    public TableColumn<Appointment, String> end_date_time_tablecolumn;
+    public TableColumn<Appointment, Integer> customer_id_tablecolumn;
+    public TableColumn<Appointment, Integer> user_id_tablecolumn;
     public RadioButton month_view_radio_button;
     public RadioButton week_view_radio_button;
     public RadioButton all_appointments_radio_button;
@@ -83,6 +84,10 @@ public class AppointmentsController implements Initializable {
         // Disable buttons if no row selected
         delete_button.setDisable(table_view_id.getSelectionModel().isEmpty());
         update_button.setDisable(table_view_id.getSelectionModel().isEmpty());
+    }
+
+    private void setTableViewAndColumns(Utility.TableCellsInterface tableViewAndColumns){
+
     }
 
     /**

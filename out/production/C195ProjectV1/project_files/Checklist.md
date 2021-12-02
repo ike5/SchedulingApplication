@@ -47,4 +47,4 @@
 - [x] TypeListSingleton
 - [x] User
 - [x] UserListSingleton
-- [ ] Utility
+- [x] Utility

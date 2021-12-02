@@ -39,8 +39,6 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
-//        Test.changeLocale();  // Uncomment this line to change default locale to French Canadian
-
         openConnection();
         launch(args);
         closeConnection();

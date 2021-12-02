@@ -232,7 +232,7 @@ public class LoginController implements Initializable {
      * @param scene
      * @param changeScreenInterface
      */
-    private static void changeScreen(ActionEvent actionEvent, DBUsers userLogin, Parent scene, Utility.FunctionalChangeScreenInterface changeScreenInterface) {
+    private static void changeScreen(ActionEvent actionEvent, DBUsers userLogin, Parent scene, Utility.ChangeScreenInterface changeScreenInterface) {
 
         if (userLogin.getUser().isValidUsername()) {
             if (userLogin.getUser().isValidPassword()) {
@@ -283,7 +283,7 @@ public class LoginController implements Initializable {
      * @param scene                 Builds a new Scene to switch to
      * @param changeScreenInterface A variable event source object
      */
-    private static void switchView(ActionEvent actionEvent, DBUsers userLogin, Parent scene, Utility.FunctionalChangeScreenInterface changeScreenInterface) {
+    private static void switchView(ActionEvent actionEvent, DBUsers userLogin, Parent scene, Utility.ChangeScreenInterface changeScreenInterface) {
         Stage stage = changeScreenInterface.eventSource(actionEvent);
         stage.setTitle("Welcome " + userLogin.getUser().getUsername() + "!");
         stage.setScene(new Scene(scene));
