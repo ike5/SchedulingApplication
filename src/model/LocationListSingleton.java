@@ -2,7 +2,11 @@ package model;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+
 /**
+ * This class is used to provide a single instance a LocationList object
+ * in order to simplify passing data between controllers.
+ *
  * @author Ike Maldonado
  * @version 1.0
  */
@@ -11,13 +15,15 @@ public final class LocationListSingleton {
 
     private final static LocationListSingleton INSTANCE = new LocationListSingleton();
 
-    private LocationListSingleton(){
+    private LocationListSingleton() {
         setLocationObservableList();
     }
 
-    public static LocationListSingleton getInstance(){ return INSTANCE; }
+    public static LocationListSingleton getInstance() {
+        return INSTANCE;
+    }
 
-    private void setLocationObservableList(){
+    private void setLocationObservableList() {
         locationObservableList = FXCollections.observableArrayList(
                 "Main Office",
                 "Online",
@@ -30,7 +36,7 @@ public final class LocationListSingleton {
         );
     }
 
-    public ObservableList<String> getLocationObservableList(){
+    public ObservableList<String> getLocationObservableList() {
         return this.locationObservableList;
     }
 

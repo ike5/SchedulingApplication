@@ -3,7 +3,8 @@ package model;
 import javafx.collections.ObservableList;
 
 /**
- * This class is used for holding an all listed customers in the database.
+ *  This class is used to provide a single instance a Customer object
+ *  in order to simplify passing data between controllers.
  *
  * @author Ike Maldonado
  * @version 1.0
