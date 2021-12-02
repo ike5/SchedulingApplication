@@ -33,21 +33,18 @@
 - [x] Main
 - [x] Appointment
 - [x] AppointmentSingleton
-- [ ] ComboInterface
-- [ ] Contact
-- [ ] ContactsListSingleton
-- [ ] Country
-- [ ] CountryCombo
-- [ ] CountryListSingleton
-- [ ] Customer
-- [ ] CustomerListSingleton
-- [ ] Division
-- [ ] DivisionCombo
-- [ ] DivisionListSingleton
-- [ ] LocationListSingleton
-- [ ] LogType
-- [ ] Messages
-- [ ] TypeListSingleton
-- [ ] User
-- [ ] UserListSingleton
+- [x] Contact
+- [x] ContactsListSingleton
+- [x] Country
+- [x] CountryListSingleton
+- [x] Customer
+- [x] CustomerListSingleton
+- [x] Division
+- [x] DivisionListSingleton
+- [x] LocationListSingleton
+- [x] LogType
+- [x] Messages
+- [x] TypeListSingleton
+- [x] User
+- [x] UserListSingleton
 - [ ] Utility
