@@ -37,8 +37,12 @@ Please follow the guidelines before running the program:
 
 ## Additional info
 - Location of lambda expressions
-  - `LoginController.java > textfieldLogin() > changeScreen()`
-  - `LoginController.java > onLoginAction() > changeScreen()`
+  - `LoginController > textfieldLogin() > changeScreen()`
+  - `LoginController > onLoginAction() > changeScreen()`
+  - `CustomersController > viewAppointmentsButtonOnAction()`
+  - `CustomersController > reportsButtonOnAction()`
+  - `AppointmentsController > newAppointmentButtonOnAction()`
+  - `AppointemntsController > updateAppointmentButtonOnAction()`
 
 ## MySQL info
 MySQL version: 8.0.25  

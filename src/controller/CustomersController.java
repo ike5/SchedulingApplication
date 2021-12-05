@@ -231,14 +231,9 @@ public class CustomersController implements Initializable {
      * @throws IOException
      */
     public void viewAppointmentsButtonOnAction(ActionEvent actionEvent) throws IOException {
-//        switchView(actionEvent, Main.resourceBundle.getString("appointments_screen"), "Appointments");
-
-        View view = new View(actionEvent, Main.resourceBundle.getString("appointments_screen"), "Appointments");
-        changeViews(x -> x.change(), view);
-    }
-
-    public void changeViews(ControllerViewChanger c, View v) {
-        c.switchView(v);
+        changeViews(x -> x.change(), new View(
+                actionEvent, Main.resourceBundle.getString("appointments_screen"), "Appointments"
+        ));
     }
 
     /**
@@ -248,7 +243,9 @@ public class CustomersController implements Initializable {
      * @throws IOException
      */
     public void reportsButtonOnAction(ActionEvent actionEvent) throws IOException {
-        switchView(actionEvent, Main.resourceBundle.getString("reports_screen"), "Reports");
+        changeViews(x -> x.change(), new View(
+                actionEvent, Main.resourceBundle.getString("reports_screen"), "Reports"
+        ));
     }
 
     /**
@@ -302,6 +299,16 @@ public class CustomersController implements Initializable {
     }
 
     /**
+     * Helper method to change views
+     *
+     * @param controllerViewChanger a ControllerViewChanger interface
+     * @param view a View object
+     */
+    public void changeViews(ControllerViewChanger controllerViewChanger, View view) {
+        controllerViewChanger.switchView(view);
+    }
+
+    /**
      * Helper method to disable or enable buttons.
      *
      * @param isSaveButtonDisabled
@@ -326,13 +333,15 @@ public class CustomersController implements Initializable {
     }
 
     /**
-     * Helper method to logout.
+     * Logs user out.
      *
      * @param actionEvent
      * @throws IOException
      */
     private void logout(ActionEvent actionEvent) throws IOException {
-        switchView(actionEvent, Main.resourceBundle.getString("login_screen"), "login");
+        changeViews(x -> x.change(), new View(
+                actionEvent, Main.resourceBundle.getString("login_screen"), "login"
+        ));
     }
 
     /**
@@ -370,6 +379,7 @@ public class CustomersController implements Initializable {
      * @param title       The title of the new View
      * @throws IOException
      */
+    @Deprecated
     private void switchView(ActionEvent actionEvent, String path, String title) throws IOException {
         Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
         Parent scene = FXMLLoader.load(getClass().getResource(path));

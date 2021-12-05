@@ -15,6 +15,8 @@ import main.Main;
 import model.Appointment;
 import model.AppointmentSingleton;
 import model.Messages;
+import model.View;
+import utils.ControllerViewChanger;
 import utils.Utility;
 
 import java.io.IOException;
@@ -138,7 +140,9 @@ public class AppointmentsController implements Initializable {
     public void newAppointmentButtonOnAction(ActionEvent actionEvent) throws IOException {
         AppointmentSingleton.getInstance().setAppointment(null);
 
-        switchView(actionEvent, Main.resourceBundle.getString("modify_appointment_screen"), "New Appointment");
+        changeViews(x -> x.change(), new View(
+                actionEvent, Main.resourceBundle.getString("modify_appointment_screen"), "New Appointment"
+        ));
     }
 
     /**
@@ -153,7 +157,9 @@ public class AppointmentsController implements Initializable {
         if (table_view_id.getSelectionModel().selectedItemProperty() != null) {
             AppointmentSingleton.getInstance().setAppointment((Appointment) table_view_id.getSelectionModel().getSelectedItem());
 
-            switchView(actionEvent, Main.resourceBundle.getString("modify_appointment_screen"), "Modify Appointment");
+            changeViews(x -> x.change(), new View(
+                    actionEvent, Main.resourceBundle.getString("modify_appointment_screen"), "Modify Appointment"
+            ));
         } else {
             Messages.errorMessage("Please select an appointment", "Nothing selected");
         }
@@ -187,11 +193,22 @@ public class AppointmentsController implements Initializable {
      * @param title       The title of the new View
      * @throws IOException
      */
+    @Deprecated
     private void switchView(ActionEvent actionEvent, String path, String title) throws IOException {
         Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
         Parent scene = FXMLLoader.load(getClass().getResource(path));
         stage.setTitle(title);
         stage.setScene(new Scene(scene));
         stage.show();
+    }
+
+    /**
+     * Helper method to change views
+     *
+     * @param controllerViewChanger a ControllerViewChanger interface
+     * @param view                  a View object
+     */
+    public void changeViews(ControllerViewChanger controllerViewChanger, View view) {
+        controllerViewChanger.switchView(view);
     }
 }
