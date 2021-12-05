@@ -41,7 +41,7 @@ public @interface Utility {
      */
     @FunctionalInterface
     interface TableCellsInterface {
-        public void setTable(ObservableList<Appointment> appointmentObservableList, String getterMethod);
+        public void setTable(ObservableList<Appointment> appointmentObservableList, String... getterMethod);
     }
 }
 

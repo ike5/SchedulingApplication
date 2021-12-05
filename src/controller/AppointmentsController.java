@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 import main.Main;
 import model.Appointment;
 import model.AppointmentSingleton;
@@ -18,6 +19,8 @@ import utils.Utility;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -71,6 +74,7 @@ public class AppointmentsController implements Initializable {
         customer_id_tablecolumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("CustomerId"));
         user_id_tablecolumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("UserId"));
 
+
         // TableView listener
         table_view_id.getSelectionModel().selectedItemProperty().addListener((observable, oldSelection, newSelection) -> {
             if (newSelection != null) {
@@ -84,10 +88,6 @@ public class AppointmentsController implements Initializable {
         // Disable buttons if no row selected
         delete_button.setDisable(table_view_id.getSelectionModel().isEmpty());
         update_button.setDisable(table_view_id.getSelectionModel().isEmpty());
-    }
-
-    private void setTableViewAndColumns(Utility.TableCellsInterface tableViewAndColumns){
-
     }
 
     /**
