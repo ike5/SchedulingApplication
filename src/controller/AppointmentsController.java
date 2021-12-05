@@ -63,16 +63,16 @@ public class AppointmentsController implements Initializable {
 
         table_view_id.setItems(DBAppointment.getAllAppointments());
 
-        appointment_id_tablecolumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("AppointmentId"));
-        title_tablecolumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("AppointmentTitle"));
-        description_tablecolumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("AppointmentDescription"));
-        location_tablecolumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("AppointmentLocation"));
-        contact_tablecolumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("ContactName"));
-        type_tablecolumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("AppointmentType"));
-        start_date_time_tablecolumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("StartString"));
-        end_date_time_tablecolumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("EndString"));
-        customer_id_tablecolumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("CustomerId"));
-        user_id_tablecolumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("UserId"));
+        appointment_id_tablecolumn.setCellValueFactory(new PropertyValueFactory<>("AppointmentId"));
+        title_tablecolumn.setCellValueFactory(new PropertyValueFactory<>("AppointmentTitle"));
+        description_tablecolumn.setCellValueFactory(new PropertyValueFactory<>("AppointmentDescription"));
+        location_tablecolumn.setCellValueFactory(new PropertyValueFactory<>("AppointmentLocation"));
+        contact_tablecolumn.setCellValueFactory(new PropertyValueFactory<>("ContactName"));
+        type_tablecolumn.setCellValueFactory(new PropertyValueFactory<>("AppointmentType"));
+        start_date_time_tablecolumn.setCellValueFactory(new PropertyValueFactory<>("StartString"));
+        end_date_time_tablecolumn.setCellValueFactory(new PropertyValueFactory<>("EndString"));
+        customer_id_tablecolumn.setCellValueFactory(new PropertyValueFactory<>("CustomerId"));
+        user_id_tablecolumn.setCellValueFactory(new PropertyValueFactory<>("UserId"));
 
 
         // TableView listener

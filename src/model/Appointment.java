@@ -3,6 +3,7 @@ package model;
 import data.DBContacts;
 import data.DBCustomers;
 import data.DBUsers;
+import utils.ModelType;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -11,7 +12,7 @@ import java.time.ZonedDateTime;
 /**
  * The type Appointment.
  */
-public class Appointment {
+public class Appointment implements ModelType {
     private int appointmentId;
     private String appointmentTitle;
     private String appointmentDescription;
