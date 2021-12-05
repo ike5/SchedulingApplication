@@ -17,6 +17,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.cell.PropertyValueFactory;
 import main.Main;
 import model.*;
+import utils.ControllerViewChanger;
 
 import java.io.IOException;
 import java.net.URL;
@@ -232,6 +233,12 @@ public class CustomersController implements Initializable {
     public void viewAppointmentsButtonOnAction(ActionEvent actionEvent) throws IOException {
 //        switchView(actionEvent, Main.resourceBundle.getString("appointments_screen"), "Appointments");
 
+        View view = new View(actionEvent, Main.resourceBundle.getString("appointments_screen"), "Appointments");
+        changeViews(x -> x.change(), view);
+    }
+
+    public void changeViews(ControllerViewChanger c, View v) {
+        c.switchView(v);
     }
 
     /**

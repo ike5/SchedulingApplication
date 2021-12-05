@@ -3,6 +3,6 @@ package utils;
 import javafx.event.ActionEvent;
 
 @FunctionalInterface
-public interface ControllerUtil {
+public interface DuckFunctionalInterface {
     public String doSomething(Duck duck);
 }

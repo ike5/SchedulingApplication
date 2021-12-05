@@ -12,7 +12,7 @@ public class Test {
      * This is the method that utilizes the functional interface in order to
      * do something on the Duck object.
      */
-    public static void test(ControllerUtil c, Duck d) {
+    public static void test(DuckFunctionalInterface c, Duck d) {
         System.out.println(c.doSomething(d));
     }
 }

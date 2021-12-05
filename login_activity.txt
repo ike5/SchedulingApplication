@@ -337,3 +337,6 @@ SUCCESS	Username: test	LocalDateTime: 2021-12-02T06:09:38.554559
 SUCCESS	Username: admin	LocalDateTime: 2021-12-02T06:10:10.664588
 SUCCESS	Username: test	LocalDateTime: 2021-12-02T06:31:24.213245
 SUCCESS	Username: test	LocalDateTime: 2021-12-02T07:22:02.887617
+FAILURE	Username: test	LocalDateTime: 2021-12-05T10:50:09.799766
+SUCCESS	Username: test	LocalDateTime: 2021-12-05T10:50:12.746228
+SUCCESS	Username: test	LocalDateTime: 2021-12-05T10:50:43.244755
