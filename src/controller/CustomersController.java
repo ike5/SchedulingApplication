@@ -230,7 +230,8 @@ public class CustomersController implements Initializable {
      * @throws IOException
      */
     public void viewAppointmentsButtonOnAction(ActionEvent actionEvent) throws IOException {
-        switchView(actionEvent, Main.resourceBundle.getString("appointments_screen"), "Appointments");
+//        switchView(actionEvent, Main.resourceBundle.getString("appointments_screen"), "Appointments");
+
     }
 
     /**
