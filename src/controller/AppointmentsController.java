@@ -15,6 +15,7 @@ import model.Appointment;
 import model.AppointmentSingleton;
 import model.Message;
 import model.View;
+import utils.ChangeViewInterface;
 import utils.ControllerViewChanger;
 
 import java.io.IOException;
@@ -29,7 +30,7 @@ import java.util.ResourceBundle;
  * @author Ike Maldonado
  * @version 1.0
  */
-public class AppointmentsController implements Initializable {
+public class AppointmentsController implements Initializable, ChangeViewInterface {
     public TableView<Appointment> table_view_id;
     public TableColumn<Appointment, Integer> appointment_id_tablecolumn;
     public TableColumn<Appointment, String> title_tablecolumn;
@@ -95,7 +96,9 @@ public class AppointmentsController implements Initializable {
      * @throws IOException
      */
     public void backButtonOnAction(ActionEvent actionEvent) throws IOException {
-        switchView(actionEvent, Main.resourceBundle.getString("customers_screen"), "Hello");
+        changeView(x -> x.change(), new View(
+                actionEvent, Main.resourceBundle.getString("customers_screen"), "Hello"
+        ));
     }
 
     /**
@@ -136,7 +139,7 @@ public class AppointmentsController implements Initializable {
     public void newAppointmentButtonOnAction(ActionEvent actionEvent) throws IOException {
         AppointmentSingleton.getInstance().setAppointment(null);
 
-        changeViews(x -> x.change(), new View(
+        changeView(x -> x.change(), new View(
                 actionEvent, Main.resourceBundle.getString("modify_appointment_screen"), "New Appointment"
         ));
     }
@@ -153,7 +156,7 @@ public class AppointmentsController implements Initializable {
         if (table_view_id.getSelectionModel().selectedItemProperty() != null) {
             AppointmentSingleton.getInstance().setAppointment((Appointment) table_view_id.getSelectionModel().getSelectedItem());
 
-            changeViews(x -> x.change(), new View(
+            changeView(x -> x.change(), new View(
                     actionEvent, Main.resourceBundle.getString("modify_appointment_screen"), "Modify Appointment"
             ));
         } else {
@@ -182,29 +185,13 @@ public class AppointmentsController implements Initializable {
     }
 
     /**
-     * Helper method that simplifies the view switching process.
-     *
-     * @param actionEvent The ActionEvent from the parent method
-     * @param path        The new View to switch to
-     * @param title       The title of the new View
-     * @throws IOException
-     */
-    @Deprecated
-    private void switchView(ActionEvent actionEvent, String path, String title) throws IOException {
-        Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
-        Parent scene = FXMLLoader.load(getClass().getResource(path));
-        stage.setTitle(title);
-        stage.setScene(new Scene(scene));
-        stage.show();
-    }
-
-    /**
      * Helper method to change views
      *
      * @param controllerViewChanger a ControllerViewChanger interface
      * @param view                  a View object
      */
-    public void changeViews(ControllerViewChanger controllerViewChanger, View view) {
+    @Override
+    public void changeView(ControllerViewChanger controllerViewChanger, View view) {
         controllerViewChanger.switchView(view);
     }
 }

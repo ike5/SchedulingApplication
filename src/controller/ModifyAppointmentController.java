@@ -10,6 +10,7 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import main.Main;
 import model.*;
+import utils.ChangeViewInterface;
 import utils.ControllerViewChanger;
 
 import java.io.IOException;
@@ -26,7 +27,7 @@ import java.util.ResourceBundle;
  * @author Ike Maldonado
  * @version 1.0
  */
-public class ModifyAppointmentController implements Initializable {
+public class ModifyAppointmentController implements Initializable, ChangeViewInterface {
     public ComboBox type_combo;
     public ComboBox location_combo;
     public TextField title_textfield;
@@ -146,6 +147,7 @@ public class ModifyAppointmentController implements Initializable {
      * @param controllerViewChanger a ControllerViewChanger interface
      * @param view                  a View object
      */
+    @Override
     public void changeView(ControllerViewChanger controllerViewChanger, View view) {
         controllerViewChanger.switchView(view);
     }

@@ -17,6 +17,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.cell.PropertyValueFactory;
 import main.Main;
 import model.*;
+import utils.ChangeViewInterface;
 import utils.ControllerViewChanger;
 
 import java.io.IOException;
@@ -31,7 +32,7 @@ import java.util.ResourceBundle;
  * @author Ike Maldonado
  * @version 1.0
  */
-public class CustomersController implements Initializable {
+public class CustomersController implements Initializable, ChangeViewInterface {
     public TextField customer_id_id;
     public TextField customer_name_id;
     public ComboBox<Country> country_combo_id;
@@ -304,6 +305,7 @@ public class CustomersController implements Initializable {
      * @param controllerViewChanger a ControllerViewChanger interface
      * @param view a View object
      */
+    @Override
     public void changeView(ControllerViewChanger controllerViewChanger, View view) {
         controllerViewChanger.switchView(view);
     }

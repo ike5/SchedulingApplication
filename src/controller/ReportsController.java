@@ -7,15 +7,12 @@ import data.LoginTracker;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Stage;
 import main.Main;
 import model.*;
+import utils.ChangeViewInterface;
 import utils.ControllerViewChanger;
 
 import java.io.IOException;
@@ -32,7 +29,7 @@ import java.util.ResourceBundle;
  * @author Ike Maldonado
  * @version 1.0
  */
-public class ReportsController implements Initializable {
+public class ReportsController implements Initializable, ChangeViewInterface {
 
     public TableView contact_table_view;
 
@@ -170,12 +167,19 @@ public class ReportsController implements Initializable {
      * @throws IOException
      */
     public void backButtonOnAction(ActionEvent actionEvent) throws IOException {
-        changeScreen(x -> x.change(), new View(
+        changeView(x -> x.change(), new View(
                 actionEvent, Main.resourceBundle.getString("customers_screen"), "Customers"
         ));
     }
 
-    public void changeScreen(ControllerViewChanger controllerViewChanger, View view) {
+    /**
+     * Helper method to change views
+     *
+     * @param controllerViewChanger a ControllerViewChanger interface
+     * @param view                  a View object
+     */
+    @Override
+    public void changeView(ControllerViewChanger controllerViewChanger, View view) {
         controllerViewChanger.switchView(view);
     }
 }
