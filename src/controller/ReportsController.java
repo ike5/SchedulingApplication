@@ -16,6 +16,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import main.Main;
 import model.*;
+import utils.ControllerViewChanger;
 
 import java.io.IOException;
 import java.net.URL;
@@ -63,7 +64,8 @@ public class ReportsController implements Initializable {
 
 
     /**
-     * This method initializes each tab, and sets a listener for the Month and Type ComboBoxes.
+     * This method initializes each tab, and sets a listener for the Month
+     * and Type ComboBoxes.
      *
      * @param url
      * @param resourceBundle
@@ -168,10 +170,12 @@ public class ReportsController implements Initializable {
      * @throws IOException
      */
     public void backButtonOnAction(ActionEvent actionEvent) throws IOException {
-        Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
-        Parent scene = FXMLLoader.load(getClass().getResource(Main.resourceBundle.getString("customers_screen")));
-        stage.setTitle("Customers");
-        stage.setScene(new Scene(scene));
-        stage.show();
+        changeScreen(x -> x.change(), new View(
+                actionEvent, Main.resourceBundle.getString("customers_screen"), "Customers"
+        ));
+    }
+
+    public void changeScreen(ControllerViewChanger controllerViewChanger, View view) {
+        controllerViewChanger.switchView(view);
     }
 }
