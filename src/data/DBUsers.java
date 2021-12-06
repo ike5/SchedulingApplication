@@ -31,7 +31,7 @@ public class DBUsers {
     /**
      * Returns an ObservableList of all users in the database table.
      *
-     * @return ObservableList<User> object or null if none.
+     * @return A User ObservableList object or null if none.
      */
     public static ObservableList<User> getAllUsers() {
         ObservableList<User> userObservableList = FXCollections.observableArrayList();

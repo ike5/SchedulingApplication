@@ -64,8 +64,8 @@ public class CustomersController implements Initializable, ChangeViewInterface {
      * Clear, and Delete buttons. Initializes ComboBoxes. Adds a TableView
      * listener.
      *
-     * @param url
-     * @param resourceBundle
+     * @param url The URL
+     * @param resourceBundle The ResourceBundle
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -216,7 +216,7 @@ public class CustomersController implements Initializable, ChangeViewInterface {
      * Button to logout.
      *
      * @param actionEvent Logout Button pressed
-     * @throws IOException
+     * @throws IOException Exception
      */
     public void logoutButtonOnAction(ActionEvent actionEvent) throws IOException {
         Optional<ButtonType> result = Message.confirmationMessage("Logout?", "Confirm logout?");
@@ -229,7 +229,7 @@ public class CustomersController implements Initializable, ChangeViewInterface {
      * Button to switch to the Appointments View.
      *
      * @param actionEvent Appointments Button pressed
-     * @throws IOException
+     * @throws IOException Exception
      */
     public void viewAppointmentsButtonOnAction(ActionEvent actionEvent) throws IOException {
         changeView(x -> x.change(), new View(
@@ -241,7 +241,7 @@ public class CustomersController implements Initializable, ChangeViewInterface {
      * Button to switch to the Reports View.
      *
      * @param actionEvent Reports Button pressed
-     * @throws IOException
+     * @throws IOException Exception
      */
     public void reportsButtonOnAction(ActionEvent actionEvent) throws IOException {
         changeView(x -> x.change(), new View(

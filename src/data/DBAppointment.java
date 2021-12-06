@@ -20,7 +20,7 @@ public class DBAppointment {
     /**
      * Returns an ObservableList of all Appointments in the database.
      *
-     * @return Returns an ObservableList<Appointment>
+     * @return Returns an Appointment ObservableList
      */
     public static ObservableList<Appointment> getAllAppointments() {
         ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
@@ -169,7 +169,7 @@ public class DBAppointment {
     /**
      * Returns an ObservableList of all appointments in a specified month.
      *
-     * @return ObservableList<Appointment>
+     * @return Appointment ObservableList
      */
     public static ObservableList<Appointment> getAllAppointmentsInMonth() {
         ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
@@ -191,7 +191,7 @@ public class DBAppointment {
     /**
      * Returns an ObservableList of all appointments in specified week.
      *
-     * @return ObservableList<Appointment>
+     * @return Appointment ObservableList
      */
     public static ObservableList<Appointment> getAllAppointmentsInWeek() {
         String sql = "SELECT * FROM appointments WHERE Start >= ?";
@@ -215,7 +215,7 @@ public class DBAppointment {
      * customer.
      *
      * @param customerId An int value representing a specified customer
-     * @return Returns a List<Appointment>
+     * @return Returns an Appointment List
      */
     public static List<Appointment> getAllAppointmentsByCustomerId(int customerId) {
         List<Appointment> appointmentList = new ArrayList<>();
@@ -331,7 +331,7 @@ public class DBAppointment {
      * object is provided.
      *
      * @param contact A specified Contact object
-     * @return ObservableList<Appointment>
+     * @return Appointment ObservableList
      */
     public static ObservableList<Appointment> getAppointmentListFromContact(Contact contact) {
         ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();

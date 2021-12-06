@@ -51,8 +51,8 @@ public class ModifyAppointmentController implements Initializable, ChangeViewInt
      * local time, but all appointments options in the ComboBoxes
      * can only be selected from EST.
      *
-     * @param url
-     * @param resourceBundle
+     * @param url The URL
+     * @param resourceBundle The ResourceBundle
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -133,7 +133,7 @@ public class ModifyAppointmentController implements Initializable, ChangeViewInt
      * Button to go back to the Appointments View.
      *
      * @param actionEvent Back Button pressed
-     * @throws IOException
+     * @throws IOException Exception
      */
     public void cancelButtonOnAction(ActionEvent actionEvent) throws IOException {
         changeView(view -> view.change(), new View(
@@ -164,8 +164,8 @@ public class ModifyAppointmentController implements Initializable, ChangeViewInt
     /**
      * Button to save a new or updated appointment.
      *
-     * @param actionEvent
-     * @throws IOException
+     * @param actionEvent The Button ActionEvent
+     * @throws IOException Exception
      */
     public void saveButtonOnAction(ActionEvent actionEvent) throws IOException {
         Appointment appointment = AppointmentSingleton.getInstance().getAppointment();

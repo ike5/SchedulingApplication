@@ -17,10 +17,10 @@ import java.sql.SQLException;
 public class DBCountries {
 
     /**
-     * Returns an ObservableList<Country> object. Since the countries table does not have any constraints,
+     * Returns a Country ObservableList object. Since the countries table does not have any constraints,
      * the only fields retrieved from the table are Country_ID and the Country (name).
      *
-     * @return ObservableList<Country> object
+     * @return Country ObservableList object
      */
     public static ObservableList<Country> getAllCountries() {
         ObservableList<Country> countryObservableList = FXCollections.observableArrayList();

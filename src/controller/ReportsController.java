@@ -64,8 +64,8 @@ public class ReportsController implements Initializable, ChangeViewInterface {
      * This method initializes each tab, and sets a listener for the Month
      * and Type ComboBoxes.
      *
-     * @param url
-     * @param resourceBundle
+     * @param url The URL
+     * @param resourceBundle The ResourceBundle
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -164,7 +164,7 @@ public class ReportsController implements Initializable, ChangeViewInterface {
      * Button to go back to Customers View.
      *
      * @param actionEvent Back Button pressed
-     * @throws IOException
+     * @throws IOException Exception
      */
     public void backButtonOnAction(ActionEvent actionEvent) throws IOException {
         changeView(view -> view.change(), new View(

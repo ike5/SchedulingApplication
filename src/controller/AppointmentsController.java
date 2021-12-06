@@ -54,8 +54,8 @@ public class AppointmentsController implements Initializable, ChangeViewInterfac
      * also ensures that Delete and Update buttons start off inactive
      * until a table item is selected.
      *
-     * @param url
-     * @param resourceBundle
+     * @param url The URL
+     * @param resourceBundle The ResourceBundle
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -93,7 +93,7 @@ public class AppointmentsController implements Initializable, ChangeViewInterfac
      * Switches user to the CustomersController screen.
      *
      * @param actionEvent Back Button pressed
-     * @throws IOException
+     * @throws IOException Exception
      */
     public void backButtonOnAction(ActionEvent actionEvent) throws IOException {
         changeView(x -> x.change(), new View(
@@ -134,7 +134,7 @@ public class AppointmentsController implements Initializable, ChangeViewInterfac
      * views.
      *
      * @param actionEvent New Appointment Button pressed
-     * @throws IOException
+     * @throws IOException Exception
      */
     public void newAppointmentButtonOnAction(ActionEvent actionEvent) throws IOException {
         AppointmentSingleton.getInstance().setAppointment(null);
@@ -150,7 +150,7 @@ public class AppointmentsController implements Initializable, ChangeViewInterfac
      * singleton before switching views.
      *
      * @param actionEvent Update Appointment Button is pressed
-     * @throws IOException
+     * @throws IOException Exception
      */
     public void updateAppointmentButtonOnAction(ActionEvent actionEvent) throws IOException {
         if (table_view_id.getSelectionModel().selectedItemProperty() != null) {

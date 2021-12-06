@@ -49,8 +49,8 @@ public class LoginController implements Initializable {
     /**
      * Initializes Labels and TextFields of login form.
      *
-     * @param url
-     * @param resourceBundle
+     * @param url The URL
+     * @param resourceBundle The ResourceBundle
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -113,7 +113,7 @@ public class LoginController implements Initializable {
      * This method is triggered when the login button is CLICKED with a mouse.
      *
      * @param actionEvent Login Button is Clicked
-     * @throws IOException
+     * @throws IOException Exception
      */
     public void onLoginAction(ActionEvent actionEvent) throws IOException {
         getUsernamePasswordReceived(); // move inside changeScreen()
@@ -130,8 +130,8 @@ public class LoginController implements Initializable {
      * Typing ENTER while on username TextField calls this method. Logs
      * user in.
      *
-     * @param actionEvent
-     * @throws IOException
+     * @param actionEvent The ENTER key actionEvent
+     * @throws IOException Exception
      */
     public void usernameOnAction(ActionEvent actionEvent) throws IOException {
         textFieldLogin(actionEvent);
@@ -141,8 +141,8 @@ public class LoginController implements Initializable {
      * Typing ENTER while on password TextField calls this method. Logs
      * user in.
      *
-     * @param actionEvent
-     * @throws IOException
+     * @param actionEvent The ENTER key actionEvent
+     * @throws IOException Exception
      */
     public void passwordOnAction(ActionEvent actionEvent) throws IOException {
         textFieldLogin(actionEvent);

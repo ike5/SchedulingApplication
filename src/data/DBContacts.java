@@ -16,10 +16,10 @@ import java.sql.SQLException;
  */
 public class DBContacts {
     /**
-     * Returns an ObservableList<Contact> object of all contacts listed in
+     * Returns a Contact ObservableList object of all contacts listed in
      * the contacts database table.
      *
-     * @return ObservableList<Contact> object
+     * @return Contact ObservableList
      */
     public static ObservableList<Contact> getAllContacts() {
         ObservableList<Contact> contactObservableList = FXCollections.observableArrayList();

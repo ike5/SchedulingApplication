@@ -20,6 +20,7 @@ public class DBDivisions {
     /**
      * Gets all divisions provided a countryId.
      *
+     * @param countryId The int value representing a Country ID
      * @return A ResultSet object containing all listed Division_ID, Divisions related to the Country ID.
      */
     public static ObservableList<Division> getDivisions(int countryId) {
@@ -56,7 +57,7 @@ public class DBDivisions {
     /**
      * Returns a list of all Division objects.
      *
-     * @return Returns an ObservableList<Division>
+     * @return Returns a Division ObservableList
      */
     public static ObservableList<Division> getAllFirstLevelDivisions() {
         ObservableList<Division> divisionObservableList = FXCollections.observableArrayList();

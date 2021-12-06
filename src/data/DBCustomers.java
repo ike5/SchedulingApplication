@@ -22,14 +22,15 @@ public class DBCustomers {
      * Inserts a customer into the customers database table.
      * <p>
      * Dependencies:
-     * <li>All divisionId data must be validated</li>
-     * <li>{@link Main#user} must be instantiated</li>
+     * All divisionId data must be validated.
+     * {@link Main#user} must be instantiated.
      *
      * @param customerName The Customer_Name field
      * @param address      The Address field
      * @param postalCode   The Postal_Code field
      * @param phone        The Phone field
      * @param divisionId   The Division_ID foreign key constraint
+     * @param user         The User object
      * @return Returns a new Customer object or null if entry was unsuccessful.
      */
     public static Customer insertCustomer(String customerName, String address, String postalCode, String phone, int divisionId, User user) {
@@ -63,10 +64,10 @@ public class DBCustomers {
     }
 
     /**
-     * Returns an ObservableList<Customer> object of all customers in the
+     * Returns a Customer ObservableList object of all customers in the
      * customer database table.
      *
-     * @return an ObservableList<Customer> object or null if no entries.
+     * @return a Customer ObservableList object or null if no entries.
      */
     public static ObservableList<Customer> getAllCustomers() {
         String sql_customers = "SELECT Customer_ID, Customer_Name, Address, Postal_Code, Phone, Division_ID FROM customers";
@@ -215,7 +216,6 @@ public class DBCustomers {
      * Deletes customer from database table provided a customer ID integer.
      *
      * @param customerId An integer representing the customer ID
-     * @return Returns -1 if unsuccessful and > 1 if successful
      */
     public static void deleteCustomerById(int customerId) {
         String sql_delete_appointments = "DELETE FROM appointments WHERE Customer_ID = ?";

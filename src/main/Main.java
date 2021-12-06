@@ -19,7 +19,7 @@ import static data.JDBC.openConnection;
  * and closes the connection to the database.
  * <p>
  * Several dependencies throughout the lifecycle of the program are provided
- * as static variables: {@link #resourceBundle} & {@link #user}.
+ * as static variables: {@link #resourceBundle} and {@link #user}.
  *
  * @author Ike Maldonado
  * @version 1.0
