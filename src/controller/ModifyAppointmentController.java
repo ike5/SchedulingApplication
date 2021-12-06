@@ -10,6 +10,7 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import main.Main;
 import model.*;
+import utils.ControllerViewChanger;
 
 import java.io.IOException;
 import java.net.URL;
@@ -134,11 +135,19 @@ public class ModifyAppointmentController implements Initializable {
      * @throws IOException
      */
     public void cancelButtonOnAction(ActionEvent actionEvent) throws IOException {
-        Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
-        Parent scene = FXMLLoader.load(getClass().getResource(Main.resourceBundle.getString("appointments_screen")));
-        stage.setTitle("Appointments");
-        stage.setScene(new Scene(scene));
-        stage.show();
+        changeView(x -> x.change(), new View(
+                actionEvent, Main.resourceBundle.getString("appointments_screen"), "Appointments"
+        ));
+    }
+
+    /**
+     * Helper method to change views
+     *
+     * @param controllerViewChanger a ControllerViewChanger interface
+     * @param view                  a View object
+     */
+    public void changeView(ControllerViewChanger controllerViewChanger, View view) {
+        controllerViewChanger.switchView(view);
     }
 
     /**
@@ -160,15 +169,15 @@ public class ModifyAppointmentController implements Initializable {
         Appointment appointment = AppointmentSingleton.getInstance().getAppointment();
 
         if (isMissingValue()) {
-            Messages.confirmationMessage(String.valueOf(errorMessage()), "Missing value");
+            Message.confirmationMessage(String.valueOf(errorMessage()), "Missing value");
         } else if (isWeekend()) {
-            Messages.errorMessage("Cannot schedule outside of business hours", "Schedule Error");
+            Message.errorMessage("Cannot schedule outside of business hours", "Schedule Error");
         } else {
             if (appointment == null) { // If user clicked 'New Appointment' from AppointmentsController,
                 if (isOverlapping(null)) {
-                    Messages.errorMessage("Appointment overlaps", "Schedule Error");
+                    Message.errorMessage("Appointment overlaps", "Schedule Error");
                 } else {
-                    Optional<ButtonType> result = Messages.confirmationMessage("Create new appointment?", "Confirm");
+                    Optional<ButtonType> result = Message.confirmationMessage("Create new appointment?", "Confirm");
                     if (result.isPresent() && (result.get() == ButtonType.OK)) {
                         DBAppointment.insertAppointment(
                                 title_textfield.getText(),
@@ -182,14 +191,16 @@ public class ModifyAppointmentController implements Initializable {
                                 ((Contact) contact_combo.getValue())
                         );
 
-                        switchView(actionEvent, Main.resourceBundle.getString("appointments_screen"), "Appointments");
+                        changeView(x -> x.change(), new View(
+                                actionEvent, Main.resourceBundle.getString("appointments_screen"), "Appointments"
+                        ));
                     }
                 }
             } else {
                 if (isOverlapping(appointment)) {
-                    Messages.errorMessage("Appointment overlaps", "Schedule Error");
+                    Message.errorMessage("Appointment overlaps", "Schedule Error");
                 } else {
-                    Optional<ButtonType> result = Messages.confirmationMessage("Save changes?", "Confirm");
+                    Optional<ButtonType> result = Message.confirmationMessage("Save changes?", "Confirm");
                     if (result.isPresent() && (result.get() == ButtonType.OK)) {
                         DBAppointment.updateAppointment(
                                 AppointmentSingleton.getInstance().getAppointment().getAppointmentId(),
@@ -204,7 +215,9 @@ public class ModifyAppointmentController implements Initializable {
                                 ((Contact) contact_combo.getValue())
                         );
 
-                        switchView(actionEvent, Main.resourceBundle.getString("appointments_screen"), "Appointments");
+                        changeView(x -> x.change(), new View(
+                                actionEvent, Main.resourceBundle.getString("appointments_screen"), "Appointments"
+                        ));
                     }
                 }
             }

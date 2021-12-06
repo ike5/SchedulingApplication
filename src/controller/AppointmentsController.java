@@ -10,19 +10,15 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import javafx.util.Pair;
 import main.Main;
 import model.Appointment;
 import model.AppointmentSingleton;
-import model.Messages;
+import model.Message;
 import model.View;
 import utils.ControllerViewChanger;
-import utils.Utility;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -161,7 +157,7 @@ public class AppointmentsController implements Initializable {
                     actionEvent, Main.resourceBundle.getString("modify_appointment_screen"), "Modify Appointment"
             ));
         } else {
-            Messages.errorMessage("Please select an appointment", "Nothing selected");
+            Message.errorMessage("Please select an appointment", "Nothing selected");
         }
     }
 
@@ -173,7 +169,7 @@ public class AppointmentsController implements Initializable {
     public void deleteAppointmentButtonOnAction(ActionEvent actionEvent) {
         AppointmentSingleton.getInstance().setAppointment((Appointment) table_view_id.getSelectionModel().getSelectedItem());
 
-        Optional<ButtonType> result = Messages.confirmationMessage("Are you sure?", "Delete appointment");
+        Optional<ButtonType> result = Message.confirmationMessage("Are you sure?", "Delete appointment");
         if (result.isPresent() && result.get() == ButtonType.OK) {
             DBAppointment.deleteAppointment(AppointmentSingleton.getInstance().getAppointment().getAppointmentId());
         }

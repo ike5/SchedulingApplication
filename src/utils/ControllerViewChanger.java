@@ -1,6 +1,5 @@
 package utils;
 
-import javafx.event.ActionEvent;
 import model.View;
 
 @FunctionalInterface

@@ -8,7 +8,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.util.Pair;
 import main.Main;
 import model.LogType;
-import model.Messages;
+import model.Message;
 import data.DBUsers;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -67,7 +67,12 @@ public class LoginController implements Initializable {
      * @param keyEvent A key event
      */
     public void onUsernameKeyTyped(KeyEvent keyEvent) {
-        stringValidation(validateUsernameString(), username_label_id, username_field_id, "invalid_username_format");
+        stringValidation(
+                validateUsernameString(),
+                username_label_id,
+                username_field_id,
+                "invalid_username_format"
+        );
     }
 
     /**
@@ -76,12 +81,18 @@ public class LoginController implements Initializable {
      * @param keyEvent A key event
      */
     public void onPasswordKeyTyped(KeyEvent keyEvent) {
-        stringValidation(validatePasswordString(), password_label_id, password_field_id, "invalid_password_format");
+        stringValidation(
+                validatePasswordString(),
+                password_label_id,
+                password_field_id,
+                "invalid_password_format"
+        );
 
     }
 
     /**
-     * Helper method to provide visual error message when username or password is invalid.
+     * Helper method to provide visual error message when username or password
+     * is invalid.
      *
      * @param isInvalid            Is an invalid username or password
      * @param label                The label to be changed
@@ -140,14 +151,15 @@ public class LoginController implements Initializable {
 
     /**
      * Helper method to retrieve the username and password exactly as entered
-     * in the login form. This username and password is then made in a log
-     * entry.
+     * in the login form. This username and password is then made in a log entry.
      *
      * @return Returns a username and password Pair<String, String> object
      */
     private Pair<String, String> getUsernamePasswordReceived() {
         dbUsers = new DBUsers(username_field_id.getText(), password_field_id.getText());
+
         Pair<String, String> usernamePasswordReceived = new Pair<>(username_field_id.getText(), password_field_id.getText());
+
         makeLogEntry(usernamePasswordReceived);
         return usernamePasswordReceived;
     }
@@ -170,8 +182,9 @@ public class LoginController implements Initializable {
     }
 
     /**
-     * Helper method that takes a String pair of username and password to be validated. Sends Enum values of either
-     * SUCCESS or FAILURE to addToLog() method.
+     * Helper method that takes a String pair of username and password to be
+     * validated. Sends Enum values of either SUCCESS or FAILURE to addToLog()
+     * method.
      *
      * @param usernamePasswordReceived A String pair of username and password
      */
@@ -184,7 +197,8 @@ public class LoginController implements Initializable {
     }
 
     /**
-     * Helper method that takes a String pair and LogType and passes a value to the LoginTracker.addToLog method.
+     * Helper method that takes a String pair and LogType and passes a value
+     * to the LoginTracker.addToLog method.
      *
      * @param usernamePasswordReceived A String pair of username and password
      * @param logTypeStatus            An enum of either SUCCESS or FAILURE
@@ -230,22 +244,22 @@ public class LoginController implements Initializable {
      * @param actionEvent           Either a Button actionEvent or a TextField
      * @param userLogin
      * @param scene
-     * @param changeScreenInterface
+     * @param changeViewInterface
      */
-    private static void changeScreen(ActionEvent actionEvent, DBUsers userLogin, Parent scene, Utility.ChangeScreenInterface changeScreenInterface) {
+    private static void changeScreen(ActionEvent actionEvent, DBUsers userLogin, Parent scene, Utility.ChangeViewInterface changeViewInterface) {
 
         if (userLogin.getUser().isValidUsername()) {
             if (userLogin.getUser().isValidPassword()) {
                 checkUpcomingAppointment(userLogin);
-                switchView(actionEvent, userLogin, scene, changeScreenInterface);
+                switchView(actionEvent, userLogin, scene, changeViewInterface);
             } else {
-                Messages.errorMessage(
+                Message.errorMessage(
                         Main.resourceBundle.getString("incorrect_password"),
                         Main.resourceBundle.getString("password_alert_title")
                 );
             }
         } else {
-            Messages.errorMessage(
+            Message.errorMessage(
                     Main.resourceBundle.getString("incorrect_username"),
                     Main.resourceBundle.getString("username_alert_title")
             );
@@ -253,8 +267,8 @@ public class LoginController implements Initializable {
     }
 
     /**
-     * Helper method that responds to the call to DBAppointment.checkUpcomingAppointments() and provides a message
-     * to display to the user.
+     * Helper method that responds to the call to DBAppointment.checkUpcomingAppointments()
+     * and provides a message to display to the user.
      *
      * @param userLogin DBUsers object sets static User variable if login successful
      */
@@ -264,27 +278,29 @@ public class LoginController implements Initializable {
         Pair<Boolean, Pair<LocalDateTime, Integer>> upcomingAppointment = DBAppointment.checkUpcomingAppointments();
 
         if (upcomingAppointment != null) {
-            Messages.warningMessage(
+            Message.warningMessage(
                     "Upcoming appointment: " + upcomingAppointment.getValue().getValue() +
                             "\nTime: " + ZonedDateTime.of(upcomingAppointment.getValue().getKey(), ZoneId.systemDefault()),
                     "Upcoming appointment"
             );
         } else {
-            Messages.warningMessage("No upcoming appointments", "Upcoming appointment");
+            Message.warningMessage("No upcoming appointments", "Upcoming appointment");
         }
     }
 
     /**
-     * Helper method that switches views based on having variable event sources. Sets the Stage to an event source of
-     * either a Button or TextField for this application.
+     * Helper method that switches views based on having variable event sources.
+     * Sets the Stage to an event source of either a Button or TextField for
+     * this application using a ChangeScreenInterface in order to pass a function
+     * to the lambda expression.
      *
      * @param actionEvent           An event source
      * @param userLogin             A DBUsers object to get currently logged-in User's username to display
      * @param scene                 Builds a new Scene to switch to
-     * @param changeScreenInterface A variable event source object
+     * @param changeViewInterface A variable event source object
      */
-    private static void switchView(ActionEvent actionEvent, DBUsers userLogin, Parent scene, Utility.ChangeScreenInterface changeScreenInterface) {
-        Stage stage = changeScreenInterface.eventSource(actionEvent);
+    private static void switchView(ActionEvent actionEvent, DBUsers userLogin, Parent scene, Utility.ChangeViewInterface changeViewInterface) {
+        Stage stage = changeViewInterface.eventSource(actionEvent);
         stage.setTitle("Welcome " + userLogin.getUser().getUsername() + "!");
         stage.setScene(new Scene(scene));
         stage.show();

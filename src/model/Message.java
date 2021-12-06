@@ -11,7 +11,7 @@ import java.util.Optional;
  * @author Ike Maldonado
  * @version 1.0
  */
-public class Messages {
+public class Message {
     /**
      * Error message.
      *

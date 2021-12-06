@@ -193,7 +193,7 @@ public class CustomersController implements Initializable {
      */
     public void deleteCustomerButtonOnAction(ActionEvent actionEvent) {
         if (!table_view_id.getSelectionModel().isEmpty()) {
-            Optional<ButtonType> result = Messages
+            Optional<ButtonType> result = Message
                     .confirmationMessage(
                             "Delete " + ((Customer) table_view_id.getSelectionModel().getSelectedItem()).getName() +
                                     "?", "Delete"
@@ -207,7 +207,7 @@ public class CustomersController implements Initializable {
                 table_view_id.setItems(customerObservableList);
             }
         } else {
-            Messages.errorMessage("Nothing to delete!", "Select an item to delete");
+            Message.errorMessage("Nothing to delete!", "Select an item to delete");
         }
     }
 
@@ -218,7 +218,7 @@ public class CustomersController implements Initializable {
      * @throws IOException
      */
     public void logoutButtonOnAction(ActionEvent actionEvent) throws IOException {
-        Optional<ButtonType> result = Messages.confirmationMessage("Logout?", "Confirm logout?");
+        Optional<ButtonType> result = Message.confirmationMessage("Logout?", "Confirm logout?");
         if (result.isPresent() && result.get() == ButtonType.OK) {
             logout(actionEvent);
         }
@@ -231,7 +231,7 @@ public class CustomersController implements Initializable {
      * @throws IOException
      */
     public void viewAppointmentsButtonOnAction(ActionEvent actionEvent) throws IOException {
-        changeViews(x -> x.change(), new View(
+        changeView(x -> x.change(), new View(
                 actionEvent, Main.resourceBundle.getString("appointments_screen"), "Appointments"
         ));
     }
@@ -243,7 +243,7 @@ public class CustomersController implements Initializable {
      * @throws IOException
      */
     public void reportsButtonOnAction(ActionEvent actionEvent) throws IOException {
-        changeViews(x -> x.change(), new View(
+        changeView(x -> x.change(), new View(
                 actionEvent, Main.resourceBundle.getString("reports_screen"), "Reports"
         ));
     }
@@ -262,7 +262,7 @@ public class CustomersController implements Initializable {
         if (isEmptyTableView) {
             // Save new Customer
             if (isMissingComboBoxValues) {
-                Messages.warningMessage("Select a Country and State/Province", "Missing selection");
+                Message.warningMessage("Select a Country and State/Province", "Missing selection");
             } else {
                 DBCustomers.insertCustomer(
                         customer_name_id.getText().trim(),
@@ -277,9 +277,9 @@ public class CustomersController implements Initializable {
         } else {
             // Update selected Customer
             if (isMissingComboBoxValues) {
-                Messages.warningMessage("Select a Country and State/Province", "Missing selection");
+                Message.warningMessage("Select a Country and State/Province", "Missing selection");
             } else {
-                Optional<ButtonType> result = Messages.confirmationMessage("Save changes?", "Save or Discard");
+                Optional<ButtonType> result = Message.confirmationMessage("Save changes?", "Save or Discard");
                 if (result.isPresent() && result.get() == ButtonType.OK) {
                     DBCustomers.updateCustomer(
                             new Customer(
@@ -304,7 +304,7 @@ public class CustomersController implements Initializable {
      * @param controllerViewChanger a ControllerViewChanger interface
      * @param view a View object
      */
-    public void changeViews(ControllerViewChanger controllerViewChanger, View view) {
+    public void changeView(ControllerViewChanger controllerViewChanger, View view) {
         controllerViewChanger.switchView(view);
     }
 
@@ -339,7 +339,7 @@ public class CustomersController implements Initializable {
      * @throws IOException
      */
     private void logout(ActionEvent actionEvent) throws IOException {
-        changeViews(x -> x.change(), new View(
+        changeView(x -> x.change(), new View(
                 actionEvent, Main.resourceBundle.getString("login_screen"), "login"
         ));
     }

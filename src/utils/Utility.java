@@ -23,25 +23,13 @@ import java.util.Locale;
  */
 public @interface Utility {
     /**
-     * The change screen interface.
+     * The change screen interface. Uses an ActionEvent
+     * to decide whether using a Button or a TextField to
+     * change views.
      */
     @FunctionalInterface
-    interface ChangeScreenInterface {
-        /**
-         * This method allows an ActionEvent to be passed as a lambda expression.
-         *
-         * @param actionEvent the action event
-         * @return the stage
-         */
+    interface ChangeViewInterface {
         public Stage eventSource(ActionEvent actionEvent);
-    }
-
-    /**
-     * This interface helps simplify the setting of CellValueFactory.
-     */
-    @FunctionalInterface
-    interface TableCellsInterface {
-        public void setTable(ObservableList<Appointment> appointmentObservableList, String... getterMethod);
     }
 }
 
