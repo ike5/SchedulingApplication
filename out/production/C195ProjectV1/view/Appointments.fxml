@@ -18,14 +18,14 @@
                     <children>
                         <TableView fx:id="table_view_id" prefHeight="200.0" prefWidth="1200.0">
                             <columns>
-                                <TableColumn fx:id="appointment_id_tablecolumn" minWidth="-1.0" prefWidth="35.0" text="Appointment ID" />
-                                <TableColumn fx:id="title_tablecolumn" minWidth="-1.0" prefWidth="38.0" text="Title" />
-                                <TableColumn fx:id="description_tablecolumn" minWidth="-1.0" prefWidth="67.0" text="Description" />
-                                <TableColumn fx:id="location_tablecolumn" minWidth="-1.0" prefWidth="69.0" text="Location" />
-                                <TableColumn fx:id="contact_tablecolumn" minWidth="-1.0" prefWidth="82.0" text="Contact" />
-                                <TableColumn fx:id="type_tablecolumn" minWidth="-1.0" prefWidth="41.0" text="Type" />
-                                <TableColumn fx:id="start_date_time_tablecolumn" minWidth="-1.0" prefWidth="362.0" text=" Start Date/Time" />
-                        <TableColumn fx:id="end_date_time_tablecolumn" minWidth="-1.0" prefWidth="382.0" text="End Date/Time" />
+                                <TableColumn fx:id="appointment_id_tablecolumn" minWidth="-1.0" prefWidth="94.0" text="Appointment ID" />
+                                <TableColumn fx:id="title_tablecolumn" minWidth="-1.0" prefWidth="178.0" text="Title" />
+                                <TableColumn fx:id="description_tablecolumn" minWidth="-1.0" prefWidth="225.0" text="Description" />
+                                <TableColumn fx:id="location_tablecolumn" minWidth="-1.0" prefWidth="112.0" text="Location" />
+                                <TableColumn fx:id="contact_tablecolumn" minWidth="-1.0" prefWidth="110.0" text="Contact" />
+                                <TableColumn fx:id="type_tablecolumn" minWidth="-1.0" prefWidth="96.0" text="Type" />
+                                <TableColumn fx:id="start_date_time_tablecolumn" minWidth="-1.0" prefWidth="142.0" text=" Start Date/Time" />
+                        <TableColumn fx:id="end_date_time_tablecolumn" minWidth="-1.0" prefWidth="119.0" text="End Date/Time" />
                         <TableColumn fx:id="customer_id_tablecolumn" minWidth="-1.0" prefWidth="76.0" text="Customer ID" />
                         <TableColumn fx:id="user_id_tablecolumn" minWidth="-1.0" prefWidth="47.0" text="User ID" />
                             </columns>

@@ -45,14 +45,14 @@ public class AppointmentsController implements Initializable, ChangeViewInterfac
     public RadioButton month_view_radio_button;
     public RadioButton week_view_radio_button;
     public RadioButton all_appointments_radio_button;
-    public ObservableList<Appointment> appointmentObservableList;
     public ToggleGroup appointmentToggleGroup;
     public Button delete_button;
     public Button update_button;
 
     /**
-     * Initializes TableView with Appointment objects. This method also ensures that Delete and Update buttons
-     * start off inactive until a table item is selected.
+     * Initializes TableView with Appointment objects. This method
+     * also ensures that Delete and Update buttons start off inactive
+     * until a table item is selected.
      *
      * @param url
      * @param resourceBundle
@@ -97,7 +97,7 @@ public class AppointmentsController implements Initializable, ChangeViewInterfac
      */
     public void backButtonOnAction(ActionEvent actionEvent) throws IOException {
         changeView(x -> x.change(), new View(
-                actionEvent, Main.resourceBundle.getString("customers_screen"), "Hello"
+                actionEvent, Main.resourceBundle.getString("customers_screen"), "Customers"
         ));
     }
 

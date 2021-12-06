@@ -47,7 +47,7 @@ public class CustomersController implements Initializable, ChangeViewInterface {
     public TableColumn<Customer, String> phone_number_tablecolumn_id;
     public TableColumn<Customer, Country> country_tablecolumn_id;
     public TableColumn<Customer, Division> division_tablecolumn_id;
-    public TableView table_view_id;
+    public TableView<Customer> table_view_id;
     public Button save_button;
     public Button clear_form_button;
     public Button delete_customer_button;
@@ -137,7 +137,7 @@ public class CustomersController implements Initializable, ChangeViewInterface {
      */
     public void customerNameOnKeyTyped(KeyEvent keyEvent) {
         isCustomerNameFieldValid = isValidTextField((TextField) keyEvent.getSource());
-        disableButtonsLogic();
+        disableButtons();
     }
 
     /**
@@ -147,7 +147,7 @@ public class CustomersController implements Initializable, ChangeViewInterface {
      */
     public void addressOnKeyTyped(KeyEvent keyEvent) {
         isAddressFieldValid = isValidTextField((TextField) keyEvent.getSource());
-        disableButtonsLogic();
+        disableButtons();
     }
 
     /**
@@ -157,7 +157,7 @@ public class CustomersController implements Initializable, ChangeViewInterface {
      */
     public void postalCodeOnKeyTyped(KeyEvent keyEvent) {
         isPostalCodeFieldValid = isValidTextField((TextField) keyEvent.getSource());
-        disableButtonsLogic();
+        disableButtons();
     }
 
     /**
@@ -167,7 +167,7 @@ public class CustomersController implements Initializable, ChangeViewInterface {
      */
     public void phoneNumberOnKeyTyped(KeyEvent keyEvent) {
         isPhoneNumberFieldValid = isValidTextField((TextField) keyEvent.getSource());
-        disableButtonsLogic();
+        disableButtons();
     }
 
     /**
@@ -349,7 +349,7 @@ public class CustomersController implements Initializable, ChangeViewInterface {
     /**
      * Helper to enable or disable Save, Clear, and Delete buttons.
      */
-    private void disableButtonsLogic() {
+    private void disableButtons() {
         if (table_view_id.getSelectionModel().isEmpty()) {
             if (allTextFieldsValid()) {
                 disableButtons(false, false, true);
@@ -371,23 +371,6 @@ public class CustomersController implements Initializable, ChangeViewInterface {
         isAddressFieldValid = isValid;
         isPostalCodeFieldValid = isValid;
         isPhoneNumberFieldValid = isValid;
-    }
-
-    /**
-     * Helper method to switch Views.
-     *
-     * @param actionEvent The calling Button ActionEvent
-     * @param path        The new View path
-     * @param title       The title of the new View
-     * @throws IOException
-     */
-    @Deprecated
-    private void switchView(ActionEvent actionEvent, String path, String title) throws IOException {
-        Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
-        Parent scene = FXMLLoader.load(getClass().getResource(path));
-        stage.setTitle(title);
-        stage.setScene(new Scene(scene));
-        stage.show();
     }
 
     /**

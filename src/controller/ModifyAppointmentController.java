@@ -76,7 +76,7 @@ public class ModifyAppointmentController implements Initializable, ChangeViewInt
         LocalTime startTime = LocalTime.of(8, 0); // 8:00AM
         LocalTime endTime = LocalTime.of(21, 45); // 11:45, but last appointment is +15 min so, 12:00AM
 
-        // Set ZoneId for office
+        // Set ZoneId for office to EST
         ZoneId zoneIdEST = ZoneId.of("America/New_York");
 
         // Ensure ZonedDateTime is EST to begin with
@@ -136,7 +136,7 @@ public class ModifyAppointmentController implements Initializable, ChangeViewInt
      * @throws IOException
      */
     public void cancelButtonOnAction(ActionEvent actionEvent) throws IOException {
-        changeView(x -> x.change(), new View(
+        changeView(view -> view.change(), new View(
                 actionEvent, Main.resourceBundle.getString("appointments_screen"), "Appointments"
         ));
     }
@@ -193,7 +193,7 @@ public class ModifyAppointmentController implements Initializable, ChangeViewInt
                                 ((Contact) contact_combo.getValue())
                         );
 
-                        changeView(x -> x.change(), new View(
+                        changeView(view -> view.change(), new View(
                                 actionEvent, Main.resourceBundle.getString("appointments_screen"), "Appointments"
                         ));
                     }
@@ -217,7 +217,7 @@ public class ModifyAppointmentController implements Initializable, ChangeViewInt
                                 ((Contact) contact_combo.getValue())
                         );
 
-                        changeView(x -> x.change(), new View(
+                        changeView(view -> view.change(), new View(
                                 actionEvent, Main.resourceBundle.getString("appointments_screen"), "Appointments"
                         ));
                     }

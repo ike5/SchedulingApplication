@@ -167,7 +167,7 @@ public class ReportsController implements Initializable, ChangeViewInterface {
      * @throws IOException
      */
     public void backButtonOnAction(ActionEvent actionEvent) throws IOException {
-        changeView(x -> x.change(), new View(
+        changeView(view -> view.change(), new View(
                 actionEvent, Main.resourceBundle.getString("customers_screen"), "Customers"
         ));
     }

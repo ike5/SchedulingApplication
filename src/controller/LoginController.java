@@ -87,7 +87,6 @@ public class LoginController implements Initializable {
                 password_field_id,
                 "invalid_password_format"
         );
-
     }
 
     /**
