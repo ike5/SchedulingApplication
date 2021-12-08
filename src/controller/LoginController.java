@@ -25,7 +25,9 @@ import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.TimeZone;
 
 /**
  * This class displays a login form and validates username and password credentials.
@@ -49,12 +51,13 @@ public class LoginController implements Initializable {
     /**
      * Initializes Labels and TextFields of login form.
      *
-     * @param url The URL
+     * @param url            The URL
      * @param resourceBundle The ResourceBundle
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        language_zone_id.setText(Main.resourceBundle.getString("zone_id"));
+
+        language_zone_id.setText(String.valueOf(ZoneId.systemDefault()));
         welcome_message.setText(Main.resourceBundle.getString("welcome_message"));
         username_id.setText(Main.resourceBundle.getString("username"));
         password_id.setText(Main.resourceBundle.getString("password"));
@@ -240,7 +243,7 @@ public class LoginController implements Initializable {
      * stage = (Stage) ((TextField) actionEvent.getSource()).getScene().getWindow();
      * stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
      *
-     * @param actionEvent           Either a Button actionEvent or a TextField
+     * @param actionEvent         Either a Button actionEvent or a TextField
      * @param userLogin
      * @param scene
      * @param changeViewInterface
@@ -293,9 +296,9 @@ public class LoginController implements Initializable {
      * this application using a ChangeScreenInterface in order to pass a function
      * to the lambda expression.
      *
-     * @param actionEvent           An event source
-     * @param userLogin             A DBUsers object to get currently logged-in User's username to display
-     * @param scene                 Builds a new Scene to switch to
+     * @param actionEvent         An event source
+     * @param userLogin           A DBUsers object to get currently logged-in User's username to display
+     * @param scene               Builds a new Scene to switch to
      * @param changeViewInterface A variable event source object
      */
     private static void switchView(ActionEvent actionEvent, DBUsers userLogin, Parent scene, Utility.ChangeViewInterface changeViewInterface) {

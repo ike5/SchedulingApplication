@@ -7,6 +7,7 @@ import data.DBUsers;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * The type Appointment.
@@ -52,16 +53,11 @@ public class Appointment {
         this.start = localDateTime_start;
         this.end = localDateTime_end;
 
-        // Note that all time in application is set to EST
-        ZoneId easternZoneId = ZoneId.of("America/New_York");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd, uuuu hh:mm a");
 
-        ZonedDateTime zonedDateTime_start = ZonedDateTime.of(localDateTime_start, ZoneId.systemDefault());
-        ZonedDateTime zonedDateTime_end = ZonedDateTime.of(localDateTime_end, ZoneId.systemDefault());
-        ZonedDateTime zonedDateTime_start_EST = ZonedDateTime.ofInstant(zonedDateTime_start.toInstant(), easternZoneId);
-        ZonedDateTime zonedDateTime_end_EST = ZonedDateTime.ofInstant(zonedDateTime_end.toInstant(), easternZoneId);
+        this.startString =  this.start.atZone(ZoneId.systemDefault()).format(formatter);
+        this.endString = this.end.atZone(ZoneId.systemDefault()).format(formatter);
 
-        this.startString = zonedDateTime_start_EST.toString();
-        this.endString = zonedDateTime_end_EST.toString();
         this.customer = DBCustomers.getCustomer(customerId);
         this.user = DBUsers.getUser(userId);
         this.contact = DBContacts.getContact(contactId);
