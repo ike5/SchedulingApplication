@@ -5,11 +5,11 @@
 
 ## High
 
-- [ ] A3b. Scheduling Functionality: Views
+- [x] A3b. Scheduling Functionality: Views
     - The application includes a weekly and monthly radio button. The radio buttons did not appear to be functioning as no filtering was observed in the calendar view. The appointment times do not appear to be displaying in the user's local time zone. Task instructions state: : While the appointment times should be stored in Coordinated Universal Time (UTC), they should be automatically and consistently updated according to the local time zone set on the user’s computer wherever appointments are displayed in the application.
   
 
-- [ ] A3c. Time Zones
+- [x] A3c. Time Zones
     - This aspect will be better assessed when aspect 'A3b' is complete.
   
 ## Medium
@@ -19,6 +19,5 @@
   
 
 ## Low
-- [ ] F. Professional Communication
+- [x] F. Professional Communication
   - This aspect will be better assessed when all aspects are complete.
-  - 

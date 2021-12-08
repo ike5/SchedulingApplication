@@ -25,9 +25,7 @@ import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.List;
 import java.util.ResourceBundle;
-import java.util.TimeZone;
 
 /**
  * This class displays a login form and validates username and password credentials.
@@ -114,6 +112,9 @@ public class LoginController implements Initializable {
 
     /**
      * This method is triggered when the login button is CLICKED with a mouse.
+     * A lambda expression is used in the last argument of the changeScreen()
+     * method in order to use varying ActionEvents (in this case, a Button rather
+     * than a TextView).
      *
      * @param actionEvent Login Button is Clicked
      * @throws IOException Exception
@@ -121,7 +122,7 @@ public class LoginController implements Initializable {
     public void onLoginAction(ActionEvent actionEvent) throws IOException {
         getUsernamePasswordReceived(); // move inside changeScreen()
 
-        changeScreen(
+        changeView(
                 actionEvent,
                 dbUsers,
                 FXMLLoader.load(getClass().getResource("/view/Customers.fxml")),
@@ -167,8 +168,10 @@ public class LoginController implements Initializable {
     }
 
     /**
-     * Helper method that logs user in. Can be used in methods that contain
-     * an ActionEvent.
+     * Helper method that logs user in. A lambda expression is used in the
+     * last argument of the changeScreen() method in order to use varying
+     * ActionEvents (in this case, a TextField rather than a
+     * Button).
      *
      * @param actionEvent
      * @throws IOException
@@ -176,7 +179,7 @@ public class LoginController implements Initializable {
     private void textFieldLogin(ActionEvent actionEvent) throws IOException {
         getUsernamePasswordReceived();
 
-        changeScreen(
+        changeView(
                 actionEvent,
                 dbUsers,
                 FXMLLoader.load(getClass().getResource(Main.resourceBundle.getString("customers_screen"))),
@@ -238,22 +241,25 @@ public class LoginController implements Initializable {
 
     /**
      * Helper method that validates user login then switches views if successful.
-     * <p>
-     * Note the event source is either a Button or a TextField:
-     * stage = (Stage) ((TextField) actionEvent.getSource()).getScene().getWindow();
-     * stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
+     * Using a lambda expression in the last parameter, the functional interface
+     * ChangeViewInterface allows the programmer to reuse the same code for passing
+     * varying types of ActionEvents (such as a Button or a TextField) and to
+     * switch views reusing the same code.
      *
      * @param actionEvent         Either a Button actionEvent or a TextField
-     * @param userLogin
-     * @param scene
-     * @param changeViewInterface
+     * @param userLogin           The currently logged-in user username and password
+     * @param scene               The Scene object
+     * @param changeViewInterface Lambda expression whose parameter is an ActionEvent
+     *                            and whose expression is a Stage.
      */
-    private static void changeScreen(ActionEvent actionEvent, DBUsers userLogin, Parent scene, Utility.ChangeViewInterface changeViewInterface) {
-
+    private static void changeView(ActionEvent actionEvent, DBUsers userLogin, Parent scene, Utility.ChangeViewInterface changeViewInterface) {
         if (userLogin.getUser().isValidUsername()) {
             if (userLogin.getUser().isValidPassword()) {
-                checkUpcomingAppointment(userLogin);
+
+                checkUpcomingAppointment(userLogin); // Checks for upcoming appointments within the specified period
+
                 switchView(actionEvent, userLogin, scene, changeViewInterface);
+
             } else {
                 Message.errorMessage(
                         Main.resourceBundle.getString("incorrect_password"),
@@ -292,14 +298,14 @@ public class LoginController implements Initializable {
 
     /**
      * Helper method that switches views based on having variable event sources.
-     * Sets the Stage to an event source of either a Button or TextField for
-     * this application using a ChangeScreenInterface in order to pass a function
-     * to the lambda expression.
+     * Sets the Stage using a lambda expression with an event source of either a Button
+     * or TextField. The functional interface of the last parameter is ChangeScreenInterface.
      *
      * @param actionEvent         An event source
      * @param userLogin           A DBUsers object to get currently logged-in User's username to display
      * @param scene               Builds a new Scene to switch to
-     * @param changeViewInterface A variable event source object
+     * @param changeViewInterface A variable event source object whose parameter is an ActionEvent
+     *                            and whose expression is a Stage.
      */
     private static void switchView(ActionEvent actionEvent, DBUsers userLogin, Parent scene, Utility.ChangeViewInterface changeViewInterface) {
         Stage stage = changeViewInterface.eventSource(actionEvent);

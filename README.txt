@@ -45,8 +45,8 @@ Driver: mysql-connector-java-8.0.25
 
 ## Additional info
 - Location of lambda expressions
-  - `LoginController > textfieldLogin() > changeScreen()`
-  - `LoginController > onLoginAction() > changeScreen()`
+  - `LoginController > changeScreen()`
+  - `LoginController > changeScreen()`
   - `CustomersController > viewAppointmentsButtonOnAction()`
   - `CustomersController > reportsButtonOnAction()`
   - `AppointmentsController > newAppointmentButtonOnAction()`
