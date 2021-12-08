@@ -64,7 +64,7 @@ public class CustomersController implements Initializable, ChangeViewInterface {
      * Clear, and Delete buttons. Initializes ComboBoxes. Adds a TableView
      * listener.
      *
-     * @param url The URL
+     * @param url            The URL
      * @param resourceBundle The ResourceBundle
      */
     @Override
@@ -226,25 +226,29 @@ public class CustomersController implements Initializable, ChangeViewInterface {
     }
 
     /**
-     * Button to switch to the Appointments View.
+     * Button to switch to the Appointments View. The lambda expression
+     * parameter takes in a View object and calls the change() method on
+     * it.
      *
      * @param actionEvent Appointments Button pressed
      * @throws IOException Exception
      */
     public void viewAppointmentsButtonOnAction(ActionEvent actionEvent) throws IOException {
-        changeView(x -> x.change(), new View(
+        changeView(view -> view.change(), new View(
                 actionEvent, Main.resourceBundle.getString("appointments_screen"), "Appointments"
         ));
     }
 
     /**
-     * Button to switch to the Reports View.
+     * Button to switch to the Reports View. The lambda expression
+     * parameter takes in a View object and calls the change() method on
+     * it.
      *
      * @param actionEvent Reports Button pressed
      * @throws IOException Exception
      */
     public void reportsButtonOnAction(ActionEvent actionEvent) throws IOException {
-        changeView(x -> x.change(), new View(
+        changeView(view -> view.change(), new View(
                 actionEvent, Main.resourceBundle.getString("reports_screen"), "Reports"
         ));
     }
@@ -300,10 +304,12 @@ public class CustomersController implements Initializable, ChangeViewInterface {
     }
 
     /**
-     * Helper method to change views
+     * Helper method that simplifies the process of changing views. The first
+     * parameter is a functional interface and allows the user to use a lambda
+     * to call methods within the View object.
      *
      * @param controllerViewChanger a ControllerViewChanger interface
-     * @param view a View object
+     * @param view                  a View object
      */
     @Override
     public void changeView(ControllerViewChanger controllerViewChanger, View view) {
@@ -335,13 +341,14 @@ public class CustomersController implements Initializable, ChangeViewInterface {
     }
 
     /**
-     * Logs user out.
+     * Logs user out. The lambda expression parameter takes in a View
+     * object and calls the change() method on it.
      *
-     * @param actionEvent
+     * @param actionEvent The Logout Button ActionEvent
      * @throws IOException
      */
     private void logout(ActionEvent actionEvent) throws IOException {
-        changeView(x -> x.change(), new View(
+        changeView(view -> view.change(), new View(
                 actionEvent, Main.resourceBundle.getString("login_screen"), "login"
         ));
     }

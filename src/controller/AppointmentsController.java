@@ -54,7 +54,7 @@ public class AppointmentsController implements Initializable, ChangeViewInterfac
      * also ensures that Delete and Update buttons start off inactive
      * until a table item is selected.
      *
-     * @param url The URL
+     * @param url            The URL
      * @param resourceBundle The ResourceBundle
      */
     @Override
@@ -90,13 +90,15 @@ public class AppointmentsController implements Initializable, ChangeViewInterfac
     }
 
     /**
-     * Switches user to the CustomersController screen.
+     * Switches user to the CustomersController screen. The lambda expression
+     * parameter takes in a View object and calls the change() method on
+     * it.
      *
      * @param actionEvent Back Button pressed
      * @throws IOException Exception
      */
     public void backButtonOnAction(ActionEvent actionEvent) throws IOException {
-        changeView(x -> x.change(), new View(
+        changeView(view -> view.change(), new View(
                 actionEvent, Main.resourceBundle.getString("customers_screen"), "Customers"
         ));
     }
@@ -131,7 +133,8 @@ public class AppointmentsController implements Initializable, ChangeViewInterfac
     /**
      * Switches user to the ModifyAppointmentController screen. This
      * method sets the Appointment singleton to null before switching
-     * views.
+     * views. The lambda expression parameter takes in a View object
+     * and calls the change() method on it.
      *
      * @param actionEvent New Appointment Button pressed
      * @throws IOException Exception
@@ -139,7 +142,7 @@ public class AppointmentsController implements Initializable, ChangeViewInterfac
     public void newAppointmentButtonOnAction(ActionEvent actionEvent) throws IOException {
         AppointmentSingleton.getInstance().setAppointment(null);
 
-        changeView(x -> x.change(), new View(
+        changeView(view -> view.change(), new View(
                 actionEvent, Main.resourceBundle.getString("modify_appointment_screen"), "New Appointment"
         ));
     }
@@ -147,7 +150,9 @@ public class AppointmentsController implements Initializable, ChangeViewInterfac
     /**
      * Switches user to the ModifyAppointmentController screen. This
      * method captures the Appointment object with the Appointment
-     * singleton before switching views.
+     * singleton before switching views. The lambda expression
+     * parameter takes in a View object and calls the change() method on
+     * it.
      *
      * @param actionEvent Update Appointment Button is pressed
      * @throws IOException Exception
@@ -156,7 +161,7 @@ public class AppointmentsController implements Initializable, ChangeViewInterfac
         if (table_view_id.getSelectionModel().selectedItemProperty() != null) {
             AppointmentSingleton.getInstance().setAppointment((Appointment) table_view_id.getSelectionModel().getSelectedItem());
 
-            changeView(x -> x.change(), new View(
+            changeView(view -> view.change(), new View(
                     actionEvent, Main.resourceBundle.getString("modify_appointment_screen"), "Modify Appointment"
             ));
         } else {
@@ -185,7 +190,9 @@ public class AppointmentsController implements Initializable, ChangeViewInterfac
     }
 
     /**
-     * Helper method to change views
+     * Helper method that simplifies the process of changing views. The first
+     * parameter is a functional interface and allows the user to use a lambda
+     * to call methods within the View object.
      *
      * @param controllerViewChanger a ControllerViewChanger interface
      * @param view                  a View object
