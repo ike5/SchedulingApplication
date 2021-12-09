@@ -194,18 +194,17 @@ public class DBAppointment {
      * @return Appointment ObservableList
      */
     public static ObservableList<Appointment> getAllAppointmentsInWeek() {
-        String sql = "SELECT * FROM appointments WHERE Start >= ?";
+        String sql = "SELECT * FROM appointments WHERE YEARWEEK(Start) = YEARWEEK(NOW());";
 
         ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
         try {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
-            ps.setTimestamp(1, Timestamp.valueOf(LocalDateTime.now().minusDays(7)));
 
             ResultSet resultSet = ps.executeQuery();
 
             addToAppointmentList(appointmentList, resultSet);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return appointmentList;
     }
