@@ -13,8 +13,8 @@ users can generate reports on the data.
 - Author: Ike Maldonado  
 - Contact info: 
   - email: imald14@wgu.edu
-- Application Version: 1.0
-- Date: 12/05/2021 
+- Application Version: 1.1
+- Date: 12/08/2021
 
 ---
 
