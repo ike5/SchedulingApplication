@@ -174,16 +174,16 @@ public class DBAppointment {
     public static ObservableList<Appointment> getAllAppointmentsInMonth() {
         ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
 
-        String sql = "SELECT * FROM appointments WHERE Start >= ?";
+        String sql = "SELECT * FROM appointments WHERE MONTH(now()) = MONTH(Start)";
         try {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
-            ps.setTimestamp(1, Timestamp.valueOf(LocalDateTime.now().minusMonths(1)));
+//            ps.setTimestamp(1, Timestamp.valueOf(LocalDateTime.now().minusMonths(1)));
 
             ResultSet resultSet = ps.executeQuery();
 
             addToAppointmentList(appointmentList, resultSet);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return appointmentList;
     }

@@ -14,7 +14,7 @@
   
 ## Medium
 - [x] A1. Log-in Form
-- [ ] D. Javadoc Comments
+- [x] D. Javadoc Comments
   - The submission includes an index.html and Javadoc comments. The Javadoc comments justifying the use of each lambda expression in the method header comments in which they occurred were not observed.
   
 
