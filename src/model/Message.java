@@ -2,6 +2,7 @@ package model;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
 
 import java.util.Optional;
 
@@ -48,4 +49,17 @@ public class Message {
         alert.setTitle(title);
         return alert.showAndWait();
     }
+
+    /**
+     * Success message.
+     *
+     * @param message the message
+     * @param title the title
+     */
+    public static void successMessage(String message, String title){
+        Alert alert = new Alert(Alert.AlertType.NONE, message, ButtonType.OK);
+        alert.setTitle(title);
+        alert.show();
+    }
 }
+

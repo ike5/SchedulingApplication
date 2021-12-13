@@ -177,10 +177,20 @@ public class AppointmentsController implements Initializable, ChangeViewInterfac
     public void deleteAppointmentButtonOnAction(ActionEvent actionEvent) {
         AppointmentSingleton.getInstance().setAppointment((Appointment) table_view_id.getSelectionModel().getSelectedItem());
 
+        int id = AppointmentSingleton.getInstance().getAppointment().getAppointmentId();
+        String type = AppointmentSingleton.getInstance().getAppointment().getAppointmentType();
+
         Optional<ButtonType> result = Message.confirmationMessage("Are you sure?", "Delete appointment");
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            DBAppointment.deleteAppointment(AppointmentSingleton.getInstance().getAppointment().getAppointmentId());
+            DBAppointment.deleteAppointment(id);
+
+            Message.successMessage(
+                    "Appointment ID: " + id + "\nAppointment Type: " + type,
+                    "Appointment Deleted"
+            );
         }
+
+
 
         // After deleting item, disable button until another item is selected.
         delete_button.setDisable(true);
