@@ -84,7 +84,7 @@ users can generate reports on the data.
 
 - Author: Ike Maldonado  
 - Contact info: 
-  - email: imald14@wgu.edu
+  - email:
 - Application Version: 1.1
 - Date: 12/08/2021
 
