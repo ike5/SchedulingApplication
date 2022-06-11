@@ -1,4 +1,4 @@
-# C195 Scheduling Application
+# Scheduling Application
 
 ---
 
