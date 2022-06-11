@@ -8,10 +8,18 @@ users can generate reports on the data.
 
 ---
 
+## Creating a Customer
+- Dropdowns for US states and Provinces change automatically.
+- Renders quickly after updating the MySQL database.
+
+![customer](https://github.com/ike5/C195ProjectV1/blob/main/resources/Jun-10-2022%2018-36-11.gif)
 
 
+## Deleting a Customer
+- Prompts a warning
+- Rerenders the table after updating the database.
 
-
+![delete_customer](https://github.com/ike5/C195ProjectV1/blob/main/resources/Jun-10-2022%2018-38-54.gif)
 
 
 
