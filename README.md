@@ -55,7 +55,11 @@ users can generate reports on the data.
 ## Filter Appointments by Month, Week, and All
 ![filter](https://github.com/ike5/C195ProjectV1/blob/main/resources/Jun-10-2022%2018-40-07.gif)
 
-
+## View Reports
+- Customer appointment tab allows search combination of month by dropdowns
+- Contact schedule tab displays appointments by contact
+- Additional report displays data such as number of appointments, customers, contacts, and number of times logged in.
+![reports](https://github.com/ike5/C195ProjectV1/blob/main/resources/Jun-10-2022%2018-40-14.gif)
 
 
 
