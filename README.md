@@ -8,6 +8,23 @@ users can generate reports on the data.
 
 ---
 
+## Login
+- Contains validation and searches database for that user and password combination
+![login](https://github.com/ike5/C195ProjectV1/blob/main/resources/Jun-10-2022%2018-40-32.gif)
+
+## Login validation
+- Validates username
+- Validats password
+- Displays upcoming appointments if any once logged in
+
+![login_validation](https://github.com/ike5/C195ProjectV1/blob/main/resources/Jun-10-2022%2018-40-40.gif)
+
+
+
+## Logout
+- Confirmation popup
+![logout](https://github.com/ike5/C195ProjectV1/blob/main/resources/Jun-10-2022%2018-40-26.gif)
+
 ## Creating a Customer
 - Dropdowns for US states and Provinces change automatically.
 - Renders quickly after updating the MySQL database.
