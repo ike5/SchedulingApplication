@@ -21,6 +21,41 @@ users can generate reports on the data.
 
 ![delete_customer](https://github.com/ike5/C195ProjectV1/blob/main/resources/Jun-10-2022%2018-38-54.gif)
 
+## Updating a Customer
+
+![update](https://github.com/ike5/C195ProjectV1/blob/main/resources/Jun-10-2022%2018-39-17.gif)
+
+## Clearing Form
+
+![clear_form](https://github.com/ike5/C195ProjectV1/blob/main/resources/Jun-10-2022%2018-39-03.gif)
+
+## Scroll through Form
+- Customer data populates from table to form automatically
+
+![scroll_through_form](https://github.com/ike5/C195ProjectV1/blob/main/resources/Jun-10-2022%2018-39-10.gif)
+
+## Go to Appointments View
+- Selectable rows
+![appt](https://github.com/ike5/C195ProjectV1/blob/main/resources/Jun-10-2022%2018-39-28.gif)
+
+## Create a New Appointment
+![new_appt](https://github.com/ike5/C195ProjectV1/blob/main/resources/Jun-10-2022%2018-39-34.gif)
+
+## Delete an Appointment
+- Confirmation popup
+- Returns appointment info deleted
+- Data cascades
+
+![delete_appt](https://github.com/ike5/C195ProjectV1/blob/main/resources/Jun-10-2022%2018-39-49.gif)
+
+## Update an Appointment
+- Confirmation popup
+![update_apt](https://github.com/ike5/C195ProjectV1/blob/main/resources/Jun-10-2022%2018-39-58.gif)
+
+## Filter Appointments by Month, Week, and All
+![filter](https://github.com/ike5/C195ProjectV1/blob/main/resources/Jun-10-2022%2018-40-07.gif)
+
+
 
 
 
